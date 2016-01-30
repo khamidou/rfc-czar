@@ -1,0 +1,5 @@
+*.swp
+*.pyc
+rfcs/*
+venv
+test.html
