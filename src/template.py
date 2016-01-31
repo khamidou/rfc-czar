@@ -19,9 +19,6 @@ html_template = """\
   <tbody>
     <tr id='section-{{ num }}'>
       <td class=docs>
-        <div class="octowrap">
-          <a class="octothorpe" href="#section-{{ num }}">#</a>
-        </div>
         {{{ rfc }}}
       </td>
       <td class=code>

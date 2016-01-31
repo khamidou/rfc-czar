@@ -27,8 +27,6 @@ h1, h2, h3, h4, h5, h6 {
 #background {
   position: fixed;
   top: 0; left: 580px; right: 0; bottom: 0;
-  background: #f5f5ff;
-  border-left: 1px solid #e5e5ee;
   z-index: -1;
 }
 #jump_to, #jump_page {
@@ -72,8 +70,8 @@ table td {
   outline: 0;
 }
   td.docs, th.docs {
-    max-width: 500px;
-    min-width: 500px;
+    max-width: 600px;
+    min-width: 600px;
     min-height: 5px;
     padding: 10px 25px 1px 50px;
     vertical-align: top;
@@ -81,7 +79,9 @@ table td {
   }
     .docs pre {
       margin: 15px 0 15px;
-      padding-left: 15px;
+      font-size: 16px;
+      line-height: 24px;
+      font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, FreeSerif, serif;
     }
     .docs p tt, .docs p code {
       background: #f8f8ff;
