@@ -20,6 +20,7 @@ h1, h2, h3, h4, h5, h6 {
 }
   h3, h4, h5, h6 {
     margin-top: 20px;
+    font-size: 100%;
   }
 #container {
   position: relative;
@@ -78,7 +79,6 @@ table td {
     text-align: left;
   }
     .docs pre {
-      margin: 15px 0 15px;
       font-size: 16px;
       line-height: 24px;
       font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, FreeSerif, serif;
