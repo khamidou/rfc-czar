@@ -56,22 +56,37 @@ def process_file(infile, outfile):
         if match is not None:
             match.replaceWithChildren()
 
-    # Merge the <pre class="newpage"> tags together.
+    # Strip the spaces in <pre class=newpage> tags.
     first_tag = None
-    for match in soup.findAll('pre', class_='newpage'):
-        if first_tag is not None:
-            match.replaceWithChildren()
-            match.extract()
-            first_tag.append(match)
+    empty_chars = re.compile('^[\\n]+$')
+    for match in soup.findAll('pre'):
+        if match is not None:
+            trim_start = 0
+            for i, element in enumerate(match.contents):
+                if isinstance(element, basestring) and re.match(empty_chars, element):
+                    trim_start += 1
+                else:
+                    break
 
-        if first_tag is None:
-            first_tag = match
+            trim_end = len(match.contents)
+            for i, element in reversed(list(enumerate(match.contents))):
+                if isinstance(element, basestring) and re.match(empty_chars, element):
+                    trim_end -= 1
+                else:
+                    break
+
+            match.contents = match.contents[trim_start:trim_end]
+
+    # Add a bit more space around the first pre tag (which is actually the
+    # intro of the doc).
+    first_pre = soup.find('pre')
+    first_pre.contents.insert(0, 'YOLO')
 
     # Once we've got rid of everything, remove consecutive blank lines:
-    #new_lines = re.compile('(\\w*\\n){3,99}')
-    #re_serialized = soup.prettify()
-    #contents = re.sub(new_lines, '\\n\\n', re_serialized)
-    #soup = BeautifulSoup(contents, 'html.parser')
+    new_lines = re.compile('(\\w*\\n){3,99}')
+    re_serialized = soup.prettify()
+    contents = re.sub(new_lines, '\\n\\n', re_serialized)
+    soup = BeautifulSoup(contents, 'html.parser')
 
     # Finally, extract the body:
     body_contents = soup.body.find('div', class_='content')
