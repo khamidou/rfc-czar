@@ -37,7 +37,8 @@ def process_file(infile, outfile):
 
     # Remove invisible anchors
     for match in soup.findAll('a', class_='invisible'):
-        match.extract()
+        match.contents = ''
+        import pdb ; pdb.set_trace()
 
     # Remove those weird <span class='h4'></span> tags:
     for tag in ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'h7', 'h8', 'h9', 'h10']:
@@ -59,13 +60,19 @@ def process_file(infile, outfile):
     # Strip the spaces in <pre class=newpage> tags.
     first_tag = None
     empty_chars = re.compile('^[\\n]+$')
+    indented_blanks = re.compile('^\\n+(\s+)$')
+
     for match in soup.findAll('pre'):
         if match is not None:
             trim_start = 0
             for i, element in enumerate(match.contents):
-                if isinstance(element, basestring) and re.match(empty_chars, element):
+                if not isinstance(element, basestring):
+                    break
+
+                if re.match(empty_chars, element):
                     trim_start += 1
-                else:
+                elif re.match(indented_blanks, element):
+                    indented_blanks.sub('\\1', element)
                     break
 
             trim_end = len(match.contents)
@@ -79,8 +86,8 @@ def process_file(infile, outfile):
 
     # Add a bit more space around the first pre tag (which is actually the
     # intro of the doc).
-    first_pre = soup.find('pre')
-    first_pre.contents.insert(0, 'YOLO')
+    #first_pre = soup.find('pre')
+    #first_pre.contents.insert(0, 'YOLO')
 
     # Once we've got rid of everything, remove consecutive blank lines:
     new_lines = re.compile('(\\w*\\n){3,99}')
