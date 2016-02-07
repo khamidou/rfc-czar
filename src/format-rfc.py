@@ -35,10 +35,41 @@ def process_file(infile, outfile):
     if match is not None:
         match.extract()
 
+    empty_chars = re.compile('^[\\n]+$')
+    indented_blanks = re.compile('^\\n+(\s+)$')
+
     # Remove invisible anchors
     for match in soup.findAll('a', class_='invisible'):
         match.contents = ''
-        import pdb ; pdb.set_trace()
+
+        # Also remove empty lines after this tag
+        for i, sibling in enumerate(match.next_siblings):
+            if not isinstance(sibling, basestring):
+                break
+
+            if re.match(empty_chars, sibling):
+                sibling.string = ''
+            elif re.match(indented_blanks, sibling):
+                sibling.string = indented_blanks.sub('\\1', sibling)
+
+    # Remove useless line jumps at the beginning and end of a pre tag.
+    for match in soup.findAll('pre'):
+        if match is not None:
+            siblings = list(match.strings)
+            first_sibling = siblings[1]
+            last_sibling = siblings[-1]
+
+            first_linefeeds = re.compile('^\\n+')
+            last_linefeeds = re.compile('\\n+$')
+
+            if isinstance(first_sibling, basestring):
+                replacement = first_linefeeds.split(first_sibling.string)[0]
+                if first_sibling != replacement:
+                    first_sibling.replaceWith(replacement)
+
+            if isinstance(last_sibling, basestring):
+                replacement = last_linefeeds.split(last_sibling.string)[0]
+                last_sibling.replaceWith(replacement)
 
     # Remove those weird <span class='h4'></span> tags:
     for tag in ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'h7', 'h8', 'h9', 'h10']:
@@ -56,33 +87,6 @@ def process_file(infile, outfile):
     for match in soup.findAll('hr'):
         if match is not None:
             match.replaceWithChildren()
-
-    # Strip the spaces in <pre class=newpage> tags.
-    first_tag = None
-    empty_chars = re.compile('^[\\n]+$')
-    indented_blanks = re.compile('^\\n+(\s+)$')
-
-    for match in soup.findAll('pre'):
-        if match is not None:
-            trim_start = 0
-            for i, element in enumerate(match.contents):
-                if not isinstance(element, basestring):
-                    break
-
-                if re.match(empty_chars, element):
-                    trim_start += 1
-                elif re.match(indented_blanks, element):
-                    indented_blanks.sub('\\1', element)
-                    break
-
-            trim_end = len(match.contents)
-            for i, element in reversed(list(enumerate(match.contents))):
-                if isinstance(element, basestring) and re.match(empty_chars, element):
-                    trim_end -= 1
-                else:
-                    break
-
-            match.contents = match.contents[trim_start:trim_end]
 
     # Add a bit more space around the first pre tag (which is actually the
     # intro of the doc).
