@@ -56,16 +56,24 @@ def process_file(infile, outfile):
     for match in soup.findAll('pre'):
         if match is not None:
             siblings = list(match.strings)
-            first_sibling = siblings[1]
+            first_sibling = None
             last_sibling = siblings[-1]
+
+            next_anchor = match.find('a', class_='invisible')
+            if next_anchor is not None and next_anchor.next_sibling is not None:
+
+                endline_jump = next_anchor.next_sibling
+                if isinstance(endline_jump, basestring) and endline_jump == '\n':
+                    empty_string = soup.new_string('THE LULZ')
+                    endline_jump.replace_with(empty_string)
+
+                first_sibling = next_anchor.next_sibling.next_sibling
 
             first_linefeeds = re.compile('^\\n+')
             last_linefeeds = re.compile('\\n+$')
 
-            if isinstance(first_sibling, basestring):
-                replacement = first_linefeeds.split(first_sibling.string)[0]
-                if first_sibling != replacement:
-                    first_sibling.replaceWith(replacement)
+            if isinstance(first_sibling, basestring) and first_linefeeds.match(first_sibling):
+                first_sibling.string = first_linefeeds.sub('', first_sibling)
 
             if isinstance(last_sibling, basestring):
                 replacement = last_linefeeds.split(last_sibling.string)[0]
