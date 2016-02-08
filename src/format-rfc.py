@@ -64,7 +64,7 @@ def process_file(infile, outfile):
 
                 endline_jump = next_anchor.next_sibling
                 if isinstance(endline_jump, basestring) and endline_jump == '\n':
-                    empty_string = soup.new_string('THE LULZ')
+                    empty_string = soup.new_string(' ')
                     endline_jump.replace_with(empty_string)
 
                 first_sibling = next_anchor.next_sibling.next_sibling
