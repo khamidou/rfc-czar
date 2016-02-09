@@ -1,5 +1,8 @@
 *.swp
 *.pyc
+*.7z
+.DS_Store
+stackexchange/*
 rfcs/*
 venv
 test.html
