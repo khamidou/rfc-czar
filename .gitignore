@@ -4,5 +4,6 @@
 .DS_Store
 stackexchange/*
 rfcs/*
+source_rfcs/*
 venv
 test.html

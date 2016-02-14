@@ -4,9 +4,8 @@
 # format.
 import re
 import sys
-import pystache
 from bs4 import BeautifulSoup, Tag, Comment
-from template import html_template
+from jinja2 import Environment, FileSystemLoader
 
 class ProcessingException(Exception):
     pass
@@ -114,7 +113,10 @@ def process_file(infile, outfile):
         raise ProcessingException("Couldn't find a content block")
 
     dct = dict(rfc=body_contents.prettify(), title=title)
-    rendered = pystache.render(html_template, dct)
+
+    env = Environment(loader=FileSystemLoader('templates'))
+    template = env.get_template('rfc.html')
+    rendered = template.render(**dct)
 
     with open(outfile, 'w+') as fd:
         fd.write(rendered.encode('utf-8'))

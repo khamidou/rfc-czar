@@ -1,4 +1,3 @@
-html_template = """\
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,14 +18,19 @@ html_template = """\
   <tbody>
     <tr id='section-{{ num }}'>
       <td class=docs>
-        {{{ rfc }}}
+        {{ rfc }}
       </td>
       <td class=code>
-        <div class='highlight'><pre>{{{ code_html }}}</pre></div>
+        <div class='highlight'>
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                {% for question in questions %}
+                    <li><a href={{ question['url'] }}>{{ question['title'] }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
       </td>
     </tr>
   </table>
 </div>
 </body>
-"""
-
