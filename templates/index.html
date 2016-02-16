@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>RFC Czar: RFC for the rest of us.</title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1>RFC Czar</h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-{{ num }}'>
+      <td class=docs>
+        <p>
+            RFC Czar gives you access to all the IETF RFCs, in an easy-to-understand two column format.
+        </p>
+        <p>
+            Try it on an <a href=''>example RFC</a>.
+        </p>
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                {% for question in questions %}
+                    <li><a href={{ question['url'] }}>{{ question['title'] }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

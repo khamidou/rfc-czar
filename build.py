@@ -11,12 +11,22 @@ def list_files(directory):
     return [f for f in listdir(directory)
               if isfile(join(directory, f)) and f.endswith('.html')]
 
+def execute(command):
+    return subprocess.call(command)
 
 def build_file(infile, outfile):
     command = ['python', 'src/format-rfc.py', infile, outfile]
-    print " ".join(command)
-    return subprocess.call(command)
+    execute(command)
 
+def copy_css(out_dir):
+    print "Copying CSS."
+    command = ['cp', 'rfc.css', out_dir]
+    execute(command)
+
+def generate_site_index(out_dir):
+    print "Creating index file."
+    command = ['python', 'src/generate-site-index.py', out_dir, join(out_dir, 'index.html')]
+    execute(command)
 
 def main():
     if len(sys.argv) != 3:
@@ -39,6 +49,8 @@ def main():
         if getmtime(src_path) > getmtime(dest_path):
             build_file(src_path, dest_path)
 
+    copy_css(dest_dir)
+    generate_site_index(dest_dir)
 
 if __name__ == '__main__':
     main()
