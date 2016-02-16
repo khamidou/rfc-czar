@@ -7,3 +7,4 @@ rfcs/*
 source_rfcs/*
 venv
 test.html
+out/
