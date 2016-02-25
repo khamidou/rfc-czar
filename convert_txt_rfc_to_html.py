@@ -9,20 +9,20 @@ from os.path import (isfile, join, getmtime, splitext,
                      basename, dirname)
 
 
-def list_files(directory, filter_fn=None):
-    # returns a list of
+def list_files(directory, extension=''):
+    l = []
     files = listdir(directory)
 
-    if filter_fn is not None:
-        files = filter(filter_fn, files)
-
-    l = [splitext(f)[0] for f in files if isfile(join(directory, f))]
+    for f in files:
+        filename, ext = splitext(f)
+        if isfile(join(directory, f)) and extension in ext:
+            l.append(filename)
     return l
 
 
 def build_file(infile, outfile):
     with open(outfile, 'w+') as fd:
-        command = ['python', 'src/rfcmarkup', dirname(infile), basename(infile)]
+        command = ['python', 'src/rfcmarkup', dirname(infile), splitext(basename(infile))[0]]
         subprocess.call(command, stdout=fd)
 
 
@@ -34,11 +34,11 @@ def main():
     src_dir = sys.argv[1]
     dest_dir = sys.argv[2]
 
-    src_files = {filename: join(src_dir, filename) for filename in list_files(src_dir, lambda x: True if splitext(x)[1] == '.txt' else False)}
-    dest_files = {filename: join(dest_dir, filename) for filename in list_files(dest_dir)}
+    src_files = {filename: join(src_dir, filename) for filename in list_files(src_dir, 'txt')}
+    dest_files = {filename: join(dest_dir, filename) for filename in list_files(dest_dir, 'html')}
 
     for filename in src_files:
-        src_path = join(src_dir, filename)
+        src_path = join(src_dir, filename) + '.txt'
         dest_path = join(dest_dir, filename) + '.html'
 
         if filename not in dest_files:
