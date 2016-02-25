@@ -400,7 +400,7 @@ def version():
 def usage():
     print usagetext
 
-def markup():
+def markup(cmdline_args):
         global args
 #        sys.stderr = sys.stdout
         extra = ""
@@ -412,9 +412,9 @@ def markup():
         charter = None
         info = {}
         attribs = {}
-        fields = cgi.FieldStorage()
+        fields = cmdline_args
         for key in fields.keys():
-            attribs[key] = fields[key].value
+            attribs[key] = fields[key]
 
         script = os.environ.get("SCRIPT_NAME", sys.argv[0])
 
@@ -439,14 +439,7 @@ def markup():
             ids =  fields["repository"].value + "/internet-drafts"
             extra = extra + "repository=%s&amp;" % fields["repository"].value
         else:
-            if os.path.exists("/home/ietf/rfc"):
-                rfcs = "file:///home/ietf/rfc"
-            else:
-                rfcs = "http://tools.ietf.org/rfc"
-            if os.path.exists("/home/ietf/id"):
-                ids =  "file:///home/ietf/id"
-            else:
-                ids =  "http://tools.ietf.org/id"
+            rfcs = fields['folder']
 
         if fields.has_key("rfc-repository"):
             rfcs = fields["rfc-repository"].value
@@ -498,9 +491,9 @@ def markup():
 #            if not url[-4:] == ".txt":
 #                url = url + ".txt"
         elif fields.has_key("rfc"):
-            rfc = fields["rfc"].value
-            url = "%s/rfc%s.txt" % (rfcs, rfc)
-            args["title"] = "rfc "+fields["rfc"].value
+            rfc = fields["rfc"]
+            url = "%s" % rfc
+            args["title"] = "rfc "+fields["rfc"]
             args["doc"] = "rfc"+rfc
         elif fields.has_key("bcp"):
             bcp = fields["bcp"].value
@@ -1356,4 +1349,4 @@ if __name__ == "__main__":
         usage()
         sys.exit()
 
-    markup()
+    markup({"folder": sys.argv[1], "rfc": sys.argv[2]})
