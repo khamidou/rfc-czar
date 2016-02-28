@@ -59,8 +59,8 @@ def main():
     src_dir = sys.argv[1]
     dest_dir = sys.argv[2]
 
-    convert_rfc_html(src_dir, TMP_DIR)
-    build_rfcs(TMP_DIR, dest_dir)
+    #convert_rfc_html(src_dir, TMP_DIR)
+    #build_rfcs(TMP_DIR, dest_dir)
     copy_css(dest_dir)
     generate_site_index(dest_dir)
 
