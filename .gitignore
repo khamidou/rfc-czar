@@ -8,3 +8,4 @@ source_rfcs/*
 venv
 test.html
 out/
+html_rfcs/*

@@ -7,10 +7,10 @@ import sys
 from bs4 import BeautifulSoup, Tag, Comment
 from jinja2 import Environment, FileSystemLoader
 
-class ProcessingException(Exception):
+class ProcessingError(Exception):
     pass
 
-def process_file(infile, outfile):
+def format_rfc(infile, outfile):
     data = ''
     with open(infile) as fd:
         data = fd.read()
@@ -107,10 +107,10 @@ def process_file(infile, outfile):
     soup = BeautifulSoup(contents, 'html.parser')
 
     # Finally, extract the body:
-    body_contents = soup.body.find('div', class_='content')
+    body_contents = soup.body # .find('div', class_='content')
 
     if body_contents is None:
-        raise ProcessingException("Couldn't find a content block")
+        raise ProcessingError("Couldn't find a content block")
 
     dct = dict(rfc=body_contents.prettify(), title=title)
 
@@ -126,7 +126,7 @@ def main():
     if len(sys.argv) != 3:
         print "usage: format-rfc rfc.html pretty_rfc.html"
 
-    process_file(sys.argv[1], sys.argv[2])
+    format_rfc(sys.argv[1], sys.argv[2])
 
 if __name__ == '__main__':
     main()

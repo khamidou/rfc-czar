@@ -22,18 +22,10 @@ def list_files(directory, extension=''):
 
 def build_file(infile, outfile):
     with open(outfile, 'w+') as fd:
-        command = ['python', 'src/rfcmarkup', dirname(infile), splitext(basename(infile))[0]]
+        command = ['python', 'src/rfcmarkup', dirname(infile), infile]
         subprocess.call(command, stdout=fd)
 
-
-def main():
-    if len(sys.argv) != 3:
-        print "usage: convert_txt_to_html <src dir> <output dir>"
-        sys.exit(-1)
-
-    src_dir = sys.argv[1]
-    dest_dir = sys.argv[2]
-
+def convert_rfc_html(src_dir, dest_dir):
     src_files = {filename: join(src_dir, filename) for filename in list_files(src_dir, 'txt')}
     dest_files = {filename: join(dest_dir, filename) for filename in list_files(dest_dir, 'html')}
 
@@ -41,10 +33,8 @@ def main():
         src_path = join(src_dir, filename) + '.txt'
         dest_path = join(dest_dir, filename) + '.html'
 
-        if filename not in dest_files:
-            build_file(src_path, dest_path)
-
-        if getmtime(src_path) > getmtime(dest_path):
+        if filename not in dest_files or getmtime(src_path) > getmtime(dest_path):
+            print "Building {}".format(src_path)
             build_file(src_path, dest_path)
 
 
