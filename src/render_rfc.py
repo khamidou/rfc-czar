@@ -4,6 +4,7 @@
 # 2. add links to the table of contents
 import re
 import sys
+from bs4 import BeautifulSoup, Tag, Comment
 from jinja2 import Environment, FileSystemLoader
 
 
@@ -20,10 +21,18 @@ def remove_page_breaks(data):
 
 
 def create_paragraphs(data):
-    paragraph_regexp = re.compile(r"^((\w|\"|\').+(\.|\:))\n\n", re.DOTALL)
-    data = paragraph_regexp.sub(r'<p>\1</p>', data)
+    paragraph_regexp = re.compile(r"(^.+?(\.|\:|;))\n\n", re.MULTILINE | re.DOTALL)
+
+    # replace the \n inside those paragraphs by <br> tags.
+    data = paragraph_regexp.sub(r'<p class="rfcparagraph">\1</p>', data)
+
     return data
 
+def create_diagram_blocks(data):
+    # A diagram always starts by +-- and ends by ---+.
+    diagram_regexp = re.compile(r"(\s*\+(-){2,}.+(-){2,}\+)", re.MULTILINE | re.DOTALL)
+    data = diagram_regexp.sub(r'<pre>\1\n</pre>\n', data)
+    return data
 
 def anchor_titles(data):
     # Reverse section order because lvl1_title_rx matches the beginning of lvl2_title_rx
@@ -46,7 +55,7 @@ def render_rfc(filename):
 
     out = data
     for fn in [remove_top_space, remove_page_breaks,
-               anchor_titles, create_paragraphs]:
+               anchor_titles, create_paragraphs, create_diagram_blocks]:
         out = fn(out)
 
     env = Environment(loader=FileSystemLoader('templates'))
@@ -54,6 +63,18 @@ def render_rfc(filename):
 
     dct = dict(rfc=out)
     rendered = template.render(**dct)
+
+    # A little post-processing.
+    soup = BeautifulSoup(rendered, 'html.parser')
+    for match in soup.findAll('p', class_='rfcparagraph'):
+        try:
+            match.contents = [s.replace('\n', '<br />')
+                              for s in match.contents if s is not None]
+        except:
+            continue
+
+    rendered = soup.prettify()
+
     return rendered
     # return out
 
