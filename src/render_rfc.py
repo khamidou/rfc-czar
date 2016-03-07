@@ -8,9 +8,34 @@ from bs4 import BeautifulSoup, Tag, Comment
 from jinja2 import Environment, FileSystemLoader
 
 
+def cleanup_author_header(data):
+    header_regexp = re.compile('(^Network Working Group.+?\n\n)(.+)\n\n(Status of this Memo)', re.MULTILINE | re.DOTALL)
+
+    def format_match(match):
+        header = match.group(1).replace('\n', '<br>')
+        title = match.group(2)
+        status = match.group(3)
+
+        return """<p>{}</p>
+                  <h1>{}</h1>
+                  <h2>{}</h2>""".format(header, title, status)
+
+    data = header_regexp.sub(format_match, data)
+
+    # Clean up abstract and copyright notice
+    copyright_regex = re.compile('(^Copyright Notice)', re.MULTILINE)
+    data = copyright_regex.sub(r'<h2>\1</h2>', data)
+
+    abstract_regex = re.compile('(^Abstract)', re.MULTILINE)
+    data = abstract_regex.sub(r'<h2>\1</h2>', data)
+
+    return data
+
+
 def cleanup_toc(data):
     # Clean up the table of contents
-    toc_regexp = re.compile(r'^\s+(.+?)\s+(.+?)(\.+)\s+\d+$', re.MULTILINE)
+    # toc_regexp = re.compile(r'^\s+(.+?)\s*(.+?)(\.+)\s+\d+$', re.MULTILINE)
+    toc_regexp = re.compile(r'^\s+([\d\.]+)\s+(.+)(\.+)\s*(\d+)$', re.MULTILINE)
     def format_match(match):
         section_name = match.group(1)
         title = match.group(2)
@@ -19,7 +44,15 @@ def cleanup_toc(data):
         if anchor[-1] == '.':
             anchor = anchor[:-1]
 
-        return '<a href="#section-{}">{} {}</a><br>'.format(anchor, section_name, title)
+        indent = ''
+        # Indent parts depending on their section number.
+        if anchor.count('.') == 2:
+            indent = 'indent-1'
+        elif anchor.count('.') == 3:
+            indent = 'indent-2'
+
+        return '<a href="#section-{}" class="{}">{} {}</a><br>'.format(anchor, indent,
+                                                                       section_name, title)
 
     data = toc_regexp.sub(format_match, data)
 
@@ -52,9 +85,13 @@ def create_paragraphs(data):
 
 
 def create_diagram_blocks(data):
-    # A diagram always starts by +-- and ends by ---+.
+    # A boxed diagram usually starts by +-- and ends by ---+.
     diagram_regexp = re.compile(r"(\s*\+(-){2,}.+(-){2,}\+)", re.MULTILINE | re.DOTALL)
     data = diagram_regexp.sub(r'<pre>\1\n</pre>\n', data)
+
+    # Some diagrams aren't boxed but contain a lot of ----
+    #diagram_regexp = re.compile(r"(^(.+?)-{4,}(.+?)$)", re.MULTILINE)
+    #data = diagram_regexp.sub(r'<pre>\1\n</pre>\n', data)
     return data
 
 
@@ -92,9 +129,9 @@ def render_rfc(filename):
         data = fd.read()
 
     out = data
-    for fn in [remove_top_space, remove_page_breaks,
-               anchor_titles, create_paragraphs, create_diagram_blocks,
-               add_line_breaks_legends, cleanup_toc]:
+    for fn in [remove_top_space, cleanup_author_header, remove_page_breaks,
+               anchor_titles, create_paragraphs,
+               add_line_breaks_legends, cleanup_toc, create_diagram_blocks]:
         out = fn(out)
 
     env = Environment(loader=FileSystemLoader('templates'))

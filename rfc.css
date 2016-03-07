@@ -119,6 +119,14 @@ table td {
     }
 
 
+.indent-1 {
+    margin-left: 4em;
+}
+
+.indent-2 {
+    margin-left: 8em;
+}
+
 .homepage {
     display: flex;
     align-items: center;
