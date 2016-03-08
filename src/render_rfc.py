@@ -80,7 +80,7 @@ def create_paragraphs(data):
         paragraph = match.group(0)
         escaped_raw = paragraph.replace('"', '\"')
 
-        return """<p class="rfcparagraph" data-raw="{}">{}</p>""".format(escaped_raw, paragraph)
+        return """<p class="rfcparagraph">{}</p>""".format(paragraph)
 
 
     data = paragraph_regexp.sub(format_match, data)
