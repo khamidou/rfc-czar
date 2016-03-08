@@ -46,9 +46,9 @@ def cleanup_toc(data):
 
         indent = ''
         # Indent parts depending on their section number.
-        if anchor.count('.') == 2:
+        if anchor.count('.') == 1:
             indent = 'indent-1'
-        elif anchor.count('.') == 3:
+        elif anchor.count('.') == 2:
             indent = 'indent-2'
 
         return '<a href="#section-{}" class="{}">{} {}</a><br>'.format(anchor, indent,
@@ -76,12 +76,16 @@ def remove_page_breaks(data):
 def create_paragraphs(data):
     paragraph_regexp = re.compile(r"(^.+?(\.|\:|;))\n\n", re.MULTILINE | re.DOTALL)
 
-    data = paragraph_regexp.sub(r'<p class="rfcparagraph">\1</p>', data)
+    def format_match(match):
+        paragraph = match.group(0)
+        escaped_raw = paragraph.replace('"', '\"')
+
+        return """<p class="rfcparagraph" data-raw="{}">{}</p>""".format(escaped_raw, paragraph)
+
+
+    data = paragraph_regexp.sub(format_match, data)
 
     return data
-    # replace the \n inside those paragraphs by <br> tags.
-    paragraph_pattern = re.compile(r'(<p class="rfcparagraph">.*?<\/p>)', re.MULTILINE | re.DOTALL)
-    return paragraph_pattern.sub(lambda match: match.group(0).replace('\n','<br>'), data)
 
 
 def create_diagram_blocks(data):
@@ -109,16 +113,16 @@ def line_breaks_indented_blocks(data):
 def anchor_titles(data):
     # Reverse section order because lvl1_title_rx matches the beginning of lvl2_title_rx
     # and lvl3_title_rx.
-    lvl4_title_rx = re.compile(r"^(\d+)\.(\d+)\.(\d+)\.(\d+)\.(.*)$", re.MULTILINE)
+    lvl4_title_rx = re.compile(r"^(\d+)\.(\d+)\.(\d+)\.(\d+)\.*(.*)$", re.MULTILINE)
     data = lvl4_title_rx.sub(r'\t<a name="section-\1.\2.\3.\4"><h4>\1.\2.\3.\4 \5</h4></a>', data)
 
-    lvl3_title_rx = re.compile(r"^(\d+)\.(\d+)\.(\d+)\.(.*)$", re.MULTILINE)
+    lvl3_title_rx = re.compile(r"^(\d+)\.(\d+)\.(\d+)\.*(.*)$", re.MULTILINE)
     data = lvl3_title_rx.sub(r'\t<a name="section-\1.\2.\3"><h4>\1.\2.\3 \4</h4></a>', data)
 
-    lvl2_title_rx = re.compile(r"^(\d+)\.(\d+)\.(.*)$", re.MULTILINE)
+    lvl2_title_rx = re.compile(r"^(\d+)\.(\d+)\.*(.*)$", re.MULTILINE)
     data = lvl2_title_rx.sub(r'\t<a name="section-\1.\2"><h3>\1.\2 \3</h3></a>', data)
 
-    lvl1_title_rx = re.compile(r"^(\d+)\.(.*)$", re.MULTILINE)
+    lvl1_title_rx = re.compile(r"^(\d+)\.*(.*)$", re.MULTILINE)
     data = lvl1_title_rx.sub(r'\t<a name="section-\1"><h2>\1. \2</h2></a>', data)
 
     return data
