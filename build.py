@@ -26,9 +26,9 @@ def build_file(infile, outfile):
     except ProcessingError:
         print "Skipping {}".format(infile)
 
-def copy_css(out_dir):
-    print "Copying CSS."
-    command = ['cp', 'rfc.css', out_dir]
+def copy_static(out_dir):
+    print "Copying static files."
+    command = ['cp', '-r', 'static', out_dir]
     execute(command)
 
 def generate_site_index(out_dir):
@@ -61,7 +61,7 @@ def main():
 
     #convert_rfc_html(src_dir, TMP_DIR)
     #build_rfcs(TMP_DIR, dest_dir)
-    copy_css(dest_dir)
+    copy_static(dest_dir)
     generate_site_index(dest_dir)
 
 if __name__ == '__main__':

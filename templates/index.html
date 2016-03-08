@@ -3,7 +3,7 @@
 <head>
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
   <title>RFC Czar: RFC for the rest of us.</title>
-  <link rel="stylesheet" href="rfc.css">
+  <link rel="stylesheet" href="static/css/rfc.css">
 </head>
 <body>
     <div class="homepage">
@@ -14,5 +14,11 @@
             <input type="text" placeholder="Type an RFC name or keywords"></input>
         </div>
     </div>
+    <script type='text/javascript' src='rfc.js'></script>
+    <script type='text/javascript'>
+        $(document).ready(function() {
+                $("p.rfcparagraph").append('<a>raw</a>').click(function() { alert('YOLO') });
+        });
+    </script>
 </body>
 </html>
