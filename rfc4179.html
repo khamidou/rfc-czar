@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                            S. Kang<br>Request for Comments: 4179               National Computerization Agency<br>Category: Informational                                     October 2005<br><br></p>
+                  <h1>
+                Using Universal Content Identifier (UCI)
+                    as Uniform Resource Names (URN)</h1>
+                  <h2>Status of This Memo</h2>
+
+   This memo provides information for the Internet community.  It does
+   not specify an Internet standard of any kind.  Distribution of this
+   memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (2005).<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This document describes a Uniform Resource Name (URN) namespace for
+   the National Computerization Agency (NCA) for naming persistent
+   digital resources such as music, videos, texts, images, e-books, and
+   other types of digital resources produced or managed by NCA.
+
+</p><p class="rfcparagraph">	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   NCA is a non-profit organization with a mandate to develop and
+   promote information infrastructure and manage public digital contents
+   in Korea and possibly worldwide.
+
+</p><p class="rfcparagraph">   NCA has been supervising digitalization projects with various
+   organizations.  The contents involved in such projects include
+   millions of technical papers, cultural properties, educational
+   materials, scientific research reports.  Those organizations manage
+   the digital contents in a standardized way set by NCA and provide
+   users with various content services via internet.
+
+</p><p class="rfcparagraph">   NCA wishes to issue globally unique and persistent IDs to digital
+   resources and assign relevant organizations as its registration
+   agencies under the Universal Content Identifier (UCI) scheme.  It is
+   beneficial for NCA, its registration agencies, and the value chain
+   players in e-commerce, to have the UCI URN namespace, under which all
+   the contents and components produced and managed by NCA are digitally
+   registered, identified, and resolved.
+
+</p><p class="rfcparagraph">   NCA has been developing and operating the UCI system that provides
+   registration, resolution, search, and administration functionalities.
+   The functionalities are going to be added and modified once the use
+   of UCI URN namespace is approved.  NCA would like to assign unique,
+   permanent, and location-independent names based on the URNs for the
+   resources it produces or manages.  See
+   http://www.nca.or.kr/eindex.htm for more information on NCA.
+
+</p><p class="rfcparagraph">   This namespace specification is for a formal namespace.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Specification Template</h2></a>
+
+   Namespace ID:
+
+</p><p class="rfcparagraph">      "UCI"
+
+   Registration Information:
+
+</p><p class="rfcparagraph">      Registration Version Number: 1       Registration Date: 2004-07-xx
+
+   Declared registrant of the namespace:
+
+</p><p class="rfcparagraph">      Name       : Sang-ug Kang
+      Affiliation: National Computerization Agency
+      Address    : NCA Bldg. 77 Mookyo-Dong, Chung-Ku, Seoul, Korea
+      Phone      : +82 (2) 2131-0443<br>
+      Email      : <sukang@nca.or.kr>
+      Web        : <http://www.nca.or.kr> or <http://home.uci.or.kr>
+
+   Declaration of syntactic structure:
+
+</p><p class="rfcparagraph">      The Namespace specific string of all URNs assigned by NCA conforms
+      to the syntax defined in section 2.2. of RFC2141, "URN Syntax"[1].
+      The syntax convention is described in the form of ABNF rules [2]
+      as the following.
+
+</p><p class="rfcparagraph">      UCI = prefix "-" instance *1(":" qualifier)
+
+      prefix = 1*(alphaDigit) *1(":" 1*(alphaDigit))
+               *1("+" 1*(alphaDigit))
+      instance = 1*(trans / "%" HEXDIG HEXDIG)
+      qualifier = head 1*(alphaDigit) *2("-" head 1*(alphaDigit))
+      trans = alphaDigit / other
+      alphaDigit = ALPHA / DIGIT
+      head = "C" / "R" / "F"
+      other = "(" / ")" / "+" / "," / "-" / "." / "=" / "@" /
+              ";" / "$" / "_" / "!" / "*" / "'"
+      The UCI identifier consists of two parts: prefix code and content
+      code.  The content code is also divided into instance code and
+      qualifier code, which is optional.  A prefix code is given to a
+      registration agency, subordinate registration agency, and/or its
+      registrants such as 'G3000+music', 'I600', 'I500+paper', and so
+      forth.  A content code is issued to each individual digital
+      resource such as 'cii90007', '8987409', and so on.
+
+</p><p class="rfcparagraph">   Relevant ancillary documentation:
+
+</p><p class="rfcparagraph">      None.
+
+</p><p class="rfcparagraph">   Identifier uniqueness considerations:
+
+</p><p class="rfcparagraph">      It is the responsibility of the registration authority, or NCA, to
+      guarantee the uniqueness of identifiers and the names of
+      subordinate naming authorities.  For example, a software tool
+      developed and used by NCA checks if a UCI identifier is being
+      reassigned and verifies that it is assigned to at most one
+      resource during the registration process.
+
+</p><p class="rfcparagraph">   Identifier persistence considerations:
+
+</p><p class="rfcparagraph">      Registration Agencies are all eligible to maintain the usability
+      of the UCI URNs for a reasonably long period.  As a government
+      sponsored organization, NCA will operate a backup service and make
+      an effort to find a substitute in case a registration agency
+      becomes out of operation.
+
+</p><p class="rfcparagraph">   Process of identifier assignment:
+
+</p><p class="rfcparagraph">      Assignment of UCI identifier is delegated to the registration
+      agencies.  NCA appoints UCI registration agencies and provides its
+      namespace by assigning a unique registration agency code that is a
+      part of NSS.  Followed by the authorized namespace, each
+      registration agency sets its own identifier scheme that conforms
+      to the UCI syntactic structure.
+
+</p><p class="rfcparagraph">      A UCI for a digital resource is issued by the registration agency,
+      upon a request of a registrant.  The following is an example
+      identifier.
+
+</p><p class="rfcparagraph">      e.g., urn:uci:I700-2987098
+
+      where, I700 is a registration agency code and 2987098 is an
+      identifier assigned to a digital content.
+   Process for identifier resolution:
+
+</p><p class="rfcparagraph">      Resolution is controlled by NCA and its delegatees.  The list of
+      UCI registration agency codes is maintained by the registration
+      authority.  Each registration agency maintains the list of
+      subordinate registrant codes and identifiers registered to the
+      registration agency.
+
+</p><p class="rfcparagraph">      Identifier resolution steps are as follows.
+
+</p><p class="rfcparagraph">      - (Step1) Global resolution: NCA resolves which RA is dealing with
+        the associated resource by parsing the registration agency code
+        of the UCI.
+      - (Step2) Local resolution: The corresponding RA parses and
+        resolves the rest of the identifier
+
+      The global resolution is performed by UCI resolution server that
+      is open to public. (Currently http://rootadmin.uci.or.kr:9000/
+      {UCI identifier} will give you resolution results.)
+
+   Rules for Lexical Equivalence:
+
+</p><p class="rfcparagraph">      The "prefix" is case-insensitive.  So there will not be two
+      registration agencies whose names differ only in case.
+
+</p><p class="rfcparagraph">         urn:uci:{prefix code}:
+
+</p><p class="rfcparagraph">      is case-insensitive for matches.  Remainder of the identifier is
+      case-sensitive.
+
+</p><p class="rfcparagraph">   Conformance with URN Syntax:
+
+</p><p class="rfcparagraph">      The UCI syntax fully conforms to RFC2141 syntax rules for both NSS
+      and NID.
+
+</p><p class="rfcparagraph">   Validation mechanism:
+
+</p><p class="rfcparagraph">      Valid list of prefix code will be available via both on-line and
+      off-line upon request.  The validity of the rest of identifier can
+      be offered via on-line service. (Currently at http://rootadmin.
+      uci.or.kr:9000/{UCI identifier} by typing a query UCI identifier)
+
+   Scope:
+
+</p><p class="rfcparagraph">      Global.
+	<a name="section-3"><h2>3.   Security Considerations</h2></a>
+
+   There are no additional security considerations beyond those normally
+   associated with the use and resolution of URNs in general.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   Namespace Considerations</h2></a>
+
+   The Korean government has been funding the UCI project with the
+   vision that it will be an essential component in realizing
+   interoperability of digital contents owned by individual institutes
+   and organizations.  The resolution service provided by NCA and its
+   registration agencies via networks will play a central role in
+   achieving such a goal.  Moreover, the resolution service is open to
+   the public without discrimination.
+
+</p><p class="rfcparagraph">   The assignment and use of identifiers is performed according to the
+   rules established by NCA.  It abides by the URN requirements and
+   syntax.  Within a UCI namespace, a registration agency manages
+   subordinate namespaces and maintains the metadata of digital
+   contents.
+
+</p><p class="rfcparagraph">   For making the service available to the public, a global resolution
+   service is run by NCA through a service server and local resolution
+   service is provided by the corresponding registration agency.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   Community Considerations</h2></a>
+
+   The assignment and use of identifiers within the namespace are open,
+   and the related rule is established by NCA.  Registration agencies
+   are evaluated and selected fairly and shall have the responsibility
+   of processing registrants' requests for registering digital contents.
+   Registration authority and registration agencies shall operate
+   resolution servers for UCI namespace and subordinate namespaces,
+   respectively.  Digital content users can access the resolution
+   servers to fetch resolution results.  The reference software is
+   developed, and resolution servers are now in operation.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.   IANA Considerations</h2></a>
+
+   The IANA has registered the "UCI" namespace in the IANA registry of
+   URN NIDs.  For more information about URN namespace, see [3].
+	<a name="section-7"><h2>7.   Normative References</h2></a>
+
+   [1]  Moats, R., "URN Syntax", RFC 2141, May 1997.
+
+</p><p class="rfcparagraph">   [2]  Crocker, D. and P. Overell, "Augmented BNF for Syntax
+        Specifications: ABNF", RFC 2234, November 1997.
+
+</p><p class="rfcparagraph">   [3]  Daigle, L., van Gulik, D., Iannella, R., and P. Faltstrom,
+        "Uniform Resource Names (URN) Namespace Definition Mechanisms",
+        BCP 66, RFC 3406, October 2002.
+
+</p><p class="rfcparagraph">Author's Address
+
+   Sang-ug Kang
+   National Computerization Agency
+   Bldg. 77 Mookyo-Dong,
+   Joong-Ku, Seoul,
+   Korea
+
+   Phone: 82-2-2131-0443
+   EMail: sukang@nca.or.kr
+Full Copyright Statement
+
+   Copyright (C) The Internet Society (2005).<br>
+
+</p><p class="rfcparagraph">   This document is subject to the rights, licenses and restrictions
+   contained in BCP 78, and except as set forth therein, the authors
+   retain all their rights.
+
+</p><p class="rfcparagraph">   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY AND THE INTERNET
+   ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED,
+   INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE
+   INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED
+   WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Intellectual Property
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the procedures with respect to rights in RFC documents can be
+   found in BCP 78 and BCP 79.
+
+</p><p class="rfcparagraph">   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+</p><p class="rfcparagraph">   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at ietf-
+   ipr@ietf.org.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is currently provided by the
+   Internet Society.
+
+</p>
+
+
+
+
+
+Kang                         Informational                      [Page 7]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

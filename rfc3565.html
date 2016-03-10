@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                          J. Schaad<br>Request for Comments: 3565                       Soaring Hawk Consulting<br>Category: Standards Track                                      July 2003<br><br></p>
+                  <h1>
+       Use of the Advanced Encryption Standard (AES) Encryption
+            Algorithm in Cryptographic Message Syntax (CMS)</h1>
+                  <h2>Status of this Memo</h2>
+
+   This document specifies an Internet standards track protocol for the
+   Internet community, and requests discussion and suggestions for
+   improvements.  Please refer to the current edition of the "Internet
+   Official Protocol Standards" (STD 1) for the standardization state
+   and status of this protocol.  Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (2003).  All Rights Reserved.<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This document specifies the conventions for using the Advanced
+   Encryption Standard (AES) algorithm for encryption with the
+   Cryptographic Message Syntax (CMS).
+
+</p><p class="rfcparagraph">Conventions used in this document
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in BCP 14, RFC 2119
+   [MUSTSHOULD].
+
+</p><p class="rfcparagraph">	<a name="section-1"><h2>1.   Overview</h2></a>
+
+   This document specifies the conventions for using Advanced Encryption
+   Standard (AES) content encryption algorithm with the Cryptographic
+   Message Syntax [CMS] enveloped-data and encrypted-data content types.
+
+</p><p class="rfcparagraph">   CMS values are generated using ASN.1 [X.208-88], using the Basic
+   Encoding Rules (BER) [X.209-88] and the Distinguished Encoding Rules
+   (DER) [X.509-88].
+	<a name="section-1.1"><h3>1.1   AES</h3></a>
+
+   The Advanced Encryption Standard (AES) [AES] was developed to replace
+   DES [DES].  The AES Federal Information Processing Standard (FIPS)
+   Publication specifies a cryptographic algorithm for use by U.S.
+   Government organizations.  However, the AES will also be widely used
+   by organizations, institutions, and individuals outside of the U.S.
+   Government.
+
+</p><p class="rfcparagraph">   Two researchers who developed and submitted the Rijndael algorithm
+   for consideration are both cryptographers from Belgium: Dr. Joan
+   Daemen of Proton World International and Dr. Vincent Rijmen, a
+   postdoctoral researcher in the Electrical Engineering Department of
+   Katholieke Universiteit Leuven.
+
+</p><p class="rfcparagraph">   The National Institute of Standards and technology (NIST) selected
+   the Rijndael algorithm for AES because it offers a combination of
+   security, performance, efficiency, ease of implementation, and
+   flexibility.  Specifically, Rijndael appears to be consistently a
+   very good performer in both hardware and software across a wide range
+   of computing environments regardless of its use in feedback or
+   non-feedback modes.  Its key setup time is excellent, and its key
+   agility is good.  The very low memory requirements of the Rijndael
+   algorithm make it very well suited for restricted-space environments,
+   in which it also demonstrates excellent performance.  The Rijndael
+   algorithm operations are among the easiest to defend against power
+   and timing attacks.  Additionally, it appears that some defense can
+   be provided against such attacks without significantly impacting the
+   algorithm's performance.  Finally, the algorithm's internal round
+   structure appears to have good potential to benefit from
+   instruction-level parallelism.
+
+</p><p class="rfcparagraph">   The AES specifies three key sizes: 128, 192 and 256 bits.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Enveloped-data Conventions</h2></a>
+
+   The CMS enveloped-data content type consists of encrypted content and
+   wrapped content-encryption keys for one or more recipients.  The AES
+   algorithm is used to encrypt the content.
+
+</p><p class="rfcparagraph">   Compliant software MUST meet the requirements for constructing an
+   enveloped-data content type stated in [CMS] Section 6,
+   "Enveloped-data Content Type".
+
+</p><p class="rfcparagraph">   The AES content-encryption key MUST be randomly generated for each
+   instance of an enveloped-data content type.  The content-encryption
+   key (CEK) is used to encrypt the content.
+   AES can be used with the enveloped-data content type using any of the
+   following key management techniques defined in [CMS] Section 6.
+
+</p><p class="rfcparagraph">   1) Key Transport: The AES CEK is uniquely wrapped for each recipient
+   using the recipient's public RSA key and other values.  Section 2.2
+   provides additional details.
+
+</p><p class="rfcparagraph">   2) Key Agreement: The AES CEK is uniquely wrapped for each recipient
+   using a pairwise symmetric key-encryption key (KEK) generated using
+   an originator's randomly generated private key (ES-DH [DH]) or
+   previously generated private key (SS-DH [DH]), the recipient's public
+   DH key, and other values.  Section 2.3 provides additional details.
+
+</p><p class="rfcparagraph">   3) Previously Distributed Symmetric KEK:  The AES CEK is wrapped
+   using a previously distributed symmetric KEK (such as a Mail List
+   Key).  The methods by which the symmetric KEK is generated and
+   distributed are beyond the scope of this document.  Section 2.4
+   provides additional details.
+
+</p><p class="rfcparagraph">   4) Password Encryption:  The AES CEK is wrapped using a KEK derived
+   from a password or other shared secret.  Section 2.5 provides
+   additional details.
+
+</p><p class="rfcparagraph">   Documents defining the use of the Other Recipient Info structure will
+   need to define the proper use for the AES algorithm if desired.
+
+</p><p class="rfcparagraph">	<a name="section-2.1"><h3>2.1   EnvelopedData Fields</h3></a>
+
+   The enveloped-data content type is ASN.1 encoded using the
+   EnvelopedData syntax.  The fields of the EnvelopedData syntax MUST be
+   populated as follows:
+
+</p><p class="rfcparagraph">   The EnvelopedData version is determined based on a number of factors.
+
+</p><p class="rfcparagraph">   See [CMS] section 6.1 for the algorithm to determine this value.
+
+</p><p class="rfcparagraph">   The EnvelopedData recipientInfos CHOICE is dependent on the key
+   management technique used.  Section 2.2, 2.3, 2.4 and 2.5 provide
+   additional information.
+
+</p><p class="rfcparagraph">   The EnvelopedData encryptedContentInfo contentEncryptionAlgorithm
+   field MUST specify a symmetric encryption algorithm.  Implementations
+   MUST support content encryption with AES, but implementations MAY
+   support other algorithms as well.
+
+</p><p class="rfcparagraph">   The EnvelopedData unprotectedAttrs MAY be present.
+	<a name="section-2.2"><h3>2.2   KeyTransRecipientInfo Fields</h3></a>
+
+   The enveloped-data content type is ASN.1 encoded using the
+   EnvelopedData syntax.  The fields of the EnvelopedData syntax MUST be
+   populated as follows:
+
+</p><p class="rfcparagraph">   The KeyTransRecipientInfo version MUST be either 0 or 2.  If the
+   RecipientIdentifier is the CHOICE issuerAndSerialNumber, then the
+   version MUST be 0.  If the RecipientIdentifier is
+   subjectKeyIdentifier, then the version MUST be 2.
+
+</p><p class="rfcparagraph">   The KeyTransRecipientInfo RecipientIdentifier provides two
+   alternatives for specifying the recipient's certificate, and thereby
+   the recipient's public key.  The recipient's certificate MUST contain
+   a RSA public key.  The CEK is encrypted with the recipient's RSA
+   public key.  The issuerAndSerialNumber alternative identifies the
+   recipient's certificate by the issuer's distinguished name and the
+   certificate serial number; the subjectKeyIdentifier identifies the
+   recipient's certificate by the X.509 subjectKeyIdentifier extension
+   value.
+
+</p><p class="rfcparagraph">   The KeyTransRecipientInfo keyEncryptionAlgorithm field specifies the
+   key transport algorithm (i.e., RSAES-OAEP [RSA-OAEP]), and the
+   associated parameters used to encrypt the CEK for the recipient.
+
+</p><p class="rfcparagraph">   The KeyTransRecipientInfo encryptedKey is the result of encrypting
+   the CEK with the recipient's RSA public key.
+
+</p><p class="rfcparagraph">	<a name="section-2.3"><h3>2.3   KeyAgreeRecipientInfo Fields</h3></a>
+
+   This section describes the conventions for using ES-DH or SS-DH and
+   AES with the CMS enveloped-data content type to support key
+   agreement.  When key agreement is used, then the RecipientInfo
+   keyAgreeRecipientInfo CHOICE MUST be used.
+
+</p><p class="rfcparagraph">   The KeyAgreeRecipient version MUST be 3.
+
+</p><p class="rfcparagraph">   The EnvelopedData originatorInfo field MUST be the originatorKey
+   alternative.  The originatorKey algorithm fields MUST contain the
+   dh-public-number object identifier with absent parameters.  The
+   originatorKey publicKey MUST contain the originator's ephemeral
+   public key.
+
+</p><p class="rfcparagraph">   The EnvelopedData ukm MAY be present.
+
+</p><p class="rfcparagraph">   The EnvelopedData keyEncrytionAlgorithm MUST be the id-alg-ESDH
+   algorithm identifier [CMSALG].
+	<a name="section-2.3.1"><h4>2.3.1   ES-DH/AES Key Derivation</h4></a>
+
+   Generation of the AES KEK to be used with the AES-key wrap algorithm
+   is done using the method described in [DH].
+
+</p><p class="rfcparagraph"><a name="section-2.3.1.1"><h4>2.3.1.1   Example 1</h4></a>
+                        <a href="raw/text/rfc3565.txt" class="rawLink">raw</a>
+                    
+
+   ZZ is the 20 bytes 00 01 02 03 04 05 06 07 08 09
+                      0a 0b 0c 0d 0e 0f 10 11 12 13
+
+   The key wrap algorithm is AES-128 wrap, so we need 128 bits (16
+   bytes) of keying material.
+
+</p><p class="rfcparagraph">   No partyAInfo is used.
+
+</p><p class="rfcparagraph">   Consequently, the input to SHA-1 is:
+
+</p><p class="rfcparagraph">   00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 ; ZZ
+   30 1b
+      30 11
+         06 09 60 86 48 01 65 03 04 01 05           ; AES-128 wrap OID
+         04 04
+            00 00 00 01                             ; Counter
+      a2 06
+         04 04
+         00 00 00 80                                ; key length
+
+   And the output is the 32 bytes:
+
+</p><p class="rfcparagraph">   d6 d6 b0 94 c1 02 7a 7d e6 e3 11 72 94 a3 53 64 49 08 50 f9
+
+   Consequently,
+
+   K= d6 d6 b0 94 c1 02 7a 7d e6 e3 11 72 94 a3 53 64
+<a name="section-2.3.1.2"><h4>2.3.1.2   Example 2</h4></a>
+                        <a href="raw/text/rfc3565.txt" class="rawLink">raw</a>
+                    
+
+   ZZ is the 20 bytes 00 01 02 03 04 05 06 07 08 09
+                      0a 0b 0c 0d 0e 0f 10 11 12 13
+
+   The key wrap algorithm is AES-256 key wrap, so we need 256 bits (32
+   bytes) of keying material.
+
+</p><p class="rfcparagraph">   The partyAInfo used is the 64 bytes
+
+   01 23 45 67 89 ab cd ef fe dc ba 98 76 54 32 01
+   01 23 45 67 89 ab cd ef fe dc ba 98 76 54 32 01
+   01 23 45 67 89 ab cd ef fe dc ba 98 76 54 32 01
+   01 23 45 67 89 ab cd ef fe dc ba 98 76 54 32 01
+
+   Consequently, the input to first invocation of SHA-1 is:
+
+</p><p class="rfcparagraph">   00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 ; ZZ
+   30 5f
+      30 11
+         06 09 60 86 48 01 65 03 04 01 2d            ; AES-256 wrap OID
+         04 04
+            00 00 00 01                              ; Counter
+      a0 42
+         04 40
+            01 23 45 67 89 ab cd ef fe dc ba 98 76 54 32 01 ; partyAInfo
+
+            01 23 45 67 89 ab cd ef fe dc ba 98 76 54 32 01
+            01 23 45 67 89 ab cd ef fe dc ba 98 76 54 32 01
+            01 23 45 67 89 ab cd ef fe dc ba 98 76 54 32 01
+      a2 06
+         04 04
+            00 00 01 00                              ; key length
+
+   And the output is the 20 bytes:
+
+</p><p class="rfcparagraph">   88 90 58 5C 4E 28 1A 5C 11 67 CA A5 30 BE D5 9B 32 30 D8 93
+   The input to second invocation of SHA-1 is:
+
+</p><p class="rfcparagraph">   00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 ; ZZ
+   30 5f
+      30 11
+         06 09 60 86 48 01 65 03 04 01 2d            ; AES-256 wrap OID
+         04 04
+            00 00 00 02                              ; Counter
+      a0 42
+         04 40
+            01 23 45 67 89 ab cd ef fe dc ba 98 76 54 32 01 ; partyAInfo
+
+            01 23 45 67 89 ab cd ef fe dc ba 98 76 54 32 01
+            01 23 45 67 89 ab cd ef fe dc ba 98 76 54 32 01
+            01 23 45 67 89 ab cd ef fe dc ba 98 76 54 32 01
+      a2 06
+         04 04
+            00 00 01 00                              ; key length
+
+   And the output is the 20 bytes:
+
+</p><p class="rfcparagraph">   CB A8 F9 22 BD 1B 56 A0 71 C9 6F 90 36 C6 04 2C AA 20 94 37
+
+   Consequently,
+
+   K = 88 90 58 5C 4E 28 1A 5C 11 67 CA A5 30 BE D5 9B
+       32 30 D8 93 CB A8 F9 22 BD 1B 56 A0
+
+	<a name="section-2.3.2"><h4>2.3.2   AES CEK Wrap Process</h4></a>
+
+   The AES key wrap algorithm encrypts one AES key in another AES key.
+   The algorithm produces an output 64-bits longer than the input AES
+   CEK, the additional bits are a checksum.  The algorithm uses 6*n AES
+   encryption/decryption operations where n is number of 64-bit blocks
+   in the AES CEK.  Full details of the AES key wrap algorithm are
+   available at [AES-WRAP].
+
+</p><p class="rfcparagraph">   NIST has assigned the following OIDs to define the AES key wrap
+   algorithm.
+
+</p><p class="rfcparagraph">        id-aes128-wrap OBJECT IDENTIFIER ::= { aes 5 }
+        id-aes192-wrap OBJECT IDENTIFIER ::= { aes 25 }
+        id-aes256-wrap OBJECT IDENTIFIER ::= { aes 45 }
+
+   In all cases the parameters field MUST be absent.  The OID gives the
+   KEK key size, but does not make any statements as to the size of the
+   wrapped AES CEK.  Implementations MAY use different KEK and CEK
+   sizes.  Implements MUST support the CEK and the KEK having the same
+   length.  If different lengths are supported, the KEK MUST be of equal
+   or greater length than the CEK.
+
+</p><p class="rfcparagraph">	<a name="section-2.4"><h3>2.4   KEKRecipientInfo Fields</h3></a>
+
+   This section describes the conventions for using AES with the CMS
+   enveloped-data content type to support previously distributed
+   symmetric KEKs.  When a previously distributed symmetric KEK is used
+   to wrap the AES CEK, then the RecipientInfo KEKRecipientInfo CHOICE
+   MUST be used.  The methods used to generate and distribute the
+   symmetric KEK are beyond the scope of this document.  One possible
+   method of distributing keys is documented in [SYMKEYDIST].
+
+</p><p class="rfcparagraph">   The KEKRecipientInfo fields MUST be populated as specified in [CMS]
+   Section 6.2.3, KEKRecipientInfo Type.
+
+</p><p class="rfcparagraph">   The KEKRecipientInfo keyEncryptionAlgorithm algorithm field MUST be
+   one of the OIDs defined in section 2.3.2 indicating that the AES wrap
+   function is used to wrap the AES CEK.  The KEKRecipientInfo
+   keyEncryptionAlgorithm parameters field MUST be absent.
+
+</p><p class="rfcparagraph">   The KEKRecipientInfo encryptedKey field MUST include the AES CEK
+   wrapped using the previously distributed symmetric KEK as input to
+   the AES wrap function.
+
+</p><p class="rfcparagraph">	<a name="section-2.5"><h3>2.5   PasswordRecipientInfo Fields</h3></a>
+
+   This section describes the conventions for using AES with the CMS
+   enveloped-data content type to support password-based key management.
+
+</p><p class="rfcparagraph">   When a password derived KEK is used to wrap the AES CEK, then the
+   RecipientInfo PasswordRecipientInfo CHOICE MUST be used.
+
+</p><p class="rfcparagraph">   The keyEncryptionAlgorithm algorithm field MUST be one of the OIDs
+   defined in section 2.3.2 indicating the AES wrap function is used to
+   wrap the AES CEK.  The keyEncryptionAlgorithm parameters field MUST
+   be absent.
+
+</p><p class="rfcparagraph">   The encryptedKey field MUST be the result of the AES key wrap
+   algorithm applied to the AES CEK value.
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   Encrypted-data Conventions</h2></a>
+
+   The CMS encrypted-data content type consists of encrypted content
+   with implicit key management.  The AES algorithm is used to encrypt
+   the content.
+   Compliant software MUST meet the requirements for constructing an
+   enveloped-data content type stated in [CMS] Section 8,
+   "Encrypted-data Content Type".
+
+</p><p class="rfcparagraph">   The encrypted-data content type is ASN.1 encoded using the
+   EncryptededData syntax.  The fields of the EncryptedData syntax MUST
+   be populated as follows:
+
+</p><p class="rfcparagraph">   The EncryptedData version is determined based on a number of factors.
+
+</p><p class="rfcparagraph">   See [CMS] section 9.1 for the algorithm to determine this value.
+
+</p><p class="rfcparagraph">   The EncryptedData encryptedContentInfo contentEncryptionAlgorithm
+   field MUST specify a symmetric encryption algorithm.  Implementations
+   MUST support encryption using AES, but implementations MAY support
+   other algorithms as well.
+
+</p><p class="rfcparagraph">   The EncryptedData unprotectedAttrs MAY be present.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   Algorithm Identifiers and Parameters</h2></a>
+
+   This section specified algorithm identifiers for the AES encryption
+   algorithm.
+
+</p><p class="rfcparagraph">	<a name="section-4.1"><h3>4.1   AES Algorithm Identifiers and Parameters</h3></a>
+
+   The AES algorithm is defined in [AES].  RSAES-OAEP [RSA-OAEP] MAY be
+   used to transport AES keys.
+
+</p><p class="rfcparagraph">   AES is added to the set of symmetric content encryption algorithms
+   defined in [CMSALG].  The AES content-encryption algorithm, in Cipher
+   Block Chaining (CBC) mode, for the three different key sizes are
+   identified by the following object identifiers:
+
+</p><p class="rfcparagraph">       id-aes128-CBC OBJECT IDENTIFIER ::= { aes 2 }
+       id-aes192-CBC OBJECT IDENTIFIER ::= { aes 22 }
+       id-aes256-CBC OBJECT IDENTIFIER ::= { aes 42 }
+
+   The AlgorithmIdentifier parameters field MUST be present, and the
+   parameters field MUST contain a AES-IV:
+
+</p><p class="rfcparagraph">       AES-IV ::= OCTET STRING (SIZE(16))<br>
+
+   Content encryption algorithm identifiers are located in the
+   EnvelopedData EncryptedContentInfo contentEncryptionAlgorithm and the
+   EncryptedData EncryptedContentInfo contentEncryptionAlgorithm fields.
+   Content encryption algorithms are used to encrypt the content located
+   in the EnvelopedData EncryptedContentInfo encryptedContent and the
+   EncryptedData EncryptedContentInfo encryptedContent fields.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   SMIMECapabilities Attribute Conventions</h2></a>
+
+   An S/MIME client SHOULD announce the set of cryptographic functions
+   it supports by using the S/MIME capabilities attribute.  This
+   attribute provides a partial list of object identifiers of
+   cryptographic functions and MUST be signed by the client.  The
+   algorithm OIDs SHOULD be logically separated in functional categories
+   and MUST be ordered with respect to their preference.
+
+</p><p class="rfcparagraph">   RFC 2633 [MSG], Section 2.5.2 defines the SMIMECapabilities signed
+   attribute (defined as a SEQUENCE of SMIMECapability SEQUENCEs) to be
+   used to specify a partial list of algorithms that the software
+   announcing the SMIMECapabilities can support.
+
+</p><p class="rfcparagraph">	<a name="section-5.1"><h3>5.1   AES S/MIME Capability Attributes</h3></a>
+
+   If an S/MIME client is required to support symmetric encryption with
+   AES, the capabilities attribute MUST contain the AES object
+   identifier specified above in the category of symmetric algorithms.
+   The parameter with this encoding MUST be absent.
+
+</p><p class="rfcparagraph">   The encodings for the mandatory key sizes are:
+
+</p><p class="rfcparagraph">         Key Size                   Capability
+          128          30 0B 06 09 60 86 48 01 65 03 04 01 02
+          196          30 0B 06 09 60 86 48 01 65 03 04 01 16
+          256          30 0B 06 09 60 86 48 01 65 03 04 01 2A
+
+   When a sending agent creates an encrypted message, it has to decide
+   which type of encryption algorithm to use.  In general the decision
+   process involves information obtained from the capabilities lists
+   included in messages received from the recipient, as well as other
+   information such as private agreements, user preferences, legal
+   restrictions, and so on.  If users require AES for symmetric
+   encryption, the S/MIME clients on both the sending and receiving side
+   MUST support it, and it MUST be set in the user preferences.
+	<a name="section-6"><h2>6.   Security Considerations</h2></a>
+
+   If RSA-OAEP [PKCS#1v2.0] and RSA PKCS #1 v1.5 [PKCS#1v1.5] are both
+   used to transport the same CEK, then an attacker can still use the
+   Bleichenbacher attack against the RSA PKCS #1 v1.5 encrypted key.  It
+   is generally unadvisable to mix both RSA-OAEP and RSA PKCS#1 v1.5 in
+   the same set of recipients.
+
+</p><p class="rfcparagraph">   Implementations must protect the RSA private key and the CEK.
+   Compromise of the RSA private key may result in the disclosure of all
+   messages protected with that key.  Compromise of the CEK may result
+   in disclosure of the associated encrypted content.
+
+</p><p class="rfcparagraph">   The generation of AES CEKs relies on random numbers.  The use of
+   inadequate pseudo-random number generators (PRNGs) to generate these
+   values can result in little or no security.  An attacker may find it
+   much easier to reproduce the PRNG environment that produced the keys,
+   searching the resulting small set of possibilities, rather than brute
+   force searching the whole key space.  The generation of quality
+   random numbers is difficult.  RFC 1750 [RANDOM] offers important
+   guidance in this area.
+
+</p><p class="rfcparagraph">   When wrapping a CEK with a KEK, the KEK MUST always be at least the
+   same length as the CEK.  An attacker will generally work at the
+   weakest point in an encryption system.  This would be the smaller of
+   the two key sizes for a brute force attack.
+
+</p><p class="rfcparagraph">Normative References
+
+   [AES]         National Institute of Standards.  FIPS Pub 197:
+                 Advanced Encryption Standard (AES).  26 November 2001.
+
+</p><p class="rfcparagraph">   [CMS]         Housley, R., "Cryptographic Message Syntax (CMS)", RFC
+                 3369, August 2002.
+
+</p><p class="rfcparagraph">   [AES-WRAP]    Schaad, J. and R. Housley, "Advanced Encryption
+                 Standard (AES) Key Wrap Algorithm", RFC 3394, September
+                 2002.
+
+</p><p class="rfcparagraph">   [CMSALG]      Housley, R., "Cryptographic Message Syntax (CMS)
+                 Algorithms, RFC 3370, August 2002.
+
+</p><p class="rfcparagraph">   [DES]         National Institute of Standards and Technology. FIPS
+                 Pub 46: Data Encryption Standard.  15 January 1977.
+
+</p><p class="rfcparagraph">   [DH]          Rescorla, E., "Diffie-Hellman Key Agreement Method",
+                 RFC 2631, June 1999.
+   [MUSTSHOULD]  Bradner, S., "Key Words for Use in RFCs to Indicate
+                 Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">   [RSA-OAEP]    Housley, R. "Use of the RSAES-OAEP Key Transport
+                 Algorithm in the Cryptographic Message Syntax (CMS)",
+                 RFC 3560, July 2003.
+
+</p><p class="rfcparagraph">   [X.208-88]    CCITT.  Recommendation X.208: Specification of Abstract
+                 Syntax Notation One (ASN.1).  1988.
+
+</p><p class="rfcparagraph">   [X.209-88]    CCITT.  Recommendation X.209: Specification of Basic
+                 Encoding Rules for Abstract Syntax Notation One
+                 (ASN.1). 1988.
+
+</p><p class="rfcparagraph">   [X.509-88]    CCITT.  Recommendation X.509: The Directory -
+                 Authentication Framework.  1988.
+
+</p><p class="rfcparagraph">Informational References
+
+   [MSG]         Ramsdell, B., Editor, "S/MIME Version 3 Message
+                 Specification", RFC 2633, June 1999.
+
+</p><p class="rfcparagraph">   [PKCS#1v1.5]  Kaliski, B., "PKCS #1: RSA Encryption, Version 1.5",
+                 RFC 2313, March 1998.
+
+</p><p class="rfcparagraph">   [PKCS#1v2.0]  Kaliski, B., "PKCS #1: RSA Encryption, Version 2.0",
+                 RFC 2437, October 1998.
+
+</p><p class="rfcparagraph">   [RANDOM]      Eastlake, D., Crocker, S. and J. Schiller, "Randomness
+                 Recommendations for Security", RFC 1750, December 1994.
+
+</p><p class="rfcparagraph">   [SYMKEYDIST]  Turner, S., "CMS Symmetric Key Management and
+                 Distribution", Work in Progress, January 2003.
+
+</p><p class="rfcparagraph">Acknowledgements
+
+   This document is the result of contributions from many professionals.
+   We appreciate the hard work of all members of the IETF S/MIME Working
+   Group.
+Appendix A  ASN.1 Module
+
+CMSAesRsaesOaep {iso(1) member-body(2) us(840) rsadsi(113549)<br>
+      pkcs(1) pkcs-9(9) smime(16) modules(0) id-mod-cms-aes(19) }<br>
+
+
+DEFINITIONS IMPLICIT TAGS ::=
+BEGIN
+
+-- EXPORTS ALL --
+IMPORTS
+    -- PKIX
+      AlgorithmIdentifier
+          FROM PKIXExplicit88 {iso(1) identified-organization(3) dod(6)<br>
+              internet(1) security(5) mechanisms(5) pkix(7) id-mod(0)<br>
+              id-pkix1-explicit(18)};<br>
+
+</p><p class="rfcparagraph">-- AES information object identifiers --
+
+aes OBJECT IDENTIFIER ::= { joint-iso-itu-t(2) country(16) us(840)<br>
+               organization(1) gov(101) csor(3)_ nistAlgorithms(4)  1 }<br>
+
+-- AES using CBC-chaining mode for key sizes of 128, 192, 256
+
+id-aes128-CBC OBJECT IDENTIFIER ::= { aes 2 }
+id-aes192-CBC OBJECT IDENTIFIER ::= { aes 22 }
+id-aes256-CBC OBJECT IDENTIFIER ::= { aes 42 }
+
+-- AES-IV is a the parameter for all the above object identifiers.
+
+</p><p class="rfcparagraph">AES-IV ::= OCTET STRING (SIZE(16))<br>
+
+
+-- AES Key Wrap Algorithm Identifiers  - Parameter is absent
+
+id-aes128-wrap OBJECT IDENTIFIER ::= { aes 5 }
+id-aes192-wrap OBJECT IDENTIFIER ::= { aes 25 }
+id-aes256-wrap OBJECT IDENTIFIER ::= { aes 45 }
+
+
+END
+
+Author's Address
+
+   Jim Schaad
+   Soaring Hawk Consulting
+
+   EMail: jimsch@exmsft.com
+Full Copyright Statement
+
+   Copyright (C) The Internet Society (2003).  All Rights Reserved.<br>
+
+</p><p class="rfcparagraph">   This document and translations of it may be copied and furnished to
+   others, and derivative works that comment on or otherwise explain it
+   or assist in its implementation may be prepared, copied, published
+   and distributed, in whole or in part, without restriction of any
+   kind, provided that the above copyright notice and this paragraph are
+   included on all such copies and derivative works.  However, this
+   document itself may not be modified in any way, such as by removing
+   the copyright notice or references to the Internet Society or other
+   Internet organizations, except as needed for the purpose of
+   developing Internet standards in which case the procedures for
+   copyrights defined in the Internet Standards process must be
+   followed, or as required to translate it into languages other than
+   English.
+
+</p><p class="rfcparagraph">   The limited permissions granted above are perpetual and will not be
+   revoked by the Internet Society or its successors or assignees.
+
+</p><p class="rfcparagraph">   This document and the information contained herein is provided on an
+   "AS IS" basis and THE INTERNET SOCIETY AND THE INTERNET ENGINEERING
+   TASK FORCE DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING
+   BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION
+   HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED WARRANTIES OF
+   MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is currently provided by the
+   Internet Society.
+
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Schaad                      Standards Track                    [Page 14]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

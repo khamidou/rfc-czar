@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph">Network Working Group                                           G. Gregg
+Request for Comments: 23                                            UCSB
+                                                         16 October 1969
+
+
+
+                TRANSMISSION OF MULTIPLE CONTROL MESSAGES
+
+
+
+
+The network program at a site must be prepared to send or receive more
+than one control message in a single control communication.
+
+</p><p class="rfcparagraph">During the time that the control link is blocked awaiting RFNM, it is
+possible that a number of control messages to a particular remote host
+will accumulate.  When the link is unblocked, these should all be sent
+in a single communication for greatest efficiency.
+
+</p>For receiving, it will be necessary to have a loop which returns to
+decode and take action on successive control messages until the control
+communication is exhausted.
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

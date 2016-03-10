@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph">Network Working Group                                     Julie Sussman
+RFC # 630                                                 BBN
+NIC # 30237                                               April 10, 1974
+
+
+          FTP Error Code Usage for More Reliable Mail Service
+
+
+                                PURPOSE
+
+    A major hindrance to providing reliable mail service is the lack of
+well-defined FTP error replies that would enable a mailing process to
+decide how to handle a failure.  New FTP error codes are currently in
+the design stage, and a proposal will be announced soon.  In the
+interim, we can get some improvement by simply defining how we intend to
+use the current FTP codes.  The purpose of this RFC is to inform all
+sites of how TENEX sites will use and interpret the codes starting in
+the near future.
+
+</p><p class="rfcparagraph">
+                        CURRENT CODE DEFINITIONS
+
+    The FTP error codes defined for failure to perform a file action
+(including mail) are:
+
+</p><p class="rfcparagraph">	<a name="section-450"><h2>450.  File not found</h2></a>
+	<a name="section-451"><h2>451.  File access denied to you</h2></a>
+	<a name="section-452"><h2>452.  Data connection closed</h2></a>
+	<a name="section-453"><h2>453.  Insufficient storage</h2></a>
+	<a name="section-454"><h2>454.  Cannot connect to your data socket</h2></a>
+
+	<a name="section-450"><h2>450. , 451, and 453 are applicable to both the MAIL and MLFL commands,</h2></a>
+while 452 and 454 are only meaningful for MLFL.
+
+</p><p class="rfcparagraph">
+                   SHORTCOMING OF CURRENT DEFINITIONS
+
+    There are more possible causes of failure to deliver mail than the
+ones defined above.  Implementors of FTP servers thus had to make
+arbitrary assignments of error conditions to defined codes.  As a
+result, although the text of the reply might distinguish these
+conditions for the benefit of human users, the code doesn't distinguish
+them for the benefit of processes.
+
+</p><p class="rfcparagraph">    The minimum distinction needed by the TENEX mail-sending processes
+is between permanent and non-permanent failures.  In the latter case,
+the process will repeatedly try to deliver the mail for several days.
+                     NEW DEFINITIONS FOR TENEX USE
+
+    The following changes will be installed at TENEX sites over the next
+couple of months.
+
+</p><p class="rfcparagraph">FTP SERVER
+
+    The TENEX FTP server will continue to use 452 and 454 as specified
+for the MLFL command.
+
+</p><p class="rfcparagraph">    For MAIL and MLFL, it will send the other codes as follows:
+
+</p><p class="rfcparagraph">	<a name="section-450"><h2>450.  Permanent failures due to the user addressed in the Mail or MLFL</h2></a>
+    command.
+
+</p><p class="rfcparagraph">    Examples:  No such user; No mailbox for that user; Can't access file
+    (because net users can't write in that mailbox).
+
+</p><p class="rfcparagraph">	<a name="section-451"><h2>451.  Permanent failures due to the message itself.</h2></a>
+
+    Example:  Line sent over TELNET connection is too long (MAIL command
+    only).
+
+</p><p class="rfcparagraph">	<a name="section-453"><h2>453.  Temporary failures</h2></a>
+
+    Examples:  TELNET connection unexpectedly closed;  Mailbox busy;
+    Unexpected local errors (such as failure to create scratch file).
+
+</p><p class="rfcparagraph">MAILING PROCESSES
+
+    TENEX mailing processes currently interpret all the codes 450-454 as
+meaning permanent failure.  They will be changed to interpret 452, 453,
+and 454 as temporary while leaving 450 and 451 permanent.
+
+</p><p class="rfcparagraph">
+                   COMPATIBILITY WITH NON-TENEX SITES
+
+    These interpretations should not adversely affect the interaction of
+TENEX and non-TENEX mail processes, since we are simply changing from
+one arbitrary set of interpretations to another.  Moreover:
+
+</p><p class="rfcparagraph">--Our interpretation of 450-451 as permanent and 452-454 as temporary is
+consistent with their original meanings.
+
+</p>--Our new choice of what codes to use for what failure is no farther
+from the original meanings than our old choice was, and conveys more
+information.
+       [ This RFC was put into machine readable form for entry ]
+       [ into the online RFC archives by Alex McKenzie with    ]
+       [ support from GTE, formerly BBN Corp.            10/99 ]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Sussman                                                         [Page 3]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

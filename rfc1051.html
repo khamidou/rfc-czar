@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                    P. Prindeville<br>Request for Comments:  1051                           McGill University<br>                                                             March 1988<br><br></p>
+                  <h1>
+            A Standard for the Transmission of IP Datagrams
+                  and ARP Packets over ARCNET Networks
+</h1>
+                  <h2>Status of this Memo</h2>
+
+   This RFC specifies a standard protocol for the Internet community.
+   Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph">Introduction
+
+   This RFC specifies a standard method of encapsulating Internet
+   Protocol (IP) [1] and Address Resolution Protocol (ARP) [2] datagrams
+   on an ARCNET [3].
+
+</p><p class="rfcparagraph">Acknowledgements
+
+   The author wishes to express thanks to Robert Craig of the McGill
+   University Computing Centre and Bruce Hughes of Datapoint Corporation
+   for their generous support of facilities and information.  I also
+   extend my gratitude to the readers of the PCIP mailing list for their
+   helpful ideas and comments.
+
+</p><p class="rfcparagraph">Frame Format
+
+   IP and ARP datagrams are transmitted in standard ARCNET packets.  As
+   required by Datapoint Corporation, the first octet of the data field
+   is reserved for the network layer protocol identification (the
+   "system code" in Datapoint nomenclature), and must contain the value
+   240 (F0 hex) for IP or 241 (F1 hex) for ARP.  The ARP hardware
+   address type for ARCNET is 7 [9].
+
+</p><p class="rfcparagraph">   ARCNET supports packet formats containing 1-253 octets of data
+   (normal format) and 257-508 octets of data (extended format),
+   inclusive of system code.  Note that there exists a range of data
+   lengths (254-256) which are 'forbidden'.  IP packets within this
+   range should be padded (with octets of zero) to meet the minimum
+   extended packet size of 257 data octets.  This padding is not part of
+   the IP packet and is not included in the total length field of the IP
+   header.
+   On networks where some hosts do not support extended packet format,
+   the IP Maximum Transmission Unit (MTU) should be set to 253, though
+   implementors are encouraged to support the extended packet format
+   mode of operation.
+
+</p><p class="rfcparagraph">   Because the ARCNET maximum packet length is less than the Internet
+   default MTU, implementations are strongly encouraged to support IP
+   level fragmentation and reassembly.  Hosts not supporting this should
+   take steps to discourage others from sending fragmented packets, such
+   as using the TCP Maximum Segment Size option [4].
+
+</p><p class="rfcparagraph">      The frame format is:
+
+</p><p class="rfcparagraph">                  Normal Packet               Extended Packet<pre>
+                +----------------+          +----------------+
+                |     ALERT*     |          |     ALERT*     |
+                +----------------+          +----------------+
+                |      SOH (1)   |          |      SOH (1)   |<br>
+                +----------------+          +----------------+
+                |      SID       |          |      SID       |
+                +----------------+          +----------------+
+                |                |          |                |
+                +      DID       +          +      DID       +
+                |                |          |                |
+                +----------------+          +----------------+
+                |     COUNT      |          |      NUL (0)   |<br>
+                +----------------+          +                +
+                |  SYSTEM CODE   |          |     COUNT      |
+                +----------------+          +----------------+
+                |                |          |  SYSTEM CODE   |
+                :      DATA      :          +----------------+
+                |                |          |                |
+                +----------------+          :      DATA      :
+                |                |          |                |
+                +       CRC      +          +----------------+
+                |                |          |                |
+                +----------------+          +       CRC      +
+                                            |                |
+                                            +----------------+
+</pre>
+
+
+      ALERT*:      Six mark bits signifying the beginning of a frame.
+      SID:         Sender's node ID.
+      DID:         Receipient's node ID (repeated for reliability).
+      COUNT:       Length of data and system code (one's complement).
+      SYSTEM CODE: 240 for IP, 241 for ARP (decimal).
+      DATA:        Is either an IP or an ARP packet, padded with NULs so
+                      as to not be between 254 and 256 octets long.
+      CRC:         Cyclic redundancy check (CRC-16).
+Address Mappings
+
+   The mappings between 32-bit Internet addresses to 8-bit ARCNET
+   addresses can be done several ways, recommended are:
+
+</p><p class="rfcparagraph">   Host Number Extraction
+
+      The easiest thing to do is to use the last eight bits of host
+      number part of the Internet address as the host's node id.  This
+      has been implemented on Experimental Ethernet [5] and ProNET-10
+      [6].
+
+</p><p class="rfcparagraph">   Dynamic Discovery
+
+      Mappings between 32-bit Internet addresses and 8-bit ARCNET node
+      ids could be accomplished through ARP.  Internet addresses are
+      assigned arbitrarily on some Internet networks.  All
+      implementations supporting ARP must have a means of disabling ARP
+      and using the above Host Number Extraction method of address
+      mapping so that systems may interoperate.
+
+</p><p class="rfcparagraph">      The use of ARP is optional.  However, ARP is desirable when using
+      IP implementations that don't support subnetting [7], as in the
+      Proxy ARP scenario [8].
+
+</p><p class="rfcparagraph">Broadcast Address
+
+   The broadcast Internet address (the address on the network with a
+   host part of all binary ones) should be mapped to the broadcast node
+   id 0.
+References
+
+   [1] Postel, J., "Internet Protocol", RFC-791, Network Information
+       Center, SRI, September 1981.
+
+</p><p class="rfcparagraph">   [2] Plummer, D., "An Ethernet Address Resolution Protocol", RFC- 826,
+       Network Information Center, SRI, November 1982.
+
+</p><p class="rfcparagraph">   [3] "ARCNET Designer's Handbook", Order Number 61610, Datapoint
+       Corporation, 1983.
+
+</p><p class="rfcparagraph">   [4] Postel, J., "The TCP Maximum Segment Size Option and Related
+       Topics", RFC-879, Network Information Center, SRI, November 1983.
+
+</p><p class="rfcparagraph">   [5] Postel, J., "A Standard for the Transmission of IP Datagrams over
+       Experimental Ethernet Networks", RFC-895, Network Information
+       Center, SRI, April 1984.
+
+</p><p class="rfcparagraph">   [6] "ProNET-10 Model p1300 IBM PC Interface System Installation and
+       Programming Guide", Version 4.0, Proteon Inc., July 1986.
+
+</p><p class="rfcparagraph">   [7] Mogul, J. and J. Postel, "Internet Standard Subnetting
+       Procedure", RFC-950, Network Information Center, SRI, October
+       1984.
+
+</p><p class="rfcparagraph">   [8] Carl-Mitchell, S. and J.S. Quarterman, "Using ARP to Implement
+       Transparent Subnet Gateways", RFC-1027, Network Information
+       Center, SRI, October 1987.
+
+</p><p class="rfcparagraph">   [9] Reynolds, J., and J. Postel, "Assigned Numbers", RFC-1010,
+       Network Information Center, SRI, May 1987.
+
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Prindeville                                                     [Page 4]
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                     H. Schulzrinne<br>Request for Comments: 4481                                   Columbia U.<br>Category: Standards Track                                      July 2006<br><br></p>
+                  <h1>
+                    Timed Presence Extensions to the
+               Presence Information Data Format (PIDF) to
+     Indicate Status Information for Past and Future Time Intervals</h1>
+                  <h2>Status of This Memo</h2>
+
+   This document specifies an Internet standards track protocol for the
+   Internet community, and requests discussion and suggestions for
+   improvements.  Please refer to the current edition of the "Internet
+   Official Protocol Standards" (STD 1) for the standardization state
+   and status of this protocol.  Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (2006).<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   The Presence Information Data Format (PIDF) defines a basic XML
+   format for presenting presence information for a presentity.  This
+   document extends PIDF, adding a timed status extension
+   (<timed-status> element) that allows a presentity to declare its
+   status for a time interval fully in the future or the past.
+
+</p><p class="rfcparagraph">Table of Contents
+<a href="#section-1" class="">1. Introduction ...................................................</a><br>
+<a href="#section-2" class="">2. Terminology and Conventions ....................................</a><br>
+<a href="#section-3" class="">3. Timed-Status Element ...........................................</a><br>
+<a href="#section-4" class="">4. Example ........................................................</a><br>
+<a href="#section-5" class="">5. The XML Schema Definition ......................................</a><br>
+<a href="#section-6" class="">6. IANA Considerations ............................................</a><br>
+      6.1. URN Sub-Namespace Registration for
+           'urn:ietf:params:xml:ns:pidf:timed-status' .................6
+      6.2. Schema Registration for Schema
+           'urn:ietf:params:xml:ns:pidf:timed-status' .................7
+<a href="#section-7" class="">7. Security Considerations ........................................</a><br>
+<a href="#section-8" class="">8. References .....................................................</a><br>
+<a href="#section-8.1" class="indent-1">8.1. Normative References ......................................</a><br>
+<a href="#section-8.2" class="indent-1">8.2. Informative References ....................................</a><br>
+   Contributor's Address ..............................................8
+   Acknowledgements ...................................................8
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   Traditionally, presence information, e.g., represented as Presence
+   Information Data Format [3] (PIDF) and augmented by Rich Presence
+   Information Data format [9] (RPID), describes the current state of
+   the presentity.  However, a watcher can better plan communications if
+   it knows about the presentity's future plans.  For example, if a
+   watcher knows that the presentity is about to travel, it might place
+   a phone call earlier.
+
+</p><p class="rfcparagraph">   In this document, we use terms defined in RFC 2778 [7].  In
+   particular, a "presentity", abbreviating presence entity, provides
+   presence information to a presence service.  It is typically a
+   uniquely-identified person.
+
+</p><p class="rfcparagraph">   RPID already allows a presentity to indicate the period when a
+   particular aspect of its presence is valid.  However, the <status>
+   element in the PIDF <tuple> does not have this facility, so that it
+   is not possible to indicate that a presentity will be OPEN or CLOSED
+   in the future, for example.
+
+</p><p class="rfcparagraph">   It is also occasionally useful to represent past information since it
+   may be the only known presence information; it may give watchers an
+   indication of the current status.  For example, indicating that the
+   presentity was at an off-site meeting that ended an hour ago
+   indicates that the presentity is likely in transit at the current
+   time.
+
+</p><p class="rfcparagraph">   It is unfortunately not possible to simply add time range attributes
+   to the PIDF <status> element, as PIDF parsers without this capability
+   would ignore these attributes and thus not be able to distinguish
+   current from future presence status information.
+
+</p><p class="rfcparagraph">   This document defines the <timed-status> element that describes the
+   status of a presentity that is either no longer valid or covers some
+   future time period.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Terminology and Conventions</h2></a>
+
+   The key words MUST, MUST NOT, REQUIRED, SHOULD, SHOULD NOT,
+   RECOMMENDED, MAY, and OPTIONAL in this document are to be interpreted
+   as described in BCP 14, RFC 2119 [1].
+	<a name="section-3"><h2>3.   Timed-Status Element</h2></a>
+
+   The <timed-status> element is a child of the <tuple> element and MUST
+   NOT appear as a child of a PIDF <status> element or another
+   <timed-status> element.  More than one such element MAY appear within
+   a PIDF <tuple> element.
+
+</p><p class="rfcparagraph">   Sources of <timed-status> information should avoid elements that
+   overlap in time, but since overlapping appointments are common in
+   calendars, for example, receivers MUST be able to render such
+   overlapping <timed-status> indications.
+
+</p><p class="rfcparagraph">
+   The <timed-status> element MUST be qualified with the 'from'
+   attribute and MAY be qualified with an 'until' attribute to describe
+   the time when the status assumed this value and the time until which
+   this element is expected to be valid.  If the 'until' attribute is
+   missing, the information is assumed valid until the tuple is
+   explicitly overridden or expires as defined by the publication
+   mechanism used.  The time range MUST NOT encompass the present time,
+   i.e., the PIDF <timestamp> value, as that would provide an
+   unnecessary and confusing alternate mechanism to describe presence.
+   Thus, the 'from' attribute for tuples without an 'until' attribute
+   MUST refer to the future.
+
+</p><p class="rfcparagraph">   During composition, a presence agent (PA) may encounter a stored
+   <timed-status> element that covers the present time.  The PA MAY
+   either discard that element or MAY convert it to a regular <status>
+   element if it considers that information more credible.
+
+</p><p class="rfcparagraph">   The <timed-status> element may contain the <basic> and <note>
+   elements, as well as any other element that is appropriate as a PIDF
+   <status> extension and that has a limited validity period.  Examples
+   include the PIDF-LO [8] extensions for location objects.
+
+</p><p class="rfcparagraph">   This extension chose absolute rather than relative times, since
+   relative times would be too hard to keep properly updated when
+   spacing notifications, for example.  Originators of presence
+   information MUST generate time values in the <timed-status> elements
+   that are fully in the past or future relative to local real
+   (wallclock) time and the time information contained in the optional
+   PIDF <timestamp> element.
+	<a name="section-4"><h2>4.   Example</h2></a>
+
+   An example combining PIDF and timed-status is shown below:
+
+</p><p class="rfcparagraph">   <presence xmlns="urn:ietf:params:xml:ns:pidf"
+     xmlns:ts="urn:ietf:params:xml:ns:pidf:timed-status"
+       entity="pres:someone@example.com">
+
+     <tuple id="c8dqui">
+       <status>
+         <basic>open</basic>
+       </status>
+       <ts:timed-status from="2005-08-15T10:20:00.000-05:00"
+          until="2005-08-22T19:30:00.000-05:00">
+          <ts:basic>closed</ts:basic>
+       </ts:timed-status>
+       <contact>sip:someone@example.com</contact>
+     </tuple>
+     <note>I'll be in Tokyo next week</note>
+   </presence>
+	<a name="section-5"><h2>5.   The XML Schema Definition</h2></a>
+
+   The XML [4] schema [5][6] is shown below.
+
+</p><p class="rfcparagraph">   <?xml version="1.0" encoding="UTF-8"?>
+   <xs:schema xmlns:ts="urn:ietf:params:xml:ns:pidf:timed-status"
+   xmlns:pidf="urn:ietf:params:xml:ns:pidf"
+   xmlns:xs="http://www.w3.org/2001/XMLSchema"
+   targetNamespace="urn:ietf:params:xml:ns:pidf:timed-status"
+   elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+     <xs:import namespace="urn:ietf:params:xml:ns:pidf"/>
+
+     <xs:annotation>
+        <xs:documentation>
+          Describes timed-status tuple extensions for PIDF.
+        </xs:documentation>
+     </xs:annotation>
+     <xs:element name="timed-status" type="ts:timed-status"/>
+     <xs:complexType name="timed-status">
+       <xs:sequence>
+         <xs:element name="basic" type="pidf:basic" minOccurs="0"/>
+         <xs:element name="note" type="pidf:note" minOccurs="0"/>
+         <xs:any namespace="##other" processContents="lax" minOccurs="0"
+           maxOccurs="unbounded"/>
+       </xs:sequence>
+       <xs:attribute name="from" type="xs:dateTime" use="required"/>
+       <xs:attribute name="until" type="xs:dateTime"/>
+     </xs:complexType>
+   </xs:schema>
+	<a name="section-6"><h2>6.   IANA Considerations</h2></a>
+
+   This document calls for IANA to register a new XML namespace URN and
+   schema per [2].
+
+</p><p class="rfcparagraph">	<a name="section-6.1"><h3>6.1   URN Sub-Namespace Registration for</h3></a>
+      'urn:ietf:params:xml:ns:pidf:timed-status'
+
+   URI:  urn:ietf:params:xml:ns:pidf:timed-status
+
+   Description:  This is the XML namespace for XML elements defined by
+      RFC 4481 to describe timed-status presence information extensions
+      for the status element in the PIDF presence document format in the
+      application/pidf+xml content type.
+
+</p><p class="rfcparagraph">   Registrant Contact:  IETF, SIMPLE working group, simple@ietf.org;
+      Henning Schulzrinne, hgs@cs.columbia.edu
+
+   XML:
+
+</p><p class="rfcparagraph">    BEGIN
+      <?xml version="1.0"?>
+     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.0//EN"
+      "http://www.w3.org/TR/xhtml-basic/xhtml-basic10.dtd">
+      <html xmlns="http://www.w3.org/1999/xhtml
+      <head>
+           <meta http-equiv="content-type"
+           content="text/html;charset=iso-8859-1"/>
+           <title>Timed Presence Extensions to the Presence
+           Information Data Format (PIDF) to Indicate Status
+           Information for Past and Future Time Intervals</title>
+      </head>
+      <body>
+          <h1>Namespace for timed-status presence extension</h1>
+          <h2>urn:ietf:params:xml:ns:pidf:timed-status</h2>
+          <p>See <a href="http://www.rfc-editor.org/rfc/rfc4481.txt">
+              RFC4481</a>.</p>
+       </body>
+       </html>
+      END
+	<a name="section-6.2"><h3>6.2   Schema Registration for Schema</h3></a>
+      'urn:ietf:params:xml:ns:pidf:timed-status'
+
+   URI:  urn:ietf:params:xml:ns:pidf:timed-status
+
+   Registrant Contact:  IESG
+
+   XML:  See Section 5
+
+	<a name="section-7"><h2>7.   Security Considerations</h2></a>
+
+   The security issues are similar to those for RPID [9].
+
+</p><p class="rfcparagraph">	<a name="section-8"><h2>8.   References</h2></a>
+
+	<a name="section-8.1"><h3>8.1   Normative References</h3></a>
+
+   [1]  Bradner, S., "Key words for use in RFCs to Indicate Requirement
+        Levels", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">   [2]  Mealling, M., "The IETF XML Registry", BCP 81, RFC 3688, January
+        2004.
+
+</p><p class="rfcparagraph">   [3]  Sugano, H., Fujimoto, S., Klyne, G., Bateman, A., Carr, W., and
+        J. Peterson, "Presence Information Data Format (PIDF)", RFC
+        3863, August 2004.
+
+</p><p class="rfcparagraph">   [4]  Yergeau, F., Paoli, J., Sperberg-McQueen, C., Bray, T., and E.
+        Maler, "Extensible Markup Language (XML) 1.0 (Third Edition)",
+        W3C REC REC-xml-20040204, February 2004.
+
+</p><p class="rfcparagraph">   [5]  Maloney, M., Beech, D., Thompson, H., and N. Mendelsohn, "XML
+        Schema Part 1: Structures Second Edition", W3C REC REC-
+        xmlschema-1-20041028, October 2004.
+
+</p><p class="rfcparagraph">   [6]  Malhotra, A. and P. Biron, "XML Schema Part 2: Datatypes Second
+        Edition", W3C REC REC-xmlschema-2-20041028, October 2004.
+
+</p><p class="rfcparagraph">	<a name="section-8.2"><h3>8.2   Informative References</h3></a>
+
+   [7]  Day, M., Rosenberg, J., and H. Sugano, "A Model for Presence and
+        Instant Messaging", RFC 2778, February 2000.
+
+</p><p class="rfcparagraph">   [8]  Peterson, J., "A Presence-based GEOPRIV Location Object Format",
+        RFC 4119, December 2005.
+   [9]  Schulzrinne, H., Gurbani, V., Kyzivat, P., and J. Rosenberg,
+        "RPID: Rich Presence Extensions to the Presence Information Data
+        Format (PIDF)", RFC 4480, July 2006.
+
+</p><p class="rfcparagraph">Contributor's Address
+
+   Jonathan Rosenberg
+   dynamicsoft
+   600 Lanidex Plaza
+   Parsippany, NJ 07054-2711
+   USA
+   EMail: jdrosen@dynamicsoft.com
+
+Acknowledgements
+
+   This document is based on the discussions within the IETF SIMPLE
+   working group.  Mary Barnes, Avri Doria, Miguel Garcia, Vijay
+   Gurbani, Hisham Khartabil, Paul Kyzivat, Mikko Lonnfors, Yannis
+   Pavlidis and Jon Peterson provided helpful comments.
+
+</p><p class="rfcparagraph">Author's Address
+
+   Henning Schulzrinne
+   Columbia University
+   Department of Computer Science
+   450 Computer Science Building
+   New York, NY  10027
+   US
+
+   Phone: +1 212 939 7004
+   EMail: hgs+simple@cs.columbia.edu
+   URI:   http://www.cs.columbia.edu
+Full Copyright Statement
+
+   Copyright (C) The Internet Society (2006).<br>
+
+</p><p class="rfcparagraph">   This document is subject to the rights, licenses and restrictions
+   contained in BCP 78, and except as set forth therein, the authors
+   retain all their rights.
+
+</p><p class="rfcparagraph">   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY AND THE INTERNET
+   ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED,
+   INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE
+   INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED
+   WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Intellectual Property
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the procedures with respect to rights in RFC documents can be
+   found in BCP 78 and BCP 79.
+
+</p><p class="rfcparagraph">   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+</p><p class="rfcparagraph">   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at
+   ietf-ipr@ietf.org.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is provided by the IETF
+   Administrative Support Activity (IASA).
+
+</p>
+
+
+
+
+
+Schulzrinne                 Standards Track                     [Page 9]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

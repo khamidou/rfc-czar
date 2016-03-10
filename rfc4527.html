@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                        K. Zeilenga<br>Request for Comments: 4527                           OpenLDAP Foundation<br>Category: Standards Track                                      June 2006<br><br></p>
+                  <h1>
+              Lightweight Directory Access Protocol (LDAP)
+                          Read Entry Controls
+</h1>
+                  <h2>Status of This Memo</h2>
+
+   This document specifies an Internet standards track protocol for the
+   Internet community, and requests discussion and suggestions for
+   improvements.  Please refer to the current edition of the "Internet
+   Official Protocol Standards" (STD 1) for the standardization state
+   and status of this protocol.  Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (2006).<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This document specifies an extension to the Lightweight Directory
+   Access Protocol (LDAP) to allow the client to read the target entry
+   of an update operation.  The client may request to read the entry
+   before and/or after the modifications are applied.  These reads are
+   done as an atomic part of the update operation.
+
+</p><p class="rfcparagraph">Table of Contents
+<a href="#section-1" class="">1. Background and Intent of Use ...................................</a><br>
+<a href="#section-2" class="">2. Terminology ....................................................</a><br>
+<a href="#section-3" class="">3. Read Entry Controls ............................................</a><br>
+<a href="#section-3.1" class="indent-1">3.1. The Pre-Read Controls .....................................</a><br>
+<a href="#section-3.2" class="indent-1">3.2. The Post-Read Controls ....................................</a><br>
+<a href="#section-4" class="">4. Interaction with Other Controls ................................</a><br>
+<a href="#section-5" class="">5. Security Considerations ........................................</a><br>
+<a href="#section-6" class="">6. IANA Considerations ............................................</a><br>
+<a href="#section-6.1" class="indent-1">6.1. Object Identifier .........................................</a><br>
+<a href="#section-6.2" class="indent-1">6.2. LDAP Protocol Mechanisms ..................................</a><br>
+<a href="#section-7" class="">7. Acknowledgement ................................................</a><br>
+<a href="#section-8" class="">8. References .....................................................</a><br>
+<a href="#section-8.1" class="indent-1">8.1. Normative References ......................................</a><br>
+<a href="#section-8.2" class="indent-1">8.2. Informative References ....................................</a><br>
+	<a name="section-1"><h2>1.   Background and Intent of Use</h2></a>
+
+   This document specifies an extension to the Lightweight Directory
+   Access Protocol (LDAP) [RFC4510] to allow the client to read the
+   target entry of an update operation (e.g., Add, Delete, Modify,
+   ModifyDN).  The extension utilizes controls [RFC4511] attached to
+   update requests to request and return copies of the target entry.
+   One request control, called the Pre-Read request control, indicates
+   that a copy of the entry before application of update is to be
+   returned.  Another control, called the Post-Read request control,
+   indicates that a copy of the entry after application of the update is
+   to be returned.  Each request control has a corresponding response
+   control used to return the entry.
+
+</p><p class="rfcparagraph">   To ensure proper isolation, the controls are processed as an atomic
+   part of the update operation.
+
+</p><p class="rfcparagraph">   The functionality offered by these controls is based upon similar
+   functionality in the X.500 Directory Access Protocol (DAP) [X.511].
+
+</p><p class="rfcparagraph">   The Pre-Read controls may be used to obtain replaced or deleted
+   values of modified attributes or a copy of the entry being deleted.
+
+</p><p class="rfcparagraph">   The Post-Read controls may be used to obtain values of operational
+   attributes, such as the 'entryUUID' [RFC4530] and 'modifyTimestamp'
+   [RFC4512] attributes, updated by the server as part of the update
+   operation.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.  Terminology</h2></a>
+
+   Protocol elements are described using ASN.1 [X.680] with implicit
+   tags.  The term "BER-encoded" means the element is to be encoded
+   using the Basic Encoding Rules [X.690] under the restrictions
+   detailed in Section 5.1 of [RFC4511].
+
+</p><p class="rfcparagraph">   DN stands for Distinguished Name.
+   DSA stands for Directory System Agent (i.e., a directory server).
+   DSE stands for DSA-specific Entry.
+
+</p><p class="rfcparagraph">   In this document, the key words "MUST", "MUST NOT", "REQUIRED",
+   "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY",
+   and "OPTIONAL" are to be interpreted as described in BCP 14
+   [RFC2119].
+	<a name="section-3"><h2>3.   Read Entry Controls</h2></a>
+
+	<a name="section-3.1"><h3>3.1   The Pre-Read Controls</h3></a>
+
+   The Pre-Read request and response controls are identified by the
+   1.3.6.1.1.13.1 object identifier.  Servers implementing these
+   controls SHOULD publish 1.3.6.1.1.13.1 as a value of the
+   'supportedControl' [RFC4512] in their root DSE.
+
+</p><p class="rfcparagraph">   The Pre-Read request control is a LDAP Control [RFC4511] whose
+   controlType is 1.3.6.1.1.13.1 and whose controlValue is a BER-encoded
+   AttributeSelection [RFC4511], as extended by [RFC3673].  The
+   criticality may be TRUE or FALSE.  This control is appropriate for
+   the modifyRequest, delRequest, and modDNRequest LDAP messages.
+
+</p><p class="rfcparagraph">   The corresponding response control is a LDAP Control whose
+   controlType is 1.3.6.1.1.13.1 and whose the controlValue, an OCTET
+   STRING, contains a BER-encoded SearchResultEntry.  The criticality
+   may be TRUE or FALSE.  This control is appropriate for the
+   modifyResponse, delResponse, and modDNResponse LDAP messages with a
+   resultCode of success (0).<br>
+
+</p><p class="rfcparagraph">   When the request control is attached to an appropriate update LDAP
+   request, the control requests the return of a copy of the target
+   entry prior to the application of the update.  The AttributeSelection
+   indicates, as discussed in [RFC4511][RFC3673], which attributes are
+   requested to appear in the copy.  The server is to return a
+   SearchResultEntry containing, subject to access controls and other
+   constraints, values of the requested attributes.
+
+</p><p class="rfcparagraph">   The normal processing of the update operation and the processing of
+   this control MUST be performed as one atomic action isolated from
+   other update operations.
+
+</p><p class="rfcparagraph">   If the update operation fails (in either normal or control
+   processing), no Pre-Read response control is provided.
+
+</p><p class="rfcparagraph">	<a name="section-3.2"><h3>3.2   The Post-Read Controls</h3></a>
+
+   The Post-Read request and response controls are identified by the
+   1.3.6.1.1.13.2 object identifier.  Servers implementing these
+   controls SHOULD publish 1.3.6.1.1.13.2 as a value of the
+   'supportedControl' [RFC4512] in their root DSE.
+
+</p><p class="rfcparagraph">   The Post-Read request control is a LDAP Control [RFC4511] whose
+   controlType is 1.3.6.1.1.13.2 and whose controlValue, an OCTET
+   STRING, contains a BER-encoded AttributeSelection [RFC4511], as
+   extended by [RFC3673].  The criticality may be TRUE or FALSE.  This
+   control is appropriate for the addRequest, modifyRequest, and
+   modDNRequest LDAP messages.
+
+</p><p class="rfcparagraph">   The corresponding response control is a LDAP Control whose
+   controlType is 1.3.6.1.1.13.2 and whose controlValue is a BER-encoded
+   SearchResultEntry.  The criticality may be TRUE or FALSE.  This
+   control is appropriate for the addResponse, modifyResponse, and
+   modDNResponse LDAP messages with a resultCode of success (0).<br>
+
+</p><p class="rfcparagraph">   When the request control is attached to an appropriate update LDAP
+   request, the control requests the return of a copy of the target
+   entry after the application of the update.  The AttributeSelection
+   indicates, as discussed in [RFC4511][RFC3673], which attributes are
+   requested to appear in the copy.  The server is to return a
+   SearchResultEntry containing, subject to access controls and other
+   constraints, values of the requested attributes.
+
+</p><p class="rfcparagraph">   The normal processing of the update operation and the processing of
+   this control MUST be performed as one atomic action isolated from
+   other update operations.
+
+</p><p class="rfcparagraph">   If the update operation fails (in either normal or control
+   processing), no Post-Read response control is provided.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   Interaction with Other Controls</h2></a>
+
+   The Pre-Read and Post-Read controls may be combined with each other
+   and/or with a variety of other controls.  When combined with the
+   assertion control [RFC4528] and/or the manageDsaIT control [RFC3296],
+   the semantics of each control included in the combination applies.
+   The Pre-Read and Post-Read controls may be combined with other
+   controls as detailed in other technical specifications.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   Security Considerations</h2></a>
+
+   The controls defined in this document extend update operations to
+   support read capabilities.  Servers MUST ensure that the client is
+   authorized for reading of the information provided in this control
+   and that the client is authorized to perform the requested directory
+   update.
+
+</p><p class="rfcparagraph">   Security considerations for the update operations [RFC4511] extended
+   by this control, as well as general LDAP security considerations
+   [RFC4510], generally apply to implementation and use of this
+   extension
+	<a name="section-6"><h2>6.   IANA Considerations</h2></a>
+
+   Registration of the following protocol values [RFC4520] have been
+   completed by the IANA.
+
+</p><p class="rfcparagraph">	<a name="section-6.1"><h3>6.1   Object Identifier</h3></a>
+
+   The IANA has registered an LDAP Object Identifier to identify LDAP
+   protocol elements defined in this document.
+
+</p><p class="rfcparagraph">       Subject: Request for LDAP Object Identifier Registration
+       Person & email address to contact for further information:
+            Kurt Zeilenga <kurt@OpenLDAP.org>
+       Specification: RFC 4527
+       Author/Change Controller: IESG
+       Comments: Identifies the LDAP Read Entry Controls
+
+	<a name="section-6.2"><h3>6.2   LDAP Protocol Mechanisms</h3></a>
+
+   The IANA has registered the LDAP Protocol Mechanism described in this
+   document.
+
+</p><p class="rfcparagraph">       Subject: Request for LDAP Protocol Mechanism Registration
+       Object Identifier: 1.3.6.1.1.13.1
+       Description: LDAP Pre-read Control
+       Person & email address to contact for further information:
+            Kurt Zeilenga <kurt@openldap.org>
+       Usage: Control
+       Specification: RFC 4527
+       Author/Change Controller: IESG
+       Comments: none
+
+       Subject: Request for LDAP Protocol Mechanism Registration
+       Object Identifier: 1.3.6.1.1.13.2
+       Description: LDAP Post-read Control
+       Person & email address to contact for further information:
+            Kurt Zeilenga <kurt@openldap.org>
+       Usage: Control
+       Specification: RFC 4527
+       Author/Change Controller: IESG
+       Comments: none
+
+	<a name="section-7"><h2>7.   Acknowledgement</h2></a>
+
+   The LDAP Pre-Read and Post-Read controls are modeled after similar
+   capabilities offered in the DAP [X.511].
+	<a name="section-8"><h2>8.   References</h2></a>
+
+	<a name="section-8.1"><h3>8.1   Normative References</h3></a>
+
+   [RFC2119]     Bradner, S., "Key words for use in RFCs to Indicate
+                 Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">   [RFC3296]     Zeilenga, K., "Named Subordinate References in
+                 Lightweight Directory Access Protocol (LDAP)
+                 Directories", RFC 3296, July 2002.
+
+</p><p class="rfcparagraph">   [RFC3673]     Zeilenga, K., "Lightweight Directory Access Protocol
+                 version 3 (LDAPv3): All Operational Attributes", RFC
+                 3673, December 2003.
+
+</p><p class="rfcparagraph">   [RFC4510]     Zeilenga, K., Ed, "Lightweight Directory Access
+                 Protocol (LDAP): Technical Specification Road Map", RFC
+                 4510, June 2006.
+
+</p><p class="rfcparagraph">   [RFC4511]     Sermersheim, J., Ed., "Lightweight Directory Access
+                 Protocol (LDAP): The Protocol", RFC 4511, June 2006.
+
+</p><p class="rfcparagraph">   [RFC4512]     Zeilenga, K., "Lightweight Directory Access Protocol
+                 (LDAP): Directory Information Models", RFC 4512, June
+                 2006.
+
+</p><p class="rfcparagraph">   [RFC4528]     Zeilenga, K., "Lightweight Directory Access Protocol
+                 (LDAP) Assertion Control", RFC 4528, June 2006.
+
+</p><p class="rfcparagraph">   [X.680]       International Telecommunication Union -
+                 Telecommunication Standardization Sector, "Abstract
+                 Syntax Notation One (ASN.1) - Specification of Basic
+                 Notation", X.680(1997) (also ISO/IEC 8824-1:1998).<br>
+
+</p><p class="rfcparagraph">   [X.690]       International Telecommunication Union -
+                 Telecommunication Standardization Sector,
+                 "Specification of ASN.1 encoding rules: Basic Encoding
+                 Rules (BER), Canonical Encoding Rules (CER), and
+                 Distinguished Encoding Rules (DER)", X.690(1997) (also<br>
+                 ISO/IEC 8825-1:1998).
+	<a name="section-8.2"><h3>8.2   Informative References</h3></a>
+
+   [RFC4520]     Zeilenga, K., "Internet Assigned Numbers Authority
+                 (IANA) Considerations for the Lightweight Directory
+                 Access Protocol (LDAP)", BCP 64, RFC 4520, June 2006.
+
+</p><p class="rfcparagraph">   [RFC4530]     Zeilenga, K., "Lightweight Directory Access Protocol
+                 (LDAP) EntryUUID Operational Attribute", RFC 4530, June
+                 2006.
+
+</p><p class="rfcparagraph">   [X.511]       International Telecommunication Union -
+                 Telecommunication Standardization Sector, "The
+                 Directory: Abstract Service Definition", X.511(1993)
+                 (also ISO/IEC 9594-3:1993).
+
+</p><p class="rfcparagraph">Author's Address
+
+   Kurt D. Zeilenga
+   OpenLDAP Foundation
+
+   EMail: Kurt@OpenLDAP.org
+Full Copyright Statement
+
+   Copyright (C) The Internet Society (2006).<br>
+
+</p><p class="rfcparagraph">   This document is subject to the rights, licenses and restrictions
+   contained in BCP 78, and except as set forth therein, the authors
+   retain all their rights.
+
+</p><p class="rfcparagraph">   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY AND THE INTERNET
+   ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED,
+   INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE
+   INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED
+   WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Intellectual Property
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the procedures with respect to rights in RFC documents can be
+   found in BCP 78 and BCP 79.
+
+</p><p class="rfcparagraph">   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+</p><p class="rfcparagraph">   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at
+   ietf-ipr@ietf.org.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is provided by the IETF
+   Administrative Support Activity (IASA).
+
+</p>
+
+
+
+
+
+Zeilenga                    Standards Track                     [Page 8]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

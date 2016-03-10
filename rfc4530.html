@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                        K. Zeilenga<br>Request for Comments: 4530                           OpenLDAP Foundation<br>Category: Standards Track                                      June 2006<br><br></p>
+                  <h1>
+              Lightweight Directory Access Protocol (LDAP)
+                    entryUUID Operational Attribute
+</h1>
+                  <h2>Status of This Memo</h2>
+
+   This document specifies an Internet standards track protocol for the
+   Internet community, and requests discussion and suggestions for
+   improvements.  Please refer to the current edition of the "Internet
+   Official Protocol Standards" (STD 1) for the standardization state
+   and status of this protocol.  Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (2006).<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This document describes the LDAP/X.500 'entryUUID' operational
+   attribute and associated matching rules and syntax.  The attribute
+   holds a server-assigned Universally Unique Identifier (UUID) for the
+   object.  Directory clients may use this attribute to distinguish
+   objects identified by a distinguished name or to locate an object
+   after renaming.
+<h2>Table of Contents</h2>
+<a href="#section-1" class="">1. Background and Intended Use ....................................</a><br>
+<a href="#section-2" class="">2. UUID Schema Elements ...........................................</a><br>
+<a href="#section-2.1" class="indent-1">2.1. UUID Syntax ...............................................</a><br>
+<a href="#section-2.2" class="indent-1">2.2. 'uuidMatch' Matching Rule .................................</a><br>
+<a href="#section-2.3" class="indent-1">2.3. 'uuidOrderingMatch' Matching Rule .........................</a><br>
+<a href="#section-2.4" class="indent-1">2.4. 'entryUUID' Attribute .....................................</a><br>
+<a href="#section-3" class="">3. Security Considerations ........................................</a><br>
+<a href="#section-4" class="">4. IANA Considerations ............................................</a><br>
+<a href="#section-4.1" class="indent-1">4.1. Object Identifier Registration ............................</a><br>
+<a href="#section-4.2" class="indent-1">4.2. UUID Syntax Registration ..................................</a><br>
+<a href="#section-4.3" class="indent-1">4.3. 'uuidMatch' Descriptor Registration .......................</a><br>
+<a href="#section-4.4" class="indent-1">4.4. 'uuidOrderingMatch' Descriptor Registration ...............</a><br>
+<a href="#section-4.5" class="indent-1">4.5. 'entryUUID' Descriptor Registration .......................</a><br>
+<a href="#section-5" class="">5. Acknowledgements ...............................................</a><br>
+<a href="#section-6" class="">6. References .....................................................</a><br>
+<a href="#section-6.1" class="indent-1">6.1. Normative References ......................................</a><br>
+<a href="#section-6.2" class="indent-1">6.2. Informative References ....................................</a><br>
+
+	<a name="section-1"><h2>1.   Background and Intended Use</h2></a>
+
+   In X.500 Directory Services [X.501], such as those accessible using
+   the Lightweight Directory Access Protocol (LDAP) [RFC4510], an object
+   is identified by its distinguished name (DN).  However, DNs are not
+   stable identifiers.  That is, a new object may be identified by a DN
+   that previously identified another (now renamed or deleted) object.
+
+</p><p class="rfcparagraph">   A Universally Unique Identifier (UUID) is "an identifier unique
+   across both space and time, with respect to the space of all UUIDs"
+   [RFC4122].  UUIDs are used in a wide range of systems.
+
+</p><p class="rfcparagraph">   This document describes the 'entryUUID' operational attribute, which
+   holds the UUID assigned to the object by the server.  Clients may use
+   this attribute to distinguish objects identified by a particular
+   distinguished name or to locate a particular object after renaming.
+
+</p><p class="rfcparagraph">   This document defines the UUID syntax, the 'uuidMatch' and
+   'uuidOrderingMatch' matching rules, and the 'entryUUID' attribute
+   type.
+
+</p><p class="rfcparagraph">   Schema definitions are provided using LDAP description formats
+   [RFC4512].  Definitions provided here are formatted (line wrapped)
+   for readability.
+   In this document, the key words "MUST", "MUST NOT", "REQUIRED",
+   "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY",
+   and "OPTIONAL" are to be interpreted as described in BCP 14
+   [RFC2119].
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   UUID Schema Elements</h2></a>
+
+	<a name="section-2.1"><h3>2.1   UUID Syntax</h3></a>
+
+   A Universally Unique Identifier (UUID) [RFC4122] is a 16-octet (128-
+   bit) value that identifies an object.  The ASN.1 [X.680] type UUID is
+   defined to represent UUIDs as follows:
+
+</p><p class="rfcparagraph">       UUID ::= OCTET STRING (SIZE(16))<br>
+             -- constrained to an UUID [RFC4122]
+
+   In LDAP, UUID values are encoded using the [ASCII] character string
+   representation described in [RFC4122].  For example,
+   "597ae2f6-16a6-1027-98f4-d28b5365dc14".
+
+</p><p class="rfcparagraph">   The following is an LDAP syntax description suitable for publication
+   in subschema subentries.
+
+</p><p class="rfcparagraph">       ( 1.3.6.1.1.16.1 DESC 'UUID' )
+
+	<a name="section-2.2"><h3>2.2   'uuidMatch' Matching Rule</h3></a>
+
+   The 'uuidMatch' matching rule compares an asserted UUID with a stored
+   UUID for equality.  Its semantics are the same as the
+   'octetStringMatch' [X.520][RFC4517] matching rule.  The rule differs
+   from 'octetStringMatch' in that the assertion value is encoded using
+   the UUID string representation instead of the normal OCTET STRING
+   string representation.
+
+</p><p class="rfcparagraph">   The following is an LDAP matching rule description suitable for
+   publication in subschema subentries.
+
+</p><p class="rfcparagraph">       ( 1.3.6.1.1.16.2 NAME 'uuidMatch'
+           SYNTAX 1.3.6.1.1.16.1 )
+
+	<a name="section-2.3"><h3>2.3   'uuidOrderingMatch' Matching Rule</h3></a>
+
+   The 'uuidOrderingMatch' matching rule compares an asserted UUID with
+   a stored UUID for ordering.  Its semantics are the same as the
+   'octetStringOrderingMatch' [X.520][RFC4517] matching rule.  The rule
+   differs from 'octetStringOrderingMatch' in that the assertion value
+   is encoded using the UUID string representation instead of the normal
+   OCTET STRING string representation.
+   The following is an LDAP matching rule description suitable for
+   publication in subschema subentries.
+
+</p><p class="rfcparagraph">       ( 1.3.6.1.1.16.3 NAME 'uuidOrderingMatch'
+           SYNTAX 1.3.6.1.1.16.1 )
+
+   Note that not all UUID variants have a defined ordering; and even
+   where it does, servers are not obligated to assign UUIDs in any
+   particular order.  This matching rule is provided for completeness.
+
+</p><p class="rfcparagraph">	<a name="section-2.4"><h3>2.4   'entryUUID' Attribute</h3></a>
+
+   The 'entryUUID' operational attribute provides the Universally Unique
+   Identifier (UUID) assigned to the entry.
+
+</p><p class="rfcparagraph">   The following is an LDAP attribute type description suitable for
+   publication in subschema subentries.
+
+</p><p class="rfcparagraph">       ( 1.3.6.1.1.16.4 NAME 'entryUUID'
+           DESC 'UUID of the entry'
+           EQUALITY uuidMatch
+           ORDERING uuidOrderingMatch
+           SYNTAX 1.3.6.1.1.16.1
+           SINGLE-VALUE
+           NO-USER-MODIFICATION
+           USAGE directoryOperation )
+
+   Servers SHALL generate and assign a new UUID to each entry upon its
+   addition to the directory and provide that UUID as the value of the
+   'entryUUID' operational attribute.  An entry's UUID is immutable.
+
+</p><p class="rfcparagraph">   UUID are to be generated in accordance with Section 4 of [RFC4122].
+   In particular, servers MUST ensure that each generated UUID is unique
+   in space and time.
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   Security Considerations</h2></a>
+
+   An entry's relative distinguish name (RDN) is composed from attribute
+   values of the entry, which are commonly descriptive of the object the
+   entry represents.  Although deployers are encouraged to use naming
+   attributes whose values are widely disclosable [RFC4514], entries are
+   often named using information that cannot be disclosed to all
+   parties.  As UUIDs do not contain any descriptive information of the
+   object they identify, UUIDs may be used to identify a particular
+   entry without disclosure of its contents.
+
+</p><p class="rfcparagraph">   General UUID security considerations [RFC4122] apply.
+   General LDAP security considerations [RFC4510] apply.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   IANA Considerations</h2></a>
+
+   The IANA has registered the LDAP values [RFC4520] specified in this
+   document.
+
+</p><p class="rfcparagraph">	<a name="section-4.1"><h3>4.1   Object Identifier Registration</h3></a>
+
+       Subject: Request for LDAP OID Registration
+       Person & email address to contact for further information:
+           Kurt Zeilenga <kurt@OpenLDAP.org>
+       Specification: RFC 4530
+       Author/Change Controller: IESG
+       Comments:
+           Identifies the UUID schema elements
+
+	<a name="section-4.2"><h3>4.2   UUID Syntax Registration</h3></a>
+
+       Subject: Request for LDAP Syntax Registration
+       Object Identifier: 1.3.6.1.1.16.1
+       Description: UUID
+       Person & email address to contact for further information:
+           Kurt Zeilenga <kurt@OpenLDAP.org>
+       Specification: RFC 4530
+       Author/Change Controller: IESG
+       Comments:
+            Identifies the UUID syntax
+
+	<a name="section-4.3"><h3>4.3   'uuidMatch' Descriptor Registration</h3></a>
+
+       Subject: Request for LDAP Descriptor Registration
+       Descriptor (short name): uuidMatch
+       Object Identifier: 1.3.6.1.1.16.2
+       Person & email address to contact for further information:
+           Kurt Zeilenga <kurt@OpenLDAP.org>
+       Usage: Matching Rule
+       Specification: RFC 4530
+       Author/Change Controller: IESG
+
+	<a name="section-4.4"><h3>4.4   'uuidOrderingMatch' Descriptor Registration</h3></a>
+
+       Subject: Request for LDAP Descriptor Registration
+       Descriptor (short name): uuidOrderingMatch
+       Object Identifier: 1.3.6.1.1.16.3
+       Person & email address to contact for further information:
+           Kurt Zeilenga <kurt@OpenLDAP.org>
+       Usage: Matching Rule
+       Specification: RFC 4530
+       Author/Change Controller: IESG
+
+	<a name="section-4.5"><h3>4.5   'entryUUID' Descriptor Registration</h3></a>
+
+   The IANA has registered the LDAP 'entryUUID' descriptor.
+
+</p><p class="rfcparagraph">       Subject: Request for LDAP Descriptor Registration
+       Descriptor (short name): entryUUID
+       Object Identifier: 1.3.6.1.1.16.4
+       Person & email address to contact for further information:
+           Kurt Zeilenga <kurt@OpenLDAP.org>
+       Usage: Attribute Type
+       Specification: RFC 4530
+       Author/Change Controller: IESG
+
+	<a name="section-5"><h2>5.   Acknowledgements</h2></a>
+
+   This document is based upon discussions in the LDAP Update and
+   Duplication Protocols (LDUP) WG.  Members of the LDAP Directorate
+   provided review.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.   References</h2></a>
+
+	<a name="section-6.1"><h3>6.1   Normative References</h3></a>
+
+   [RFC2119]     Bradner, S., "Key words for use in RFCs to Indicate
+                 Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">   [RFC4122]     Leach, P., Mealling, M., and R. Salz, "A Universally
+                 Unique IDentifier (UUID) URN Namespace", RFC 4122, July
+                 2005.
+
+</p><p class="rfcparagraph">   [RFC4510]     Zeilenga, K., Ed., "Lightweight Directory Access
+                 Protocol (LDAP): Technical Specification Road Map", RFC
+                 4510, June 2006.
+
+</p><p class="rfcparagraph">   [RFC4512]     Zeilenga, K., "Lightweight Directory Access Protocol
+                 (LDAP): Directory Information Models", RFC 4512, June
+                 2006.
+
+</p><p class="rfcparagraph">   [RFC4517]     Legg, S., Ed., "Lightweight Directory Access Protocol
+                 (LDAP): Syntaxes and Matching Rules", RFC 4517, June
+                 2006.
+
+</p><p class="rfcparagraph">   [ASCII]       Coded Character Set--7-bit American Standard Code for
+                 Information Interchange, ANSI X3.4-1986.
+   [X.501]       International Telecommunication Union -
+                 Telecommunication Standardization Sector, "The
+                 Directory -- Models," X.501(1993) (also ISO/IEC 9594-<br>
+                 2:1994).
+
+</p><p class="rfcparagraph">   [X.520]       International Telecommunication Union -
+                 Telecommunication Standardization Sector, "The
+                 Directory: Selected Attribute Types", X.520(1993) (also<br>
+                 ISO/IEC 9594-6:1994).
+
+</p><p class="rfcparagraph">   [X.680]       International Telecommunication Union -
+                 Telecommunication Standardization Sector, "Abstract
+                 Syntax Notation One (ASN.1) - Specification of Basic
+                 Notation", X.680(2002) (also ISO/IEC 8824-1:2002).<br>
+
+</p><p class="rfcparagraph">	<a name="section-6.2"><h3>6.2   Informative References</h3></a>
+
+   [RFC4514]     Zeilenga, K., Ed., "Lightweight Directory Access
+                 Protocol (LDAP): String Representation of Distinguished
+                 Names", RFC 4514, June 2006.
+
+</p><p class="rfcparagraph">   [RFC4520]     Zeilenga, K., "Internet Assigned Numbers Authority
+                 (IANA) Considerations for the Lightweight Directory
+                 Access Protocol (LDAP)", BCP 64, RFC 4520, June 2006.
+
+</p><p class="rfcparagraph">Author's Address
+
+   Kurt D. Zeilenga
+   OpenLDAP Foundation
+
+   EMail: Kurt@OpenLDAP.org
+Full Copyright Statement
+
+   Copyright (C) The Internet Society (2006).<br>
+
+</p><p class="rfcparagraph">   This document is subject to the rights, licenses and restrictions
+   contained in BCP 78, and except as set forth therein, the authors
+   retain all their rights.
+
+</p><p class="rfcparagraph">   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY AND THE INTERNET
+   ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED,
+   INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE
+   INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED
+   WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Intellectual Property
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the procedures with respect to rights in RFC documents can be
+   found in BCP 78 and BCP 79.
+
+</p><p class="rfcparagraph">   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+</p><p class="rfcparagraph">   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at
+   ietf-ipr@ietf.org.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is provided by the IETF
+   Administrative Support Activity (IASA).
+
+</p>
+
+
+
+
+
+Zeilenga                    Standards Track                     [Page 8]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

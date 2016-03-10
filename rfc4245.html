@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                           O. Levin<br>Request for Comments: 4245                         Microsoft Corporation<br>Category: Informational                                          R. Even<br>                                                                 Polycom<br>                                                           November 2005<br><br></p>
+                  <h1>
+      High-Level Requirements for Tightly Coupled SIP Conferencing</h1>
+                  <h2>Status of This Memo</h2>
+
+   This memo provides information for the Internet community.  It does
+   not specify an Internet standard of any kind.  Distribution of this
+   memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (2005).<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This document examines a wide range of conferencing requirements for
+   tightly coupled SIP conferences.  Separate documents will map the
+   requirements to existing protocol primitives, define new protocol
+   extensions, and introduce new protocols as needed.  Together, these
+   documents will provide a guide for building interoperable SIP
+   conferencing applications.
+
+</p><p class="rfcparagraph">Table of Contents
+<a href="#section-1" class="">1. Introduction ...................................................</a><br>
+<a href="#section-2" class="">2. An Overview ....................................................</a><br>
+<a href="#section-3" class="">3. High-Level Requirements ........................................</a><br>
+<a href="#section-3.1" class="indent-1">3.1. Discovery Phase ...........................................</a><br>
+<a href="#section-3.2" class="indent-1">3.2. Conference Creation .......................................</a><br>
+<a href="#section-3.3" class="indent-1">3.3. Conference Termination ....................................</a><br>
+<a href="#section-3.4" class="indent-1">3.4. Participants' Manipulations ...............................</a><br>
+<a href="#section-3.4.1" class="indent-2">3.4.1. Participation of a Conference-Unaware User Agent .....</a><br>
+<a href="#section-3.4.2" class="indent-2">3.4.2. Dial-Out Scenarios ...................................</a><br>
+<a href="#section-3.4.3" class="indent-2">3.4.3. Dial-In Scenarios ....................................</a><br>
+<a href="#section-3.4.4" class="indent-2">3.4.4. Third-Party Invitation to a Conference ...............</a><br>
+<a href="#section-3.4.5" class="indent-2">3.4.5. Participants' Removal ................................</a><br>
+<a href="#section-3.4.6" class="indent-2">3.4.6. Participants' Privacy ................................</a><br>
+<a href="#section-3.5" class="indent-1">3.5. Conference State Information ..............................</a><br>
+<a href="#section-3.5.1" class="indent-2">3.5.1. Description ..........................................</a><br>
+<a href="#section-3.5.2" class="indent-2">3.5.2. Dissemination of Changes .............................</a><br>
+<a href="#section-3.5.3" class="indent-2">3.5.3. On-demand Information Dissemination ..................</a><br>
+<a href="#section-3.6" class="indent-1">3.6. Focus Role Migration ......................................</a><br>
+<a href="#section-3.7" class="indent-1">3.7. Side-bar Conferences ......................................</a><br>
+<a href="#section-3.8" class="indent-1">3.8. Cascading of Conferences ..................................</a><br>
+<a href="#section-3.9" class="indent-1">3.9. SIMPLE and SIP Conferencing Coordination ..................</a><br>
+<a href="#section-4" class="">4. Security Considerations .......................................</a><br>
+<a href="#section-5" class="">5. Contributors ..................................................</a><br>
+<a href="#section-6" class="">6. References ....................................................</a><br>
+<a href="#section-6.1" class="indent-1">6.1. Normative References .....................................</a><br>
+
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   This document examines a wide range of conferencing requirements for
+   tightly coupled SIP (RFC 3261 [2]) conferencing.
+
+</p><p class="rfcparagraph">   The requirements are grouped by subjects in various areas allowing
+   solutions to progress in parallel.
+
+</p><p class="rfcparagraph">   Separate documents will map the requirements to existing protocol
+   primitives, define new protocol extensions, and introduce new
+   protocols as needed.
+
+</p><p class="rfcparagraph">   Together, these documents will provide a guide for building
+   interoperable SIP conferencing applications.
+
+</p><p class="rfcparagraph">   The terms "MAY", "SHOULD", and "MUST" are to be interpreted as
+   described in RFC 2119 [1].
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   An Overview</h2></a>
+
+   A SIP conference is an association of SIP user agents (i.e.,
+   conference participants) with a central point (i.e., a conference
+   focus), where the focus has direct peer-wise relationships with the
+   participants by maintaining a separate SIP dialog with each.
+
+</p><p class="rfcparagraph">   The focus is a SIP user agent that has abilities to host SIP
+   conferences including their creation, maintenance, and manipulation
+   using SIP call control means and potentially other non-SIP means.
+
+</p><p class="rfcparagraph">   In this tightly coupled model, the SIP conference graph is always a
+   star.  The conference focus maintains the correlation among
+   conference's dialogs internally.
+
+</p><p class="rfcparagraph">   The conference focus can be implemented either by a participant or by
+   a separate application server.
+
+</p><p class="rfcparagraph">   In the first case, a focus is typically capable of hosting a simple
+   ad hoc conference only.  We envision that such basic conference can
+   be established using SIP call control primitives only.
+   A dedicated conference server, in addition to the basic features,
+   offers richer functionality including simultaneous conferences, large
+   scalable conferences, reserved conferences, and managed conferences.
+   A conferencing server can support any subset of the advanced
+   conferencing functions presented in this document.
+
+</p><p class="rfcparagraph">   The media graph of a SIP conference can be centralized,
+   decentralized, or any combination of both, and potentially differ per
+   media type.  In the centralized case, the media sessions are
+   established between the focus and each one of the participants.  In
+   the de-centralized (i.e., distributed) case, the media graph is a
+   (multicast or multi-unicast) mesh among the participants.
+   Consequently, the media processing (e.g., mixing) can be performed
+   either by the focus alone or by the participants.
+
+</p><p class="rfcparagraph">   Conference participants and third parties can have different roles
+   and privileges in a certain conference.  For example, conferencing
+   policy can state that the rights to disconnect from and to invite to
+   a conference are limited to the conference chair only.
+
+</p><p class="rfcparagraph">   Throughout the document, by conference policies we mean a set of
+   parameters and rules (e.g., maximum number of participants, needs
+   chair-person supervision or not, password protected or not, duration,
+   or a way of media mixing) that are defined at the onset of a
+   conference.  Typically, conference policies would be specified by a
+   conference creator and need special privileges to be manipulated.
+
+</p><p class="rfcparagraph">   Throughout the document, by a conference state we mean a set of
+   information describing the conference in progress.  This includes
+   participants' information (such as dialog identifiers), media
+   sessions in progress, the current loudest speaker, the current chair,
+   etc.
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   High-Level Requirements</h2></a>
+
+   In addition to the requirements presented in this document,
+   supplementary requirements for conferencing policy, media mixing and
+   other manipulations, floor control, privilege control, etc. will be
+   discussed in separate documents.
+
+</p><p class="rfcparagraph">	<a name="section-3.1"><h3>3.1   Discovery Phase</h3></a>
+
+   Some of the requirements presented in this section can be met either
+   by configuration means or by using proprietary conventions.
+   Nevertheless, there is consensus that standard means for implementing
+   these functions by automata MUST be defined.
+   REQ-1: Discovery of a location of an arbitrary SIP conferencing
+        server(s).
+
+</p><p class="rfcparagraph">   REQ-2: Given a SIP Address-of-Record (AOR) of a certain entity,
+        resolution whether the SIP entity has focus capabilities.
+
+</p><p class="rfcparagraph">   REQ-3: Given a global identifier of a particular conference, locating
+        the conference focus.
+
+</p><p class="rfcparagraph">   REQ-4: Given a global identifier of a particular conference,
+        obtaining the conference properties.
+
+</p><p class="rfcparagraph">   REQ-5: Given a global identifier of a particular conference,
+        obtaining the conference state information.
+
+</p><p class="rfcparagraph">	<a name="section-3.2"><h3>3.2   Conference Creation</h3></a>
+
+   Given a focus location, a means MUST be defined for an interested
+   entity (including a user agent) to implement the procedures below:
+
+</p><p class="rfcparagraph">   REQ-1: Creation of an ad-hoc conference identifier and the conference
+        with specified properties.
+
+</p><p class="rfcparagraph">   REQ-2: Creation of a reserved conference identifier for a conference
+        with specified properties.
+
+</p><p class="rfcparagraph">   REQ-3:  Specifying properties upon conference creation in any of the
+        following ways: default, profiles, and explicitly.
+
+</p><p class="rfcparagraph">	<a name="section-3.3"><h3>3.3   Conference Termination</h3></a>
+
+   REQ-1: Given a conference identifier, a means MUST be defined for a
+        user agent to disconnect all participants from the conference
+        and terminate the conference including the release of the
+        associated resources.
+
+</p><p class="rfcparagraph">   REQ-2: A means MAY be defined for requesting a focus to revert a
+        two-party conference to a basic SIP point-to-point session
+        including the release of the associated conferencing resources.
+
+</p><p class="rfcparagraph">	<a name="section-3.4"><h3>3.4   Participants' Manipulations</h3></a>
+
+        Some of the requirements presented in this section can be met by
+        human intervention, configuration means, or proprietary
+        conventions.  Nevertheless, there is consensus that standard
+        means for implementing these functions by automata MUST be
+        defined.
+	<a name="section-3.4.1"><h4>3.4.1   Participation of a Conference-Unaware User Agent</h4></a>
+
+   REQ-1: Focus MUST be able to invite and disconnect an RFC 3261
+        compliant only SIP user agent to and from a SIP conference.
+
+</p><p class="rfcparagraph">   REQ-2: An RFC 3261 compliant only SIP user agent MUST be able to
+        dial-in to a particular SIP conference.  In this case, only the
+        human knows that he/she is connected to the conference.
+
+</p><p class="rfcparagraph">	<a name="section-3.4.2"><h4>3.4.2   Dial-Out Scenarios</h4></a>
+
+   REQ-1: A means MUST be defined for a focus to invite another user
+        agent to one of the focus' conferences.  This procedure MUST
+        result in the establishment of a single SIP dialog between the
+        two.
+
+</p><p class="rfcparagraph">   REQ-2: Given an existing SIP dialog between two user agents, if at
+        least one user agent has focus capabilities, a means MUST be
+        defined for the conference focus to invite the other user agent
+        to one of the focus' conferences without additional SIP dialog
+        establishment.
+
+</p><p class="rfcparagraph">   REQ-3: An invitation to a user agent to join a conference MUST
+        include a standard indication that it is a conference and the
+        conference identifier.
+
+</p><p class="rfcparagraph">	<a name="section-3.4.3"><h4>3.4.3   Dial-In Scenarios</h4></a>
+
+   REQ-1: A means MUST be defined for a user agent to create an ad hoc
+        conference with default properties (as per "Conference Creation"
+        REQ-1 above) and to become a participant using a single SIP
+        dialog.
+
+</p><p class="rfcparagraph">   REQ-2: Given a reserved conference identifier, a means MUST be
+        defined for a user agent to activate the conference and to
+        become a participant using a single SIP dialog.
+
+</p><p class="rfcparagraph">   REQ-3: Given a conference identifier of an active conference, a means
+        MUST be defined for a user agent to dial-in the conference and
+        to become a participant using a single SIP dialog between the
+        two.
+
+</p><p class="rfcparagraph">   REQ-4: Given an identifier of one of the dialogs of a particular
+        active conference, a means MUST be defined for a user agent to
+        dial-in the conference and to become a participant.
+	<a name="section-3.4.4"><h4>3.4.4   Third-Party Invitation to a Conference</h4></a>
+
+   REQ-1: Given a conference identifier, a means MUST be defined for a
+        user agent to invite another user agent to this conference.
+
+</p><p class="rfcparagraph">   REQ-2: Given an identifier of one of the dialogs of a particular
+        active conference, a means MUST be defined for a user agent to
+        invite another user agent to this conference.
+
+</p><p class="rfcparagraph">   EQ-3: Given a conference identifier, a means SHOULD be defined for a
+        user agent to invite a list of user agents to this conference (a
+        so-called "mass invitation").
+
+</p><p class="rfcparagraph">	<a name="section-3.4.5"><h4>3.4.5   Participants' Removal</h4></a>
+
+   REQ-1: A means MUST be defined for a conference focus to remove a
+        conference participant from the conference.
+
+</p><p class="rfcparagraph">   REQ-2: Given a conference identifier, a means MUST be defined for a
+
+        user agent to remove a participant from the conference.
+
+</p><p class="rfcparagraph">   REQ-3: Given an identifier of one of the dialogs of a particular
+        active conference, a means MUST be defined for a user agent to
+        remove a participant from the conference.
+
+</p><p class="rfcparagraph">   REQ-4: Given a conference identifier, a means MUST be defined for a
+        user agent to remove all the participants from the conference.
+
+</p><p class="rfcparagraph">   REQ-5: Given a conference identifier and a sub-list of participants,
+        a means MAY be defined for a user agent to remove the specified
+        participants from the conference (a so-called "mass ejection").
+
+</p><p class="rfcparagraph">	<a name="section-3.4.6"><h4>3.4.6   Participants' Privacy</h4></a>
+
+   A conference focus SHOULD support the procedures described in this
+   section.  A conference participant MAY support the procedures
+   described in this section.  The requirements imply that "anonymizing"
+   operations MUST be performed on all: the call control, the media
+   control, and the media content when appropriate.
+
+</p><p class="rfcparagraph">   REQ-1: A conference participant joins the conference "anonymously";
+        that is, his/her presence can be announced but without
+        disclosing his/her identity.
+
+</p><p class="rfcparagraph">   REQ-2: A conference participant requests a focus for anonymous
+        participation in the conference.
+   REQ-3: A conference participant joins a conference in a "hidden
+        mode"; that is, his/her presence and identity are not to be
+        disclosed to other participants.
+
+</p><p class="rfcparagraph">   REQ-4: A conference participant requests a focus for participation in
+        the conference in a hidden mode.
+
+</p><p class="rfcparagraph">	<a name="section-3.5"><h3>3.5   Conference State Information</h3></a>
+
+	<a name="section-3.5.1"><h4>3.5.1   Description</h4></a>
+
+   By a conference state, we mean a virtual database describing the
+   conference in progress.  This includes different conference aspects:
+   participants' information (such as dialog identifiers and state),
+   media sessions in progress (such as current stream contributing
+   sources and encoding schemes), the current loudest speaker, the
+   current chair, etc.  Conference state is the latest conference
+   snapshot triggered by changes in participants' state, conference
+   policy changes, etc.
+
+</p><p class="rfcparagraph">   REQ-1: A conference state virtual database MUST have a modular
+        definition that is, it MUST be possible to access different
+        conference aspects independently.
+
+</p><p class="rfcparagraph">   REQ-2: It MUST be possible to aggregate information relating to
+        different conference aspects in a single report.
+
+</p><p class="rfcparagraph">   REQ-3: A mechanism for extensible definition and registration of
+        conference state evolving aspects MUST be present.
+
+</p><p class="rfcparagraph">   REQ-4: A default conference state report MUST be defined.  It SHOULD
+        contain a minimal useful set of information (e.g., a list of
+        current conference participants).
+
+</p><p class="rfcparagraph">	<a name="section-3.5.2"><h4>3.5.2   Dissemination of Changes</h4></a>
+
+   REQ-1: A means MUST be defined for reporting the conference state
+        changes to interested parties (including non-conference
+        participants) in a timely manner.
+
+</p><p class="rfcparagraph">   REQ-2: A means MUST be defined for a SIP user agent to express its
+        interest in selected state changes only.
+
+</p><p class="rfcparagraph">   REQ-3: A means MUST be defined for a SIP user agent to express the
+        minimum interval between receiving state change reports.
+
+</p><p class="rfcparagraph">   REQ-4: It MUST be possible to aggregate recent changes in a single
+        reporting event.
+   REQ-5: Default conference state change reports MUST be defined.  They
+        SHOULD contain minimal useful to the participants information
+        (e.g., participants' joining and leaving the conference).
+
+</p><p class="rfcparagraph">	<a name="section-3.5.3"><h4>3.5.3   On-demand Information Dissemination</h4></a>
+
+   REQ-1: A means MUST be defined to disseminate any conference state
+        information to interested parties (including SIP user agents)
+        on-demand.
+
+</p><p class="rfcparagraph">   REQ-2: A means MUST be defined for an interested party (including a
+        SIP user agent) to request conference state information of a
+        particular conference defined by the conference identifier.
+
+</p><p class="rfcparagraph">   REQ-3: A means MUST be defined for an interested party (including a
+        SIP user agent) to specify the subset of the conference state
+        information it wants and is capable of receiving.
+
+</p><p class="rfcparagraph">	<a name="section-3.6"><h3>3.6   Focus Role Migration</h3></a>
+
+   REQ-1: A procedure for delegating a focus role by the current focus
+        to another participant MUST be defined.
+
+</p><p class="rfcparagraph">   REQ-2: A procedure for requesting a conference focus to transfer its
+        role to another participant MUST be defined.
+
+</p><p class="rfcparagraph">   REQ-3: A procedure for on-demand unconditional transfer of the focus
+        role to a different participant MUST be defined.
+
+</p><p class="rfcparagraph">   REQ-4: A detection procedure for a focus failure condition MUST be
+        defined.
+
+</p><p class="rfcparagraph">	<a name="section-3.7"><h3>3.7   Side-bar Conferences</h3></a>
+
+   A standard means MUST be defined in order to implement the operations
+   defined in this section below.
+
+</p><p class="rfcparagraph">   REQ-1: A user agent (not a conference participant) joins a side-bar
+        within the conference by SIP means.
+
+</p><p class="rfcparagraph">   REQ-2: A user agent (not a conference participant) is invited to a
+        side-bar within the conference by SIP means.
+
+</p><p class="rfcparagraph">   REQ-3: A conference participant creates a side-bar conference with
+        one or more participants in a conference by SIP means.
+
+</p><p class="rfcparagraph">   REQ-4: A conference participant joins a side-bar within the
+        conference by SIP means.
+   REQ-5: A conference participant is invited to a side-bar within the
+        conference by SIP means.
+
+</p><p class="rfcparagraph">   REQ-6: A conference-unaware user agent (a participant or not) creates
+        and participates in side-bar conferences.  It MAY be achieved by
+        non-SIP means.
+
+</p><p class="rfcparagraph">   REQ-7: A conference participant creates side-bar conferences within
+        the conference without establishing any additional SIP dialogs
+        with the focus.  It MAY be achieved by non-SIP means.
+
+</p><p class="rfcparagraph">   REQ-8: A conference participant joins any number of side-bars within
+        the conference without establishing any additional SIP dialogs
+        with the focus.  It MAY be achieved by non-SIP means.
+
+</p><p class="rfcparagraph">   REQ-9: A conference participant is invited to any number of side-bars
+        within the conference without establishing any additional SIP
+        dialogs with the focus.  It MAY be achieved by non-SIP means.
+
+</p><p class="rfcparagraph">	<a name="section-3.8"><h3>3.8   Cascading of Conferences</h3></a>
+
+   "Cascading of Conferences" is a term that has different meanings in
+   different contexts.  Some examples are listed below:
+
+</p><p class="rfcparagraph">      -    Peer-to-peer chaining of signaling.  (Many ways exist to
+           build the media graph in this case.)
+
+      -    Conferences have hierarchal signaling relations.  (Many ways
+           exists to build the media graph in this case.)
+
+      -    "Cascading" is used to distribute the media "mixing" only.
+           The distribution of signaling is not required.
+
+</p><p class="rfcparagraph">   As it can be seen from the examples, each will define a different set
+   of requirements.
+
+</p><p class="rfcparagraph">	<a name="section-3.9"><h3>3.9   SIMPLE and SIP Conferencing Coordination</h3></a>
+
+   REQ-1: SIMPLE-based Presence and Instant Messaging architecture
+        SHOULD fit into the general SIP Conferencing architecture.
+
+</p><p class="rfcparagraph">   REQ-2: A scenario where a multimedia SIP conference and a multiparty
+        instant messaging conversation take place among the same group
+        of participants MUST be addressed.
+
+</p><p class="rfcparagraph">   REQ-3: A scenario where a side-bar and/or a sub-IM-conference is
+        being held as a part of SIP conference MUST be addressed.
+	<a name="section-4"><h2>4.   Security Considerations</h2></a>
+
+   This document discusses high-level requirements for SIP conferencing.
+   Conferencing has some specific security requirements, which will be
+   summarized here at a very high level.
+
+</p><p class="rfcparagraph">   All of the operations and functions described in this document need
+   to be authorized by a focus or a participant.  It is expected that
+   conferences will be governed by a set of authorization rules defined
+   as a part of the conference policy.  In order for the conference
+   policy to be implemented, the focus needs to be able to authenticate
+   potential participants.  Normal SIP mechanisms including Digest
+   authentication and certificates can be used [2].  These conference-
+   specific security requirements will be discussed in detail in the
+   protocol documents.
+
+</p><p class="rfcparagraph">   Conferencing also has privacy implications.  Some of these are
+   discussed in this document.  Standard SIP mechanisms for a user agent
+   to request privacy should be utilized by a focus and will be detailed
+   in the protocol documents.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   Contributors</h2></a>
+
+   This work is based on the discussions among the members of the SIP
+   Conferencing design team.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.   References</h2></a>
+
+	<a name="section-6.1"><h3>6.1   Normative References</h3></a>
+
+   [1]  Bradner, S., "Key words for use in RFCs to Indicate Requirement
+        Levels", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">   [2]  Rosenberg, J., Schulzrinne, H., Camarillo, G., Johnston, A.,
+        Peterson, J., Sparks, R., Handley, M. and E. Schooler, "SIP:
+        Session Initiation Protocol", RFC 3261, June 2002.
+Authors' Addresses
+
+   Orit Levin
+   Microsoft Corporation
+   One Microsoft Way
+   Redmond, WA  98052
+
+   EMail: oritl@microsoft.com
+
+
+   Roni Even
+   Polycom
+   94 Derech Em Hamoshavot
+   Petach Tikva, Israel
+
+   EMail: roni.even@polycom.co.il
+Full Copyright Statement
+
+   Copyright (C) The Internet Society (2005).<br>
+
+</p><p class="rfcparagraph">   This document is subject to the rights, licenses and restrictions
+   contained in BCP 78, and except as set forth therein, the authors
+   retain all their rights.
+
+</p><p class="rfcparagraph">   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY AND THE INTERNET
+   ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED,
+   INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE
+   INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED
+   WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Intellectual Property
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the procedures with respect to rights in RFC documents can be
+   found in BCP 78 and BCP 79.
+
+</p><p class="rfcparagraph">   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+</p><p class="rfcparagraph">   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at ietf-
+   ipr@ietf.org.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is currently provided by the
+   Internet Society.
+
+</p>
+
+
+
+
+
+Levin & Even                 Informational                     [Page 12]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

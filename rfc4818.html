@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                         J. Salowey<br>Request for Comments: 4818                                      R. Droms<br>Category: Standards Track                            Cisco Systems, Inc.<br>                                                              April 2007<br><br></p>
+                  <h1>
+                 RADIUS Delegated-IPv6-Prefix Attribute</h1>
+                  <h2>Status of This Memo</h2>
+
+   This document specifies an Internet standards track protocol for the
+   Internet community, and requests discussion and suggestions for
+   improvements.  Please refer to the current edition of the "Internet
+   Official Protocol Standards" (STD 1) for the standardization state
+   and status of this protocol.  Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The IETF Trust (2007).<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This document defines a RADIUS (Remote Authentication Dial In User
+   Service) attribute that carries an IPv6 prefix that is to be
+   delegated to the user.  This attribute is usable within either RADIUS
+   or Diameter.
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   This document defines the Delegated-IPv6-Prefix attribute as a RADIUS
+   [1] attribute that carries an IPv6 prefix to be delegated to the
+   user, for use in the user's network.  For example, the prefix in a
+   Delegated-IPv6-Prefix attribute can be delegated to another node
+   through DHCP Prefix Delegation [2].
+
+</p><p class="rfcparagraph">   The Delegated-IPv6-Prefix attribute can be used in DHCP Prefix
+   Delegation between the delegating router and a RADIUS server, as
+   illustrated in the following message sequence.
+
+</p><p class="rfcparagraph">
+   Requesting Router   Delegating Router                   RADIUS Server
+         |                     |                                 |
+         |-Solicit------------>|                                 |
+         |                     |-Request------------------------>|
+         |                     |<--Accept(Delegated-IPv6-Prefix)-|
+         |<--Advertise(Prefix)-|                                 |
+         |-Request(Prefix)---->|                                 |
+         |<--Reply(Prefix)-----|                                 |
+         |                     |                                 |
+                DHCP PD                      RADIUS
+
+
+   The Framed-IPv6-Prefix attribute [4] is not designed to support
+   delegation of IPv6 prefixes to be used in the user's network, and
+   therefore Framed-IPv6-Prefix and Delegated-IPv6-Prefix attributes may
+   be included in the same RADIUS packet.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Terminology</h2></a>
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in RFC 2119 [3].
+	<a name="section-3"><h2>3.   Attribute Format</h2></a>
+
+   The format of the Delegated-IPv6-Prefix is:
+
+</p><p class="rfcparagraph">       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |     Type      |    Length     |  Reserved     | Prefix-Length |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+                                   Prefix
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+                                   Prefix
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+                                   Prefix
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+                                   Prefix                             |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+      Type
+
+           123 for Delegated-IPv6-Prefix
+
+      Length
+
+           The length of the entire attribute, in bytes.  At least 4 (to
+           hold Type/Length/Reserved/Prefix-Length for a 0-bit prefix),
+           and no larger than 20 (to hold Type/Length/ Reserved/Prefix-
+           Length for a 128-bit prefix)
+
+      Reserved
+
+           Always set to zero by sender; ignored by receiver
+
+      Prefix-Length
+
+           The length of the prefix being delegated, in bits.  At least
+           0 and no larger than 128 bits (identifying a single IPv6
+           address)
+
+   Note that the prefix field is only required to be long enough to hold
+   the prefix bits and can be shorter than 16 bytes.  Any bits in the
+   prefix field that are not part of the prefix MUST be zero.
+
+</p><p class="rfcparagraph">   The Delegated-IPv6-Prefix MAY appear in an Access-Accept packet, and
+   can appear multiple times.  It MAY appear in an Access-Request packet
+   as a hint by the NAS to the server that it would prefer these
+   prefix(es), but the server is not required to honor the hint.
+   The Delegated-IPv6-Prefix attribute MAY appear in an Accounting-
+   Request packet.
+
+</p><p class="rfcparagraph">   The Delegated-IPv6-Prefix MUST NOT appear in any other RADIUS
+   packets.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   Table of Attributes</h2></a>
+
+   The following table provides a guide to which attributes may be found
+   in which kinds of packets, and in what quantity.
+
+</p><p class="rfcparagraph"><pre>   +-------------------------------------------------------------------+
+   | Request Accept Reject Challenge Accounting  #   Attribute         |
+   |                                 Request                           |
+   | 0+      0+     0      0         0+          123 Delegated-IPv6-   |
+   |                                                 Prefix            |
+   +-------------------------------------------------------------------+
+
+   The meaning of the above table entries is as follows:
+      0   This attribute MUST NOT be present.
+      0+  Zero or more instances of this attribute MAY be present.
+      0-1 Zero or one instance of this attribute MAY be present.
+      1   Exactly one instance of this attribute MUST be present.
+      1+  One or more of these attributes MUST be present.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   Diameter Considerations</h2></a>
+
+   When used in Diameter, the attribute defined in this specification
+   can be used as a Diameter AVP from the Code space 1-255, i.e., RADIUS
+   attribute compatibility space.  No additional Diameter Code values
+   are therefore allocated.  The data types of the attributes are as
+   follows:
+
+</p><p class="rfcparagraph">        Delegated-IPv6-Prefix             OctetString
+
+   The attribute in this specification has no special translation
+   requirements for Diameter to RADIUS or RADIUS to Diameter gateways,
+   i.e., the attribute is copied as is, except for changes relating to
+   headers, alignment, and padding.  See also RFC 3588 [5], Section 4.1,
+   and RFC 4005 [6], Section 9.
+
+</p><p class="rfcparagraph">   The text in this specification describing the applicability of the
+   Delegated-IPv6-Prefix attribute for RADIUS Access-Request applies in
+   Diameter to AA-Request [6] or Diameter-EAP-Request [7].
+
+</p><p class="rfcparagraph">   The text in this specification describing the applicability of the
+   Delegated-IPv6-Prefix attribute for RADIUS Access-Accept applies in
+   Diameter to AA-Answer or Diameter-EAP-Answer that indicates success.
+   The text in this specification describing the applicability of the
+   Delegated-IPv6-Prefix attribute for RADIUS Accounting-Request applies
+   to Diameter Accounting-Request [6] as well.
+
+</p><p class="rfcparagraph">   The AVP flag rules [5] for the Delegated-IPv6-Prefix attribute are:
+
+</p><p class="rfcparagraph">                                      +---------------------+
+                                      |    AVP Flag rules   |
+                                      |----+-----+----+-----|----+
+                     AVP              |    |     |SHLD| MUST|    |
+     Attribute Name  Code  Value Type |MUST| MAY | NOT|  NOT|Encr|
+     ---------------------------------|----+-----+----+-----|----|
+     Delegated-IPv6- 123   OctetString| M  |  P  |    |  V  | Y  |
+       Prefix                         |    |     |    |     |    |
+     ---------------------------------|----+-----+----+
+</pre>
+-----|----|
+
+	<a name="section-6"><h2>6.   IANA Considerations</h2></a>
+
+   IANA assigned a Type value, 123, for this attribute from the RADIUS
+   Attribute Types registry.
+
+</p><p class="rfcparagraph">	<a name="section-7"><h2>7.   Security Considerations</h2></a>
+
+   Known security vulnerabilities of the RADIUS protocol are discussed
+   in RFC 2607 [8], RFC 2865 [1], and RFC 2869 [9].  Use of IPsec [10]
+   for providing security when RADIUS is carried in IPv6 is discussed in
+   RFC 3162.
+
+</p><p class="rfcparagraph">   Security considerations for the Diameter protocol are discussed in
+   RFC 3588 [5].
+
+</p><p class="rfcparagraph">	<a name="section-8"><h2>8.   References</h2></a>
+
+	<a name="section-8.1"><h3>8.1   Normative References</h3></a>
+
+   [1]  Rigney, C., Willens, S., Rubens, A., and W. Simpson, "Remote
+        Authentication Dial In User Service (RADIUS)", RFC 2865, June
+        2000.
+
+</p><p class="rfcparagraph">   [2]  Troan, O. and R. Droms, "IPv6 Prefix Options for Dynamic Host
+        Configuration Protocol (DHCP) version 6", RFC 3633, December
+        2003.
+
+</p><p class="rfcparagraph">   [3]  Bradner, S., "Key words for use in RFCs to Indicate Requirement
+        Levels", BCP 14, RFC 2119, March 1997.
+	<a name="section-9.2"><h3>9.2   Informative References</h3></a>
+
+   [4]  Aboba, B., Zorn, G., and D. Mitton, "RADIUS and IPv6", RFC 3162,
+        August 2001.
+
+</p><p class="rfcparagraph">   [5]  Calhoun, P., Loughney, J., Guttman, E., Zorn, G., and J. Arkko,
+        "Diameter Base Protocol", RFC 3588, September 2003.
+
+</p><p class="rfcparagraph">   [6]  Calhoun, P., Zorn, G., Spence, D., and D. Mitton, "Diameter
+        Network Access Server Application", RFC 4005, August 2005.
+
+</p><p class="rfcparagraph">   [7]  Eronen, P., Hiller, T., and G. Zorn, "Diameter Extensible
+        Authentication Protocol (EAP) Application", RFC 4072, August
+        2005.
+
+</p><p class="rfcparagraph">   [8]  Aboba, B. and J. Vollbrecht, "Proxy Chaining and Policy
+        Implementation in Roaming", RFC 2607, June 1999.
+
+</p><p class="rfcparagraph">   [9]  Rigney, C., Willats, W., and P. Calhoun, "RADIUS Extensions",
+        RFC 2869, June 2000.
+
+</p><p class="rfcparagraph">   [10] Kent, S. and K. Seo, "Security Architecture for the Internet
+        Protocol", RFC 4301, December 2005.
+
+</p><p class="rfcparagraph">Authors' Addresses
+
+   Joe Salowey
+   Cisco Systems, Inc.
+   2901 Third Avenue
+   Seattle, WA  98121
+   USA
+
+   Phone: +1 206.310.0596
+   EMail: jsalowey@cisco.com
+
+
+   Ralph Droms
+   Cisco Systems, Inc.
+   1414 Massachusetts Avenue
+   Boxborough, MA  01719
+   USA
+
+   Phone: +1 978.936.1674
+   EMail: rdroms@cisco.com
+Full Copyright Statement
+
+   Copyright (C) The IETF Trust (2007).<br>
+
+</p><p class="rfcparagraph">   This document is subject to the rights, licenses and restrictions
+   contained in BCP 78, and except as set forth therein, the authors
+   retain all their rights.
+
+</p><p class="rfcparagraph">   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY, THE IETF TRUST AND
+   THE INTERNET ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS
+   OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF
+   THE INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED
+   WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Intellectual Property
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the procedures with respect to rights in RFC documents can be
+   found in BCP 78 and BCP 79.
+
+</p><p class="rfcparagraph">   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+</p><p class="rfcparagraph">   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at
+   ietf-ipr@ietf.org.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is currently provided by the
+   Internet Society.
+
+</p>
+
+
+
+
+
+Salowey & Droms             Standards Track                     [Page 7]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

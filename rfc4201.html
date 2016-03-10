@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                        K. Kompella<br>Request for Comments: 4201                                    Y. Rekhter<br>Updates: 3471, 3472, 3473                               Juniper Networks<br>Category: Standards Track                                      L. Berger<br>                                                          Movaz Networks<br>                                                            October 2005<br><br></p>
+                  <h1>
+             Link Bundling in MPLS Traffic Engineering (TE)</h1>
+                  <h2>Status of This Memo</h2>
+
+   This document specifies an Internet standards track protocol for the
+   Internet community, and requests discussion and suggestions for
+   improvements.  Please refer to the current edition of the "Internet
+   Official Protocol Standards" (STD 1) for the standardization state
+   and status of this protocol.  Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (2005).<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   For the purpose of Generalized Multi-Protocol Label Switching (GMPLS)
+   signaling, in certain cases a combination of <link identifier, label>
+   is not sufficient to unambiguously identify the appropriate resource
+   used by a Label Switched Path (LSP).  Such cases are handled by using
+   the link bundling construct, which is described in this document.
+   This document updates the interface identification TLVs, which are
+   defined in the GMPLS Signaling Functional Description.
+<h2>Table of Contents</h2>
+<a href="#section-1" class="">1. Introduction ................................................</a><br>
+<a href="#section-1.1" class="indent-1">1.1. Specification of Requirements .........................</a><br>
+<a href="#section-2" class="">2. Link Bundling ...............................................</a><br>
+<a href="#section-2.1" class="indent-1">2.1. Restrictions on Bundling ..............................</a><br>
+<a href="#section-2.2" class="indent-1">2.2. Routing Considerations ................................</a><br>
+<a href="#section-2.3" class="indent-1">2.3. Signaling Considerations ..............................</a><br>
+<a href="#section-2.3.1" class="indent-2">2.3.1. Interface Identification TLV Format ...........</a><br>
+<a href="#section-2.3.2" class="indent-2">2.3.2. Errored Component Identification ..............</a><br>
+<a href="#section-3" class="">3. Traffic Engineering Parameters for Bundled Links ............</a><br>
+<a href="#section-3.1" class="indent-1">3.1. OSPF Link Type ........................................</a><br>
+<a href="#section-3.2" class="indent-1">3.2. OSPF Link ID ..........................................</a><br>
+<a href="#section-3.3" class="indent-1">3.3. Local and Remote Interface IP Address .................</a><br>
+<a href="#section-3.4" class="indent-1">3.4. Local and Remote Identifiers ..........................</a><br>
+<a href="#section-3.5" class="indent-1">3.5. Traffic Engineering Metric ............................</a><br>
+<a href="#section-3.6" class="indent-1">3.6. Maximum Bandwidth .....................................</a><br>
+<a href="#section-3.7" class="indent-1">3.7. Maximum Reservable Bandwidth ..........................</a><br>
+<a href="#section-3.8" class="indent-1">3.8. Unreserved Bandwidth ..................................</a><br>
+<a href="#section-3.9" class="indent-1">3.9. Resource Classes (Administrative Groups) ..............</a><br>
+<a href="#section-3.10" class="indent-1">3.10. Maximum LSP Bandwidth ................................</a><br>
+<a href="#section-4" class="">4. Bandwidth Accounting ........................................</a><br>
+<a href="#section-5" class="">5. Security Considerations .....................................</a><br>
+<a href="#section-6" class="">6. IANA Considerations .........................................</a><br>
+<a href="#section-7" class="">7. References ..................................................</a><br>
+<a href="#section-7.1" class="indent-1">7.1. Normative References ..................................</a><br>
+<a href="#section-7.2" class="indent-1">7.2. Informative References ................................</a><br>
+
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   For the purpose of Generalized Multi-Protocol Label Switching (GMPLS)
+   signaling, in certain cases a combination of <link identifier, label>
+   is not sufficient to unambiguously identify the appropriate resource
+   used by a Label Switched Path (LSP).  Such cases are handled by using
+   the link bundling construct, which is described in this document.
+   This document updates the interface identification TLVs, which are
+   defined in the GMPLS Signaling Functional Description.
+
+</p><p class="rfcparagraph">	<a name="section-1.1"><h3>1.1   Specification of Requirements</h3></a>
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in RFC 2119 [RFC2119].
+	<a name="section-2"><h2>2.   Link Bundling</h2></a>
+
+   As defined in [GMPLS-ROUTING], a traffic engineering (TE) link is a
+   logical construct that represents a way to group/map information
+   about certain physical resources (and their properties) that
+   interconnect LSRs with information that is used by Constrained SPF
+   (for the purpose of path computation) and by GMPLS signaling.
+
+</p><p class="rfcparagraph">   As stated in [GMPLS-ROUTING], depending on the nature of resources
+   that form a particular TE link for the purpose of GMPLS signaling, in
+   some cases a combination of <TE link identifier, label> is sufficient
+   to unambiguously identify the appropriate resource used by an LSP.
+   In other cases, a combination of <TE link identifier, label> is not
+   sufficient.  Consider, for example, a TE link between a pair of
+   SONET/SDH cross-connects, where this TE link is composed of several
+   fibers.  In this case the label is a TDM time slot, and moreover,
+   this time slot is significant only within a particular fiber.  Thus,
+   when signaling an LSP over such a TE link, one needs to specify not
+   just the identity of the link, but also the identity of a particular
+   fiber within that TE link, as well as a particular label (time slot)
+   within that fiber.  Such cases are handled by using the link bundling
+   construct, which is described in this document.
+
+</p><p class="rfcparagraph">   Consider a TE link such that, for the purpose of GMPLS signaling, a
+   combination of <TE link identifier, label> is not sufficient to
+   unambiguously identify the appropriate resources used by an LSP.  In
+   this situation, the link bundling construct assumes that the set of
+   resources that form the TE link could be partitioned into disjoint
+   subsets, such that (a) the partition is minimal, and (b) within each
+   subset, a label is sufficient to unambiguously identify the
+   appropriate resources used by an LSP.  We refer to such subsets as
+   "component links", and to the whole TE link as a "bundled link".
+   Furthermore, we restrict the identifiers that can be used to identify
+   component links such that they are unique for a given node.  On a
+   bundled link, a combination of <component link identifier, label> is
+   sufficient to unambiguously identify the appropriate resources used
+   by an LSP.
+
+</p><p class="rfcparagraph">   The partition of resources that form a bundled link into component
+   links has to be done consistently at both ends of the bundled link.
+   Both ends of the bundled link also have to understand the other end's
+   component link identifiers.
+
+</p><p class="rfcparagraph">   The purpose of link bundling is to improve routing scalability by
+   reducing the amount of information that has to be handled by OSPF
+   and/or IS-IS.  This reduction is accomplished by performing
+   information aggregation/abstraction.  As with any other information
+   aggregation/abstraction, this results in losing some of the
+   information.  To limit the amount of losses, one needs to restrict
+   the type of information that can be aggregated/abstracted.
+
+</p><p class="rfcparagraph">	<a name="section-2.1"><h3>2.1   Restrictions on Bundling</h3></a>
+
+   All component links in a bundle have the same Link Type (i.e.,
+   point-to-point or multi-access), the same Traffic Engineering metric,
+   the same set of resource classes at each end of the links, and must
+   begin and end on the same pair of LSRs.
+
+</p><p class="rfcparagraph">   A Forwarding Adjacency may be a component link; in fact, a bundle can
+   consist of a mix of point-to-point links and FAs.
+
+</p><p class="rfcparagraph">   If the component links are all multi-access links, the set of IS-IS
+   or OSPF routers that are connected to each component link must be the
+   same, and the Designated Router for each component link must be the
+   same.  If these conditions cannot be enforced, multi-access links
+   must not be bundled.
+
+</p><p class="rfcparagraph">   Component link identifiers MUST be unique across both TE and
+   component link identifiers on a particular node.  This means that
+   unnumbered identifiers have a node-wide scope, and that numbered
+   identifiers have the same scope as IP addresses.
+
+</p><p class="rfcparagraph">	<a name="section-2.2"><h3>2.2   Routing Considerations</h3></a>
+
+   A component link may be either numbered or unnumbered.  A bundled
+   link may itself be numbered or unnumbered, independent of whether the
+   component links of that bundled link are numbered.
+
+</p><p class="rfcparagraph">   Handling identifiers for unnumbered component links, including the
+   case in which a link is formed by a Forwarding Adjacency, follows the
+   same rules as those for an unnumbered TE link (see Section "Link
+   Identifiers" of [RFC3477]/[RFC3480]).  Furthermore, link local
+   identifiers for all unnumbered links of a given LSR (whether
+   component links, Forwarding Adjacencies, or bundled links) MUST be
+   unique in the context of that LSR.
+
+</p><p class="rfcparagraph">   The "liveness" of the bundled link is determined by the liveness of
+   each of the component links within the bundled link; a bundled link
+   is alive when at least one of its component links is determined to be
+   alive.  The liveness of a component link can be determined by any of
+   several means: IS-IS or OSPF hellos over the component link, RSVP
+   Hello, LMP hellos (see [LMP]), or from layer 1 or layer 2
+   indications.
+   Once a bundled link is determined to be alive, it can be advertised
+   as a TE link and the TE information can be flooded.  If IS-IS/OSPF
+   hellos are run over the component links, IS-IS/OSPF flooding can be
+   restricted to just one of the component links.  Procedures for doing
+   this are outside the scope of this document.
+
+</p><p class="rfcparagraph">   In the future, as new Traffic Engineering parameters are added to
+   IS-IS and OSPF, they should be accompanied by descriptions as to how
+   they can be bundled, and possible restrictions on bundling.
+
+</p><p class="rfcparagraph">	<a name="section-2.3"><h3>2.3   Signaling Considerations</h3></a>
+
+   Because information about the bundled link is flooded, but
+   information about the component links is not, typically, an LSP's ERO
+   will identify the bundled link to be used for the LSP, but not the
+   component link.  While Discovery of component link identities to be
+   used in an ERO is outside the scope of the document, it is envisioned
+   that such information may be provided via configuration or via future
+   RRO extensions.  When the bundled link is identified in an ERO or is
+   dynamically identified, the choice of the component link for the LSP
+   is a local matter between the two LSRs at each end of the bundled
+   link.
+
+</p><p class="rfcparagraph">   Signaling must identify both the component link and label to use.
+   The choice of the component link to use is always made by the sender
+   of the Path/REQUEST message.  If an LSP is bidirectional [RFC3471],
+   the sender chooses a component link in each direction.  The handling
+   of labels is not modified by this document.
+
+</p><p class="rfcparagraph">   Component link identifiers are carried in RSVP messages, as described
+   in section 8 of [RFC3473].  Component link identifiers are carried in
+   CR-LDP messages, as described in section 8 of [RFC3473].  Additional
+   processing related to unnumbered links is described in the
+   "Processing the IF_ID RSVP_HOP object"/"Processing the IF_ID TLV",
+   and "Unnumbered Forwarding Adjacencies" sections of
+   [RFC3477]/[RFC3480].
+
+</p><p class="rfcparagraph">   [RFC3471] defines the Interface Identification type-length-value
+   (TLV) types.  This document specifies that the TLV types 1, 2, and 3
+   SHOULD be used to indicate component links in IF_ID RSVP_HOP objects
+   and IF_ID TLVs.
+
+</p><p class="rfcparagraph">   Type 1 TLVs are used for IPv4 numbered component link identifiers.
+
+</p><p class="rfcparagraph">   Type 2 TLVs are used for IPv6 numbered component link identifiers.
+
+</p><p class="rfcparagraph">   Type 3 TLVs are used for unnumbered component link identifiers.
+   The Component Interface TLVs, TLV types 4 and 5, SHOULD NOT be used.
+   Note, in Path and REQUEST messages, link identifiers MUST be
+   specified from the sender's perspective.
+
+</p><p class="rfcparagraph">   Except in the special case noted below, for a unidirectional LSP,
+   only a single TLV SHOULD be used in an IF_ID RSVP_HOP object or IF_ID
+   TLV.  This TLV indicates the component link identifier of the
+   downstream data channel on which label allocation must be done.
+
+</p><p class="rfcparagraph">   Except in the special case noted below, for a bidirectional LSP, only
+   one or two TLVs SHOULD be used in an IF_ID RSVP_HOP object or IF_ID
+   TLV.  The first TLV always indicates the component link identifier of
+   the downstream data channel on which label allocation must be done.
+   When present, the second TLV always indicates the component link
+   identifier of the upstream data channel on which label allocation
+   must be done.  When only one TLV is present, it indicates the
+   component link identifier for both downstream and upstream data
+   channels.
+
+</p><p class="rfcparagraph">   In the special case where the same label is to be valid across all
+   component links, two TLVs SHOULD be used in an IF_ID RSVP_HOP object
+   or IF_ID TLV.  The first TLV indicates the TE link identifier of the
+   bundle on which label allocation must be done.  The second TLV
+   indicates a bundle scope label.  For TLV types 1 and 2, this is done
+   by using the special bit value of all ones (1) (e.g., 0xFFFFFFFF for<br>
+   a type 1 TLV).  Per [RFC3471], for TLV types 3, 4, and 5, this is
+   done by setting the Interface ID field to the special value
+   0xFFFFFFFF.  Note that this special case applies to both
+   unidirectional and bidirectional LSPs.
+
+</p><p class="rfcparagraph">   Although it SHOULD NOT be used, when used, the type 5 TLV MUST NOT be
+   the first TLV in an IF_ID RSVP_HOP object or IF_ID TLV.
+
+</p><p class="rfcparagraph">	<a name="section-2.3.1"><h4>2.3.1   Interface Identification TLV Format</h4></a>
+
+   This section modifies section 9.1.1. of [RFC3471].  The definition of
+   the IP Address field of the TLV types 3, 4, and 5 is clarified.
+
+</p><p class="rfcparagraph">      For types 3, 4, and 5, the Value field has an identical format to
+      the contents of the C-Type 1 LSP_TUNNEL_INTERFACE_ID object
+      defined in [RFC3477].  Note that this results in the renaming of
+      the IP Address field defined in [RFC3471].
+	<a name="section-2.3.2"><h4>2.3.2   Errored Component Identification</h4></a>
+
+   When Interface Identification TLVs are used, the TLVs are also used
+   to indicate the specific components associated with an error.  For
+   RSVP, this means that any received TLVs SHOULD be copied into the
+   IF_ID ERROR_SPEC object (see Section 8.2 in [RFC3473]).  The Error
+   Node Address field of the object SHOULD indicate the TE Link
+   associated with the error.  For CR-LDP, this means that any received
+   TLVs SHOULD be copied into the IF_ID Status TLV (see Section 8.2 in
+   [RFC3472]).  The HOP Address field of the TLV SHOULD indicate the TE
+   Link associated with the error.
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   Traffic Engineering Parameters for Bundled Links</h2></a>
+
+   In this section, we define the Traffic Engineering parameters to be
+   advertised for a bundled link, based on the configuration of the
+   component links and of the bundled link.  The definition of these
+   parameters for component links was undertaken in [RFC3784] and
+   [RFC3630]; we use the terminology from [RFC3630].
+
+</p><p class="rfcparagraph">	<a name="section-3.1"><h3>3.1   OSPF Link Type</h3></a>
+
+   The Link Type of a bundled link is the (unique) Link Type of the
+   component links.  Note that this parameter is not present in IS-IS.
+
+</p><p class="rfcparagraph">	<a name="section-3.2"><h3>3.2   OSPF Link ID</h3></a>
+
+   For point-to-point links, the Link ID of a bundled link is the
+   (unique) Router ID of the neighbor.  For multi-access links, this is
+   the interface address of the (unique) Designated Router.  Note that
+   this parameter is not present in IS-IS.
+
+</p><p class="rfcparagraph">	<a name="section-3.3"><h3>3.3   Local and Remote Interface IP Address</h3></a>
+
+   Note that in IS-IS, the Local Interface IP Address is known as the
+   IPv4 Interface Address and the Remote Interface IP Address is known
+   as the IPv4 Neighbor Address.
+
+</p><p class="rfcparagraph">   If the bundled link is numbered, the Local Interface IP Address is
+   the local address of the bundled link; similarly, the Remote
+   Interface IP Address is the remote address of the bundled link.
+	<a name="section-3.4"><h3>3.4   Local and Remote Identifiers</h3></a>
+
+   If the bundled link is unnumbered, the link local identifier is set
+   to the identifier chosen for the bundle by the advertising LSR.  The
+   link remote identifier is set to the identifier chosen by the
+   neighboring LSR for the reverse link corresponding to this bundle, if
+   known; otherwise, this is set to 0.
+
+</p><p class="rfcparagraph">	<a name="section-3.5"><h3>3.5   Traffic Engineering Metric</h3></a>
+
+   The Traffic Engineering Metric for a bundled link is that of the
+   component links.
+
+</p><p class="rfcparagraph">	<a name="section-3.6"><h3>3.6   Maximum Bandwidth</h3></a>
+
+   This parameter is not used.  The maximum LSP Bandwidth (as described
+   below) replaces the Maximum Bandwidth for bundled links.
+
+</p><p class="rfcparagraph">	<a name="section-3.7"><h3>3.7   Maximum Reservable Bandwidth</h3></a>
+
+   For a given bundled link, we assume that either each of its component
+   links is configured with the Maximum Reservable Bandwidth, or the
+   bundled link is configured with the Maximum Reservable Bandwidth.  In
+   the former case, the Maximum Reservable Bandwidth of the bundled link
+   is set to the sum of the Maximum Reservable Bandwidths of all
+   component links associated with the bundled link.
+
+</p><p class="rfcparagraph">	<a name="section-3.8"><h3>3.8   Unreserved Bandwidth</h3></a>
+
+   The unreserved bandwidth of a bundled link at priority p is the sum
+   of the unreserved bandwidths at priority p of all the component links
+   associated with the bundled link.
+
+</p><p class="rfcparagraph">	<a name="section-3.9"><h3>3.9   Resource Classes (Administrative Groups)</h3></a>
+
+   The Resource Classes for a bundled link are the same as those of the
+   component links.
+
+</p><p class="rfcparagraph">	<a name="section-3.10"><h3>3.10   Maximum LSP Bandwidth</h3></a>
+
+   The Maximum LSP Bandwidth takes the place of the Maximum Bandwidth.
+   For an unbundled link, the Maximum Bandwidth is defined in
+   [GMPLS-ROUTING].  The Maximum LSP Bandwidth of a bundled link at
+   priority p is defined to be the maximum of the Maximum LSP Bandwidth
+   at priority p of all of its component links.
+   The details of how Maximum LSP Bandwidth is carried in IS-IS is given
+   in [GMPLS-ISIS].  The details of how Maximum LSP Bandwidth is carried
+   in OSPF is given in [GMPLS-OSPF].
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   Bandwidth Accounting</h2></a>
+
+   The RSVP (or CR-LDP) Traffic Control module, or its equivalent, on an
+   LSR with bundled links must apply admission control on a per-
+   component link basis.  An LSP with a bandwidth requirement b and
+   setup priority p fits in a bundled link if at least one component
+   link has a maximum LSP bandwidth >= b at priority p.  If there are
+   several such links, the implementation will choose which link to use
+   for the LSP.
+
+</p><p class="rfcparagraph">   In order to know the maximum LSP bandwidth (per priority) of each
+   component link, the Traffic Control module must track the unreserved
+   bandwidth (per priority) for each component link.
+
+</p><p class="rfcparagraph">   A change in the unreserved bandwidth of a component link results in a
+   change in the unreserved bandwidth of the bundled link.  It also
+   potentially results in a change in the maximum LSP bandwidth of the
+   bundle; thus, the maximum LSP bandwidth should be recomputed.
+
+</p><p class="rfcparagraph">   If one of the component links goes down, the associated bundled link
+   remains up and continues to be advertised, provided that at least one
+   component link associated with the bundled link is up.  The
+   unreserved bandwidth of the component link that is down is set to
+   zero, and the unreserved bandwidth and maximum LSP bandwidth of the
+   bundle must be recomputed.  If all the component links associated
+   with a given bundled link are down, the bundled link MUST not be
+   advertised into OSPF/IS-IS.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   Security Considerations</h2></a>
+
+   This document defines ways of utilizing procedures defined in other
+   documents, referenced herein.  Any security issues related to those
+   procedures are addressed in the referenced documents.  Thus, this
+   document raises no new security issues for RSVP-TE [RFC3209] or CR-
+   LDP [RFC3212].
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.   IANA Considerations</h2></a>
+
+   This document changes the recommended usage of two of the
+   Interface_ID Types defined in [RFC3471].  For this reason, the IANA
+   registry of GMPLS Signaling Parameters has been updated to read:
+
+</p><p class="rfcparagraph">   4      12      COMPONENT_IF_DOWNSTREAM - DEPRECATED
+   5      12      COMPONENT_IF_UPSTREAM   - DEPRECATED
+	<a name="section-7"><h2>7.   References</h2></a>
+
+	<a name="section-7.1"><h3>7.1   Normative References</h3></a>
+
+   [GMPLS-ISIS]    Kompella, K. Ed. and Y. Rekhter, Ed., "Intermediate
+                   System to Intermediate System (IS-IS) Extensions in
+                   Support of Generalized Multi-Protocol Label Switching
+                   (GMPLS)", RFC 4205, October 2005.
+
+</p><p class="rfcparagraph">   [GMPLS-OSPF]    Kompella, K. Ed. and Y. Rekhter, Ed., "OSPF
+                   Extensions in Support of Generalized Multi-Protocol
+                   Label Switching (GMPLS)", RFC 4203, October 2005.
+
+</p><p class="rfcparagraph">   [GMPLS-ROUTING] Kompella, K., Ed. and Y. Rekhter, Ed., "Routing
+                   Extensions in Support of Generalized Multi-Protocol
+                   Label Switching (GMPLS)", RFC 4202, October 2005.
+
+</p><p class="rfcparagraph">   [RFC3471]       Berger, L., "Generalized Multi-Protocol Label
+                   Switching (GMPLS) Signaling Functional Description",
+                   RFC 3471, January 2003.
+
+</p><p class="rfcparagraph">   [RFC3473]       Berger, L., "Generalized Multi-Protocol Label
+                   Switching (GMPLS) Signaling Resource ReserVation
+                   Protocol-Traffic Engineering (RSVP-TE) Extensions",
+                   RFC 3473, January 2003.
+
+</p><p class="rfcparagraph">   [RFC3472]       Ashwood-Smith, P. and L. Berger, "Generalized Multi-
+                   Protocol Label Switching (GMPLS) Signaling
+                   Constraint-based Routed Label Distribution Protocol
+                   (CR-LDP) Extensions", RFC 3472, January 2003.
+
+</p><p class="rfcparagraph">   [RFC3784]       Smit, H. and T. Li, "Intermediate System to
+                   Intermediate System (IS-IS) Extensions for Traffic
+                   Engineering (TE)", RFC 3784, June 2004.
+
+</p><p class="rfcparagraph">   [RFC3630]       Katz, D., Kompella, K., and D. Yeung, "Traffic
+                   Engineering (TE) Extensions to OSPF Version 2", RFC
+                   3630, September 2003.
+
+</p><p class="rfcparagraph">   [RFC3480]       Kompella, K., Rekhter, Y., and A. Kullberg,
+                   "Signalling Unnumbered Links in CR-LDP (Constraint-
+                   Routing Label Distribution Protocol)", RFC 3480,
+                   February 2003.
+
+</p><p class="rfcparagraph">   [RFC3477]       Kompella, K. and Y. Rekhter, "Signalling Unnumbered
+                   Links in Resource ReSerVation Protocol - Traffic
+                   Engineering (RSVP-TE)", RFC 3477, January 2003.
+   [RFC2119]       Bradner, S., "Key words for use in RFCs to Indicate
+                   Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">   [RFC3209]       Awduche, D., Berger, L., Gan, D., Li, T., Srinivasan,
+                   V., and G. Swallow, "RSVP-TE: Extensions to RSVP for
+                   LSP Tunnels", RFC 3209, December 2001.
+
+</p><p class="rfcparagraph">   [RFC3212]       Jamoussi, B., Andersson, L., Callon, R., Dantu, R.,
+                   Wu, L., Doolan, P., Worster, T., Feldman, N.,
+                   Fredette, A., Girish, M., Gray, E., Heinanen, J.,
+                   Kilty, T., and A. Malis, "Constraint-Based LSP Setup
+                   using LDP", RFC 3212, January 2002.
+
+</p><p class="rfcparagraph">	<a name="section-7.2"><h3>7.2   Informative References</h3></a>
+
+   [LMP]           Lang, J., Ed., "Link Management Protocol (LMP)", RFC
+                   4204, October 2005.
+
+</p><p class="rfcparagraph">Authors' Addresses
+
+   Kireeti Kompella
+   Juniper Networks, Inc.
+   1194 N. Mathilda Ave.
+   Sunnyvale, CA 94089
+
+   EMail: kireeti@juniper.net
+
+
+   Yakov Rekhter
+   Juniper Networks, Inc.
+   1194 N. Mathilda Ave.
+   Sunnyvale, CA 94089
+
+   EMail: yakov@juniper.net
+
+
+   Lou Berger
+   Movaz Networks, Inc.
+
+</p><p class="rfcparagraph">   Phone: +1 703-847-1801
+   EMail: lberger@movaz.com
+Full Copyright Statement
+
+   Copyright (C) The Internet Society (2005).<br>
+
+</p><p class="rfcparagraph">   This document is subject to the rights, licenses and restrictions
+   contained in BCP 78, and except as set forth therein, the authors
+   retain all their rights.
+
+</p><p class="rfcparagraph">   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY AND THE INTERNET
+   ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED,
+   INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE
+   INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED
+   WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Intellectual Property
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the procedures with respect to rights in RFC documents can be
+   found in BCP 78 and BCP 79.
+
+</p><p class="rfcparagraph">   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+</p><p class="rfcparagraph">   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at ietf-
+   ipr@ietf.org.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is currently provided by the
+   Internet Society.
+
+</p>
+
+
+
+
+
+Kompella, et al.            Standards Track                    [Page 12]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                          P. Eronen<br>Request for Comments: 4739                                         Nokia<br>Category: Experimental                                       J. Korhonen<br>                                                             TeliaSonera<br>                                                           November 2006<br><br></p>
+                  <h1>
+                   Multiple Authentication Exchanges
+             in the Internet Key Exchange (IKEv2) Protocol</h1>
+                  <h2>Status of This Memo</h2>
+
+   This memo defines an Experimental Protocol for the Internet
+   community.  It does not specify an Internet standard of any kind.
+   Discussion and suggestions for improvement are requested.
+   Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The IETF Trust (2006).<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   The Internet Key Exchange (IKEv2) protocol supports several
+   mechanisms for authenticating the parties, including signatures with
+   public-key certificates, shared secrets, and Extensible
+   Authentication Protocol (EAP) methods.  Currently, each endpoint uses
+   only one of these mechanisms to authenticate itself.  This document
+   specifies an extension to IKEv2 that allows the use of multiple
+   authentication exchanges, using either different mechanisms or the
+   same mechanism.  This extension allows, for instance, performing
+   certificate-based authentication of the client host followed by an
+   EAP authentication of the user.  When backend authentication servers
+   are used, they can belong to different administrative domains, such
+   as the network access provider and the service provider.
+<h2>Table of Contents</h2>
+<a href="#section-1" class="">1. Introduction ...................................................</a><br>
+<a href="#section-1.1" class="indent-1">1.1. Usage Scenarios ...........................................</a><br>
+<a href="#section-1.2" class="indent-1">1.2. Terminology ...............................................</a><br>
+<a href="#section-2" class="">2. Solution .......................................................</a><br>
+<a href="#section-2.1" class="indent-1">2.1. Solution Overview .........................................</a><br>
+<a href="#section-2.2" class="indent-1">2.2. Example 1: Multiple EAP Authentications ...................</a><br>
+<a href="#section-2.3" class="indent-1">2.3. Example 2: Mixed EAP and Certificate Authentications ......</a><br>
+<a href="#section-2.4" class="indent-1">2.4. Example 3: Multiple Initiator Certificates ................</a><br>
+<a href="#section-2.5" class="indent-1">2.5. Example 4: Multiple Responder Certificates ................</a><br>
+<a href="#section-3" class="">3. Payload Formats ................................................</a><br>
+<a href="#section-3.1" class="indent-1">3.1. MULTIPLE_AUTH_SUPPORTED Notify Payload ....................</a><br>
+<a href="#section-3.2" class="indent-1">3.2. ANOTHER_AUTH_FOLLOWS Notify Payload .......................</a><br>
+<a href="#section-4" class="">4. IANA Considerations ............................................</a><br>
+<a href="#section-5" class="">5. Security Considerations ........................................</a><br>
+<a href="#section-6" class="">6. Acknowledgments ...............................................</a><br>
+<a href="#section-7" class="">7. References ....................................................</a><br>
+<a href="#section-7.1" class="indent-1">7.1. Normative References .....................................</a><br>
+<a href="#section-7.2" class="indent-1">7.2. Informative References ...................................</a><br>
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   IKEv2 [IKEv2] supports several mechanisms for parties involved in the
+   IKE_SA (IKE security association).  These include signatures with
+   public-key certificates, shared secrets, and Extensible
+   Authentication Protocol (EAP) methods.
+
+</p><p class="rfcparagraph">   Currently, each endpoint uses only one of these mechanisms to
+   authenticate itself.  However, there are scenarios where making the
+   authorization decision in IKEv2 (whether to allow access or not)
+   requires using several of these methods.
+
+</p><p class="rfcparagraph">   For instance, it may be necessary to authenticate both the host
+   (machine) requesting access, and the user currently using the host.
+   These two authentications would use two separate sets of credentials
+   (such as certificates and associated private keys) and might even use
+   different authentication mechanisms.
+
+</p><p class="rfcparagraph">   To take another example, when an operator is hosting a Virtual
+   Private Network (VPN) gateway service for a third party, it may be
+   necessary to authenticate the client to both the operator (for
+   billing purposes) and the third party's Authentication,
+   Authorization, and Accounting (AAA) server (for authorizing access to
+   the third party's internal network).
+
+</p><p class="rfcparagraph">   This document specifies an extension to IKEv2 that allows the use of
+   multiple authentication exchanges, using either different mechanisms
+   or the same mechanism.  This extension allows, for instance,
+   performing certificate-based authentication of the client host
+   followed by an EAP authentication of the user.
+
+</p><p class="rfcparagraph">   Each authentication exchange requiring communication with backend AAA
+   servers may be directed to different backend AAA servers, located
+   even in different administrative domains.  However, details of the
+   communication between the IKEv2 gateway and the backend
+   authentication servers are beyond the scope of this document.  In
+   particular, this document does not specify any changes to existing
+   AAA protocols, and it does not require the use of any particular AAA
+   protocol.
+
+</p><p class="rfcparagraph">   In case of several EAP authentications, it is important to notice
+   that they are not a "sequence" (as described in Section 2.1 of
+   [EAP]), but separate independent EAP conversations, which are usually
+   also terminated in different EAP servers.  Multiple authentication
+   methods within a single EAP conversation are still prohibited as
+   described in Section 2.1 of [EAP].  Using multiple independent EAP
+   conversations is similar to the separate Network Access Provider
+   (NAP) and Internet Service Provider (ISP) authentication exchanges
+   planned for [PANA].  The discovery of the appropriate EAP server for
+   each EAP authentication conversation is based on AAA routing.
+
+</p><p class="rfcparagraph">	<a name="section-1.1"><h3>1.1   Usage Scenarios</h3></a>
+
+   Figure 1 shows an example architecture of an operator-hosted VPN
+   scenario that could benefit from a two-phase authentication within
+   the IKEv2 exchange.  First, the client authenticates towards the
+   Network Access Provider (NAP) and gets access to the NAP-hosted VPN
+   gateway.  The first-phase authentication involves the backend AAA
+   server of the NAP.  After the first authentication, the client
+   initiates the second authentication round that also involves the
+   Third Party's backend AAA server.  If both authentications succeed,
+   the required IPsec tunnels are set up and the client can access
+   protected networks behind the Third Party.
+
+</p><p class="rfcparagraph">
+       Client                         *Network Access Provider*<pre>
+     +---------+                    +---------+              +-----+
+     |         |                    |  NAP's  |              | NAP |
+     |Protected|     IPsec SAs      | Tunnel  | AAA Protocol | AAA |
+     |Endpoint |<------------------>|Endpoint |<------------>|Serv/|
+     |         |                    |         |              |Proxy|
+     +---------+                    +---------+              +-----+
+                                       ^                        ^
+                            IPsec or  /                  AAA    |
+                        Leased Line  /                 Protocol |
+                                    /                           |
+                                   v                            |
+                           +---------+    *Third Party*         v
+                           |3rd Party|                       +-----+
+            Protected      | Tunnel  |                       | 3rd |
+               Subnet <----|Endpoint |                       |Party|
+                           |         |                       | AAA |
+                           +---------+                       +-----+
+</pre>
+
+
+          Figure 1: Two-phase authentication used to gain access to
+          the Third Party network via Network Access Provider.  AAA
+          traffic goes through NAP's AAA server.
+
+</p><p class="rfcparagraph">   The NAP's AAA server can be used to proxy the AAA traffic to the
+   Third Party's backend AAA server.  Alternatively, the AAA traffic
+   from the NAP's tunnel endpoint could go directly to the Third Party's
+   backend AAA servers.  However, this is more or less an AAA routing
+   issue.
+	<a name="section-1.2"><h3>1.2   Terminology</h3></a>
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in [KEYWORDS].
+
+</p><p class="rfcparagraph">   The terms and abbreviations "authenticator", "backend authentication
+   server", "EAP server", and "peer" in this document are to be
+   interpreted as described in [EAP].
+
+</p><p class="rfcparagraph">   When messages containing IKEv2 payloads are described, optional
+   payloads are shown in brackets (for instance, "[FOO]"), and a plus
+   sign indicates that a payload can be repeated one or more times (for
+   instance, "FOO+").
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Solution</h2></a>
+
+	<a name="section-2.1"><h3>2.1   Solution Overview</h3></a>
+
+   The peers announce support for this IKEv2 extension by including a
+   MULTIPLE_AUTH_SUPPORTED notification in the IKE_SA_INIT response
+   (responder) and the first IKE_AUTH request (initiator).
+
+</p><p class="rfcparagraph">   If both peers support this extension, either of them can announce
+   that it wishes to have a second authentication by including an
+   ANOTHER_AUTH_FOLLOWS notification in any IKE_AUTH message that
+   contains an AUTH payload.  This indicates that the peer sending the
+   ANOTHER_AUTH_FOLLOWS wishes to authenticate another set of
+   credentials to the other peer.  The next IKE_AUTH message sent by
+   this peer will contain a second identity payload (IDi or IDr) and
+   starts another authentication exchange.  The IKE_AUTH phase is
+   considered successful only if all the individual authentication
+   exchanges complete successfully.
+
+</p><p class="rfcparagraph">   It is assumed that both peers know what credentials they want to
+   present; there is no negotiation about, for instance, what type of
+   authentication is to be done.  As in IKEv2, EAP-based authentication
+   is always requested by the initiator (by omitting the AUTH payload).
+
+</p><p class="rfcparagraph">   The AUTH payloads are calculated as specified in [IKEv2] Sections
+   2.15 and 2.16, where IDi' refers to the latest IDi payload sent by
+   the initiator, and IDr' refers to the latest IDr payload sent by the
+   responder.  If EAP methods that do not generate shared keys are used,
+   it is possible that several AUTH payloads with identical contents are
+   sent.  When such EAP methods are used, the purpose of the AUTH
+   payload is simply to delimit the authentication exchanges, and ensure
+   that the IKE_SA_INIT request/response messages were not modified.
+	<a name="section-2.2"><h3>2.2   Example 1: Multiple EAP Authentications</h3></a>
+
+   This example shows certificate-based authentication of the responder
+   followed by an EAP authentication exchange (messages 1-10).  When the
+   first EAP exchange is ending (the initiator is sending its AUTH
+   payload), the initiator announces that it wishes to have a second
+   authentication exchange by including an ANOTHER_AUTH_FOLLOWS
+   notification (message 9).
+
+</p><p class="rfcparagraph">   After this, a second authentication exchange begins.  The initiator
+   sends a new IDi payload but no AUTH payload (message 11), indicating
+   that EAP will be used.  After that, another EAP authentication
+   exchange follows (messages 12-18).
+
+</p><p class="rfcparagraph">      Initiator                   Responder
+     -----------                 -----------
+      1. HDR, SA, KE, Ni -->
+                             <--  2. HDR, SA, KE, Nr, [CERTREQ],
+                                          N(MULTIPLE_AUTH_SUPPORTED)
+      3. HDR, SK { IDi, [CERTREQ+], [IDr],
+                   SA, TSi, TSr, N(MULTIPLE_AUTH_SUPPORTED) }  -->
+                             <--  4. HDR, SK { IDr, [CERT+], AUTH,
+                                               EAP(Request) }
+      5. HDR, SK { EAP(Response) }  -->
+                             <--  6. HDR, SK { EAP(Request) }
+      7. HDR, SK { EAP(Response) }  -->
+                             <--  8. HDR, SK { EAP(Success) }
+      9. HDR, SK { AUTH,
+                   N(ANOTHER_AUTH_FOLLOWS) }  -->
+                             <--  10. HDR, SK { AUTH }
+      11. HDR, SK { IDi }  -->
+                             <--  12. HDR, SK { EAP(Request) }
+      13. HDR, SK { EAP(Response) }  -->
+                             <--  14. HDR, SK { EAP(Request) }
+      15. HDR, SK { EAP(Response) }  -->
+                             <--  16. HDR, SK { EAP(Success) }
+      17. HDR, SK { AUTH }  -->
+                             <--  18. HDR, SK { AUTH, SA, TSi, TSr }
+
+          Example 1: Certificate-based authentication of the
+          responder, followed by two EAP authentication exchanges.
+	<a name="section-2.3"><h3>2.3   Example 2: Mixed EAP and Certificate Authentications</h3></a>
+
+   Another example is shown below: here both the initiator and the
+   responder are first authenticated using certificates (or shared
+   secrets); this is followed by an EAP authentication exchange.
+
+</p><p class="rfcparagraph">      Initiator                   Responder
+     -----------                 -----------
+      1. HDR, SA, KE, Ni -->
+                             <--  2. HDR, SA, KE, Nr, [CERTREQ],
+                                          N(MULTIPLE_AUTH_SUPPORTED)
+      3. HDR, SK { IDi, [CERT+], [CERTREQ+], [IDr], AUTH,
+                   SA, TSi, TSr, N(MULTIPLE_AUTH_SUPPORTED),
+                   N(ANOTHER_AUTH_FOLLOWS) }  -->
+                             <--  4. HDR, SK { IDr, [CERT+], AUTH }
+      5. HDR, SK { IDi }  -->
+                             <--  6. HDR, SK { EAP(Request) }
+      7. HDR, SK { EAP(Response) }  -->
+                             <--  8. HDR, SK { EAP(Request) }
+      9. HDR, SK { EAP(Response) }  -->
+                             <--  10. HDR, SK { EAP(Success) }
+      11. HDR, SK { AUTH }  -->
+                             <--  12. HDR, SK { AUTH, SA, TSi, TSr }
+
+             Example 2: Certificate-based (or shared-secret-based)
+             authentication of the initiator and the responder,
+             followed by an EAP authentication exchange.
+	<a name="section-2.4"><h3>2.4   Example 3: Multiple Initiator Certificates</h3></a>
+
+   This example shows yet another possibility: the initiator has two
+   different certificates (and associated private keys), and
+   authenticates both of them to the responder.
+
+</p><p class="rfcparagraph">      Initiator                   Responder
+     -----------                 -----------
+      1. HDR, SA, KE, Ni -->
+                             <--  2. HDR, SA, KE, Nr, [CERTREQ],
+                                          N(MULTIPLE_AUTH_SUPPORTED)
+      3. HDR, SK { IDi, [CERT+], [CERTREQ+], [IDr], AUTH,
+                   SA, TSi, TSr, N(MULTIPLE_AUTH_SUPPORTED),
+                   N(ANOTHER_AUTH_FOLLOWS) }  -->
+                             <--  4. HDR, SK { IDr, [CERT+], AUTH }
+      5. HDR, SK { IDi, [CERT+], AUTH }  -->
+                             <--  6. HDR, SK { SA, TSi, TSr }
+
+          Example 3: Two certificate-based authentications of the
+          initiator, and one certificate-based authentication
+          of the responder.
+
+</p><p class="rfcparagraph">	<a name="section-2.5"><h3>2.5   Example 4: Multiple Responder Certificates</h3></a>
+
+   This example shows yet another possibility: the responder has two
+   different certificates (and associated private keys), and
+   authenticates both of them to the initiator.
+
+</p><p class="rfcparagraph">      Initiator                   Responder
+     -----------                 -----------
+      1. HDR, SA, KE, Ni -->
+                             <--  2. HDR, SA, KE, Nr, [CERTREQ],
+                                          N(MULTIPLE_AUTH_SUPPORTED)
+      3. HDR, SK { IDi, [CERT+], [CERTREQ+], [IDr], AUTH,
+                   SA, TSi, TSr, N(MULTIPLE_AUTH_SUPPORTED) }  -->
+                             <--  4. HDR, SK { IDr, [CERT+], AUTH,
+                                               N(ANOTHER_AUTH_FOLLOWS) }
+      5. HDR, SK { }  -->
+                             <--  6. HDR, SK { IDr, [CERT+], AUTH,
+                                               SA, TSi, TSr }
+
+          Example 4: Two certificate-based authentications of the
+          responder, and one certificate-based authentication
+          of the initiator.
+	<a name="section-3"><h2>3.   Payload Formats</h2></a>
+
+	<a name="section-3.1"><h3>3.1   MULTIPLE_AUTH_SUPPORTED Notify Payload</h3></a>
+
+   The MULTIPLE_AUTH_SUPPORTED notification is included in the
+   IKE_SA_INIT response or the first IKE_AUTH request to indicate that
+   the peer supports this specification.  The Notify Message Type is
+   MULTIPLE_AUTH_SUPPORTED (16404).  The Protocol ID and SPI Size fields<br>
+   MUST be set to zero, and there is no data associated with this Notify
+   type.
+
+</p><p class="rfcparagraph">	<a name="section-3.2"><h3>3.2   ANOTHER_AUTH_FOLLOWS Notify Payload</h3></a>
+
+   The ANOTHER_AUTH_FOLLOWS notification payload is included in an
+   IKE_AUTH message containing an AUTH payload to indicate that the peer
+   wants to continue with another authentication exchange.  The Notify
+   Message Type is ANOTHER_AUTH_FOLLOWS (16405).  The Protocol ID and<br>
+   SPI Size fields MUST be set to zero, and there is no data associated
+   with this Notify type.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   IANA Considerations</h2></a>
+
+   This document defines two new IKEv2 notifications,
+   MULTIPLE_AUTH_SUPPORTED and ANOTHER_AUTH_FOLLOWS, whose values are
+   allocated from the "IKEv2 Notify Message Types" namespace defined in
+   [IKEv2].
+
+</p><p class="rfcparagraph">   This document does not define any new namespaces to be managed by
+   IANA.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   Security Considerations</h2></a>
+
+   Security considerations for IKEv2 are discussed in [IKEv2].  The
+   reader is encouraged to pay special attention to considerations
+   relating to the use of EAP methods that do not generate shared keys.
+   However, the use of multiple authentication exchanges results in at
+   least one new security consideration.
+
+</p><p class="rfcparagraph">   In normal IKEv2, the responder authenticates the initiator before
+   revealing its identity (except when EAP is used).  When multiple
+   authentication exchanges are used to authenticate the initiator, the
+   responder has to reveal its identity before all of the initiator
+   authentication exchanges have been completed.
+	<a name="section-6"><h2>6.   Acknowledgments</h2></a>
+
+   The authors would like to thank Bernard Aboba, Jari Arkko, Spencer
+   Dawkins, Lakshminath Dondeti, Henry Haverinen, Russ Housley, Mika
+   Joutsenvirta, Charlie Kaufman, Tero Kivinen, Yoav Nir, Magnus
+   Nystrom, Mohan Parthasarathy, and Juha Savolainen for their valuable
+   comments.
+
+</p><p class="rfcparagraph">	<a name="section-7"><h2>7.   References</h2></a>
+
+	<a name="section-7.1"><h3>7.1   Normative References</h3></a>
+
+   [IKEv2]     Kaufman, C., "Internet Key Exchange (IKEv2) Protocol",
+               RFC 4306, December 2005.
+
+</p><p class="rfcparagraph">   [KEYWORDS]  Bradner, S., "Key words for use in RFCs to Indicate
+               Requirement Levels", RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">	<a name="section-7.2"><h3>7.2   Informative References</h3></a>
+
+   [EAP]       Aboba, B., Blunk, L., Vollbrecht, J., Carlson, J., and H.
+               Levkowetz, "Extensible Authentication Protocol (EAP)",
+               RFC 3748, June 2004.
+
+</p><p class="rfcparagraph">   [PANA]      Yegin, A., Ohba, Y., Penno, R., Tsirtsis, G., and C.
+               Wang, "Protocol for Carrying Authentication for Network
+               Access (PANA) Requirements", RFC 4058, May 2005.
+
+</p><p class="rfcparagraph">Authors' Addresses
+
+   Pasi Eronen
+   Nokia Research Center
+   P.O. Box 407
+   FIN-00045 Nokia Group
+   Finland
+
+   EMail: pasi.eronen@nokia.com
+
+
+   Jouni Korhonen
+   TeliaSonera
+   P.O. Box 970
+   FIN-00051 Sonera
+   Finland
+
+   EMail: jouni.korhonen@teliasonera.com
+Full Copyright Statement
+
+   Copyright (C) The IETF Trust (2006).<br>
+
+</p><p class="rfcparagraph">   This document is subject to the rights, licenses and restrictions
+   contained in BCP 78, and except as set forth therein, the authors
+   retain all their rights.
+
+</p><p class="rfcparagraph">   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY, THE IETF TRUST,
+   AND THE INTERNET ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES,
+   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT
+   THE USE OF THE INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY
+   IMPLIED WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR
+   PURPOSE.
+
+</p><p class="rfcparagraph">Intellectual Property
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the procedures with respect to rights in RFC documents can be
+   found in BCP 78 and BCP 79.
+
+</p><p class="rfcparagraph">   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+</p><p class="rfcparagraph">   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at
+   ietf-ipr@ietf.org.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is currently provided by the
+   Internet Society.
+
+</p>
+
+
+
+
+Eronen & Korhonen             Experimental                     [Page 11]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

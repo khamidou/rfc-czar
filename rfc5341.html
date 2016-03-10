@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                        C. Jennings<br>Request for Comments: 5341                                 Cisco Systems<br>Updates: 3966                                                 V. Gurbani<br>Category: Standards Track              Bell Laboratories, Alcatel-Lucent<br>                                                          September 2008<br><br></p>
+                  <h1>
+             The Internet Assigned Number Authority (IANA)
+        tel Uniform Resource Identifier (URI) Parameter Registry</h1>
+                  <h2>Status of This Memo</h2>
+
+   This document specifies an Internet standards track protocol for the
+   Internet community, and requests discussion and suggestions for
+   improvements.  Please refer to the current edition of the "Internet
+   Official Protocol Standards" (STD 1) for the standardization state
+   and status of this protocol.  Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This document creates an Internet Assigned Number Authority (IANA)
+   registry for tel Uniform Resource Identifier (URI) parameters and
+   their values.  It populates the registry with the parameters defined
+   in the tel URI specification, along with the parameters in tel URI
+   extensions defined for number portability and trunk groups.
+
+</p><p class="rfcparagraph">Table of Contents
+<a href="#section-1" class="">1. Introduction  . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2" class="">2. Terminology . . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3" class="">3. Use of the Registry . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4" class="">4. IANA Considerations . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.1" class="indent-1">4.1. tel URI Parameters Registry . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.2" class="indent-1">4.2. Registration Policy for tel URI Parameters  . . . . . . . </a><br>
+<a href="#section-5" class="">5. Security Considerations . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-6" class="">6. Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-7" class="">7. References  . . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-7.1" class="indent-1">7.1. Normative References  . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-7.2" class="indent-1">7.2. Informative References  . . . . . . . . . . . . . . . . . </a><br>
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   The tel URI (RFC 3966 [1]), defines a URI that can be used to
+   represent resources identified by telephone numbers.  The tel URI,
+   like many other URIs, provides extensibility through the definition
+   of new URI parameters and new values for existing parameters.
+   However, RFC 3966 did not specify an IANA registry where such
+   parameters and values can be listed and standardized.  This
+   specification creates such a registry.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Terminology</h2></a>
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in [2].
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   Use of the Registry</h2></a>
+
+   The tel URI parameters and values for these parameters MUST be
+   documented in a RFC or other permanent and readily available public
+   specification in order to be registered by IANA.  This documentation
+   MUST fully explain the syntax, intended usage, and semantics of the
+   parameter.  The intent of this requirement is to assure
+   interoperability between independent implementations, and to prevent
+   accidental namespace collisions between implementations of dissimilar
+   features.
+
+</p><p class="rfcparagraph">   Documents defining tel URI parameters or parameter values MUST
+   register them with IANA, as described in Section 4.  The IANA
+   registration policy for such parameters is "Specification Required,
+   Designated Expert," and is further discussed in Section 4.2.
+
+</p><p class="rfcparagraph">   Some tel URI parameters only accept a set of predefined parameter
+   values while others can take any value.  There are also parameters
+   that do not have any value; they are used as flags.
+
+</p><p class="rfcparagraph">   Those URI parameters that take on predefined values typically take on
+   a large number of values.  Registering each of those values, or
+   creating a sub-registry for each such parameter is not appropriate.
+   Instead, we have chosen to register URI parameter values by
+   reference.  That is, the entry in the URI parameter registry for a
+   given URI parameter contains references to the RFCs defining new
+   values of that parameter.
+
+</p><p class="rfcparagraph">   Accordingly, the tel URI parameter registry contains a column that
+   indicates whether or not each parameter accepts a value.  The column
+   may contain "No value" or "Constrained".  A "Constrained" in the
+   column implies that certain predefined values exist for this
+   parameter and the accompanying RFC or other permanent and readily
+   available public specification should be consulted to find out the
+   accepted set of values.  A "No Value" in the column implies that the
+   parameter is used either as a flag, or does not have a set of
+   predefined values.  The accompanying RFC or other permanent and
+   readily available public specification should provide more
+   information on the semantics of the parameter.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   IANA Considerations</h2></a>
+
+   The specification creates a new IANA registry named "tel URI
+   Parameters".
+
+</p><p class="rfcparagraph">	<a name="section-4.1"><h3>4.1   tel URI Parameters Registry</h3></a>
+
+   New tel URI parameters and new values for existing tel URI parameters
+   MUST be registered with IANA.
+
+</p><p class="rfcparagraph">   When registering a new tel URI parameter, the following information
+   MUST be provided:
+
+</p><p class="rfcparagraph">   o  Name of the parameter.
+
+</p><p class="rfcparagraph">   o  Whether the parameter only accepts a set of predefined values.
+
+</p><p class="rfcparagraph">   o  Reference to the RFC or other permanent and readily available
+      public specification defining the parameter and new values.
+
+</p><p class="rfcparagraph">   When registering a new value for an existing tel URI parameter, the
+   following information MUST be provided:
+
+</p><p class="rfcparagraph">   o  Name of the parameter.
+
+</p><p class="rfcparagraph">   o  Reference to the RFC or other permanent and readily available
+      public specification providing the new value.
+
+</p><p class="rfcparagraph">   Table 1 contains the initial values for this registry.
+   Parameter Name     Predefined Values     Reference
+   --------------     -----------------     ---------
+   isub               Constrained           [RFC3966]
+   isub-encoding      Constrained           [RFC4715]
+   ext                Constrained           [RFC3966]
+   phone-context      Constrained           [RFC3966]
+   enumdi             No value              [RFC4759]
+   npdi               No value              [RFC4694]
+   rn                 Constrained           [RFC4694]
+   rn-context         Constrained           [RFC4694]
+   cic                Constrained           [RFC4694]
+   cic-context        Constrained           [RFC4694]
+   tgrp               Constrained           [RFC4904]
+   trunk-context      Constrained           [RFC4904]
+
+   Table 1: IANA tel URI parameter registry
+
+	<a name="section-4.2"><h3>4.2   Registration Policy for tel URI Parameters</h3></a>
+
+   As per the terminology in [3] and actions accorded to such a role,
+   the registration policy for tel URI parameters shall be
+   "Specification Required, Designated Expert" (the former implicitly
+   implies the latter).
+
+</p><p class="rfcparagraph">   The Designated Expert, when deliberating on whether to include a new
+   parameter in the tel URI registry, may use the criteria provided
+   below to reach a decision (this is not an exhaustive list but
+   representative of the issues to consider when rendering an equitable
+   decision):
+
+</p><p class="rfcparagraph">   o  If the tel URI -- with the parameter under consideration -- will
+      be converted to a URI used by other signaling protocols such as
+      the Session Initiation Protocol (SIP [5]) or H.323 [7], then the
+      expert must consider whether this parameter merely encapsulates
+      signaling information that is not meaningful to the processing of
+      requests in the domain of the converted URI.  For example, certain
+      Integrated Services Digital Network (ISDN) User Part (ISUP, [8])
+      parameters have no equivalent corollary in SIP; thus, their
+      presence or absence in a SIP URI will not hinder the normal rules
+      for processing that URI.  Other parameters may affect the normal
+      processing rules associated with the URI; in such cases, the
+      expert must carefully consider the ramifications, if any, of the
+      presence of such parameters.
+
+</p><p class="rfcparagraph">   o  Certain parameters of a tel URI can be optional.  These parameters
+      act as metadata about the identifier in the tel URI.  Optional
+      parameters should provide additional information to a service for
+      which they apply instead of acting as enablers of that service in
+      the first place.  The service must continue to be invoked and
+      operate normally even in the absence of these parameters.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   Security Considerations</h2></a>
+
+   The registry in this document does not in itself have security
+   considerations.  However, as mentioned in [4], an important reason
+   for the IETF to manage the extensions of SIP is to ensure that all
+   extensions and parameters are able to provide secure usage.  The
+   supporting RFC publications for parameter registrations described in
+   this specification MUST provide detailed security considerations for
+   them.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.   Acknowledgments</h2></a>
+
+   The structure of this document comes from [6], which is the
+   equivalent work done in the SIP domain to establish a registry.  Ted
+   Hardie, Alfred Hoenes, Jon Peterson, and Jonathan Rosenberg provided
+   substantive comments that have improved this document.
+
+</p><p class="rfcparagraph">   Brian Carpenter, Lars Eggert, Pasi Eronen, Chris Newman, and Glen
+   Zorn provided feedback during IESG review and Gen-ART review.
+
+</p><p class="rfcparagraph">	<a name="section-7"><h2>7.   References</h2></a>
+
+	<a name="section-7.1"><h3>7.1   Normative References</h3></a>
+
+   [1]  Schulzrinne, H., "The tel URI for Telephone Numbers", RFC 3966,
+        December 2004.
+
+</p><p class="rfcparagraph">   [2]  Bradner, S., "Key words for use in RFCs to Indicate Requirement
+        Levels", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">   [3]  Narten, T. and H. Alvestrand, "Guidelines for Writing an IANA
+        Considerations Section in RFCs", BCP 26, RFC 5226, May 2008.
+
+</p><p class="rfcparagraph">	<a name="section-7.2"><h3>7.2   Informative References</h3></a>
+
+   [4]  Mankin, A., Bradner, S., Mahy, R., Willis, D., Ott, J., and B.
+        Rosen, "Change Process for the Session Initiation Protocol
+        (SIP)", BCP 67, RFC 3427, December 2002.
+
+</p><p class="rfcparagraph">   [5]  Rosenberg, J., Schulzrinne, H., Camarillo, G., Johnston, A.,
+        Peterson, J., Sparks, R., Handley, M., and E. Schooler, "SIP:
+        Session Initiation Protocol", RFC 3261, June 2002.
+   [6]  Camarillo, G., "The Internet Assigned Number Authority (IANA)
+        Uniform Resource Identifier (URI) Parameter Registry for the
+        Session Initiation Protocol (SIP)", BCP 99, RFC 3969,
+        December 2004.
+
+</p><p class="rfcparagraph">   [7]  ITU-T H.323, "H.323: Packet-based multimedia communications
+        systems", June 2006.
+
+</p><p class="rfcparagraph">   [8]  ITU-T Q.764, "Signaling System No. 7: ISDN User Part Signaling
+        Procedures", December 1999.
+
+</p><p class="rfcparagraph">Authors' Addresses
+
+   Cullen Jennings
+   Cisco Systems
+   170 West Tasman Drive
+   Mailstop SJC-21/2
+   San Jose, CA  95134
+   USA
+
+   Phone:  +1 408 902-3341
+   EMail:  fluffy@cisco.com
+
+
+   Vijay K. Gurbani
+   Bell Laboratories, Alcatel-Lucent
+   2701 Lucent Lane
+   Room 9F-546
+   Lisle, IL  60532
+   USA
+
+   Phone:  +1 630 224-0216
+   EMail:  vkg@alcatel-lucent.com
+Full Copyright Statement
+
+   Copyright (C) The IETF Trust (2008).<br>
+
+</p><p class="rfcparagraph">   This document is subject to the rights, licenses and restrictions
+   contained in BCP 78, and except as set forth therein, the authors
+   retain all their rights.
+
+</p><p class="rfcparagraph">   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY, THE IETF TRUST AND
+   THE INTERNET ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS
+   OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF
+   THE INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED
+   WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Intellectual Property
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the procedures with respect to rights in RFC documents can be
+   found in BCP 78 and BCP 79.
+
+</p><p class="rfcparagraph">   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+</p><p class="rfcparagraph">   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at
+   ietf-ipr@ietf.org.
+
+</p>
+
+
+
+
+
+
+
+
+
+
+Jennings & Gurbani          Standards Track                     [Page 7]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

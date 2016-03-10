@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                            S. Kent<br>Request for Comments: 4304                              BBN Technologies<br>Category: Standards Track                                  December 2005<br><br></p>
+                  <h1>
+              Extended Sequence Number (ESN) Addendum to
+                  IPsec Domain of Interpretation (DOI)
+                   for Internet Security Association
+                  and Key Management Protocol (ISAKMP)</h1>
+                  <h2>Status of This Memo</h2>
+
+   This document specifies an Internet standards track protocol for the
+   Internet community, and requests discussion and suggestions for
+   improvements.  Please refer to the current edition of the "Internet
+   Official Protocol Standards" (STD 1) for the standardization state
+   and status of this protocol.  Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (2005).<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   The IP Security Authentication Header (AH) and Encapsulating Security
+   Payload (ESP) protocols use a sequence number to detect replay.  This
+   document describes extensions to the Internet IP Security Domain of
+   Interpretation (DOI) for the Internet Security Association and Key
+   Management Protocol (ISAKMP).  These extensions support negotiation
+   of the use of traditional 32-bit sequence numbers or extended (64-
+   bit) sequence numbers (ESNs) for a particular AH or ESP security
+   association.
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   The specifications for the IP Authentication Header (AH) [AH] and the
+   IP Encapsulating Security Payload (ESP) [ESP] describe an option for
+   use of extended (64-bit) sequence numbers.  This option permits
+   transmission of very large volumes of data at high speeds over an
+   IPsec Security Association, without rekeying to avoid sequence number
+   space exhaustion.  This document describes the additions to the IPsec
+   DOI for ISAKMP [DOI] that are needed to support negotiation of the
+   extended sequence number (ESN) option.
+
+</p><p class="rfcparagraph">   The keywords MUST, MUST NOT, REQUIRED, SHALL, SHALL NOT, SHOULD,
+   SHOULD NOT, RECOMMENDED, MAY, and OPTIONAL, when they appear in this
+   document, are to be interpreted as described in RFC 2119 [Bra97].
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   IPsec Security Association Attribute</h2></a>
+
+   The following SA attribute definition is used in Phase II of an
+   Internet Key Exchange Protocol (IKE) negotiation.  The attribute type
+   is Basic (B).  Encoding of this attribute is defined in the base
+   ISAKMP specification [ISAKMP].  Attributes described as basic MUST
+   NOT be encoded as variable.  See [IKE] for further information on
+   attribute encoding in the IPsec DOI.  All restrictions listed in
+   [IKE] also apply to the IPsec DOI and to this addendum.
+
+</p><p class="rfcparagraph">   Attribute Type
+
+              class                        value           type
+       ---------------------------------------------------------
+       Extended (64-bit) Sequence Number    11              B
+
+   Class Values
+
+       This class specifies that the Security Association will be using
+       64-bit sequence numbers.  (See [AH] and [ESP] for a description
+       of extended (64-bit) sequence numbers.)
+
+       RESERVED                0
+       64-bit Sequence Number  1
+	<a name="section-3"><h2>3.   Attribute Negotiation</h2></a>
+
+   If an implementation receives a defined IPsec DOI attribute (or
+   attribute value) that it does not support, an ATTRIBUTES-NOT-SUPPORT
+   SHOULD be sent and the security association setup MUST be aborted.
+
+</p><p class="rfcparagraph">   If an implementation receives any attribute value but the value for
+   64-bit sequence numbers, the security association setup MUST be
+   aborted.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   Security Considerations</h2></a>
+
+   This memo pertains to the Internet Key Exchange protocol [IKE], which
+   combines ISAKMP [ISAKMP] and Oakley [OAKLEY] to provide for the
+   derivation of cryptographic keying material in a secure and
+   authenticated manner.  Specific discussion of the various security
+   protocols and transforms identified in this document can be found in
+   the associated base documents and in the cipher references.
+
+</p><p class="rfcparagraph">   The addition of the ESN attribute does not change the underlying
+   security characteristics of IKE.  In using ESNs with ESP, it is
+   important to employ an encryption mode that is secure when very large
+   volumes of data are encrypted under a single key.  Thus, for example,
+   Data Encryption Standard (DES) in Cipher Block Chaining (CBC) mode
+   would NOT be suitable for use with the ESN, because no more than 2^32
+   blocks should be encrypted under a single DES key in that mode.
+   Similarly, the integrity algorithm used with ESP or AH should be
+   secure relative to the number of packets being protected.  To avoid
+   potential security problems imposed by algorithm limitations, the SA
+   lifetime may be set to limit the volume of data protected with a
+   single key, prior to reaching the 2^64 packet limit imposed by the
+   ESN.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   IANA Considerations</h2></a>
+
+   This document contains a "magic" number to be maintained by the IANA.
+   No additional class values will be assigned for this attribute.  The
+   IANA has allocated an IPsec Security Attribute value for "Attribute
+   Type".  This value is listed under the heading "value" in the table
+   in Section 2.
+
+</p><p class="rfcparagraph">Acknowledgements
+
+   The author would like to thank the members of the IPsec working
+   group.  The author would also like to acknowledge the contributions
+   of Karen Seo for her help in the editing of this specification.
+Normative References
+
+   [Bra97]  Bradner, S., "Key words for use in RFCs to Indicate
+            Requirement Level", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">   [AH]     Kent, S., "IP Authentication Header", RFC 4302, December
+            2005.
+
+</p><p class="rfcparagraph">   [DOI]    Piper, D., "The Internet IP Security Domain of
+            Interpretation for ISAKMP", RFC 2407, November 1998.
+
+</p><p class="rfcparagraph">   [ESP]    Kent, S., "IP Encapsulating Security Payload (ESP)", RFC
+            4303, December 2005.
+
+</p><p class="rfcparagraph">   [IKE]    Harkins, D. and D. Carrel, "The Internet Key Exchange
+            (IKE)", RFC 2409, November 1998.
+
+</p><p class="rfcparagraph">   [ISAKMP] Maughan, D., Schertler, M., Schneider, M., and J. Turner,
+            "Internet Security Association and Key Management Protocol
+            (ISAKMP)", RFC 2408, November 1998.
+
+</p><p class="rfcparagraph">Informative References
+
+   [OAKLEY] Orman, H., "The OAKLEY Key Determination Protocol", RFC
+            2412, November 1998.
+
+</p><p class="rfcparagraph">Author's Address
+
+   Stephen Kent
+   BBN Technologies
+   10 Moulton Street
+   Cambridge, MA  02138
+   USA
+
+   Phone: +1 (617) 873-3988<br>
+   EMail: kent@bbn.com
+Full Copyright Statement
+
+   Copyright (C) The Internet Society (2005).<br>
+
+</p><p class="rfcparagraph">   This document is subject to the rights, licenses and restrictions
+   contained in BCP 78, and except as set forth therein, the authors
+   retain all their rights.
+
+</p><p class="rfcparagraph">   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY AND THE INTERNET
+   ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED,
+   INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE
+   INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED
+   WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Intellectual Property
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the procedures with respect to rights in RFC documents can be
+   found in BCP 78 and BCP 79.
+
+</p><p class="rfcparagraph">   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+</p><p class="rfcparagraph">   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at ietf-
+   ipr@ietf.org.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is currently provided by the
+   Internet Society.
+
+</p>
+
+
+
+
+
+Kent                        Standards Track                     [Page 5]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

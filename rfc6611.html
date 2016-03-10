@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph">Internet Engineering Task Force (IETF)                 K. Chowdhury, Ed.
+Request for Comments: 6611                     Radio Mobile Access, Inc.
+Category: Standards Track                                       A. Yegin
+ISSN: 2070-1721                                                  Samsung
+                                                                May 2012
+
+
+     Mobile IPv6 (MIPv6) Bootstrapping for the Integrated Scenario
+
+<h2>Abstract</h2>
+
+   Mobile IPv6 bootstrapping can be categorized into two primary
+   scenarios: the split scenario and the integrated scenario.  In the
+   split scenario, the mobile node's mobility service is authorized by a
+   different service authorizer than the network access authorizer.  In
+   the integrated scenario, the mobile node's mobility service is
+   authorized by the same service authorizer as the network access
+   service authorizer.  This document defines a method for home agent
+   information discovery for the integrated scenario.
+
+</p><p class="rfcparagraph">Status of This Memo
+
+   This is an Internet Standards Track document.
+
+</p><p class="rfcparagraph">   This document is a product of the Internet Engineering Task Force
+   (IETF).  It represents the consensus of the IETF community.  It has
+   received public review and has been approved for publication by the
+   Internet Engineering Steering Group (IESG).  Further information on
+   Internet Standards is available in Section 2 of RFC 5741.
+
+</p><p class="rfcparagraph">   Information about the current status of this document, any errata,
+   and how to provide feedback on it may be obtained at
+   http://www.rfc-editor.org/info/rfc6611.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (c) 2012 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+</p><p class="rfcparagraph">   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (http://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
+   the Trust Legal Provisions and are provided without warranty as
+   described in the Simplified BSD License.
+   This document may contain material from IETF Documents or IETF
+   Contributions published or made publicly available before November
+   10, 2008.  The person(s) controlling the copyright in some of this
+   material may not have granted the IETF Trust the right to allow
+   modifications of such material outside the IETF Standards Process.
+   Without obtaining an adequate license from the person(s) controlling
+   the copyright in such materials, this document may not be modified
+   outside the IETF Standards Process, and derivative works of it may
+   not be created outside the IETF Standards Process, except to format
+   it for publication as an RFC or to translate it into languages other
+   than English.
+
+</p><p class="rfcparagraph">Table of Contents
+<a href="#section-1" class="">1. Introduction and Scope .........................................</a><br>
+<a href="#section-2" class="">2. Terminology ....................................................</a><br>
+<a href="#section-3" class="">3. Assumptions and Conformance ....................................</a><br>
+<a href="#section-4" class="">4. Solution Overview ..............................................</a><br>
+<a href="#section-4.1" class="indent-1">4.1. Logical View of the Integrated Scenario ...................</a><br>
+<a href="#section-4.2" class="indent-1">4.2. Bootstrapping Message Sequence ............................</a><br>
+<a href="#section-4.2.1" class="indent-2">4.2.1. Home Agent Allocation in the MSP ...................</a><br>
+<a href="#section-4.2.2" class="indent-2">4.2.2. Home Agent Allocation in the ASP ...................</a><br>
+<a href="#section-4.3" class="indent-1">4.3. Bootstrapping Message Sequence: Fallback Case ............</a><br>
+      4.4. HoA and IKEv2 SA Bootstrapping in the Integrated
+           Scenario ..................................................10
+<a href="#section-5" class="">5. Security Considerations .......................................</a><br>
+<a href="#section-6" class="">6. Acknowledgements ..............................................</a><br>
+<a href="#section-7" class="">7. Contributors ..................................................</a><br>
+<a href="#section-8" class="">8. References ....................................................</a><br>
+<a href="#section-8.1" class="indent-1">8.1. Normative References .....................................</a><br>
+<a href="#section-8.2" class="indent-1">8.2. Informative References ...................................</a><br>
+
+	<a name="section-1"><h2>1.   Introduction and Scope</h2></a>
+
+   The Mobile IPv6 protocol [RFC6275] requires the mobile node to have
+   the following information:
+
+</p><p class="rfcparagraph">   o  the Home Address (HoA),
+
+   o  the home agent address, and
+
+   o  the cryptographic materials for establishing an IPsec security
+      association with the home agent.
+   The cryptographic materials need to be established prior to
+   initiating the registration process.  The mechanism via which the
+   mobile node obtains this information is called "Mobile IPv6
+   bootstrapping".  In order to allow a flexible deployment model for
+   Mobile IPv6, it is desirable to define a bootstrapping mechanism for
+   the mobile node to acquire these parameters dynamically.  [RFC4640]
+   describes the problem statement for Mobile IPv6 bootstrapping.  It
+   also defines the bootstrapping scenarios based on the relationship
+   between the entity that authenticates and authorizes the mobile node
+   for network access (i.e., the Access Service Authorizer, ASA) and the
+   entity that authenticates and authorizes the mobile node for mobility
+   service (i.e., the Mobility Service Authorizer, MSA).  The scenario
+   in which the Access Service Authorizer is not the Mobility Service
+   Authorizer is called the "split" scenario.  The bootstrapping
+   solution for the split scenario is defined in [RFC5026].  The
+   scenario in which the Access Service Authorizer is also the Mobility
+   Service Authorizer is called the "integrated" scenario.  This
+   document defines a bootstrapping solution for the integrated
+   scenario.
+
+</p><p class="rfcparagraph">   [RFC5026] identifies four different components of the bootstrapping
+   problem: home agent address discovery, HoA assignment, IPsec Security
+   Association [RFC4301] setup, and Authentication and Authorization
+   with the MSA.  This document defines a mechanism for home agent
+   address discovery.  The other components of bootstrapping are as per
+   [RFC5026].
+
+</p><p class="rfcparagraph">   In the integrated scenario, the bootstrapping of the home agent
+   information can be achieved via DHCPv6.  This document defines the
+   MIPv6 bootstrapping procedures for the integrated scenario.  It
+   enables home agent assignment in the integrated scenario by utilizing
+   DHCP and Authentication, Authorization, and Accounting (AAA)
+   protocols.  The specification utilizes DHCP and AAA options and
+   attribute-value pairs (AVPs) that are defined in [RFC6610] and
+   [RFC5447].  This document specifies the interworking among Mobile
+   Node (MN), Network Access Server (NAS), DHCP, and AAA entities for
+   the bootstrapping procedure in the integrated scenario.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Terminology</h2></a>
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in [RFC2119].
+   General mobility terminology can be found in [RFC3753].  The
+   following additional terms, as defined in [RFC4640], are used in this
+   document:
+
+</p><p class="rfcparagraph">   Access Service Authorizer (ASA): A network operator that
+   authenticates a mobile node and establishes the mobile node's
+   authorization to receive Internet service.
+
+</p><p class="rfcparagraph">   Access Service Provider (ASP): A network operator that provides
+   direct IP packet forwarding to and from the mobile node.
+
+</p><p class="rfcparagraph">   Mobility Service Authorizer (MSA): A service provider that authorizes
+   Mobile IPv6 service.
+
+</p><p class="rfcparagraph">   Mobility Service Provider (MSP): A service provider that provides
+   Mobile IPv6 service.  An MSP is called a "home MSP" when MSP == MSA.
+   In this document, the term MSP means a Mobility Service Provider that
+   has a roaming relationship with the MSA but it is not the MSA.
+
+</p><p class="rfcparagraph">   Split Scenario: A scenario where the mobility service and the network
+   access service are authorized by different entities.
+
+</p><p class="rfcparagraph">   Integrated Scenario: A scenario where the mobility service and the
+   network access service are authorized by the same entity.
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   Assumptions and Conformance</h2></a>
+
+   The following assumptions are made in this document:
+
+</p><p class="rfcparagraph">   (a)  MSA == ASA.
+
+</p><p class="rfcparagraph">   (b)  MSA and MSP have a roaming relationship.
+
+</p><p class="rfcparagraph">   (c)  DHCP relay and NAS are either co-located or there is a mechanism
+        to transfer received AAA information from the NAS to the DHCP
+        relay.
+
+</p><p class="rfcparagraph">           Note: If assignment of a home agent in the home MSP is not
+           required by a deployment, co-location of the NAS and the DHCP
+           relay functions or a mechanism to transfer received AAA
+           information from the NAS to the DHCP relay won't be
+           necessary.  In such a case, only the implementation of the
+           options and procedures defined in [RFC6610] should suffice.
+
+</p><p class="rfcparagraph">   (d)  The NAS shall support MIPv6-specific AAA attributes as specified
+        in [RFC5447].
+   (e)  The AAA server in the home domain (AAAH) used for network access
+        authentication (ASA) has access to the same database as the AAAH
+        used for the mobility service authentication (MSA).
+
+</p><p class="rfcparagraph">   If home agent assignment is required only in the ASP by the
+   deployment, a minimal implementation of this specification MAY only
+   support the delivery of information from the DHCP server to the DHCP
+   client through [RFC6610].  However, if home agent assignment in the
+   MSP is required by the deployment, an implementation conforming to
+   this specification SHALL be able to transfer the information received
+   from the AAA server to the NAS, and from the NAS to the DHCP relay
+   function.  This can be achieved either by co-locating the NAS and the
+   DHCP relay functions or via an interface between these functions.
+   The details of this interface are out of the scope of this
+   specification.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   Solution Overview</h2></a>
+
+	<a name="section-4.1"><h3>4.1   Logical View of the Integrated Scenario</h3></a>
+
+   In the integrated scenario, the mobile node utilizes the network
+   access authentication process to bootstrap Mobile IPv6.  It is
+   assumed that the access service authorizer is mobility service aware.
+   This allows for Mobile IPv6 bootstrapping at the time of access
+   authentication and authorization.  Also, the mechanism defined in
+   this document requires the NAS to support MIP6-specific AAA
+   attributes and a co-located DHCP relay agent.
+
+</p><p class="rfcparagraph">   Figure 1 shows the AAA infrastructure with a AAA client (NAS), a AAA
+   proxy in the visited network (AAAV), and a AAA server in the home
+   network (AAAH).
+                                      |
+                  ASP(/MSP)           |   ASA/MSA(/MSP)
+                                      |
+                                      |<pre>
+                  +-------+           |        +-------+
+                  |       |           |        |       |
+                  |AAAV   |-----------|--------|AAAH   |
+                  |       |           |        |       |
+                  +-------+           |        +-------+
+                      |               |
+                      |               |
+                      |               |
+                      |               |
+                  +-----+    +------+ |
+      +----+      | NAS/|    |DHCP  | |
+      | MN |------|DHCP |----|Server| |
+      +----+      |Relay|    |      | |
+                  +-----+    +------+ |
+                                      |
+                                      |
+                  +--------+          |      +--------+
+                  | HA     |          |      | HA     |
+                  | in ASP |          |      |in MSP  |
+                  +--------+          |      +--------+
+
+      Figure 1: Integrated Scenario, Network Diagram with DHCP Server
+
+   The user's home network authorizes the mobile node for network access
+   and mobility services.  Note that usage of a home agent with the
+   mobile node might be selected in the access service provider's
+   network or alternatively in the mobility service provider's network.
+
+</p><p class="rfcparagraph">   The MSP may be co-located with the ASP, or the ASA/MSA, or
+   independent of the two.
+
+</p><p class="rfcparagraph">   The mobile node interacts with the DHCP server via the relay agent
+   after the network access authentication as part of the mobile node
+   configuration procedure.
+
+</p><p class="rfcparagraph">	<a name="section-4.2"><h3>4.2   Bootstrapping Message Sequence</h3></a>
+
+   In this case, the mobile node is able to acquire the home agent
+   address via a DHCPv6 query.  In the integrated scenario, the ASA and
+   the MSA are the same; it can be safely assumed that the AAAH used for
+   network access authentication (ASA) has access to the same database
+   as the AAAH used for the mobility service authentication (MSA).
+   Hence, the same AAAH can authorize the mobile node for network access
+   and mobility service at the same time.  When the MN performs Mobile
+   IPv6 registration, the AAAH ensures that the MN is accessing the
+   assigned home agent for that MSP.
+
+</p><p class="rfcparagraph">   Figure 2 shows the message sequence for home agent allocation in both
+   scenarios -- HA in the ASP (which is co-located with the MSP), or HA
+   in an MSP that is separate from ASP and possibly from the ASA/MSA as
+   well.
+
+</p><p class="rfcparagraph">                                         |
+                 --------------ASP------>|<--ASA+MSA--
+                                         |
+   +----+        +------+      +-------+   +-----+
+   |    |        |      |      |       |   |     |
+   | MN/|        |NAS/  |      | DHCP  |   |AAAH |
+   |User|        |DHCP  |      | Server|   |     |
+   |    |        |relay |      |       |   |     |
+   +----+        +------+      +-------+   +-----+
+</pre>
+
+     |               |             |          |
+     |     1         |          1  |          |
+     |<------------->|<---------------------->|
+     |               |             |          |
+     |               |             |          |
+     |     2         |             |          |
+     |-------------->|             |          |
+     |               |             |          |
+     |               |       3     |          |
+     |               |------------>|          |
+     |               |             |          |
+     |               |       4     |          |
+     |               |<------------|          |
+     |               |             |          |
+     |     5         |             |          |
+     |<--------------|             |          |
+     |               |             |          |
+
+           Figure 2: Message Sequence for Home Agent Allocation
+
+	<a name="section-4.2.1"><h4>4.2.1   Home Agent Allocation in the MSP</h4></a>
+
+   This section describes a scenario where the home agent is allocated
+   in the mobile node's MSP network(s) that is (are) not co-located with
+   the ASP.  In order to provide the mobile node with information about
+   the assigned home agent, the AAAH conveys the assigned home agent's
+   information to the NAS via a AAA protocol, e.g., [RFC5447].
+
+</p><p class="rfcparagraph">   Figure 2 shows the message sequence for home agent allocation.  In
+   the scenario with HA in the MSP, the following details apply.
+   (1)  The mobile node executes the network access authentication<br>
+        procedure (e.g., IEEE 802.11i/802.1X), and it interacts with the
+        NAS.  The NAS is in the ASP, and it interacts with the AAAH,
+        which is in the ASA/MSA, to authenticate the mobile node.  In
+        the process of authorizing the mobile node, the AAAH verifies in
+        the AAA profile that the mobile node is allowed to use the
+        Mobile IPv6 service.  The AAAH assigns a home agent in the home
+        MSP, and it assigns one or more home agents in other authorized
+        MSPs and returns this information to the NAS.  The NAS may keep
+        the received information for a configurable duration, or it may
+        keep the information for as long as the MN is connected to the
+        NAS.
+
+</p><p class="rfcparagraph">   (2)  The mobile node sends a DHCPv6 Information-request message<br>
+        [RFC3315] to the All_DHCP_Relay_Agents_and_Servers multicast
+        address.  In this message, the mobile node (DHCP client) SHALL
+        include the following:
+
+</p><p class="rfcparagraph">        *  the Option Code for the Visited Home Network Information
+           option [RFC6610] in the OPTION_ORO.
+
+</p><p class="rfcparagraph">        *  Client Home Network ID FQDN option identifying the MSP.
+
+</p><p class="rfcparagraph">        *  the OPTION_CLIENTID to identify itself to the DHCP server
+
+   (3)  The relay agent intercepts the Information Request from the<br>
+        mobile node and forwards it to the DHCP server.  The relay agent
+        also includes the received home agent information from the AAAH
+        in the Relay-Supplied Options option [RFC6610].  If a NAS
+        implementation does not store the received information as long
+        as the MN's session remains in the ASP, and if the MN delays
+        sending a DHCP request, the NAS/DHCP relay does not include the
+        Relay-Supplied Options option in the Relay Forward message.
+
+</p><p class="rfcparagraph">   (4)  The DHCP server:<br>
+
+</p><p class="rfcparagraph">        *  identifies the client by looking at the DHCP Unique
+           Identifier (DUID) for the client in the OPTION_CLIENTID.
+
+</p><p class="rfcparagraph">        *  determines that the mobile node is requesting home agent
+           information in the MSP by looking at the Home Network ID FQDN
+           option.
+
+</p><p class="rfcparagraph">        *  determines that the home agent is allocated by the AAAH by
+           looking at the Relay-Supplied Options option.
+        *  extracts the allocated home agent information from the Relay-
+           Supplied Options option and includes it in the Identified
+           Home Network Information option [RFC6610] in the Reply
+           Message.  If the requested information is not available in
+           the DHCP server, it follows the behavior described in
+           [RFC6610].
+
+</p><p class="rfcparagraph">   (5)  The relay agent relays the Reply Message from the DHCP server to<br>
+        the mobile node.  At this point, the mobile node has the home
+        agent information that it requested.
+
+</p><p class="rfcparagraph">	<a name="section-4.2.2"><h4>4.2.2   Home Agent Allocation in the ASP</h4></a>
+
+   This section describes a scenario where the mobile node requests home
+   agent allocation in the ASP by setting the id-type field to zero in
+   the Home Network Identifier Option [RFC6610] in the DHCPv6 request
+   message.  In this scenario, the ASP becomes the MSP for the duration
+   of the network access authentication session.
+
+</p><p class="rfcparagraph">   Figure 2 shows the message sequence for home agent allocation.  In
+   the scenario with HA in the ASP, the following details apply.
+
+</p><p class="rfcparagraph">   (1)  The mobile node executes the network access authentication<br>
+        procedure (e.g., IEEE 802.11i/802.1X) and interacts with the
+        NAS.  The NAS is in the ASP, and it interacts with the AAAH,
+        which is in the ASA/MSA, to authenticate the mobile node.  In
+        the process of authorizing the mobile node, the AAAH verifies in
+        the AAA profile that the mobile node is allowed to use the
+        Mobile IPv6 services.  The AAAH assigns a home agent in the home
+        MSP, and it assigns one or more home agents in other authorized
+        MSPs and returns this information to the NAS.  Note that the
+        AAAH is not aware of the fact that the mobile node prefers a
+        home agent allocation in the ASP.  Therefore, the assigned home
+        agent may not be used by the mobile node.  This leaves the
+        location of the mobility anchor point decision to the mobile
+        node.
+
+</p><p class="rfcparagraph">   (2)  The mobile node sends a DHCPv6 Information Request message<br>
+        [RFC3315] to the All_DHCP_Relay_Agents_and_Servers multicast
+        address.  In this message, the mobile node (DHCP client) SHALL
+        include the following:
+
+</p><p class="rfcparagraph">        *  the Option Code for the Home Network Identifier Option
+           [RFC6610] in the OPTION_ORO.
+
+</p><p class="rfcparagraph">        *  the OPTION_CLIENTID to identify itself to the DHCP server.
+   (3)  The relay agent (which is the NAS) intercepts the Information<br>
+        Request from the mobile node and forwards it to the DHCP server.
+        The relay agent also includes the received AAA AVP from the AAAH
+        in the Relay-Supplied Options option [RFC6610].
+
+</p><p class="rfcparagraph">   (4)  The DHCP server identifies the client by looking at the DUID for<br>
+        the client in the OPTION_CLIENTID.  The DHCP server also
+        determines that the mobile node is requesting home agent
+        information in the ASP by looking at the Visited Home Network
+        Information option.  If configured to do so, the DHCP server
+        allocates a home agent from its configured list of home agents
+        and includes it in the Visited Home Network Information Option
+        [RFC6610] in the Reply Message.  Note that in this case, the
+        DHCP server does not use the received information in the Relay-
+        Supplied Options option.
+
+</p><p class="rfcparagraph">   (5)  The relay agent relays the Reply Message from the DHCP server to<br>
+        the mobile node.  At this point, the mobile node has the home
+        agent information that it requested.
+
+</p><p class="rfcparagraph">	<a name="section-4.3"><h3>4.3   Bootstrapping Message Sequence: Fallback Case</h3></a>
+
+   In the fallback case, the mobile node is not able to acquire the home
+   agent information via DHCPv6.  The mobile node MAY perform DNS
+   queries to discover the home agent address as defined in [RFC5026].
+   To perform DNS-based home agent discovery, the mobile node needs to
+   know the DNS server address.  The details of how the MN is configured
+   with the DNS server address are outside the scope of this document.
+
+</p><p class="rfcparagraph">	<a name="section-4.4"><h3>4.4   HoA and IKEv2 SA Bootstrapping in the Integrated Scenario</h3></a>
+
+   In the integrated scenario, the HoA, IPsec Security Association
+   setup, and Authentication and Authorization with the MSA are
+   bootstrapped via the same mechanism as described in the bootstrapping
+   solution for the split scenario [RFC5026].
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   Security Considerations</h2></a>
+
+   The transport of the assigned home agent information via the AAA
+   infrastructure (i.e., from the AAA server to the AAA client) to the
+   NAS may only be integrity protected as per standard Diameter or other
+   AAA protocol security mechanisms.  No additional security
+   considerations are imposed by the usage of this document.  The
+   security mechanisms provided by [RFC3588] are applicable for this
+   purpose.  This document does not introduce any new security issues to
+   Mobile IPv6.
+	<a name="section-6"><h2>6.   Acknowledgements</h2></a>
+
+   The authors would like to thank Kilian Weniger, Vidya Narayanan, and
+   George Tsirtsis for their review and comments.  Thanks to Alfred
+   Hoenes for thorough review and valuable suggestions to improve the
+   readability of the document.
+
+</p><p class="rfcparagraph">	<a name="section-7"><h2>7.   Contributors</h2></a>
+
+   This contribution is a joint effort of the bootstrapping solution
+   design team of the MEXT WG.  The contributors include Jari Arkko,
+   Julien Bournelle, Kuntal Chowdhury, Vijay Devarapalli, Gopal Dommety,
+   Gerardo Giaretta, Junghoon Jee, James Kempf, Alpesh Patel, Basavaraj
+   Patil, Hannes Tschofenig, and Alper Yegin.
+
+</p><p class="rfcparagraph">   The design team members can be reached at the following email
+   addresses:
+
+</p><p class="rfcparagraph">      Jari Arkko            jari.arkko@kolumbus.fi
+      Julien Bournelle      julien.bournelle@orange-ftgroup.com
+      Kuntal Chowdhury      kc@radiomobiles.com
+      Vijay Devarapalli     Vijay.Devarapalli@AzaireNet.com
+      Gopal Dommety         dommety@yahoo.com
+      Gerardo Giaretta      gerardog@qualcomm.com
+      Junghoon Jee          jhjee@etri.re.kr
+      James Kempf           kempf@docomolabs-usa.com
+      Alpesh Patel          alpesh@cisco.com
+      Basavaraj Patil       basavaraj.patil@nsn.com
+      Hannes Tschofenig     hannes.tschofenig@nsn.com
+      Alper Yegin           alper.yegin@yegin.org
+
+	<a name="section-8"><h2>8.   References</h2></a>
+
+	<a name="section-8.1"><h3>8.1   Normative References</h3></a>
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">   [RFC3315]  Droms, R., Bound, J., Volz, B., Lemon, T., Perkins, C.,
+              and M. Carney, "Dynamic Host Configuration Protocol for
+              IPv6 (DHCPv6)", RFC 3315, July 2003.
+
+</p><p class="rfcparagraph">   [RFC3588]  Calhoun, P., Loughney, J., Guttman, E., Zorn, G., and J.
+              Arkko, "Diameter Base Protocol", RFC 3588, September 2003.
+   [RFC5026]  Giaretta, G., Kempf, J., and V. Devarapalli, "Mobile IPv6
+              Bootstrapping in Split Scenario", RFC 5026, October 2007.
+
+</p><p class="rfcparagraph">   [RFC5447]  Korhonen, J., Bournelle, J., Tschofenig, H., Perkins, C.,
+              and K. Chowdhury, "Diameter Mobile IPv6: Support for
+              Network Access Server to Diameter Server Interaction",
+              RFC 5447, February 2009.
+
+</p><p class="rfcparagraph">   [RFC6275]  Perkins, C., Johnson, D., and J. Arkko, "Mobility Support
+              in IPv6", RFC 6275, July 2011.
+
+</p><p class="rfcparagraph">   [RFC6610]  Jang, H., Yegin, A., Chowdhury, K., Choi, J., and T.
+              Lemon, "DHCP Option for Home Agent Discovery in Mobile
+              IPv6 (MIPv6)", RFC 6610, May 2012.
+
+</p><p class="rfcparagraph">	<a name="section-8.2"><h3>8.2   Informative References</h3></a>
+
+   [RFC3753]  Manner, J. and M. Kojo, "Mobility Related Terminology",
+              RFC 3753, June 2004.
+
+</p><p class="rfcparagraph">   [RFC4301]  Kent, S. and K. Seo, "Security Architecture for the
+              Internet Protocol", RFC 4301, December 2005.
+
+</p><p class="rfcparagraph">   [RFC4640]  Patel, A. and G. Giaretta, "Problem Statement for
+              bootstrapping Mobile IPv6 (MIPv6)", RFC 4640,
+              September 2006.
+
+</p>Authors' Addresses
+
+   Kuntal Chowdhury (editor)
+   Radio Mobile Access, Inc.
+   100 Ames Pond Dr.
+   Tewksbury MA 01876
+
+   EMail: kc@radiomobiles.com
+
+
+   Alper Yegin
+   Samsung
+   Istanbul
+   Turkey
+
+   EMail: alper.yegin@yegin.org
+
+
+
+
+
+
+
+
+Chowdhury & Yegin            Standards Track                   [Page 12]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

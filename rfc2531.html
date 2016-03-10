@@ -1,0 +1,2204 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                         G. Klyne<br>Request for Comments: 2531                    5GM/Content Technologies<br>Category: Standards Track                                  L. McIntyre<br>                                                     Xerox Corporation<br>                                                            March 1999<br><br></p>
+                  <h1>
+                Content Feature Schema for Internet Fax</h1>
+                  <h2>Status of this Memo</h2>
+
+   This document specifies an Internet standards track protocol for the
+   Internet community, and requests discussion and suggestions for
+   improvements.  Please refer to the current edition of the "Internet
+   Official Protocol Standards" (STD 1) for the standardization state
+   and status of this protocol.  Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (1999).  All Rights Reserved.<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This document defines a content feature schema that is a profile of
+   the media feature registration mechanisms [1,2,3] for use in
+   performing capability identification between extended Internet fax
+   systems [5].
+
+</p><p class="rfcparagraph">   This document does not describe any specific mechanisms for
+   communicating capability information, but does presume that any such
+   mechanisms will transfer textual values.  It specifies a textual
+   format to be used for describing Internet fax capability information.
+<h2>Table of Contents</h2>
+<a href="#section-1" class="">1. Introduction ............................................</a><br>
+<a href="#section-1.1" class="indent-1">1.1 Organization of this document...........................</a><br>
+<a href="#section-1.2" class="indent-1">1.2 Terminology and document conventions....................</a><br>
+<a href="#section-2" class="">2. Fax feature schema syntax ...............................</a><br>
+<a href="#section-3" class="">3. Internet fax feature tags ...............................</a><br>
+<a href="#section-3.1" class="indent-1">3.1 Image size..............................................</a><br>
+<a href="#section-3.2" class="indent-1">3.2 Resolution..............................................</a><br>
+<a href="#section-3.3" class="indent-1">3.3 Media type..............................................</a><br>
+<a href="#section-3.4" class="indent-1">3.4 Paper Size..............................................</a><br>
+<a href="#section-3.5" class="indent-1">3.5 Color capability........................................</a><br>
+<a href="#section-3.6" class="indent-1">3.6 Color model.............................................</a><br>
+<a href="#section-3.7" class="indent-1">3.7 Image coding...........................................</a><br>
+<a href="#section-4" class="">4. Examples ...............................................</a><br>
+<a href="#section-4.1" class="indent-1">4.1 Simple mode Internet fax system........................</a><br>
+<a href="#section-4.2" class="indent-1">4.2 High-end black-and-white Internet fax system...........</a><br>
+<a href="#section-4.3" class="indent-1">4.3 Grey-scale Internet fax system.........................</a><br>
+<a href="#section-4.4" class="indent-1">4.4 Full-color Internet fax system.........................</a><br>
+<a href="#section-4.5" class="indent-1">4.5 Full-color Internet fax system (MRC)...................</a><br>
+<a href="#section-4.6" class="indent-1">4.6 Sender and receiver feature matching...................</a><br>
+<a href="#section-5" class="">5. IANA Considerations ....................................</a><br>
+<a href="#section-6" class="">6. Security Considerations ................................</a><br>
+<a href="#section-6.1" class="indent-1">6.1 Capability descriptions and mechanisms.................</a><br>
+<a href="#section-6.2" class="indent-1">6.2 Specific threats.......................................</a><br>
+<a href="#section-7" class="">7. Acknowledgements .......................................</a><br>
+<a href="#section-8" class="">8. References .............................................</a><br>
+<a href="#section-9" class="">9. Authors' Addresses .....................................</a><br>
+   Appendix A: Feature registrations ..........................22
+   A.1 Image size..............................................22
+   A.2 Resolution aspect ratio.................................24
+   A.3 Color levels............................................25
+   A.4 Color space.............................................27
+   A.5 CIELAB color depth......................................30
+   A.6 CIELAB color gamut......................................32
+   A.7 Image file structure....................................34
+   A.8 Image data coding.......................................36
+   A.9 Image coding constraint.................................38
+   A.10 JBIG stripe size.......................................39
+   A.11 Image interleave.......................................41
+   A.12 Color subsampling......................................42
+   A.13 MRC availability and mode..............................43
+   A.14 MRC maximum stripe size................................45
+   Appendix B: TIFF mode descriptions .........................47
+   Appendix C: Revision history ...............................49
+   Full Copyright Statement ...................................51
+	<a name="section-1"><h2>1.  Introduction</h2></a>
+
+   This document defines a content feature schema that is a profile of
+   the media feature registration mechanisms [1,2,3] for use in
+   performing capability identification between extended Internet fax
+   systems [5].
+
+</p><p class="rfcparagraph">   This document does not describe any specific mechanisms for
+   communicating capability information, but does presume that any such
+   mechanisms will transfer textual values.  It specifies a textual
+   format to be used for describing Internet fax capability information.
+
+</p><p class="rfcparagraph">   The range of capabilities that can be indicated are based on those
+   covered by the TIFF file format for Internet fax [7] and Group 3
+   facsimile [6].  A companion document [4] describes the relationship
+   and mapping between this schema and Group 3 fax capabilities.
+
+</p><p class="rfcparagraph">	<a name="section-1.1"><h3>1.1  Organization of this document</h3></a>
+
+   Section 2 specifies the overall syntax for fax feature descriptions
+   by reference to the media feature registration and syntax documents
+   [1,2].
+
+</p><p class="rfcparagraph">   Section 3 enumerates the feature tags that are to be recognized and
+   processed by extended Internet fax systems, according to their
+   capabilities.
+
+</p><p class="rfcparagraph">   Appendix A contains additional feature tag registrations for media
+   features that are specific to fax and for which no applicable
+   registration already exists.  These are presented in the form
+   prescribed by the media feature registration procedure [1].
+
+</p><p class="rfcparagraph">	<a name="section-1.2"><h3>1.2  Terminology and document conventions</h3></a>
+
+   The term "extended Internet fax system" is used to describe any
+   software, device or combination of these that conforms to the
+   specification "Extended Facsimile Using Internet Mail" [5].
+
+</p><p class="rfcparagraph">   "capability exchange" describes any transfer of information between
+   communicating systems that is used to indicate system capabilities
+   and hence determine the form of data transferred.  This term covers
+   both one-way and two-way transfers of capability information.
+
+</p><p class="rfcparagraph">   "capability identification" is a particular form of capability
+   exchange in which a receiving system provides capability information
+   to a sending system.
+   "capability description" is a collection of data presented in some
+   specific format that describes the capabilities of some communicating
+   entity.  It may exist separately from any specific capability
+   exchange mechanism.
+
+</p><p class="rfcparagraph">      NOTE: Comments like this provide additional nonessential
+      information about the rationale behind this document.  Such
+      information is not needed for building a conformant
+      implementation, but may help those who wish to understand the
+      design in greater depth.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.  Fax feature schema syntax</h2></a>
+
+   The syntax for the fax feature schema is described by "A syntax for
+   describing media feature sets" [2].  This in turn calls upon media
+   feature tags that may be registered according to the procedure
+   described in "Media Feature Tag Registration Procedure" [1].
+
+</p><p class="rfcparagraph">      NOTE: Media feature registration provides a base vocabulary of
+      features that correspond to media handling capabilities.  The
+      feature set syntax provides a mechanism and format for combining
+      these to describe combinations of features.  This memo indicates
+      those features that may be associated with extended Internet fax
+      systems.
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.  Internet fax feature tags</h2></a>
+
+   This section enumerates and briefly describes a number of feature
+   tags that are defined for use with extended Internet fax systems and
+   applications.  These tags may be used also by other systems and
+   applications that support corresponding capabilities.
+
+</p><p class="rfcparagraph">   The feature tags presented below are those that an extended Internet
+   fax system is expected to recognize its ability or non-ability to
+   handle.
+
+</p><p class="rfcparagraph">   Definitive descriptions of feature tags are indicated by reference to
+   their registration per the media feature registration procedure [1]
+   (some of which are appended to this document)
+
+      NOTE: The presence of a feature tag in this list does not mean
+      that an extended Internet fax system must have that capability;
+      rather, it must recognize the feature tag and deal with it
+      according to the capabilities that it does have.
+      Further, an extended Internet fax system is not prevented from
+      recognizing and offering additional feature tags.  The list below
+      is intended to provide a basic vocabulary that all extended
+      Internet fax systems can use in a consistent fashion.
+
+</p><p class="rfcparagraph">      If an unrecognized or unused feature tag is received, the feature
+      set matching rule (described in RFC2533 [2]) operates so that tag
+      is effectively ignored.
+
+</p><p class="rfcparagraph">	<a name="section-3.1"><h3>3.1  Image size</h3></a>
+
+      Feature tag name    Legal values
+      ----------------    ------------
+      size-x              <Rational> (>0)
+      size-y              <Rational> (>0)
+
+   Reference:  this document, Appendix A.
+
+</p><p class="rfcparagraph">   These feature values indicate a rendered document size in inches.
+
+</p><p class="rfcparagraph">   Where the actual size is measured in millimetres, a conversion
+   factor of 10/254 may be applied to yield an exact inch-based value.
+
+</p><p class="rfcparagraph">	<a name="section-3.2"><h3>3.2  Resolution</h3></a>
+
+      Feature tag name    Legal values
+      ----------------    ------------
+      dpi                 <Integer> (>0)
+      dpi-xyratio         <Rational> (>0)
+
+   Reference: "Media Features for Display, Print, and Fax" [3], and this
+   document appendix A.
+
+</p><p class="rfcparagraph">   If 'dpi-xyratio' is present and not equal to 1 then the horizontal
+   resolution (x-axis) is indicated by the 'dpi' feature value, and the
+   vertical resolution (y-axis) is the value of 'dpi' divided by 'dpi-
+   xyratio'.
+
+</p><p class="rfcparagraph">   For example, the basic Group 3 fax resolution of 200*100dpi might be
+   indicated as:
+
+</p><p class="rfcparagraph">         (& (dpi=200) (dpi-xyratio=200/100) )
+
+   When describing resolutions for an MRC format document, the complete
+   set of usable resolutions is listed.  However, there are some
+   restrictions on their use: (a) 100dpi resolution can be used only
+   with multi-level images, and (b) any multi-level image resolution is
+   required to be an integral sub-multiple of the applicable mask
+   resolution.
+
+</p><p class="rfcparagraph">	<a name="section-3.3"><h3>3.3  Media type</h3></a>
+
+      Feature tag name    Legal values
+      ----------------    ------------
+      ua-media            screen
+                          screen-paged
+                          stationery
+                          transparency
+                          envelope
+                          envelope-plain
+                          continuous
+
+   Reference: "Media Features for Display, Print, and Fax" [3].
+
+</p><p class="rfcparagraph">      NOTE: Where the recipient indicates specific support for hard copy
+      or soft copy media type, a sender of color image data may wish to
+      adjust the color components (e.g.  per the related rules of ITU
+      recommendation T.42 [9]) to improve rendered image quality on that
+      medium.
+
+</p><p class="rfcparagraph">	<a name="section-3.4"><h3>3.4  Paper Size</h3></a>
+
+      Feature tag name    Legal values
+      ----------------    ------------
+      paper-size          A4
+                          A3
+                          B4
+                          letter
+                          legal
+
+   Reference: "Media Features for Display, Print, and Fax" [3].
+
+</p><p class="rfcparagraph">	<a name="section-3.5"><h3>3.5  Color capability</h3></a>
+
+   Feature tag name    Legal values
+   ----------------    ------------
+   color               Binary  (bi-level only)
+                       Limited (a limited number of colors)
+                       Mapped  (palette or otherwise mapped color)
+                       Grey    (grey-scale only)
+                       Full    (full continuous-tone color)
+
+
+   Reference: "Media Features for Display, Print, and Fax" [3].
+   The intention here is to give a broad indication of color handling
+   capabilities that might be used, for example, to select among a small
+   number of available data resources.
+
+</p><p class="rfcparagraph">   The value of this feature also gives an indication of the more
+   detailed color handling features that might be applicable (see next
+   section).
+
+</p><p class="rfcparagraph">   'Binary' indicates black-and-white, or other bi-level capability.  No
+   further qualifying feature tags are required.
+
+</p><p class="rfcparagraph">   'Limited' indicates a small number of distinct fixed colors, such as
+   might be provided by a highlight printer, pen plotter or limited
+   color display.  The 'color-levels' tag should be used to indicate the
+   number of distinct colors available.
+
+</p><p class="rfcparagraph">      NOTE: No ability to indicate any specific or named color is
+      implied by this option.
+
+</p><p class="rfcparagraph">   Some devices might use different intensity levels rather than
+   different hues for distinction.
+
+</p><p class="rfcparagraph">   'Mapped' indicates that pixel color values are mapped in some
+   specifiable way to a multi-component color space.  The 'color-levels'
+   tag may be used to indicate the number of distinct colors available;
+   in its absence, sufficient levels to display a photographic image
+   should be assumed.
+
+</p><p class="rfcparagraph">   'Grey' indicates a continuous tone grey-scale capability.
+
+</p><p class="rfcparagraph">   'Full' indicates full continuous tone color capability.
+
+</p><p class="rfcparagraph">   For 'Mapped', 'Grey' and 'Full' color, additional feature tags
+   (section 3.6) may be used to further qualify the color reproduction.
+	<a name="section-3.6"><h3>3.6  Color model</h3></a>
+
+      Feature tag name    Legal values
+      ----------------    ------------
+      color-levels        <integer>   (>2)
+      color-space         Device-RGB  (device RGB)
+                          Device-CMY  (device CMY)
+                          Device-CMYK (device CMYK)
+                          CIELAB      (LAB per T.42 [9])
+                          (may be extended by further registrations)
+
+      CIELAB-L-depth      <integer>   (>0)
+      CIELAB-a-depth
+      CIELAB-b-depth
+      CIELAB-L-min        <integer>
+      CIELAB-L-max
+      CIELAB-a-min
+      CIELAB-a-max
+      CIELAB-b-min
+      CIELAB-b-max
+
+   Reference: this document, appendix A.
+
+</p><p class="rfcparagraph">   The general model for image handling (both color and non-color) is
+   described here from a receiver's perspective; a similar model
+   operates in the reverse direction for a scan/send perspective:
+
+</p><p class="rfcparagraph">          raw bit        pixel         color         physical
+          stream  -(A)-> values -(B)-> values -(C)-> rendition
+
+      -   "raw bit stream" is a stream of coded bits
+
+     (A)  indicates image coding/decoding (MH,MR,MMR,JPEG,JBIG,etc.)
+
+      -   "pixel values" are a single numeric value per picture element
+          that designates the color of that element.
+
+</p><p class="rfcparagraph">     (B)  indicates pixel-to-color value mapping
+
+      -   "color values" have a separate numeric value for each color
+          component (i.e. L*, a*, b* in the case of CIELAB indicated
+          above.)
+
+     (C)  indicates how the color values are related to a physical
+          color.  This involves interpretation of the color value with
+          respect to a color model (e.g. RGB, L*a*b*, CMY, CMYK) and a
+          color space (which is typically recipient-dependent).
+      -   "physical rendition" is a color value physically realized on a
+          display, printer or other device.
+
+</p><p class="rfcparagraph">   There are many variables that can be applied at each stage of the
+   processing of a color image, and any may be critical to meaningful
+   handling of that image in some circumstances.  In other circumstances
+   many of the variables may be implied (to some level of approximation)
+   in the application that uses them (e.g. color images published on a
+   Web page).
+
+</p><p class="rfcparagraph">   The color feature framework described here is intended to allow
+   capability description at a range of granularity: feature tags which
+   correspond to implied (or "don't care" or "unknown") feature values
+   may simply be omitted from a capability description.
+
+</p><p class="rfcparagraph">   Grey scale and bi-level images are handled within this framework as a
+   special case, having a 1-component color model.  The following
+   features are used for describing color capabilities:
+
+</p><p class="rfcparagraph">   'color-levels' indicates the number of distinct values for each
+   picture element, and applies to all but bi-level images.  For bi-
+   level images, a value of 2 is implied.
+
+</p><p class="rfcparagraph">   'color-space' is used mainly with 'Mapped' and 'Full', but could be
+   used with other modes if the exact color used is significant.  Two
+   kinds of color space can be distinguished: device-dependent and
+   calibrated.  Device dependent spaces are named here as 'Device-xxx',
+   and are used to indicate a color space that is defined by the
+   receiving device.  Calibrated color spaces presume the existence of a
+   rendering system that is calibrated with respect to an indicated
+   definition, and is capable of processing the device-independent color
+   information accordingly.
+
+</p><p class="rfcparagraph">   A color-handling receiver should indicate any appropriate device
+   color space capability in addition to any calibrated color spaces
+   that it may support.  A calibrated color space should be used when
+   precise color matching is required in the absence of specific
+   knowledge of the receiving system.
+
+</p><p class="rfcparagraph">      NOTE: In practice, although they appear to be separate concepts,
+      the color model and color space cannot be separated.  In the final
+      analysis, a color model (RGB, CMY, etc.) must be defined with
+      respect to some color space.
+
+</p><p class="rfcparagraph">   'CIELAB-L-depth', 'CIELAB-a-depth' and 'CIELAB-b-depth' indicate the
+   number of different values that are possible for the L*, a* and b*
+   color components respectively, and are significant only when colors
+   are represented in a CIELAB color space.  These features would be
+   used with palettized color, or with full color where each color
+   component has a different number of possible values.
+
+</p><p class="rfcparagraph">   The 'CIELAB-x-min' and 'CIELAB-x-max' values indicate a color gamut
+   (i.e. a range of color values that are used or may be rendered).  A
+   gamut may be indicated in terms of the CIELAB color space even when
+   colors are represented in some other space.
+
+</p><p class="rfcparagraph">	<a name="section-3.7"><h3>3.7  Image coding</h3></a>
+
+      Feature tag name    Legal values
+      ----------------    ------------
+      image-file-         TIFF-S
+      structure           TIFF-F
+                          TIFF-J
+                          TIFF-C
+                          TIFF-L
+                          TIFF-M
+                          (may be extended by further registrations,
+                          to cover non-TIFF image file structures)
+      image-coding        MH
+                          MR
+                          MMR
+                          JBIG
+                          JPEG
+                          (may be extended by further registrations)
+      image-coding-       JBIG-T85    (bi-level, per ITU T.85)
+      constraint          JBIG-T43    (multi-level, per ITU T.43)
+                          JPEG-T4E    (per ITU T.4, Annex E)
+                          (may be extended by further registrations)
+      JBIG-stripe-size    <Integer>
+      image-interleave    Stripe
+                          Plane
+      color-subsampling   "1:1:1"     (no color subsampling)
+                          "4:1:1"     (4:1:1 color subsampling)
+      MRC-mode            <Integer> (0..7)   (per ITU T.44 [15])
+      MRC-max-stripe-size <Integer>
+
+   Reference: this document, appendix A.
+
+</p><p class="rfcparagraph">   'image-file-structure' defines how the coded image data is wrapped
+   and formatted.  Options defined here are the various profiles of
+   TIFF-FX, per RFC 2301 [7].  These options apply to overall formatting
+   of the image data (TIFF file format, byte ordering, bit ordering,
+   etc.) and do not define specific image coding issues that are covered
+   by other aspects of the TIFF-FX profile specifications.
+   'image-coding' describes how the raw image data is compressed and
+   coded as a sequence of bits.  These are generic tags that may apply
+   to a range of file formats and usage environments.
+
+</p><p class="rfcparagraph">   'image-coding-constraint' describes how the raw image data coding
+   method is constrained to meet a particular operating environment.
+   Options defined here are JBIG and JPEG coding constraints that apply
+   in typical Group 3 fax environments.
+
+</p><p class="rfcparagraph">   The 'JBIG-stripe-size' feature may be used with JBIG image coding,
+   and indicates the number of scan lines in each stripe except the last
+   in an image.  The legal constraints are:
+
+</p><p class="rfcparagraph">      (JBIG-stripe-size=128)
+      (JBIG-stripe-size>=0)
+
+   The latter being equivalent to no restriction.
+
+</p><p class="rfcparagraph">   The 'MRC-mode' feature is used to indicate the availability of MRC
+   (mixed raster content) image format capability, and also the MRC mode
+   available.  A zero value indicates MRC is not available, a non-zero
+   value indicates the available MRC mode number.
+
+</p><p class="rfcparagraph">   An MRC formatted document is actually a collection of several images,
+   each of which is described by a separate feature collection.  An
+   MRC-capable receiver is presumed to be capable of accepting any
+   combination of contained images that conform to the MRC construction
+   rules and declared image-coding capabilities.
+
+</p><p class="rfcparagraph">   Within an MRC-formatted document, multi-level coders are used for
+   foreground and background images (i.e. odd-numbered layers: 1, 3, 5,
+   etc.) and bi-level coders are used for mask layers (i.e. even
+   numbered layers 2, 4, 6, etc.).
+
+</p><p class="rfcparagraph">      NOTE: an MRC formatted document may appear within a TIFF image
+      file structure, so this separate feature is needed to capture the
+      full range of possible capabilities.
+
+</p><p class="rfcparagraph">   The 'MRC-max-stripe-size' feature may be used with MRC coding, and
+   indicates the maximum number of scan lines in each MRC stripe.  The
+   legal constraints are:
+
+</p><p class="rfcparagraph">      (MRC-max-stripe-size=[0..256])
+      (MRC-max-stripe-size>=0)
+
+   These values indicate upper bounds on the stripe size.  The actual
+   value may vary between stripes, and the actual size for each stripe
+   is indicated in the image data.
+      NOTE: there are many image coding options here, and not all are
+      required in all circumstances.
+
+</p><p class="rfcparagraph">      Specification of the image-file-structure tag value alone is not
+      normally sufficient to describe the capabilities of a recipient.
+      A general rule is that sufficient detail should be provided to
+      exclude any unsupported features.
+
+</p><p class="rfcparagraph">      For extended Internet fax, image-file-structure and image-coding
+      should always be specified, together with additional values
+      described above as needed to clearly indicate which feature tag
+      values are supported and which are not.  (See also the examples in
+      section 4.)
+
+	<a name="section-4"><h2>4.  Examples</h2></a>
+
+   Some of the examples contain comments introduced by '--...'.  These
+   are not part of the allowed capability description syntax.  They are
+   included here to explain some of the constructs used.
+
+</p><p class="rfcparagraph">   The level of detail captured here reflects that used for capability
+   identification in Group 3 facsimile.
+
+</p><p class="rfcparagraph">	<a name="section-4.1"><h3>4.1  Simple mode Internet fax system</h3></a>
+
+   This example describes the capabilities of a typical simple mode
+   Internet fax system.  Note that TIFF application S is required to be
+   supported by such a system.
+
+</p><p class="rfcparagraph">      (& (color=Binary)
+         (image-file-structure=TIFF-S)
+         (dpi=200)
+         (dpi-xyratio=[200/100,200/200])
+         (paper-size=A4)
+         (image-coding=MH) (MRC-mode=0)
+         (ua-media=stationery) )
+
+	<a name="section-4.2"><h3>4.2  High-end black-and-white Internet fax system</h3></a>
+
+   This would include support for B/W JBIG and be equivalent to what is
+   sometimes called "Super G3", except that Internet fax functionality
+   would be added.
+      (& (color=Binary)
+         (image-file-structure=[TIFF-S,TIFF-F,TIFF-J])
+         (| (& (dpi=200) (dpi-xyratio=200/100) )    -- 200*100
+            (& (dpi=200) (dpi-xyratio=1) )          -- 200*200
+            (& (dpi=204) (dpi-xyratio=204/391) )    -- 204*391
+            (& (dpi=300) (dpi-xyratio=1) ) )        -- 300*300
+         (| (image-coding=[MH,MR,MMR])
+            (& (image-coding=JBIG)
+               (image-coding-constraint=JBIG-T85)
+               (JBIG-stripe-size=128) ) )
+         (MRC-mode=0)
+         (paper-size=[A4,B4]) )
+
+	<a name="section-4.3"><h3>4.3  Grey-scale Internet fax system</h3></a>
+
+   This is the previous example extended to handle grey scale multi-
+   level images.  In keeping with Group 3 fax, this example requires
+   equal x- and y- resolutions for a multi-level image.
+
+</p><p class="rfcparagraph">      (& (| (& (color=Binary)
+               (image-file-structure=[TIFF-S,TIFF-F,TIFF-J])
+               (| (image-coding=[MH,MR,MMR])
+                  (& (image-coding=JBIG)
+                     (image-coding-constraint=JBIG-T85)
+                     (JBIG-stripe-size=128) ) )
+               (| (& (dpi=200) (dpi-xyratio=200/100) )
+                  (& (dpi=200) (dpi-xyratio=1) )
+                  (& (dpi=204) (dpi-xyratio=204/391) )
+                  (& (dpi=300) (dpi-xyratio=1) ) ) )
+            (& (color=Grey)
+               (image-file-structure=[TIFF-C,TIFF-L])
+               (color-levels<=256)
+               (color-space-CIELAB)
+               (| (& (image-coding=JPEG)
+                     (image-coding-constraint=JPEG-T4E) )
+                  (& (image-coding=JBIG)
+                     (image-coding-constraint=JBIG-T43)
+                     (JBIG-stripe-size=128)
+                     (image-interleave=stripe) ) )
+               (dpi=[100,200,300])
+               (dpi-xyratio=1) ) )
+         (MRC-mode=0)
+         (paper-size=[A4,B4]) )
+
+	<a name="section-4.4"><h3>4.4  Full-color Internet fax system</h3></a>
+
+   This adds 16-bit full-color to the previous example.
+      (& (| (& (color=Binary)
+               (image-file-structure=[TIFF-S,TIFF-F,TIFF-J])
+               (| (image-coding=[MH,MR,MMR])
+                  (& (image-coding=JBIG)
+                     (image-coding-constraint=JBIG-T85)
+                     (JBIG-stripe-size=128) ) )
+               (| (& (dpi=200) (dpi-xyratio=200/100) )
+                  (& (dpi=200) (dpi-xyratio=1) )
+                  (& (dpi=204) (dpi-xyratio=204/391) )
+                  (& (dpi=300) (dpi-xyratio=1) ) ) )
+            (& (| (& (color=Grey) (color-levels<=256) )
+                  (& (color=Full) (color-levels<=65536)
+                     (color-subsampling=["1:1:1","4:1:1"]) ) )
+               (image-file-structure=[TIFF-C,TIFF-L])
+               (color-space=CIELAB)
+               (| (& (image-coding=JPEG)
+                     (image-coding-constraint=JPEG-T4E) )
+                  (& (image-coding=JBIG)
+                     (image-coding-constraint=JBIG-T43)
+                     (JBIG-stripe-size=128)
+                     (image-interleave=stripe) ) )
+               (dpi=[100,200,300])
+               (dpi-xyratio=1) ) )
+         (MRC-mode=0)
+         (paper-size=[A4,B4]) )
+
+	<a name="section-4.5"><h3>4.5  Full-color Internet fax system (MRC)</h3></a>
+
+      (& (| (& (color=Binary)
+               (image-file-structure=[TIFF-S,TIFF-F,TIFF-J])
+               (MRC-mode=0)
+               (image-coding=[MH,MMR])
+               (| (& (dpi=200) (dpi-xyratio=[200/100,1]) )
+                  (& (dpi=204) (dpi-xyratio=204/391) )
+                  (& (dpi=300) (dpi-xyratio=1) )
+                  (& (dpi=400) (dpi-xyratio=1) ) ) )
+            (& (image-file-structure=[TIFF-C,TIFF-L])
+               (| (& (color=Grey) (color-levels<=256) )
+                  (& (color=Full) (color-levels<=65536)
+                     (color-subsampling=["1:1:1","4:1:1"]) ) )
+               (color-space=CIELAB)
+               (MRC-mode=0)
+               (image-coding=JPEG)
+               (image-coding-constraint=JPEG-T4E)
+               (dpi=[100,200,300,400])
+               (dpi-xyratio=1) )
+            (& (image-file-structure=TIFF-M)
+               (MRC-mode=1) (MRC-max-stripe-size=[0..256])
+               (image-coding=[MH,MMR,JPEG])
+               (| (color=Binary)
+                  (& (color=Grey) (color-levels<=256) )
+                  (& (color=Full) (color-levels<=65536)
+                     (color-subsampling=["1:1:1","4:1:1"]) ) )
+               (color-space=CIELAB)
+               (dpi=[100,200,300,400])
+               (dpi-xyratio=1) ) )
+         (paper-size=[A4,B4]) )
+
+	<a name="section-4.6"><h3>4.6  Sender and receiver feature matching</h3></a>
+
+   This example considers sending a document to a high-end black-and-
+   white fax system with the following receiver capabilities:
+
+</p><p class="rfcparagraph">      (& (| (& (dpi=200) (dpi-xyratio=200/100) )    -- 200*100
+            (& (dpi=200) (dpi-xyratio=1) )          -- 200*200
+            (& (dpi=300) (dpi-xyratio=1) )          -- 300*300
+            (& (dpi=400) (dpi-xyratio=1) ) )        -- 400*400
+         (color=Binary)
+         (| (& (paper-size=A4) (ua-media=[stationery,transparency]) )
+            (& (paper-size=B4) (ua-media=continuous) ) )
+         (image-coding=[MH,MR,JBIG]) )
+
+   Turning to the document itself, assume it is available to the sender
+   in three possible formats, A4 high resolution, B4 low resolution and
+   A4 high resolution color, described by:
+
+</p><p class="rfcparagraph">      (& (dpi=300) (dpi-xyratio=1)
+         (color=Binary)
+         (paper-size=A4)
+         (image-coding=[MMR,JBIG]) )
+
+      (& (dpi=200) (dpi-xyratio=200/100)
+         (color=Binary)
+         (paper-size=B4)
+         (image-coding=[MH,MR]) )
+
+      (& (dpi=300) (dpi-xyratio=1)
+         (color=Mapped) (color-levels<=256)
+         (paper-size=A4)
+         (image-coding=JPEG) )
+
+   These three image formats can be combined into a composite capability
+   statement by a logical-OR operation (to describe format-1 OR format-2
+   OR format-3):
+      (& (dpi=300) (dpi-xyratio=1)
+         (color=Binary)
+         (paper-size=A4)
+         (image-coding=[MMR,JBIG]) )
+      (& (dpi=200) (dpi-xyratio=200/100)
+         (color=Binary)
+         (paper-size=B4)
+         (image-coding=[MH,MR]) )
+      (& (dpi=300) (dpi-xyratio=1)
+         (color=Mapped) (color-levels=42)
+         (paper-size=A4)
+         (image-coding=JPEG) ) )
+
+   This could be simplified, but there is little gain in doing so at
+   this point.
+
+</p><p class="rfcparagraph">   The composite document description can be matched with the receiver
+   capability description, according to the rules in [2], to yield the
+   result:
+
+</p><p class="rfcparagraph">      (& (dpi=300) (dpi-xyratio=1)
+         (color=Binary)
+         (paper-size=A4)
+         (ua-media=[stationery,transparency])
+         (image-coding=JBIG) )
+      (& (dpi=200) (dpi-xyratio=200/100)
+         (color=Binary)
+         (paper-size=B4)
+         (ua-media=continuous)
+         (image-coding=[MH,MR]) ) )
+
+   Points to note about the feature matching process:
+
+</p><p class="rfcparagraph">   o  The color document option is eliminated because the receiver
+      cannot handle either color (indicated by '(color=Mapped)') or JPEG
+      coding (indicated by '(image-coding=JPEG)').
+
+</p><p class="rfcparagraph">   o  The high resolution version of the document with '(dpi=300)' must
+      be send using '(image-coding=JBIG)' because this is the only
+      available coding of the image data that the receiver can use for
+      high resolution documents.  (The available 300dpi document codings
+      here are MMR and JBIG, and the receiver capabilities are MH, MR
+      and JBIG.)
+
+   o  The low-resolution version of the document can be sent with either
+      MH or MR coding as the receiver can deal with either of these for
+      low resolution documents.
+   o  The high resolution variant of the document is available only for
+      A4, so that is the paper-size used in that case.  Similarly the
+      low resolution version is sent for B4 paper.
+
+</p><p class="rfcparagraph">   o  Even though the sender may not understand the 'ua-media' feature
+      tag, and does not mention it, the matching rules preserve the
+      constraint that the B4 document is rendered with '(ua-
+      media=continuous)', and the A4 document may be rendered with '
+      (ua-media=[stationery,transparency])'.
+
+</p><p class="rfcparagraph">   Finally, note that when matching an MRC document description, the
+   description of each component sub-image must match the capabilities
+   of the intended receiver.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.  IANA Considerations</h2></a>
+
+   Appendix A of this document calls for registrations of feature tags
+   in the "IETF tree", as defined in section 3.1.1 of "Media Feature Tag
+   Registration Procedure" [1] (i.e. these feature tags are subject to
+   the "IETF Consensus" policies described in RFC 2434 [21]).
+
+</p><p class="rfcparagraph">   ASN.1 identifiers should be assigned for each of these registered
+   feature tags and replaced in the body of the registration.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.  Security Considerations</h2></a>
+
+   The points raised below are in addition to the general security
+   considerations for extended Internet fax [5], and others discussed in
+   [2,8,11,12,13]
+
+	<a name="section-6.1"><h3>6.1  Capability descriptions and mechanisms</h3></a>
+
+   Negotiation mechanisms reveal information about one party to other
+   parties.  This may raise privacy concerns, and may allow a malicious
+   party to make better guesses about the presence of specific security
+   holes.
+
+</p><p class="rfcparagraph">   Most of these concerns pertain to capability information getting into
+   the hands of someone who may abuse it.  This document specifies
+   capabilities that help a sender to determine what image
+   characteristics can be processed by the recipient, not mechanisms for
+   their publication.  Implementors and users should take care that the
+   mechanisms employed ensure that capabilities are revealed only to
+   appropriate persons, systems and agents.
+	<a name="section-6.2"><h3>6.2  Specific threats</h3></a>
+
+   1.  Unsolicited bulk mail:  if it is known that a recipient can
+       process certain types of images, they may be targeted by bulk
+       mailers that want to send such images.
+
+</p><p class="rfcparagraph">	<a name="section-7"><h2>7.  Acknowledgements</h2></a>
+
+   The authors gratefully acknowledge the contributions of the following
+   persons who commented on earlier versions of this memo: James
+   Rafferty, Dan Wing, Robert Buckley, Mr Ryuji Iwazaki.  The following
+   contributed ideas upon which some of the features described here have
+   been based: Larry Masinter, Al Gilman, Koen Holtman.
+
+</p><p class="rfcparagraph">	<a name="section-8"><h2>8.  References</h2></a>
+
+   [1]  Holtman, K., Mutz, A. and T. Hardie, "Media Feature Tag
+        Registration Procedure", BCP 31, RFC 2506, March 1999.
+
+</p><p class="rfcparagraph">   [2]  Klyne, G., "A Syntax for Describing Media Feature Sets", RFC
+        2533, March 1999.
+
+</p><p class="rfcparagraph">   [3]  Masinter, L., Holtman, K., Mutz, A. and D. Wing, "Media Features
+        for Display, Print, and Fax", RFC 2534, March 1999.
+
+</p><p class="rfcparagraph">   [4]  McIntyre, L. and G. Klyne, "Internet fax feature mapping from
+        Group 3 fax", Work in Progress.
+
+</p><p class="rfcparagraph">   [5]  Masinter, L. and D. Wing, "Extended Facsimile Using Internet
+        Mail", RFC 2532, March 1999.
+
+</p><p class="rfcparagraph">   [6]  "Procedures for document facsimile transmission in the general
+        switched telephone network", ITU-T Recommendation T.30 (1996),<br>
+        International Telecommunications Union, July 1996.
+
+</p><p class="rfcparagraph">   [7]  McIntyre, L., Buckley, R., Venable, D., Zilles, S., Parsons, G.
+        and J. Rafferty, "File format for Internet fax", RFC 2301, March
+        1998.
+
+</p><p class="rfcparagraph">   [8]  Toyoda, K., Ohno, H., Murai, J. and D. Wing, "A Simple Mode of
+        Facsimile Using Internet Mail", RFC 2305, March 1998.
+
+</p><p class="rfcparagraph">   [9]  "Continuous-tone color representation method for facsimile"
+        ITU-T Recommendation T.42 (1996), International<br>
+        Telecommunications Union, (Covers custom illuminant, gamut).
+   [10] "Colour and gray-scale image representation using lossless
+        coding scheme for facsimile", ITU-T Recommendation T.43 (1997),<br>
+        International Telecommunications Union. (Covers JBIG for
+        colour/grey images).
+
+</p><p class="rfcparagraph">   [11] Hardie, T., "Scenarios for the Delivery of Negotiated Content",
+        Work in Progress.
+
+</p><p class="rfcparagraph">   [12] Klyne, G., "Requirements for protocol-independent content
+        negotiation", Work in Progress.
+
+</p><p class="rfcparagraph">   [13] "Standardization of Group 3 facsimile terminals for document
+        transmission", ITU-T Recommendation T.4 (1996), International<br>
+        Telecommunications Union, (Covers basic fax coding formats: MH,
+        MR).
+
+</p><p class="rfcparagraph">   [14] "Facsimile coding schemes and coding control functions for Group
+        4 facsimile apparatus", ITU Recommendation T.6, International
+        Telecommunications Union, (Commonly referred to as the MMR
+        standard; covers extended 2-D fax coding format).
+
+</p><p class="rfcparagraph">   [15] "Mixed Raster Content (MRC)", ITU-T Recommendation T.44,
+        International Telecommunications Union.
+
+</p><p class="rfcparagraph">   [16] "Information technology - Digital compression and coding of
+        continuous-tone still image - Requirements and guidelines",
+        ITU-T Recommendation T.81 (1992) | ISO/IEC 10918-1:1993,<br>
+        International Telecommunications Union, (Commonly referred to as
+        JPEG standard).
+
+</p><p class="rfcparagraph">   [17] "Information technology - Coded representation of picture and
+        audio information - Progressive bi-level image compression",
+        ITU-T Recommendation T.82 (1993) | ISO/IEC 11544:1993,<br>
+        International Telecommunications Union, (Commonly referred to as
+        JBIG1 standard).
+
+</p><p class="rfcparagraph">   [18] "Application profile for Recommendation T.82 - Progressive bi-
+        level image compression (JBIG1 coding scheme for facsimile
+        apparatus)", ITU-T Recommendation T.85 (1995), International<br>
+        Telecommunications Union, (Covers bi-level JBIG).
+
+</p><p class="rfcparagraph">   [19] "Colorimeter, 2nd ed.", CIE Publication No. 15.2, 1986.
+        (Defines CIELAB color space;  use with fax is further
+        constrained by T.42 [9].)
+   [20] Tag Image File Format, Revision 6.0, Adobe Developers
+        Association,
+        <ftp://ftp.adobe.com/pub/adobe/devrelations/devtechnotes
+        /pdffiles/tiff6.pdf>, June 1992.
+
+</p><p class="rfcparagraph">   [21] Narten, T. and H. Alvestrand, "Guidelines for Writing an IANA
+        Considerations Section in RFCs", BCP 26, RFC 2434, October 1998.
+	<a name="section-9"><h2>9.  Authors' Addresses</h2></a>
+
+   Graham Klyne
+   5th Generation Messaging Ltd.    Content Technologies Ltd.
+   5 Watlington Street              Forum 1, Station Road
+   Nettlebed                        Theale
+   Henley-on-Thames, RG9 5AB        Reading, RG7 4RA
+   United Kingdom                   United Kingdom.
+
+</p><p class="rfcparagraph">   Phone:     +44 1491 641 641      +44 118 930 1300
+   Facsimile: +44 1491 641 611      +44 118 930 1301
+   EMail:     GK@ACM.ORG
+
+
+   Lloyd McIntyre
+   Xerox Corporation
+   Mailstop PAHV-121
+   3400 Hillview Ave.
+   Palo Alto, CA 94304 USA
+
+   Phone:     +1-650-813-6762
+   Facsimile: +1-650-845-2340
+   EMail: Lloyd.McIntyre@pahv.xerox.com
+Appendix A: Feature registrations
+
+A.1 Image size
+
+   -  Media Feature tag name(s):
+
+</p><p class="rfcparagraph">         size-x
+         size-y
+
+   -  ASN.1 identifiers associated with these feature tags:
+
+</p><p class="rfcparagraph">         1.3.6.1.8.1.7
+         1.3.6.1.8.1.8
+
+   -  Summary of the media features indicated:
+
+</p><p class="rfcparagraph">         These feature tags indicate the size of a displayed, printed or
+         otherwise rendered document image;  they indicate horizontal
+         (size-x) and vertical (size-y) dimensions.
+
+</p><p class="rfcparagraph">         The unit of measure is inches (to be consistent with the
+         measure of resolution defined by the feature tag 'dpi').
+
+</p><p class="rfcparagraph">         Where the actual size is available in millimetres, a conversion
+         factor of 10/254 may be applied to yield an exact inch-based
+         value.
+
+</p><p class="rfcparagraph">   -  Values appropriate for use with these feature tags:
+
+</p><p class="rfcparagraph">         Rational (>0)
+
+   -  The feature tag is intended primarily for use in the following
+      applications, protocols, services, or negotiation mechanisms:
+
+</p><p class="rfcparagraph">         Print and display applications where different media choices
+         will be made depending on the size of the recipient device.
+
+</p><p class="rfcparagraph">   -  Examples of typical use:
+
+</p><p class="rfcparagraph">         This example describes the maximum scanned image width and
+         height for Group 3 fax: 215x297 mm (8.46x11.69 inches):
+
+</p><p class="rfcparagraph">         (size-x<=2150/254)
+         (size-y<=2970/254)
+   -  Related standards or documents:
+
+</p><p class="rfcparagraph">         The memo "Media Features for Display, Print, and Fax" [3]
+         describes features (pix-x, pix-y) for measuring document size
+         in pixels.
+
+</p><p class="rfcparagraph">         Fax applications should declare physical dimensions using the
+         features defined here.
+
+</p><p class="rfcparagraph">   -  Considerations particular to use in individual applications,
+      protocols, services, or negotiation mechanisms:
+
+</p><p class="rfcparagraph">         Where no physical size is known or available, but a pixel size
+         is known, a notional size should be declared based upon known
+         pixel dimensions and a notional resolution of (say) 100dpi
+
+         For example, to describe a 640x480 pixel display:
+
+</p><p class="rfcparagraph">            (& (size-x<=640/100) (size-y<=480/100) (dpi=100) )
+
+         The notional 100dpi resolution is used as it represents a
+         fairly typical resolution for a pixel-limited display.
+         Reducing the rational numbers to canonical form gives the
+         following equivalent expression:
+
+</p><p class="rfcparagraph">            (& (size-x<=32/5) (size-y<=24/5) (dpi=100) )
+
+   -  Interoperability considerations:
+
+</p><p class="rfcparagraph">         For interoperability with other (non-fax) applications that use
+         only pixel-based measurements, pixel dimensions (pix-x, pix-y)
+         may be declared in addition to physical measurements.
+
+</p><p class="rfcparagraph">   -  Related feature tags:
+
+</p><p class="rfcparagraph">         pix-x                 [3]
+         pix-y                 [3]
+         dpi                   [3]
+         dpi-xyratio           [this document]
+
+   -  Intended usage:
+
+</p><p class="rfcparagraph">         Common
+
+   -  Author/Change controller:
+
+</p><p class="rfcparagraph">         IETF
+A.2 Resolution aspect ratio
+
+   -  Media Feature tag name(s):
+
+</p><p class="rfcparagraph">         dpi-xyratio
+
+   -  ASN.1 identifier associated with this feature tag:
+
+</p><p class="rfcparagraph">         1.3.6.1.8.1.9
+
+   -  Summary of the media features indicated:
+
+</p><p class="rfcparagraph">         This feature is used to indicate differential horizontal and
+         vertical resolution capability.  In the absence of this
+         feature, horizontal and vertical resolutions are presumed to be
+         the same.
+
+</p><p class="rfcparagraph">         When this feature tag is specified, any declared resolution
+         (dpi) is presumed to apply to the horizontal axis, and the
+         vertical resolution is obtained by dividing that declared
+         resolution by the resolution ratio.
+
+</p><p class="rfcparagraph">         The value of this feature is a pure number, since it represents
+         the ratio of two resolution values.
+
+</p><p class="rfcparagraph">   -  Values appropriate for use with this feature tag:
+
+</p><p class="rfcparagraph">         Rational (>0)
+
+   -  The feature tag is intended primarily for use in the following
+      applications, protocols, services, or negotiation mechanisms:
+
+</p><p class="rfcparagraph">         Internet fax, and other print or display applications that must
+         handle differential horizontal and vertical resolution values.
+
+</p><p class="rfcparagraph">   -  Examples of typical use:
+
+</p><p class="rfcparagraph">         The following example describes a fax resolution of 204 dpi
+         horizontally by 391 dpi vertically:
+
+</p><p class="rfcparagraph">            (& (dpi=204) (dpi-xyratio=204/391) )
+
+   -  Related standards or documents:
+
+</p><p class="rfcparagraph">         The memo "Media Features for Display, Print, and Fax" [3]
+         describes a feature (dpi) for measuring document resolution.
+   -  Interoperability considerations:
+
+</p><p class="rfcparagraph">         When interoperating with an application that does not recognize
+         the differential resolution feature, resolution matching may be
+         performed on the basis of the horizontal resolution only, so
+         aspect ratio information may be lost.
+
+</p><p class="rfcparagraph">   -  Related feature tags:
+
+</p><p class="rfcparagraph">         dpi                   [3]
+         size-x                [this document]
+         size-y                [this document]
+
+   -  Intended usage:
+
+</p><p class="rfcparagraph">         Internet fax
+
+   -  Author/Change controller:
+
+</p><p class="rfcparagraph">         IETF
+
+A.3 Color levels
+
+   -  Media Feature tag name(s):
+
+</p><p class="rfcparagraph">         color-levels
+
+   -  ASN.1 identifier associated with this feature tag:
+
+</p><p class="rfcparagraph">         1.3.6.1.8.1.10
+
+   -  Summary of the media features indicated:
+
+</p><p class="rfcparagraph">         This feature tag is used to indicate a number of different
+         image data pixel color values.
+
+</p><p class="rfcparagraph">         When mapped (palettized) color is used, this is generally
+         different from the number of different colors that can be
+         represented through the color mapping function.
+
+</p><p class="rfcparagraph">         This feature tag is used in conjunction with a 'color' feature
+         having a value other than 'Binary'.
+
+</p><p class="rfcparagraph">   -  Values appropriate for use with this feature tag:
+
+</p><p class="rfcparagraph">         Integer  (>=2)
+   -  The feature tag is intended primarily for use in the following
+      applications, protocols, services, or negotiation mechanisms:
+
+</p><p class="rfcparagraph">         Color image printing or display applications where the data
+         resource used may depend upon color handling capabilities of
+         the recipient.
+
+</p><p class="rfcparagraph">   -  Examples of typical use:
+
+</p><p class="rfcparagraph">         To describe recipient capabilities:
+         (& (color=limited) (color-levels<=6) )
+         (& (color=grey)    (color-levels<=64) )
+         (& (color=mapped)  (color-levels<=240) )
+         (& (color=full)    (color-levels<=16777216) )
+
+         To describe capabilities used by a document:
+         (& (color=limited) (color-levels=4) )
+         (& (color=grey)    (color-levels=48) )
+         (& (color=mapped)  (color-levels=100) )
+         (& (color=full)    (color-levels=32768) )
+
+   -  Related standards or documents:
+
+</p><p class="rfcparagraph">         The memo "Media Features for Display, Print, and Fax" [3]
+         describes a feature (color) for indicating basic color
+         capabilities.
+
+</p><p class="rfcparagraph">   -  Interoperability considerations:
+
+</p><p class="rfcparagraph">         The actual number of color values used by a document does not,
+         in general, exactly match the number that can be handled by a
+         recipient.  To achieve a feature match, at least one must be
+         declared as an inequality.
+
+</p><p class="rfcparagraph">         It is recommended that a recipient declares the number of color
+         values that it can handle as an inequality (<=), and a data
+         resource declares the number of colors that it uses with an
+         equality, as shown in the examples above.
+
+</p><p class="rfcparagraph">   -  Security considerations:
+
+</p><p class="rfcparagraph">      - Privacy concerns, related to exposure of personal information:
+        Where feature matching is used to select content applicable to
+        the physical abilities of a user, unusual values for this
+        feature tag might give an indication of a user's restricted
+        abilities.
+   -  Related feature tags:
+
+</p><p class="rfcparagraph">         color                 [3]
+         color-space           [this document]
+
+   -  Intended usage:
+
+</p><p class="rfcparagraph">         Internet fax
+         Color image scanning/rendering applications
+
+   -  Author/Change controller:
+
+</p><p class="rfcparagraph">         IETF
+
+A.4 Color space
+
+   -  Media Feature tag name(s):
+
+</p><p class="rfcparagraph">         color-space
+
+   -  ASN.1 identifier associated with this feature tag:
+
+</p><p class="rfcparagraph">         1.3.6.1.8.1.11
+
+   -  Summary of the media features indicated:
+
+</p><p class="rfcparagraph">         This feature indicates a color space.
+
+</p><p class="rfcparagraph">         A color space value provides two types of information:
+         o  the color model used to represent a color value, including
+         the number of color components
+         o  a mapping between color values and their physical
+         realizations
+
+         Device color space values are defined for applications where
+         the general color representation used is significant, but exact
+         color rendering is left to the device used.  Device color
+         spaces defined here have values of the form 'Device- xxx'.
+
+</p><p class="rfcparagraph">         Calibrated color space values are provided for use with a
+         rendering system that is calibrated with respect to some
+         indicated definition, and capable of processing device-
+         independent color information accordingly.
+
+</p><p class="rfcparagraph">   -  Values appropriate for use with this feature tag:
+
+</p><p class="rfcparagraph">         Token
+         Device color      Device-RGB   (device dependent RGB)
+         spaces:           Device-CMY   (device dependent CMY)
+                           Device-CMYK  (device dependent CMYK)
+
+         Calibrated color  CIELAB       (per T.42 [9])
+         space:
+
+</p><p class="rfcparagraph">                           (may be extended by further registrations)
+
+         'Color-space=CIELAB' indicates the CIE L*a*b* colour space,
+         using CIED50 illuminant and its perfectly diffuse reflecting
+         white point (per T.42 [9]).
+
+</p><p class="rfcparagraph">   -  The feature tag is intended primarily for use in the following
+      applications, protocols, services, or negotiation mechanisms:
+
+</p><p class="rfcparagraph">         Color image printing and display applications where the data
+         resource used may depend upon color handling capabilities of
+         the recipient.
+
+</p><p class="rfcparagraph">         Scanning applications where the data transferred may depend
+         upon the image generation capabilities of the originator.
+
+</p><p class="rfcparagraph">   -  Examples of typical use:
+
+</p><p class="rfcparagraph">         To describe rendering or scanning capabilities:
+
+</p><p class="rfcparagraph">         (color-space=[Device-RGB,CIELAB])
+
+         To describe capabilities assumed by a document for which
+         approximate color reproduction is required:
+
+</p><p class="rfcparagraph">         (color-space=Device-RGB)
+
+         To describe capabilities assumed by a document for which exact
+         color reproduction is required:
+
+</p><p class="rfcparagraph">         (color-space=CIELAB)
+
+   -  Related standards or documents:
+
+</p><p class="rfcparagraph">         CIELAB color space is defined in [19]
+
+         CIELAB use for fax is described in ITU T.42 [9]
+   -  Interoperability considerations:
+
+</p><p class="rfcparagraph">         A color-handling receiver should indicate at any appropriate
+         device color space capability, in addition to any calibrated
+         color spaces that it may support.
+
+</p><p class="rfcparagraph">         Calibrated color spaces are intended to be used when precise
+         color matching is required; otherwise, if applicable, a device
+         color space (color-space=Device-xxx) should be indicated.
+
+</p><p class="rfcparagraph">         Documents for which exact color matching is not important
+         should indicate a device color space capability, if applicable.
+
+</p><p class="rfcparagraph">         These principles allow sender/receiver feature matching to be
+         achieved when exact color matching is not required.
+
+</p><p class="rfcparagraph">   -  Security considerations:
+
+</p><p class="rfcparagraph">      - Privacy concerns, related to exposure of personal
+        information:
+            Where feature matching is used to select content applicable
+            to the physical abilities of a user, unusual values for this
+            feature tag might give an indication of a user's restricted
+            abilities.
+
+</p><p class="rfcparagraph">      - Denial of service concerns related to consequences of
+        specifying incorrect values:
+            Failure to indicate a generic color space capability for a
+            device may lead to failure to match color space for an
+            application or document that does not require an exact color
+            match.
+
+</p><p class="rfcparagraph">   -  Related feature tags:
+
+</p><p class="rfcparagraph">         color                 [3]
+
+   -  Related media types or data formats:
+
+</p><p class="rfcparagraph">         TIFF-FX               [7]
+
+   -  Intended usage:
+
+</p><p class="rfcparagraph">         Internet fax
+         Color image scanning/rendering applications
+
+   -  Author/Change controller:
+
+</p><p class="rfcparagraph">         IETF
+A.5 CIELAB color depth
+
+   -  Media Feature tag name(s):
+
+</p><p class="rfcparagraph">         CIELAB-L-depth
+         CIELAB-A-depth
+         CIELAB-B-depth
+
+   -  ASN.1 identifiers associated with these feature tags:
+
+</p><p class="rfcparagraph">         1.3.6.1.8.1.12
+<a href="#section-1.3.6.1.8.1.13" class="">1.3.6.1.8.1.13 1.3.6.1.8.1</a><br>
+
+   -  Summary of the media features indicated:
+
+</p><p class="rfcparagraph">         These feature tags indicate a color depth capability; i.e.  the
+         level of detail to which an individual CIELAB color component
+         can be specified.  They define the number of distinct values
+         possible for each of the color components L*, a* and b*.
+
+</p><p class="rfcparagraph">         Typically, this feature would be used with 'color=mapped', and
+         possibly 'color=grey' or 'color=full', to indicate the number
+         of distinct colors that can be realized.
+
+</p><p class="rfcparagraph">   -  Values appropriate for use with these feature tags:
+
+</p><p class="rfcparagraph">         Integer (>0)
+
+   -  These feature tags are intended primarily for use in the
+      following applications, protocols, services, or negotiation
+      mechanisms:
+
+</p><p class="rfcparagraph">         Color image printing and display applications where the data
+         resource used may depend upon color handling capabilities of
+         the recipient.
+
+</p><p class="rfcparagraph">         Scanning applications where the data transferred may depend
+         upon the image generation capabilities of the originator.
+
+</p><p class="rfcparagraph">   -  Examples of typical use:
+
+</p><p class="rfcparagraph">         To describe rendering or scanning capabilities:
+
+</p><p class="rfcparagraph">         (& (color=mapped) (color-levels<=240)
+            (CIELAB-L-depth<=128)
+            (CIELAB-a-depth<=128)
+            (CIELAB-b-depth<=128) )
+         (& (color=full) (color-levels<=16777216)
+            (CIELAB-L-depth<=256)
+            (CIELAB-a-depth<=128)
+            (CIELAB-b-depth<=128) )
+
+         To describe capabilities assumed by a document:
+
+</p><p class="rfcparagraph">         (& (color=mapped) (color-levels=200)
+            (CIELAB-L-depth=32)
+            (CIELAB-a-depth=32)
+            (CIELAB-b-depth=32) )
+         (& (color=full) (color-levels=32768)
+            (CIELAB-L-depth=128)
+            (CIELAB-a-depth=32)
+            (CIELAB-b-depth=32) )
+
+   -  Related standards or documents:
+
+</p><p class="rfcparagraph">         The memo "Media Features for Display, Print, and Fax" [3]
+         defines a feature (color) for indicating basic color
+         capabilities.
+
+</p><p class="rfcparagraph">         CIELAB color space is defined in [19]
+
+         CIELAB use for fax is described in ITU T.42 [9]
+
+   -  Related feature tags:
+
+</p><p class="rfcparagraph">         color                 [3]
+         color-levels          [this document]
+         color-space           [this document]
+
+   -  Intended usage:
+
+</p><p class="rfcparagraph">         Internet fax
+         Color image scanning/rendering applications
+
+   -  Author/Change controller:
+
+</p><p class="rfcparagraph">         IETF
+A.6 CIELAB color gamut
+
+   -  Media Feature tag name(s):
+
+</p><p class="rfcparagraph">         CIELAB-L-min
+         CIELAB-L-max
+         CIELAB-a-min
+         CIELAB-a-max
+         CIELAB-b-min
+         CIELAB-b-max
+
+   -  ASN.1 identifiers associated with these feature tags:
+
+</p><p class="rfcparagraph">         1.3.6.1.8.1.15
+<a href="#section-1.3.6.1.8.1.16" class="">1.3.6.1.8.1.16 1.3.6.1.8.1</a><br>
+<a href="#section-1.3.6.1.8.1.18" class="">1.3.6.1.8.1.18 1.3.6.1.8.1</a><br>
+         1.3.6.1.8.1.20
+
+   -  Summary of the media features indicated:
+
+</p><p class="rfcparagraph">         These feature indicate a supported range of color values, by
+         indicating minimum and maximum values used for each color
+         component in a CIELAB color space.
+
+</p><p class="rfcparagraph">         'CIELAB-L-min' and 'CIELAB-L-max' are the minimum and maximum
+         values of the L* component.
+
+</p><p class="rfcparagraph">         'CIELAB-a-min' and 'CIELAB-a-max' are the minimum and maximum
+         values of the a* component.
+
+</p><p class="rfcparagraph">         'CIELAB-b-min' and 'CIELAB-b-max' are the minimum and maximum
+         values of the b* component.
+
+</p><p class="rfcparagraph">   -  Values appropriate for use with this feature tag:
+
+</p><p class="rfcparagraph">         Rational
+
+   -  The feature tag is intended primarily for use in the following
+      applications, protocols, services, or negotiation mechanisms:
+
+</p><p class="rfcparagraph">         Color image printing and display applications where the data
+         resource used may depend upon detailed color handling
+         capabilities of the recipient.
+         Scanning applications where the data transferred may depend
+         upon the detailed color image generation capabilities of the
+         originator.
+
+</p><p class="rfcparagraph">   -  Examples of typical use:
+
+</p><p class="rfcparagraph">         To describe rendering or scanning capabilities:
+
+</p><p class="rfcparagraph">         (& (CIELAB-L-min>=0)
+            (CIELAB-L-max<=100)
+            (CIELAB-a-min>=-75)
+            (CIELAB-a-max<=+75)
+            (CIELAB-b-min>=-85)
+            (CIELAB-b-max<=+85) )
+
+         To describe capabilities required by a document:
+
+</p><p class="rfcparagraph">         (& (CIELAB-L-min=20)
+            (CIELAB-L-max=80)
+            (CIELAB-L-min=-35)
+            (CIELAB-L-max=+55)
+            (CIELAB-L-min=-45)
+            (CIELAB-L-max=+65) )
+
+   -  Related standards or documents:
+
+</p><p class="rfcparagraph">         CIELAB color space is defined in [19]
+
+         CIELAB use for fax is described in ITU T.42 [9]
+
+   -  Interoperability considerations:
+
+</p><p class="rfcparagraph">         When describing a recipient's capabilities, the minimum and
+         maximum color component values that can be rendered should be
+         indicated by inequalities as shown in the examples above.
+
+</p><p class="rfcparagraph">         When describing a document, the actual minimum and maximum
+         color component values used should be indicated, as shown
+         above.
+
+</p><p class="rfcparagraph">   -  Security considerations:
+
+</p><p class="rfcparagraph">         - Privacy concerns, related to exposure of personal
+            information:
+            Where feature matching is used to select content applicable
+            to the physical abilities of a user, unusual values for this
+            feature tag might give an indication of a user's restricted
+            abilities.
+   -  Related feature tags:
+
+</p><p class="rfcparagraph">         color                 [3]
+         color-space           [this document]
+
+   -  Related media types or data formats:
+
+</p><p class="rfcparagraph">         TIFF-FX               [7]
+
+   -  Intended usage:
+
+</p><p class="rfcparagraph">         Internet fax
+         Color image scanning/rendering applications
+
+   -  Author/Change controller:
+
+</p><p class="rfcparagraph">         IETF
+
+A.7 Image file structure
+
+   -  Media Feature tag name(s):
+
+</p><p class="rfcparagraph">         image-file-structure
+
+   -  ASN.1 identifier associated with this feature tag:
+
+</p><p class="rfcparagraph">         1.3.6.1.8.1.21
+
+   -  Summary of the media features indicated:
+
+</p><p class="rfcparagraph">         This feature indicates a file structure used for transfer and
+         presentation of image data.
+
+</p><p class="rfcparagraph">         It does not indicate image data coding:  that is described by
+         separate feature tags (image-coding, etc.).
+
+</p><p class="rfcparagraph">   -  Values appropriate for use with this feature tag:
+
+</p><p class="rfcparagraph">         Token
+         TIFF-FX profiles  TIFF-S
+         [7]:              TIFF-F
+                           TIFF-J
+                           TIFF-C
+                           TIFF-L
+                           TIFF-M
+
+                           (may be extended by further registrations,
+                           to cover non-TIFF image file structures)
+
+   -  The feature tag is intended primarily for use in the following
+      applications, protocols, services, or negotiation mechanisms:
+
+</p><p class="rfcparagraph">         Internet fax, and other print or display applications that
+         transfer image data.
+
+</p><p class="rfcparagraph">   -  Examples of typical use:
+
+</p><p class="rfcparagraph">         See Appendix B of this memo.
+
+</p><p class="rfcparagraph">   -  Considerations particular to use in individual applications,
+      protocols, services, or negotiation mechanisms:
+
+</p><p class="rfcparagraph">         This tag is intended to provide information about an image file
+         structure.  Information about image data coding is provided by
+         other tags.
+
+</p><p class="rfcparagraph">         In the case of TIFF-FX image data, there are a number of image
+         file format constraints that are imposed by the various usage
+         profiles defined in RFC 2301 [7].  The purpose of the 'image-
+         file-structure' feature tag is to capture those file format
+         constraints.
+
+</p><p class="rfcparagraph">         Registration of additional image file structure tags should
+         focus similarly on image file structure issues, not raw image
+         data compression and coding.  As a guide, an image file
+         structure may contain image data coded in a variety of ways,
+         and carries information to describe that coding separately from
+         MIME content-type labelling, etc.
+
+</p><p class="rfcparagraph">   -  Related feature tags:
+
+</p><p class="rfcparagraph">         image-coding          [this document]
+
+   -  Related media types or data formats:
+
+</p><p class="rfcparagraph">         TIFF-FX               [7]
+         TIFF V6.0 (Adobe)     [20]
+   -  Intended usage:
+
+</p><p class="rfcparagraph">         Internet fax
+         Image scanning/rendering applications
+
+   -  Author/Change controller:
+
+</p><p class="rfcparagraph">         IETF
+
+A.8 Image data coding
+
+   -  Media Feature tag name(s):
+
+</p><p class="rfcparagraph">         image-coding
+
+   -  ASN.1 identifier associated with this feature tag:
+
+</p><p class="rfcparagraph">         1.3.6.1.8.1.22
+
+   -  Summary of the media features indicated:
+
+</p><p class="rfcparagraph">         This feature tag indicates a form of image data compression and
+         coding used.
+
+</p><p class="rfcparagraph">         It identifies a generic image coding technique used, without
+         regard to any specific profiling of that technique that may be
+         applied.  Values for this feature are generally applicable
+         across a wide range of image transfer applications.
+
+</p><p class="rfcparagraph">         This information is distinct from the image file structure and
+         MRC information conveyed by the 'image-file-structure' tags.
+
+</p><p class="rfcparagraph">   -  Values appropriate for use with this feature tag:
+
+</p><p class="rfcparagraph">         Token             MH
+                           MR
+                           MMR
+                           JBIG
+                           JPEG
+
+                           (may be extended by further registrations)
+
+   -  The feature tag is intended primarily for use in the following
+      applications, protocols, services, or negotiation mechanisms:
+
+</p><p class="rfcparagraph">         Internet fax, and other applications that transfer image data.
+   -  Examples of typical use:
+
+</p><p class="rfcparagraph">         See Appendix B of this memo.
+
+</p><p class="rfcparagraph">   -  Related standards or documents:
+
+</p><p class="rfcparagraph">         MH, MR:     ITU T.4 [13]
+         MMR:        ITU T.6 [14]
+         JPEG:       ITU T.81 [16]
+         JBIG:       ITU T.82 [17]
+
+   -  Interoperability considerations:
+
+</p><p class="rfcparagraph">         To establish the correct conditions for interoperability
+         between systems, capabilities to handle the generic image
+         coding technique and the specific image coding constraints must
+         be established.
+
+</p><p class="rfcparagraph">   -  Related feature tags:
+
+</p><p class="rfcparagraph">         image-coding-constraint  [this document]
+         JBIG-stripe-size         [this document]
+         image-interleave         [this document]
+
+   -  Related media types or data formats:
+
+</p><p class="rfcparagraph">
+         TIFF-FX                  [7]
+
+   -  Intended usage:
+
+</p><p class="rfcparagraph">         Internet fax
+         Image scanning/rendering applications
+
+   -  Author/Change controller:
+
+</p><p class="rfcparagraph">         IETF
+
+A.9 Image coding constraint
+
+   -  Media Feature tag name(s):
+
+</p><p class="rfcparagraph">         image-coding-constraint
+
+   -  ASN.1 identifier associated with these feature tags:
+
+</p><p class="rfcparagraph">         1.3.6.1.8.1.23
+   -  Summary of the media features indicated:
+
+</p><p class="rfcparagraph">         This feature tag qualifies the 'image-coding' feature with a
+         specific profile or usage constraints.
+
+</p><p class="rfcparagraph">         Values for this feature are generally specific to some given
+         value of 'image-coding' and also to some restricted application
+         or class of applications.
+
+</p><p class="rfcparagraph">   -  Values appropriate for use with this feature tag:
+
+</p><p class="rfcparagraph">         Token             JBIG-T85    (bi-level, per ITU T.85)
+                           JBIG-T43    (multi-level, per ITU T.43)
+                           JPEG-T4E    (per ITU T.4, Annex E)
+
+                           (may be extended by further registrations)
+
+   -  The feature tag is intended primarily for use in the following
+      applications, protocols, services, or negotiation mechanisms:
+
+</p><p class="rfcparagraph">         Internet fax, and other applications that transfer image data.
+
+</p><p class="rfcparagraph">         The specific values for this feature indicated above are
+         intended for use with Internet fax.
+
+</p><p class="rfcparagraph">   -  Examples of typical use:
+
+</p><p class="rfcparagraph">         See Appendix B of this memo.
+
+</p><p class="rfcparagraph">   -  Related standards or documents:
+
+</p><p class="rfcparagraph">         JBIG-T85:   ITU T.85 [18]
+         JBIG-T43:   ITU T.43 [10]
+         JPEG-T4E:   ITU T.4 Annex E [13]
+
+   -  Interoperability considerations:
+
+</p><p class="rfcparagraph">         To establish the correct conditions for interoperability
+         between systems, capabilities to handle the generic image
+         coding technique and the specific image coding constraints must
+         be established.
+
+</p><p class="rfcparagraph">   -  Related feature tags:
+
+</p><p class="rfcparagraph">         image-coding             [this document]
+         JBIG-stripe-size         [this document]
+         image-interleave         [this document]
+   -  Related media types or data formats:
+
+</p><p class="rfcparagraph">         TIFF-FX                  [7]
+
+   -  Intended usage:
+
+</p><p class="rfcparagraph">         Internet fax
+         Color image scanning/rendering applications
+
+   -  Author/Change controller:
+
+</p><p class="rfcparagraph">         IETF
+
+A.10 JBIG stripe size
+
+   -  Media Feature tag name(s):
+
+</p><p class="rfcparagraph">         JBIG-stripe-size
+
+   -  ASN.1 identifier associated with these feature tags:
+
+</p><p class="rfcparagraph">         1.3.6.1.8.1.24
+
+   -  Summary of the media features indicated:
+
+</p><p class="rfcparagraph">         This feature is a specific usage constraint that is applied to
+         JBIG image coding (image-coding=JBIG), and indicates the
+         allowable size for each stripe of an image, except the last.
+
+</p><p class="rfcparagraph">         A stripe of a JBIG image is a delimited horizontal band of
+         compressed image data that can be decompressed separately from
+         the surrounding data.
+
+</p><p class="rfcparagraph">   -  Values appropriate for use with this feature tag:
+
+</p><p class="rfcparagraph">         Integer  (>0)
+
+   -  The feature tag is intended primarily for use in the following
+      applications, protocols, services, or negotiation mechanisms:
+
+</p><p class="rfcparagraph">         Internet fax, and other applications that transfer image data.
+
+</p><p class="rfcparagraph">   -  Examples of typical use:
+
+</p><p class="rfcparagraph">         (JBIG-stripe-size=128)
+         (JBIG-stripe-size>0)
+   -  Related standards or documents:
+
+</p><p class="rfcparagraph">         JBIG:       ITU T.82 [17]
+         JBIG-T85:   ITU T.85 [18]
+         JBIG-T43:   ITU T.43 [10]
+
+   -  Considerations particular to use in individual applications,
+      protocols, services, or negotiation mechanisms:
+
+</p><p class="rfcparagraph">         In the case of Internet fax, the specific constraints allowed
+         for a receiver are those given as examples above.
+
+</p><p class="rfcparagraph">         Specifying a stripe size that is not limited (JBIG-stripe-
+         size>0) means that an entire page of image data is encoded as a
+         single unit.  This may place considerable demands on the memory
+         of a receiving system, as the entire stripe needs to be
+         buffered in memory.
+
+</p><p class="rfcparagraph">   -  Interoperability considerations:
+
+</p><p class="rfcparagraph">         To establish the correct conditions for interoperability
+         between systems, capabilities to handle the generic image
+         coding technique and the specific image coding constraints must
+         be established.
+
+</p><p class="rfcparagraph">   -  Related feature tags:
+
+</p><p class="rfcparagraph">         image-coding             [this document]
+         image-coding-constraint  [this document]
+         image-interleave         [this document]
+
+   -  Related media types or data formats:
+
+</p><p class="rfcparagraph">         TIFF-FX                  [7]
+
+   -  Intended usage:
+
+</p><p class="rfcparagraph">         Internet fax
+         Color image scanning/rendering applications
+
+   -  Author/Change controller:
+
+</p><p class="rfcparagraph">         IETF
+A.11 Image interleave
+
+   -  Media Feature tag name(s):
+
+</p><p class="rfcparagraph">         image-interleave
+
+   -  ASN.1 identifier associated with this feature tag:
+
+</p><p class="rfcparagraph">         1.3.6.1.8.1.25
+
+   -  Summary of the media features indicated:
+
+</p><p class="rfcparagraph">         This feature indicates an image interleave capability.
+
+</p><p class="rfcparagraph">         It may be used with JBIG images (image-coding=JBIG) to indicate
+         color plane interleaving of either stripes or entire image
+         planes.
+
+</p><p class="rfcparagraph">   -  Values appropriate for use with this feature tag:
+
+</p><p class="rfcparagraph">         Token             Stripe
+                           Plane
+
+   -  The feature tag is intended primarily for use in the following
+      applications, protocols, services, or negotiation mechanisms:
+
+</p><p class="rfcparagraph">         Internet fax, and other applications that transfer image data.
+
+</p><p class="rfcparagraph">   -  Examples of typical use:
+
+</p><p class="rfcparagraph">         (image-interleave=stripe)
+         (image-interleave=[stripe,plane])
+
+   -  Considerations particular to use in individual applications,
+      protocols, services, or negotiation mechanisms:
+
+</p><p class="rfcparagraph">         Specifying a plane interleave means that an entire page of
+         image data must be buffered in order to generate render the
+         image.  This may place considerable demands on the memory of a
+         sending or receiving system.
+
+</p><p class="rfcparagraph">   -  Related feature tags:
+
+</p><p class="rfcparagraph">         image-coding             [this document]
+         JBIG-stripe-size         [this document]
+   -  Related media types or data formats:
+
+</p><p class="rfcparagraph">         TIFF-FX                  [7]
+
+   -  Intended usage:
+
+</p><p class="rfcparagraph">         Internet fax
+         Color image scanning/rendering applications
+
+   -  Author/Change controller:
+
+</p><p class="rfcparagraph">         IETF
+
+A.12 Color subsampling
+
+   -  Media Feature tag name(s):
+
+</p><p class="rfcparagraph">         color-subsampling
+
+   -  ASN.1 identifier associated with this feature tag:
+
+</p><p class="rfcparagraph">         1.3.6.1.8.1.26
+
+   -  Summary of the media features indicated:
+
+</p><p class="rfcparagraph">         This feature tag indicates whether color information may be
+         subsampled with respect to luminance data.
+
+</p><p class="rfcparagraph">         It is used with continuous color images (color=full), color
+         spaces that use separate luminance and color components (e.g.
+         color-space=LAB), and image file structures that support color
+         subsampling.
+
+</p><p class="rfcparagraph">   -  Values appropriate for use with this feature tag:
+
+</p><p class="rfcparagraph">         String            "1:1:1"
+                           This value indicates a full set of color
+                           component samples for each luminance
+                           component sample.
+
+</p><p class="rfcparagraph">                           "4:1:1"
+                           This value indicates a set of color samples
+                           for each luminance sample.
+
+</p><p class="rfcparagraph">                           (may be extended by further registrations)
+   -  The feature tag is intended primarily for use in the following
+      applications, protocols, services, or negotiation mechanisms:
+
+</p><p class="rfcparagraph">         Color image printing and display applications where the data
+         resource used may depend upon color handling capabilities of
+         the recipient.
+
+</p><p class="rfcparagraph">         Scanning applications where the data transferred may depend
+         upon the image generation capabilities of the originator.
+
+</p><p class="rfcparagraph">   -  Examples of typical use:
+
+</p><p class="rfcparagraph">         (& (color=full) (color-space=[Device-RGB,CIELAB])
+            (color-subsampling=["1:1:1","4:1:1"]) )
+
+   -  Related feature tags:
+
+</p><p class="rfcparagraph">         color                 [3]
+         color-space           [this document]
+         image-file-structure  [this document]
+
+   -  Related media types or data formats:
+
+</p><p class="rfcparagraph">         TIFF-FX               [7]
+
+   -  Intended usage:
+
+</p><p class="rfcparagraph">         Internet fax
+         Color image scanning/rendering applications
+
+   -  Author/Change controller:
+
+</p><p class="rfcparagraph">         IETF
+
+A.13 MRC availability and mode
+
+   -  Media Feature tag name(s):
+
+</p><p class="rfcparagraph">         MRC-mode
+
+   -  ASN.1 identifier associated with this feature tag:
+
+</p><p class="rfcparagraph">         1.3.6.1.8.1.27
+   -  Summary of the media features indicated:
+
+</p><p class="rfcparagraph">         This feature is used to indicate the availability of MRC (mixed
+         raster content) image format capability, and also the MRC mode
+         available.  A zero value indicates MRC is not available, a
+         non-zero value (in the range 1..7) indicates the available MRC
+         mode number.
+
+</p><p class="rfcparagraph">         An MRC formatted document is actually a collection of several
+         images, each of which is described by a separate feature
+         collection.  An MRC-capable receiver is presumed to be capable
+         of accepting any combination of contained images that conform
+         to the MRC construction rules, where each such image matches
+         the separately declared resolution, color capability, color
+         model, image coding, and any other capabilities.
+
+</p><p class="rfcparagraph">            NOTE: an MRC formatted document may appear within a TIFF
+            image file structure.
+
+</p><p class="rfcparagraph">            Within an MRC-formatted document, multi-level coders are
+            used for foreground and background images (i.e.  odd-
+            numbered layers: 1, 3, 5, etc.) and bi-level coders are used
+            for mask layers (i.e. even numbered layers 2, 4, 6, etc.).
+
+</p><p class="rfcparagraph">   -  Values appropriate for use with this feature tag:
+
+</p><p class="rfcparagraph">         Integer (0..7)
+
+   -  The feature tag is intended primarily for use in the following
+      applications, protocols, services, or negotiation mechanisms:
+
+</p><p class="rfcparagraph">         Internet fax, and other applications that transfer image data.
+
+</p><p class="rfcparagraph">   -  Examples of typical use:
+
+</p><p class="rfcparagraph">         See Appendix B of this document.
+
+</p><p class="rfcparagraph">   -  Related standards or documents:
+
+</p><p class="rfcparagraph">         ITU T.44 [15]
+
+   -  Interoperability considerations:
+
+</p><p class="rfcparagraph">         To establish the correct conditions for interoperability
+         between systems, capabilities to handle the MRC mode and any
+         contained image coding techniques must be established.
+   -  Related feature tags:
+
+</p><p class="rfcparagraph">         image-coding             [this document]
+         MRC-max-stripe-size      [this document]
+
+   -  Related media types or data formats:
+
+</p><p class="rfcparagraph">         TIFF-FX                  [7]
+
+   -  Intended usage:
+
+</p><p class="rfcparagraph">         Internet fax
+         Color image scanning/rendering applications
+
+   -  Author/Change controller:
+
+</p><p class="rfcparagraph">         IETF
+
+A.14 MRC maximum stripe size
+
+   -  Media Feature tag name(s):
+
+</p><p class="rfcparagraph">         MRC-max-stripe-size
+
+   -  ASN.1 identifier associated with this feature tag:
+
+</p><p class="rfcparagraph">         1.3.6.1.8.1.28
+
+   -  Summary of the media features indicated:
+
+</p><p class="rfcparagraph">         This feature may be used with MRC coding (MRC-mode>=1), and
+         indicates the maximum number of scan lines in each MRC stripe.
+
+</p><p class="rfcparagraph">         The value given indicates an upper bound on the stripe size.
+         The actual value may vary between stripes, and the actual size
+         for each stripe is indicated in the image data.
+
+</p><p class="rfcparagraph">   -  Values appropriate for use with this feature tag:
+
+</p><p class="rfcparagraph">         Integer (>0)
+
+   -  The feature tag is intended primarily for use in the following
+      applications, protocols, services, or negotiation mechanisms:
+
+</p><p class="rfcparagraph">         Internet fax, and other applications that transfer image data.
+   -  Examples of typical use:
+
+</p><p class="rfcparagraph">         (MRC-max-stripe-size=[0..256])
+         (MRC-max-stripe-size>=0)
+
+   -  Considerations particular to use in individual applications,
+      protocols, services, or negotiation mechanisms:
+
+</p><p class="rfcparagraph">         For Internet fax, the legal constraints for an image receiver
+         are those given as examples above.
+
+</p><p class="rfcparagraph">   -  Related feature tags:
+
+</p><p class="rfcparagraph">         MRC-mode              [this document]
+
+   -  Related media types or data formats:
+
+</p><p class="rfcparagraph">         TIFF-FX               [7]
+
+   -  Intended usage:
+
+</p><p class="rfcparagraph">         Internet fax
+         Color image scanning/rendering applications
+
+   -  Author/Change controller:
+
+</p><p class="rfcparagraph">         IETF
+Appendix B: TIFF mode descriptions
+
+   This appendix contains descriptions of the TIFF modes defined by RFC
+   2301 [7], presented as feature set expressions in the form defined by
+   "A syntax for describing media feature sets" [2] and using the
+   feature schema introduced by this document.
+
+</p><p class="rfcparagraph">   These may be taken as illustrations of the feature set combinations
+   that are required for the corresponding TIFF profiles described by
+   RFC 2301.
+
+</p><p class="rfcparagraph">      (Tiff-S) :-
+           (& (image-file-structure=TIFF-S)
+              (color=Binary)
+              (image-coding=MH) (MRC-mode=0) )
+
+      (Tiff-F) :-
+           (& (image-file-structure=TIFF-F)
+              (color=Binary)
+              (image-coding=MH) (MRC-mode=0) )
+
+      (TIFF-J) :-
+           (& (image-file-structure=TIFF-J)
+              (color=Binary)
+              (image-coding=JBIG) (MRC-mode=0) )
+
+      (TIFF-C) :-
+           (& (image-file-structure=TIFF-C)
+              (color=Grey)
+              (image-coding=JPEG) (MRC-mode=0) )
+
+      (TIFF-L) :-
+           (& (image-file-structure=TIFF-L)
+              (color=Grey)
+              (image-coding=JBIG) (MRC-mode=0) )
+
+      (TIFF-M) :-
+           (& (image-file-structure=TIFF-M)
+              (color=[Binary,Grey])
+              (image-coding=[MH,JPEG]) (MRC-mode>=1) )
+
+   The feature sets described above are minimum requirements for the
+   corresponding TIFF modes.  Thus, MR and MMR image coding are not
+   mandatory with TIFF mode F, and would be indicated by combining the
+   expression for (TIFF-F) with (image-coding=MR) and/or (image-
+   coding=MMR).
+   Similarly, limited, mapped or full color are not mandatory with the
+   grey/color TIFF modes (C, L and M), and would be indicated by
+   combining the corresponding expression with (color=limited),
+   (color=mapped) and/or (color=full).
+
+</p><p class="rfcparagraph">   TIFF profile M is a composite structure that can combine image data
+   coding options from other profiles: the description above indicates
+   mandatory features; other options may be indicated by combining
+   TIFF-M with other options (e.g. color= limited, mapped or full, and
+   image-coding= MR, MMR or JBIG).
+
+</p><p class="rfcparagraph">   Support for multiple TIFF profiles may be indicated by combining
+   their expressions with the OR operator; e.g.
+
+</p><p class="rfcparagraph">        (| (TIFF-F) (TIFF-S) (TIFF-J) )
+
+   indicates support for all black-and-white modes.
+Appendix C: Revision history
+
+   00a  28-Sep-1998  Initial draft.
+
+</p><p class="rfcparagraph">   01a  12-Oct-1998  Incorporated review comments.  Described feature
+                     tag for differential x/y resolution ratio.  Added
+                     some examples.
+
+</p><p class="rfcparagraph">   01b  19-Oct-1998  Updated section 3.6 on image coding.  Added
+                     Appendix B containing feature expressions for the
+                     TIFF modes from RFC 2301.
+
+</p><p class="rfcparagraph">   02a  26-Oct-1998  Update examples.  Add separate stripe size features
+                     for JBIG and MRC.
+
+</p><p class="rfcparagraph">   02b  30-Oct-1998  Update examples.  Add text clarifying the
+                     description of MRC documents (as a set of feature
+                     collections describing multiple contained images).
+                     Add text describing constrains on resolution and
+                     image coding usage within an MRC document.
+
+</p><p class="rfcparagraph">   02c  11-Nov-1998  Add ITU references.  Added terminology: "capability
+                     exchange", "capability identification" and
+                     "capability description".  Update JBIG and MRC
+                     stripe size tags.  Move subsampling to colour
+                     section.  Remove preferred-unit tag.  Add T.4, T.6,
+                     T.44 and T.81 references.
+
+</p><p class="rfcparagraph">   02d  16-Nov-1998  Update colour handling features, reflecting
+                     proposed changes to the media features memo [3].
+                     Update the image coding capability framework.
+                     Updated TIFF mode descriptions in Appendix B.
+
+</p><p class="rfcparagraph">   03a  17-Nov-1998 Replace use of 'pix-x', 'pix-y' with 'size-x', '
+                     size-y'.  Add registrations in Appendix A.
+
+</p><p class="rfcparagraph">   03b  08-Dec-1998  Remove normative language and reference to RFC2119
+                     (normative statements will be in the main fax
+                     protocol draft).  Revise structure of colour
+                     features, and removed color-palette feature. Define
+                     colour feature tags specific to CIELAB model and
+                     colour space.
+
+</p><p class="rfcparagraph">   04a  14-Dec-1998  Update examples to reflect revised feature tags.
+                     Revise description of MRC document in section 3.7.
+                     Clarified interpretation of 'color=fixed'.  Change
+                     feature value 'color=fixed' to 'color=limited'.
+   05a  04-Jan-1999  Incorporate WG last-call comments:  change
+                     references to MRC-stripe-size to MRC-max-stripe-
+                     size;  similarly references to MRC-maximum-stripe-
+                     size.  Change "eifax" to "extended Internet fax".
+                     Added guidance note for image coding feature usage.
+                     Added IANA consideration comments to Appendix A.
+
+</p><p class="rfcparagraph">   05b  08-Jan-1999  Added new section for IANA considerations; removed
+                     references to fax working group from registration
+                     change control sections.  Remove JPEG from TIFF-L
+                     auxiliary predicate.  Clarify description of MRC
+                     receiver capabilities in section A.13.  Remove '
+                     color=full' from (TIFF-C) and (TIFF-M) predicates,
+                     and add some explanatory text.  Remove
+                     'color=limited' from (TIFF-L) predicate.
+
+</p><p class="rfcparagraph">   05c  08-Jan-1999  Minor revisions to TIFF profile illustrations and
+                     descripions in Appendix B.  Reformatted description
+                     of 'color=limited' in section 3.5 to clarify that
+                     this does not indicate support for specific named
+                     colors.
+Full Copyright Statement
+
+   Copyright (C) The Internet Society (1999).  All Rights Reserved.<br>
+
+</p><p class="rfcparagraph">   This document and translations of it may be copied and furnished to
+   others, and derivative works that comment on or otherwise explain it
+   or assist in its implementation may be prepared, copied, published
+   and distributed, in whole or in part, without restriction of any
+   kind, provided that the above copyright notice and this paragraph are
+   included on all such copies and derivative works.  However, this
+   document itself may not be modified in any way, such as by removing
+   the copyright notice or references to the Internet Society or other
+   Internet organizations, except as needed for the purpose of
+   developing Internet standards in which case the procedures for
+   copyrights defined in the Internet Standards process must be
+   followed, or as required to translate it into languages other than
+   English.
+
+</p><p class="rfcparagraph">   The limited permissions granted above are perpetual and will not be
+   revoked by the Internet Society or its successors or assigns.
+
+</p><p class="rfcparagraph">   This document and the information contained herein is provided on an
+   "AS IS" basis and THE INTERNET SOCIETY AND THE INTERNET ENGINEERING
+   TASK FORCE DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING
+   BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION
+   HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED WARRANTIES OF
+   MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Klyne & McIntyre            Standards Track                    [Page 51]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

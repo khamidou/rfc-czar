@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                         H. Kennedy<br>Request for Comments: 3091                        University of Michigan<br>Category: Informational                                     1 April 2001<br><br></p>
+                  <h1>
+                      Pi Digit Generation Protocol</h1>
+                  <h2>Status of this Memo</h2>
+
+   This memo provides information for the Internet community.  It does
+   not specify an Internet standard of any kind.  Distribution of this
+   memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (2001).  All Rights Reserved.<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This memo defines a protocol to provide the Pi digit generation
+   service (PIgen) used between clients and servers on host computers.
+
+</p><p class="rfcparagraph">Introduction
+
+   This protocol is intended to provide the Pi digit generation service
+   (PIgen), and be used between clients and servers on host computers.
+   Typically the clients are on workstation hosts lacking local Pi
+   support, and the servers are more capable machines with greater Pi
+   calculation capabilities.  The essential tradeoff is the use of
+   network resources and time instead of local computational cycles.
+
+</p><p class="rfcparagraph">   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in RFC 2119 [RFC2119].
+
+</p><p class="rfcparagraph">Note
+
+   All digits supplied by implementations of this service are ASCII
+   [US-ASCII] representations of decimal (base 10) numbers following the
+   decimal point in values or approximations of Pi.  There MUST be an
+   implied decimal value of 3 (three) preceding the values provided by
+   the service defined by this protocol.
+
+</p><p class="rfcparagraph">	<a name="section-1"><h2>1.      TCP Based Digit Generator Service</h2></a>
+
+   One REQUIRED PIgen service is defined as a stateless TCP service.  A
+   server listens on TCP port 314159.  Once a connection is established
+   the server sends a stream of data, one digit of Pi at at time,
+   starting with the most significant digit following the decimal point.
+   Any incoming data MUST be discarded.  This continues until the client
+   closes the connection.
+
+</p><p class="rfcparagraph">   The data flow over the connection is limited by the normal TCP flow
+   control mechanisms, so there is no concern about the server sending
+   data faster than the client can process it.
+
+</p><p class="rfcparagraph">   Servers MAY use any appropriate method of Pi digit generation to
+   provide this service, including (but not limited to) table lookup
+   [DIGITS], numerical calculation [FIBPI,PIFFT] and statistical
+   sampling [MCM].  However, the method chosen SHOULD provide a precise
+   value for the digits of Pi generated.
+
+</p><p class="rfcparagraph">   Implementors of PIgen MUST provide this service to be conditionally
+   compliant with this RFC.
+
+</p><p class="rfcparagraph">	<a name="section-1.1"><h3>1.1    Approximate Service</h3></a>
+
+   An OPTIONAL PIgen service is defined as a stateless TCP service.  A
+   server listens on TCP port 220007.  Once a connection is established
+   the server sends a stream of data, one digit of the rational number
+   22/7 at a time, starting with the most significant digit following
+   the decimal point.  Any incoming data MUST be discarded.  This
+   continues until the client closes the connection.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.      UDP Based Digit Generator Service</h2></a>
+
+   An OPTIONAL PIgen service is defined as a stateless UDP service.  A
+   server listens on UDP port 314159.  When a datagram requesting a
+   specific digit of Pi is received, an answering datagram is sent
+   containing the value of the requested digit of Pi according to the
+   format defined in sections 2.1.1. and 2.1.2.
+
+</p><p class="rfcparagraph">   The requested digit value MAY be determined by any appropriate method
+   of Pi digit generation.  RECOMMENDED methods include table lookup
+   [DIGITS], or numerical calculation [BBPPA].
+
+</p><p class="rfcparagraph">	<a name="section-2.1"><h3>2.1    Packet Format</h3></a>
+
+   The datagram-based components of the PIgen protocol suite all share
+   the following UDP data payload formats (defined in the ABNF of RFC
+   2234 [RFC2234]).
+	<a name="section-2.1.1"><h4>2.1.1  Request Payload Format</h4></a>
+
+   request   = nth_digit
+
+   nth_digit = 1*DIGIT  ; specifying the n-th digit following the
+                        ; decimal point
+
+	<a name="section-2.1.2"><h4>2.1.2  Reply Payload Format</h4></a>
+
+   reply  = nth_digit ":" DIGIT ; where DIGIT is the value of the n-th
+                                ; digit following the decimal
+                                ; point
+
+	<a name="section-2.2"><h3>2.2    Approximate Service</h3></a>
+
+   An OPTIONAL PIgen service is defined as a stateless UDP service.  A
+   server listens on UDP port 220007.  When a datagram requesting a
+   specific digit of the rational number 22/7 is received, an answering
+   datagram is sent containing the value of the requested digit of 22/7
+   according to the format defined in sections 2.1.1. and 2.1.2.
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.      IP Multicast Based Digit Generator Service</h2></a>
+
+   An OPTIONAL PIgen service is defined as a stateless UDP service.  A
+   random distribution of digits of Pi are sent using the payload format
+   described in section 2.1.2. to the IP multicast group
+   314.159.265.359.
+
+</p><p class="rfcparagraph">   There is no request structure.  If a server implementing this
+   component of the protocol suite joins the PIgen multicast group and
+   does not detect a server providing digits within 30 seconds, it MAY
+   elect to become the PIgen multicast provider.
+
+</p><p class="rfcparagraph">   The PIgen multicast provider generates a random distribution of the
+   digits of Pi and sends them out to the multicast group.  PIgen
+   multicast clients build up a coherent value of Pi by listening to the
+   multicast group over time.
+
+</p><p class="rfcparagraph">   The randomly selected digit value MAY be determined by any
+   appropriate method of Pi digit generation.  RECOMMENDED methods
+   include table lookup [DIGITS], or numerical calculation [BBPPA].  To
+   ensure an adequately random distribution, a proper random number
+   generator should be used, see [RANDOM] for some examples.
+	<a name="section-4"><h2>4.    Service Discovery</h2></a>
+
+   Clients SHOULD discover PIgen servers via the DNS SRV algorithm
+   [RFC2782].  The service used is "pigen" and the protocols used are
+   "tcp" and "udp".  Approximate services (sections 1.1. and 2.2.)
+   should be discovered using a service of "pigem".  This allows for
+   central administration of addressing, fallback for failed relays and
+   collectors, and static load balancing.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.    Security Considerations</h2></a>
+
+   As almost every secure Internet protocol requires a highly accurate
+   value of Pi in order to function correctly, it is imperative that
+   clients only use a trusted PIgen server.  The imminent collapse of
+   the Internet is assured if this guideline is not strictly followed.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.  References</h2></a>
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">   [US-ASCII] Coded Character Set--7-Bit American Standard Code for
+              Information Interchange, ANSI X3.4-1986.
+
+</p><p class="rfcparagraph">   [DIGITS]   ftp://pi.super-computing.org/pub/pi
+
+   [FIBPI]    Pi and the Fibonacci Numbers
+              http://www.mcs.surrey.ac.uk/Personal/R.Knott/Fibonacci/
+              fibpi.html
+
+   [PIFFT]    Pi Calculation based on FFT and AGM http://momonga.t.u-
+              tokyo.ac.jp/~ooura/pi_fft.html
+
+   [MCM]      The Monte Carlo Method
+              http://www.daimi.aau.dk/~u951581/pi/MonteCarlo/pimc.html
+
+   [BBPPA]    Bailey-Borwien-Plouffe Pi Algorithm
+              http://www.mathsoft.com/asolve/plouffe/plouffe.html
+
+   [RFC2234]  Crocker, D. and P. Overell, "Augmented BNF for Syntax
+              Specifications: ABNF", RFC 2234, November 1997.
+
+</p><p class="rfcparagraph">   [RANDOM]   Randomness for Crypto http://www.cs.berkeley.edu/~daw/rnd/
+
+   [RFC2782]  Gulbrandsen, A., Vixie, P. and L. Esibov, "A DNS RR for
+              specifying the location of services (DNS SRV)", RFC 2782,
+              February 2000.
+   [CHARGEN]  Postel, J., "Character Generation Protocol", STD 22, RFC
+              864, May 1983.
+
+</p><p class="rfcparagraph">	<a name="section-7"><h2>7.  Author's Address</h2></a>
+
+   Hugh Kennedy
+   University of Michigan
+   2281 Bonisteel Blvd.
+   Ann Arbor, MI 48109-2099
+   USA
+
+   EMail: kennedyh@engin.umich.edu
+Full Copyright Statement
+
+   Copyright (C) The Internet Society (2001).  All Rights Reserved.<br>
+
+</p><p class="rfcparagraph">   This document and translations of it may be copied and furnished to
+   others, and derivative works that comment on or otherwise explain it
+   or assist in its implementation may be prepared, copied, published
+   and distributed, in whole or in part, without restriction of any
+   kind, provided that the above copyright notice and this paragraph are
+   included on all such copies and derivative works.  However, this
+   document itself may not be modified in any way, such as by removing
+   the copyright notice or references to the Internet Society or other
+   Internet organizations, except as needed for the purpose of
+   developing Internet standards in which case the procedures for
+   copyrights defined in the Internet Standards process must be
+   followed, or as required to translate it into languages other than
+   English.
+
+</p><p class="rfcparagraph">   The limited permissions granted above are perpetual and will not be
+   revoked by the Internet Society or its successors or assigns.
+
+</p><p class="rfcparagraph">   This document and the information contained herein is provided on an
+   "AS IS" basis and THE INTERNET SOCIETY AND THE INTERNET ENGINEERING
+   TASK FORCE DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING
+   BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION
+   HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED WARRANTIES OF
+   MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is currently provided by the
+   Internet Society.
+
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Kennedy                      Informational                      [Page 6]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                       E. Rescorla<br>Request for Comments: 2818                                   RTFM, Inc.<br>Category: Informational                                        May 2000<br><br></p>
+                  <h1>
+                             HTTP Over TLS</h1>
+                  <h2>Status of this Memo</h2>
+
+   This memo provides information for the Internet community.  It does
+   not specify an Internet standard of any kind.  Distribution of this
+   memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (2000).  All Rights Reserved.<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This memo describes how to use TLS to secure HTTP connections over
+   the Internet. Current practice is to layer HTTP over SSL (the
+   predecessor to TLS), distinguishing secured traffic from insecure
+   traffic by the use of a different server port. This document
+   documents that practice using TLS. A companion document describes a
+   method for using HTTP/TLS over the same port as normal HTTP
+   [RFC2817].
+
+</p><p class="rfcparagraph">Table of Contents
+<a href="#section-1" class="">1. Introduction  . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-1.1" class="indent-1">1.1. Requirements Terminology  . . . . . . . . . . . . . . </a><br>
+<a href="#section-2" class="">2. HTTP Over TLS . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2.1" class="indent-1">2.1. Connection Initiation . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2.2" class="indent-1">2.2. Connection Closure  . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2.2.1" class="indent-2">2.2.1. Client Behavior . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2.2.2" class="indent-2">2.2.2. Server Behavior . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2.3" class="indent-1">2.3. Port Number . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2.4" class="indent-1">2.4. URI Format  . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3" class="">3. Endpoint Identification . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.1" class="indent-1">3.1. Server Identity . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.2" class="indent-1">3.2. Client Identity . . . . . . . . . . . . . . . . . . . </a><br>
+   References . . . . . . . . . . . . . . . . . . . . . . . . . 6
+   Security Considerations  . . . . . . . . . . . . . . . . . . 6
+   Author's Address . . . . . . . . . . . . . . . . . . . . . . 6
+   Full Copyright Statement . . . . . . . . . . . . . . . . . . 7
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   HTTP [RFC2616] was originally used in the clear on the Internet.
+   However, increased use of HTTP for sensitive applications has
+   required security measures. SSL, and its successor TLS [RFC2246] were
+   designed to provide channel-oriented security. This document
+   describes how to use HTTP over TLS.
+
+</p><p class="rfcparagraph">	<a name="section-1.1"><h3>1.1   Requirements Terminology</h3></a>
+
+   Keywords "MUST", "MUST NOT", "REQUIRED", "SHOULD", "SHOULD NOT" and
+   "MAY" that appear in this document are to be interpreted as described
+   in [RFC2119].
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   HTTP Over TLS</h2></a>
+
+   Conceptually, HTTP/TLS is very simple. Simply use HTTP over TLS
+   precisely as you would use HTTP over TCP.
+
+</p><p class="rfcparagraph">	<a name="section-2.1"><h3>2.1   Connection Initiation</h3></a>
+
+   The agent acting as the HTTP client should also act as the TLS
+   client.  It should initiate a connection to the server on the
+   appropriate port and then send the TLS ClientHello to begin the TLS
+   handshake. When the TLS handshake has finished. The client may then
+   initiate the first HTTP request.  All HTTP data MUST be sent as TLS
+   "application data".  Normal HTTP behavior, including retained
+   connections should be followed.
+
+</p><p class="rfcparagraph">	<a name="section-2.2"><h3>2.2   Connection Closure</h3></a>
+
+   TLS provides a facility for secure connection closure. When a valid
+   closure alert is received, an implementation can be assured that no
+   further data will be received on that connection.  TLS
+   implementations MUST initiate an exchange of closure alerts before
+   closing a connection. A TLS implementation MAY, after sending a
+   closure alert, close the connection without waiting for the peer to
+   send its closure alert, generating an "incomplete close".  Note that
+   an implementation which does this MAY choose to reuse the session.
+   This SHOULD only be done when the application knows (typically
+   through detecting HTTP message boundaries) that it has received all
+   the message data that it cares about.
+
+</p><p class="rfcparagraph">   As specified in [RFC2246], any implementation which receives a
+   connection close without first receiving a valid closure alert (a
+   "premature close") MUST NOT reuse that session.  Note that a
+   premature close does not call into question the security of the data
+   already received, but simply indicates that subsequent data might
+   have been truncated. Because TLS is oblivious to HTTP
+   request/response boundaries, it is necessary to examine the HTTP data
+   itself (specifically the Content-Length header) to determine whether
+   the truncation occurred inside a message or between messages.
+
+</p><p class="rfcparagraph">	<a name="section-2.2.1"><h4>2.2.1   Client Behavior</h4></a>
+
+   Because HTTP uses connection closure to signal end of server data,
+   client implementations MUST treat any premature closes as errors and
+   the data received as potentially truncated.  While in some cases the
+   HTTP protocol allows the client to find out whether truncation took
+   place so that, if it received the complete reply, it may tolerate
+   such errors following the principle to "[be] strict when sending and
+   tolerant when receiving" [RFC1958], often truncation does not show in
+   the HTTP protocol data; two cases in particular deserve special note:
+
+</p><p class="rfcparagraph">     A HTTP response without a Content-Length header. Since data length
+     in this situation is signalled by connection close a premature
+     close generated by the server cannot be distinguished from a
+     spurious close generated by an attacker.
+
+</p><p class="rfcparagraph">     A HTTP response with a valid Content-Length header closed before
+     all data has been read. Because TLS does not provide document
+     oriented protection, it is impossible to determine whether the
+     server has miscomputed the Content-Length or an attacker has
+     truncated the connection.
+
+</p><p class="rfcparagraph">   There is one exception to the above rule. When encountering a
+   premature close, a client SHOULD treat as completed all requests for
+   which it has received as much data as specified in the Content-Length
+   header.
+
+</p><p class="rfcparagraph">   A client detecting an incomplete close SHOULD recover gracefully.  It
+   MAY resume a TLS session closed in this fashion.
+
+</p><p class="rfcparagraph">   Clients MUST send a closure alert before closing the connection.
+   Clients which are unprepared to receive any more data MAY choose not
+   to wait for the server's closure alert and simply close the
+   connection, thus generating an incomplete close on the server side.
+
+</p><p class="rfcparagraph">	<a name="section-2.2.2"><h4>2.2.2   Server Behavior</h4></a>
+
+   RFC 2616 permits an HTTP client to close the connection at any time,
+   and requires servers to recover gracefully.  In particular, servers
+   SHOULD be prepared to receive an incomplete close from the client,
+   since the client can often determine when the end of server data is.
+   Servers SHOULD be willing to resume TLS sessions closed in this
+   fashion.
+   Implementation note: In HTTP implementations which do not use
+   persistent connections, the server ordinarily expects to be able to
+   signal end of data by closing the connection. When Content-Length is
+   used, however, the client may have already sent the closure alert and
+   dropped the connection.
+
+</p><p class="rfcparagraph">   Servers MUST attempt to initiate an exchange of closure alerts with
+   the client before closing the connection. Servers MAY close the
+   connection after sending the closure alert, thus generating an
+   incomplete close on the client side.
+
+</p><p class="rfcparagraph">	<a name="section-2.3"><h3>2.3   Port Number</h3></a>
+
+   The first data that an HTTP server expects to receive from the client
+   is the Request-Line production. The first data that a TLS server (and
+   hence an HTTP/TLS server) expects to receive is the ClientHello.
+   Consequently, common practice has been to run HTTP/TLS over a
+   separate port in order to distinguish which protocol is being used.
+   When HTTP/TLS is being run over a TCP/IP connection, the default port
+   is 443. This does not preclude HTTP/TLS from being run over another
+   transport. TLS only presumes a reliable connection-oriented data
+   stream.
+
+</p><p class="rfcparagraph">	<a name="section-2.4"><h3>2.4   URI Format</h3></a>
+
+   HTTP/TLS is differentiated from HTTP URIs by using the 'https'
+   protocol identifier in place of the 'http' protocol identifier. An
+   example URI specifying HTTP/TLS is:
+
+</p><p class="rfcparagraph">     https://www.example.com/~smith/home.html
+
+	<a name="section-3"><h2>3.   Endpoint Identification</h2></a>
+
+	<a name="section-3.1"><h3>3.1   Server Identity</h3></a>
+
+   In general, HTTP/TLS requests are generated by dereferencing a URI.
+   As a consequence, the hostname for the server is known to the client.
+   If the hostname is available, the client MUST check it against the
+   server's identity as presented in the server's Certificate message,
+   in order to prevent man-in-the-middle attacks.
+
+</p><p class="rfcparagraph">   If the client has external information as to the expected identity of
+   the server, the hostname check MAY be omitted. (For instance, a
+   client may be connecting to a machine whose address and hostname are
+   dynamic but the client knows the certificate that the server will
+   present.) In such cases, it is important to narrow the scope of
+   acceptable certificates as much as possible in order to prevent man
+   in the middle attacks.  In special cases, it may be appropriate for
+   the client to simply ignore the server's identity, but it must be
+   understood that this leaves the connection open to active attack.
+
+</p><p class="rfcparagraph">   If a subjectAltName extension of type dNSName is present, that MUST
+   be used as the identity. Otherwise, the (most specific) Common Name
+   field in the Subject field of the certificate MUST be used. Although
+   the use of the Common Name is existing practice, it is deprecated and
+   Certification Authorities are encouraged to use the dNSName instead.
+
+</p><p class="rfcparagraph">   Matching is performed using the matching rules specified by
+   [RFC2459].  If more than one identity of a given type is present in
+   the certificate (e.g., more than one dNSName name, a match in any one
+   of the set is considered acceptable.) Names may contain the wildcard
+   character * which is considered to match any single domain name
+   component or component fragment. E.g., *.a.com matches foo.a.com but
+   not bar.foo.a.com. f*.com matches foo.com but not bar.com.
+
+</p><p class="rfcparagraph">   In some cases, the URI is specified as an IP address rather than a
+   hostname. In this case, the iPAddress subjectAltName must be present
+   in the certificate and must exactly match the IP in the URI.
+
+</p><p class="rfcparagraph">   If the hostname does not match the identity in the certificate, user
+   oriented clients MUST either notify the user (clients MAY give the
+   user the opportunity to continue with the connection in any case) or
+   terminate the connection with a bad certificate error. Automated
+   clients MUST log the error to an appropriate audit log (if available)
+   and SHOULD terminate the connection (with a bad certificate error).
+   Automated clients MAY provide a configuration setting that disables
+   this check, but MUST provide a setting which enables it.
+
+</p><p class="rfcparagraph">   Note that in many cases the URI itself comes from an untrusted
+   source. The above-described check provides no protection against
+   attacks where this source is compromised. For example, if the URI was
+   obtained by clicking on an HTML page which was itself obtained
+   without using HTTP/TLS, a man in the middle could have replaced the
+   URI.  In order to prevent this form of attack, users should carefully
+   examine the certificate presented by the server to determine if it
+   meets their expectations.
+
+</p><p class="rfcparagraph">	<a name="section-3.2"><h3>3.2   Client Identity</h3></a>
+
+   Typically, the server has no external knowledge of what the client's
+   identity ought to be and so checks (other than that the client has a
+   certificate chain rooted in an appropriate CA) are not possible. If a
+   server has such knowledge (typically from some source external to
+   HTTP or TLS) it SHOULD check the identity as described above.
+References
+
+   [RFC2459] Housley, R., Ford, W., Polk, W. and D. Solo, "Internet
+             Public Key Infrastructure: Part I: X.509 Certificate and
+             CRL Profile", RFC 2459, January 1999.
+
+</p><p class="rfcparagraph">   [RFC2616] Fielding, R., Gettys, J., Mogul, J., Frystyk, H., Masinter,
+             L., Leach, P. and T. Berners-Lee, "Hypertext Transfer
+             Protocol, HTTP/1.1", RFC 2616, June 1999.
+
+</p><p class="rfcparagraph">   [RFC2119] Bradner, S., "Key Words for use in RFCs to indicate
+             Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">   [RFC2246] Dierks, T. and C. Allen, "The TLS Protocol", RFC 2246,
+             January 1999.
+
+</p><p class="rfcparagraph">   [RFC2817] Khare, R. and S. Lawrence, "Upgrading to TLS Within
+             HTTP/1.1", RFC 2817, May 2000.
+
+</p><p class="rfcparagraph">Security Considerations
+
+   This entire document is about security.
+
+</p><p class="rfcparagraph">Author's Address
+
+   Eric Rescorla
+   RTFM, Inc.
+   30 Newell Road, #16
+   East Palo Alto, CA 94303
+
+   Phone: (650) 328-8631<br>
+   EMail: ekr@rtfm.com
+Full Copyright Statement
+
+   Copyright (C) The Internet Society (2000).  All Rights Reserved.<br>
+
+</p><p class="rfcparagraph">   This document and translations of it may be copied and furnished to
+   others, and derivative works that comment on or otherwise explain it
+   or assist in its implementation may be prepared, copied, published
+   and distributed, in whole or in part, without restriction of any
+   kind, provided that the above copyright notice and this paragraph are
+   included on all such copies and derivative works.  However, this
+   document itself may not be modified in any way, such as by removing
+   the copyright notice or references to the Internet Society or other
+   Internet organizations, except as needed for the purpose of
+   developing Internet standards in which case the procedures for
+   copyrights defined in the Internet Standards process must be
+   followed, or as required to translate it into languages other than
+   English.
+
+</p><p class="rfcparagraph">   The limited permissions granted above are perpetual and will not be
+   revoked by the Internet Society or its successors or assigns.
+
+</p><p class="rfcparagraph">   This document and the information contained herein is provided on an
+   "AS IS" basis and THE INTERNET SOCIETY AND THE INTERNET ENGINEERING
+   TASK FORCE DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING
+   BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION
+   HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED WARRANTIES OF
+   MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is currently provided by the
+   Internet Society.
+
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Rescorla                     Informational                      [Page 7]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

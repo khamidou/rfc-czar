@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph">Independent Submission                                         J. Levine
+Request for Comments: 6927                          Taughannock Networks
+Category: Informational                                       P. Hoffman
+ISSN: 2070-1721                                           VPN Consortium
+                                                                May 2013
+
+
+     Variants in Second-Level Names Registered in Top-Level Domains
+
+<h2>Abstract</h2>
+
+   Internationalized Domain Names for Applications (IDNA) provides a
+   method to map a subset of names written in Unicode into the DNS.
+   Because of Unicode decisions, appearance, language and writing system
+   conventions, and historical reasons, it often has been asserted that
+   there is more than one way to write what competent readers and
+   writers think of as the same host name; these different ways of
+   writing are often called "variants".  (The authors note that there
+   are many conflicting definitions for the term "variant" in the IDNA
+   community.)  This document surveys the approaches that top-level
+   domains have taken to the registration and provisioning of domain
+   names that have variants.  This document is not a product of the
+   IETF, does not propose any method to make variants work "correctly",
+   and is not an introduction to internationalization or IDNA.
+
+</p><p class="rfcparagraph">Status of This Memo
+
+   This document is not an Internet Standards Track specification; it is
+   published for informational purposes.
+
+</p><p class="rfcparagraph">   This is a contribution to the RFC Series, independently of any other
+   RFC stream.  The RFC Editor has chosen to publish this document at
+   its discretion and makes no statement about its value for
+   implementation or deployment.  Documents approved for publication by
+   the RFC Editor are not a candidate for any level of Internet
+   Standard; see Section 2 of RFC 5741.
+
+</p><p class="rfcparagraph">   Information about the current status of this document, any errata,
+   and how to provide feedback on it may be obtained at
+   http://www.rfc-editor.org/info/rfc6927.
+<h2>Copyright Notice</h2>
+
+   Copyright (c) 2013 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+</p><p class="rfcparagraph">   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (http://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document.
+
+</p><p class="rfcparagraph">Table of Contents
+<a href="#section-1" class="">1. Introduction ...................................................</a><br>
+<a href="#section-2" class="">2. Terminology ....................................................</a><br>
+<a href="#section-3" class="">3. Base Documents .................................................</a><br>
+<a href="#section-4" class="">4. Domain Practices of gTLDs ......................................</a><br>
+<a href="#section-4.1" class="indent-1">4.1. AERO ......................................................</a><br>
+<a href="#section-4.2" class="indent-1">4.2. ASIA ......................................................</a><br>
+<a href="#section-4.3" class="indent-1">4.3. BIZ .......................................................</a><br>
+<a href="#section-4.4" class="indent-1">4.4. CAT .......................................................</a><br>
+<a href="#section-4.5" class="indent-1">4.5. COM .......................................................</a><br>
+<a href="#section-4.6" class="indent-1">4.6. COOP ......................................................</a><br>
+<a href="#section-4.7" class="indent-1">4.7. INFO ......................................................</a><br>
+<a href="#section-4.8" class="indent-1">4.8. JOBS ......................................................</a><br>
+<a href="#section-4.9" class="indent-1">4.9. MOBI ......................................................</a><br>
+<a href="#section-4.10" class="indent-1">4.10. MUSEUM ...................................................</a><br>
+<a href="#section-4.11" class="indent-1">4.11. NAME .....................................................</a><br>
+<a href="#section-4.12" class="indent-1">4.12. NET ......................................................</a><br>
+<a href="#section-4.13" class="indent-1">4.13. ORG ......................................................</a><br>
+<a href="#section-4.14" class="indent-1">4.14. POST .....................................................</a><br>
+<a href="#section-4.15" class="indent-1">4.15. PRO ......................................................</a><br>
+<a href="#section-4.16" class="indent-1">4.16. TEL ......................................................</a><br>
+<a href="#section-4.17" class="indent-1">4.17. TRAVEL ..................................................</a><br>
+<a href="#section-4.18" class="indent-1">4.18. XXX .....................................................</a><br>
+<a href="#section-5" class="">5. Domain Practices of ccTLDs ....................................</a><br>
+<a href="#section-5.1" class="indent-1">5.1. BG .......................................................</a><br>
+<a href="#section-5.2" class="indent-1">5.2. BR .......................................................</a><br>
+<a href="#section-5.3" class="indent-1">5.3. CL .......................................................</a><br>
+<a href="#section-5.4" class="indent-1">5.4. CN .......................................................</a><br>
+<a href="#section-5.5" class="indent-1">5.5. ES .......................................................</a><br>
+<a href="#section-5.6" class="indent-1">5.6. EU .......................................................</a><br>
+<a href="#section-5.7" class="indent-1">5.7. GR .......................................................</a><br>
+<a href="#section-5.8" class="indent-1">5.8. IL .......................................................</a><br>
+<a href="#section-5.9" class="indent-1">5.9. IR .......................................................</a><br>
+<a href="#section-5.10" class="indent-1">5.10. JP ......................................................</a><br>
+<a href="#section-5.11" class="indent-1">5.11. KR ......................................................</a><br>
+<a href="#section-5.12" class="indent-1">5.12. MY ......................................................</a><br>
+<a href="#section-5.13" class="indent-1">5.13. NZ ......................................................</a><br>
+<a href="#section-5.14" class="indent-1">5.14. PL ......................................................</a><br>
+<a href="#section-5.15" class="indent-1">5.15. RS ......................................................</a><br>
+<a href="#section-5.16" class="indent-1">5.16. RU ......................................................</a><br>
+<a href="#section-5.17" class="indent-1">5.17. SA ......................................................</a><br>
+<a href="#section-5.18" class="indent-1">5.18. SE ......................................................</a><br>
+<a href="#section-5.19" class="indent-1">5.19. TW ......................................................</a><br>
+<a href="#section-5.20" class="indent-1">5.20. UA ......................................................</a><br>
+<a href="#section-5.21" class="indent-1">5.21. VE ......................................................</a><br>
+<a href="#section-5.22" class="indent-1">5.22. XN--90A3AC ..............................................</a><br>
+<a href="#section-5.23" class="indent-1">5.23. XN--MGBERP4A5D4AR .......................................</a><br>
+<a href="#section-6" class="">6. Acknowledgements ..............................................</a><br>
+<a href="#section-7" class="">7. Security Considerations .......................................</a><br>
+<a href="#section-8" class="">8. Informative References ........................................</a><br>
+
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   Internationalized Domain Names for Applications (IDNA) [RFC5890]
+   allows host names in the DNS [RFC1035] to contain characters from the
+   Unicode repertoire.  Some Unicode characters are considered to be
+   "variants" of one another.  Because of the 20th century reform of
+   Chinese writing, there is often more than one representation of what
+   Chinese speakers think of as the same character.  Some languages
+   written in Latin characters with accents and diacritical marks, known
+   as decorated characters, allow the decorations to be omitted in some
+   situations; for example, French sometimes omits accents on capital
+   letters, depending on country and culture.  Due to the difficulty of
+   representing decorated characters in ASCII systems, many users have
+   informally used undecorated characters in DNS host names, even when
+   they are not linguistically equivalent to the decorated versions.
+
+</p><p class="rfcparagraph">   There is no single agreed-on definition of "variant".  In 2012, ICANN
+   said that variants "occur when a single conceptual character can be
+   identified with two or more different Unicode Code Points with
+   graphic representations that may be visually similar" (this
+   definition was previously available at
+   http://www.icann.org/en/resources/idn/variant-tlds).  ICANN's IDN
+   Variant Issues Project report [VIPREPORT] says that "[t]here is today
+   no fully accepted definition for what may constitute a variant
+   relationship between top-level labels".  RFC 3743 [RFC3743] (an
+   Informational RFC, not the product of the IETF) says that the idea of
+   variants is "wherein one conceptual character can be identified with
+   several different Code Points in character sets for computer use".
+
+</p><p class="rfcparagraph">   The proper handing of variant names has been a topic of extensive
+   debate and research, with little consensus reached on how to handle
+   them or even what characters are variants of each other.  Many people
+   would like variant names to behave "the same", for a diverse range of
+   meanings of "same".  In some cases, it is a textual similarity, such
+   as variants having corresponding DNS records; in some, it is
+   functional similarity, such as variant names resolving to the same
+   web server; while in others, it is user experience similarity, such
+   as names resolving to web sites that, while not identical, are
+   perceived by human users as equivalent.
+
+</p><p class="rfcparagraph">   This document provides a snapshot of variant handling in the top-
+   level domains (TLDs) contracted by ICANN, so-called gTLDs (generic
+   TLDs) and sTLDs (sponsored TLDs), as of late 2012.  We chose those
+   domains because ICANN requires each TLD to describe its IDN and
+   variant practices, and the TLD zone files are available for
+   inspection, to verify what actually goes into the zones.  This
+   document also contains a small sampling of so-called ccTLDs (country
+   code TLDs, the TLDs that consist of two ASCII letters) for which we
+   could find information.
+
+</p><p class="rfcparagraph">   Since "variant" can mean vastly different things to different people,
+   there is also no agreement about when two zones are supposed to
+   "behave the same".  Also, the gTLDs and sTLDs might have different
+   views of what variants are and are not required to report to ICANN
+   about their policies.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Terminology</h2></a>
+
+   We use some terminology that has become generally agreed to when
+   discussing variant names, although we openly admit that such
+   agreement is not complete and the terminology continues to change.
+
+</p><p class="rfcparagraph">   Bundle:  The IDN practices documents (see below) can identify sets of
+      code points that are considered variants of each other using
+      Language Variant Tables, defined in [RFC3743].  A set of names in
+      which the characters in each position are variants is known as a
+      bundle or, more technically, as an "IDL Package".  The variant
+      rules vary among languages, and for the same language can vary
+      among TLDs.  Many languages do not define variant characters and
+      hence do not have bundles.
+
+</p><p class="rfcparagraph">   Allocated:  A name is allocated if sponsorship of that label in some
+      zone has been granted.  This is similar to what many people refer
+      to as "registered".
+
+</p><p class="rfcparagraph">   Active:  A name is active if it appears as an owner name in a zone.
+      Most allocated names are active, but some are not.
+   Blocked:  Some names cannot be registered at all.  For example, some
+      registries allow one name in a bundle to be registered and block
+      the rest.
+
+</p><p class="rfcparagraph">   Withheld:  Some names can only be allocated under certain conditions.
+      For example, some registries permit only the registrant of one
+      name in a bundle to register or activate other names in the same
+      bundle.
+
+</p><p class="rfcparagraph">   Parallel NS:  Multiple names in a bundle are provisioned in the TLD
+      with identical NS records, so they all are handled by the same
+      name servers.
+
+</p><p class="rfcparagraph">   DNAME aliasing:  The DNAME [RFC6672] DNS record creates a shadow tree
+      of DNS records, roughly as though there were a CNAME in the shadow
+      tree pointing to each name in the target tree.  DNAMEs have been
+      used both to provide resolution for several names in a bundle and
+      to provide resolution for every name under a TLD.
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   Base Documents</h2></a>
+
+   ICANN has published a variety of documents on variant management.
+   The most important are the "Guidelines for the Implementation of
+   Internationalized Domain Names" issued in Version 1.0 [G1] and
+   Version 3.0 [G3].
+
+</p><p class="rfcparagraph">   ICANN says that TLDs are supposed to register an IDN practices
+   document with IANA for each language and/or script in which the TLD
+   accepts IDN registrations, to be entered in the IANA Repository of
+   IDN Practices [IANAIDN].  The practices document lists the Unicode
+   characters allowed in names in the language or script, which
+   characters are considered equivalent, and which of an equivalent
+   group is preferred.  Some TLDs have been more diligent than others at
+   keeping the registry up to date.  Also, some TLDs have tables for a
+   few languages and scripts, while others (notably .COM, .NET, and
+   .NAME) have a large set of tables, including some for languages and
+   scripts that are no longer spoken or used, such as Runic and Ogham.
+   The authors also note that many of the tables in the IANA registry
+   are clearly out of date, containing URLs of policy pages that no
+   longer exist and contact information for people who have left the
+   registry.
+
+</p><p class="rfcparagraph">   Some of the ICANN agreements with each TLD [ICANNAGREE] describe the
+   TLD's IDN practices, but most don't.
+	<a name="section-4"><h2>4.   Domain Practices of gTLDs</h2></a>
+
+   This list covers most of the current set of gTLDs.  In most cases,
+   the authors have also checked the zone files for the gTLD to verify
+   or augment the policy description.
+
+</p><p class="rfcparagraph">	<a name="section-4.1"><h3>4.1   AERO</h3></a>
+
+   The .AERO TLD has no IDNs and no rules or practices for them.
+
+</p><p class="rfcparagraph">	<a name="section-4.2"><h3>4.2   ASIA</h3></a>
+
+   The .ASIA domain accepts registrations in many Asian languages.  They
+   have IANA tables for Japanese, Korean, and Chinese.  The IANA tables
+   refer to their CJK IDN policies [ASIACJK], which say that applied-for
+   and preferred IDN variants are "active and included in the zone".  No
+   IDN publication mechanism is described in the documentation, but
+   since the zone file contains no DNAMEs, they must be using parallel
+   NS for variants.
+
+</p><p class="rfcparagraph">	<a name="section-4.3"><h3>4.3   BIZ</h3></a>
+
+   ICANN gave the registry (Neustar) non-specific permission to register
+   IDNs in a letter in 2004 [TWOMEY04A].  The IDN rules were apparently
+   discussed with ICANN but not defined; see Appendix 9 of the registry
+   agreement [ICANNBIZ9].
+
+</p><p class="rfcparagraph">   They have about a dozen IANA tables.  No IDN publication mechanism is
+   described, but from inspection, it appears that variants are blocked.
+
+</p><p class="rfcparagraph">	<a name="section-4.4"><h3>4.4   CAT</h3></a>
+
+   The IDN rules are described in Appendix S, Part VII.2 [ICANNCATS] of
+   the ICANN agreement.  "Registry will take a very cautious approach in
+   its IDN offerings.  IDNs will be bundled with the equivalent ASCII
+   domains".  The only language is Catalan.  No IDN publication
+   mechanism is described.
+
+</p><p class="rfcparagraph">   Appendix S includes "The list of non-ASCII-characters for Catalan
+   language and their ASCII equivalent for the purposes of the defined
+   service", which implicitly describes bundles.  The bundles consist of
+   names with accented and unaccented vowels, U+00E7 ("c with cedilla")
+   and a plain c, and the Catalan "ela geminada" written as two l's
+   separated by a U+00B7 ("middle dot") and the three characters "l-l".
+   When a registrant registers an IDN, the registry also includes the
+   ASCII version.  From inspection of the zone file, the ASCII version
+   is provisioned with NS, and the IDN is a DNAME alias of the ASCII
+   version.
+
+</p><p class="rfcparagraph">	<a name="section-4.5"><h3>4.5   COM</h3></a>
+
+   ICANN and Verisign have extensive correspondence about IDNs and
+   variants, including letters to ICANN from Ben Turner [TURNER03] and
+   Russell Lewis [LEWIS03].
+
+</p><p class="rfcparagraph">   The IANA registry has tables for several dozen languages, including
+   archaic languages such as hieroglyphics and Aramaic.  Verisign
+   publishes documents describing scripts and languages [VRSNLANG],
+   character variants [VRSNCHAR], registration rules [VRSNRULES], and
+   additional registration logic [VRSNADDL].
+
+</p><p class="rfcparagraph">   In Chinese, variants are blocked (see [VRSNADDL]).  In other
+   languages, there is no bundling or blocking.
+
+</p><p class="rfcparagraph">	<a name="section-4.6"><h3>4.6   COOP</h3></a>
+
+   The .COOP TLD has no IDNs and no rules or practices for them.
+
+</p><p class="rfcparagraph">	<a name="section-4.7"><h3>4.7   INFO</h3></a>
+
+   The IANA registry has a table for German.  The German table notes
+   that "the Eszet ... character used in the German script will be
+   mapped to a double 's' string (i.e. 'ss')".  The domain also offers
+   names in Greek, Russian, Arabic, Korean, and other languages.  The
+   list and IDN tables are on the registry's web site [INFOTABLES].
+
+</p><p class="rfcparagraph">   Afilias says (not in a published policy) that it does not allow
+   Korean characters with different widths and that there are no
+   variants in .INFO.
+
+</p><p class="rfcparagraph">   Appendix 9 of the registry agreement [ICANNINFO9] refers to a 2003
+   letter from Paul Twomey [TWOMEY03] that refers to blocking variants.
+
+</p><p class="rfcparagraph">	<a name="section-4.8"><h3>4.8   JOBS</h3></a>
+
+   The .JOBS TLD has no IDNs and no rules or practices for them.
+
+</p><p class="rfcparagraph">	<a name="section-4.9"><h3>4.9   MOBI</h3></a>
+
+   The zone file has about 22,000 IDNs.  Afilias says (not in a
+   published policy) that .MOBI supports Simplified Chinese only and
+   that the language table for this is the same as that used by .CN.
+   Variant characters are blocked from registration.  The domain has no
+   tables at IANA.  Appendix S of the registry agreement [ICANNMOBIS],
+   says that IDNs are provisioned according to [G1].
+
+</p><p class="rfcparagraph">	<a name="section-4.10"><h3>4.10   MUSEUM</h3></a>
+
+   The zone file has many IDNs, but spot checks find that many are lame
+   or dead.  A 2004 letter from Paul Twomey [TWOMEY04] refers to [G1].
+
+</p><p class="rfcparagraph">   The registry has a detailed policy page [MUSEUMPOLICY].  IDNs are
+   accepted in Latin and Hebrew scripts, with plans for Arabic, Chinese,
+   Japanese, Korean, Cyrillic, and Greek.  They do no bundling or
+   blocking, but names that may be confusable due to visual similarity
+   are not allowed.  These are apparently determined by manual
+   inspection, which is practical due to the very small size of the
+   domain.
+
+</p><p class="rfcparagraph">	<a name="section-4.11"><h3>4.11   NAME</h3></a>
+
+   The .NAME TLD is managed the same as .COM.
+
+</p><p class="rfcparagraph">	<a name="section-4.12"><h3>4.12   NET</h3></a>
+
+   The .NET TLD is managed the same as .COM.
+
+</p><p class="rfcparagraph">	<a name="section-4.13"><h3>4.13   ORG</h3></a>
+
+   A 2003 letter from Paul Twomey [TWOMEY03A] refers to [G1].  The
+   registry has a list of IDN languages [PIRIDN], several written in
+   Latin script, plus Chinese and Korean.  A Questions page [PIRFAQ]
+   states that Chinese names have been accepted since January 2010 and
+   Cyrillic names in seven languages since February 2011.  The practices
+   for some, but not all, of the Latin languages are registered with
+   IANA.
+
+</p><p class="rfcparagraph">   A Chinese language policy form on the Public Interest Registry (PIR)
+   web site says that the ZH-CN and ZH-TW IDNs use the corresponding
+   ccTLD tables from IANA, and check boxes say that Variant Registration
+   Polices and Variant Management Policies are applicable but don't say
+   what those policies are.
+
+</p><p class="rfcparagraph">   Private correspondence [CHANDIWALA12] describes not-yet-public rules
+   for variants in Chinese and Cyrillic in .ORG that restrict the number
+   of variants that a registration can have.
+
+</p><p class="rfcparagraph">   The Korean language policy form says that it uses the KRNIC table for
+   Korean from IANA and that there are no variants.
+	<a name="section-4.14"><h3>4.14   POST</h3></a>
+
+   The .POST TLD appears to have no registrations at all yet.
+
+</p><p class="rfcparagraph">	<a name="section-4.15"><h3>4.15   PRO</h3></a>
+
+   The .PRO TLD has no IDNs and no rules or practices for them.
+
+</p><p class="rfcparagraph">	<a name="section-4.16"><h3>4.16   TEL</h3></a>
+
+   The zone has many IDNs.  It is probably operating according to a 2004
+   letter from Paul Twomey [TWOMEY04A] to Neustar, which did not mention
+   specific TLDs.  Its policy page [TELPOLICY] has links to IDN
+   practices for 17 languages, all but one of which are registered with
+   IANA.  None of the Latin scripts do bundling or blocking.  The
+   Japanese practices say that variants are blocked.  The Chinese
+   practices document says:
+
+</p><p class="rfcparagraph">      Therefore, in addition to the blocking mechanism, bundling is also
+      implemented for the Chinese language IDNs.  When registering a
+      Chinese language IDN (primary domain name) up to two additional
+      variant domain names will be automatically registered.  The first
+      variant will consist entirely of simplified Chinese characters
+      that correspond to those comprising the primary domain name.  The
+      second variant will consist exclusively of traditional Chinese
+      characters that correspond to those comprising the primary domain
+      name.
+
+</p><p class="rfcparagraph">      The primary domain name together with the requested variants
+      constitutes a bundle on which all operations are atomic.  For
+      example, if the registrant adds a name server to the primary
+      domain name, all names in the bundle will be associated with that
+      new name server.
+
+</p><p class="rfcparagraph">   The zone has no DNAME records, so the second paragraph strongly
+   suggests parallel NS.
+
+</p><p class="rfcparagraph">   The .TEL TLD, intended as an online directory, does not allow
+   registrants to enter arbitrary Resource Records (RRs) in the zone.
+   Nearly all names have NS records pointing to Telnic's own name
+   servers.  The A records all point to Telnic's own web server that
+   shows directory information.  NAPTR records provide telephone numbers
+   of registrants if available.  Users can only directly provision MX
+   records.  Currently, there are 16 domains, none of which are IDNs,
+   that point to random other name servers and mostly appear to be
+   parked.
+	<a name="section-4.17"><h3>4.17   TRAVEL</h3></a>
+
+   The .TRAVEL TLD has no IDNs and no rules or practices for them.
+
+</p><p class="rfcparagraph">	<a name="section-4.18"><h3>4.18   XXX</h3></a>
+
+   The .XXX TLD has no IDNs and no rules or practices for them.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   Domain Practices of ccTLDs</h2></a>
+
+   Some ccTLDs publish their IDN policies.  This section is a non-
+   exhaustive sampling of some of those policies.  Note that few ccTLDs
+   make their zone files available, so the authors could not validate
+   the policies by looking in the zone files.
+
+</p><p class="rfcparagraph">	<a name="section-5.1"><h3>5.1   BG</h3></a>
+
+   The .BG TLD (for Bulgaria) publishes a policy page [BGPOLICY].  It
+   has published an IDN table for the Bulgarian and Russian languages in
+   [IANAIDN].  The policy does not mention variants.
+
+</p><p class="rfcparagraph">	<a name="section-5.2"><h3>5.2   BR</h3></a>
+
+   The .BR TLD (for Brazil) publishes a policy page [BRPOLICY].  It has
+   published an IDN table for the Portuguese language in [IANAIDN].
+   Although the IDN table does not describe variants, the policy page
+   says that bundles consist of names that are the same disregarding
+   accents on vowels, cedillas on letter "c", and inserted or deleted
+   hyphens.  Only the registrant of a name in a bundle can register
+   other names from the same bundle.
+
+</p><p class="rfcparagraph">	<a name="section-5.3"><h3>5.3   CL</h3></a>
+
+   The .CL TLD (for Chile) publishes a policy page [CLPOLICY].  It has
+   published an IDN table for the Latin script in [IANAIDN].  The policy
+   says that variants are not considered for registration.
+
+</p><p class="rfcparagraph">	<a name="section-5.4"><h3>5.4   CN</h3></a>
+
+   The .CN TLD (for China) publishes its policy as [RFC4713].  It has
+   published an IDN table for the Chinese language in [IANAIDN].  The
+   policy says that variants are "added into the zone file", presumably
+   as NS records.
+	<a name="section-5.5"><h3>5.5   ES</h3></a>
+
+   The .ES TLD (for Spain) publishes an IDN Area page [ESIDN].  It
+   allows ten accented vowels, U+00E7 ("c with cedilla"), U+00F1 ("n
+   with tilde"), and the Catalan "ela geminada" written as two l's
+   separated by a U+00B7 ("middle dot").  There are no published IDN
+   tables, and there appears to be no variant policy.
+
+</p><p class="rfcparagraph">	<a name="section-5.6"><h3>5.6   EU</h3></a>
+
+   The .EU TLD (for Europe) publishes a policy page [EUPOLICY].  It has
+   published IDN tables for three scripts in [IANAIDN].  There appears
+   to be no variant policy.
+
+</p><p class="rfcparagraph">	<a name="section-5.7"><h3>5.7   GR</h3></a>
+
+   The .GR TLD (for Greece) publishes a policy page [GRPOLICY] and an
+   FAQ [GRFAQ].  The policy says that all variants of a name under .GR
+   are assigned to the domain owner, with the zone pointing the NS
+   records of all the variants to the name server of the "main form" of
+   the registered name.  The FAQ says that domain names in Greek
+   characters are inserted in the zone using their non-punctuated form
+   in Punycode and that the punctuated form is associated with the non-
+   punctuated with a DNAME record.  It does not publish IDN tables in
+   [IANAIDN].
+
+</p><p class="rfcparagraph">	<a name="section-5.8"><h3>5.8   IL</h3></a>
+
+   The .IL TLD (for Israel) publishes a policy page [ILPOLICY].  It has
+   published an IDN table for the Hebrew language in [IANAIDN].  There
+   is no variant policy.
+
+</p><p class="rfcparagraph">	<a name="section-5.9"><h3>5.9   IR</h3></a>
+
+   The .IR TLD (for Iran) publishes a policy page [IRPOLICY].  It has
+   published an IDN table for the Persian language in [IANAIDN].  The
+   IDN table says that it will block registration of variants.  However,
+   the policy document says that no IDNs can be registered in .IR.
+
+</p><p class="rfcparagraph">	<a name="section-5.10"><h3>5.10   JP</h3></a>
+
+   The .JP TLD (for Japan) publishes a policy page [JPPOLICY].  It has
+   published an IDN table for the Japanese language in [IANAIDN].  Each
+   code point in that table defines no variants, which means there are
+   no variants in registration or resolution.
+	<a name="section-5.11"><h3>5.11   KR</h3></a>
+
+   The .KR TLD (for South Korea) appears to only publish its policy as
+   an IDN table for the Korean language in [IANAIDN].  The policy in
+   that table does not discuss variants.
+
+</p><p class="rfcparagraph">	<a name="section-5.12"><h3>5.12   MY</h3></a>
+
+   The .MY TLD (for Malaysia) appears to only publish its policy as an
+   IDN table for the Jawi language in [IANAIDN]; however, IANA lists
+   that as a table for "Malay (macrolanguage)".  The policy in that
+   table does not discuss variants.
+
+</p><p class="rfcparagraph">	<a name="section-5.13"><h3>5.13   NZ</h3></a>
+
+   The .NZ TLD (for New Zealand) publishes a policy page [NZPOLICY].  It
+   has published IDN tables for the Latin script in [IANAIDN].  The
+   policy does not discuss variants.
+
+</p><p class="rfcparagraph">	<a name="section-5.14"><h3>5.14   PL</h3></a>
+
+   The .PL TLD (for Poland) publishes a policy page [PLPOLICY].  It has
+   published IDN tables for numerous European languages in [IANAIDN].
+   The policy says that it will block registration of "look-alike"
+   variants.
+
+</p><p class="rfcparagraph">	<a name="section-5.15"><h3>5.15   RS</h3></a>
+
+   The .RS TLD (for Serbia) publishes a policy page [RSPOLICY].  It has
+   published IDN tables for the Serbian language, and the Latin script,
+   in [IANAIDN].  The policy does not discuss variants.
+
+</p><p class="rfcparagraph">	<a name="section-5.16"><h3>5.16   RU</h3></a>
+
+   The .RU TLD (for Russia) appears to only publish its policy as an IDN
+   table for the Russian language in [IANAIDN].  The policy in that
+   table does not discuss variants.
+
+</p><p class="rfcparagraph">	<a name="section-5.17"><h3>5.17   SA</h3></a>
+
+   The .SA TLD (for Saudi Arabia) publishes a policy page [SAPOLICY].
+   It has published an IDN table for the Arabic language in [IANAIDN].
+   The policy permits the registration of variants, but it is not clear
+   whether others can register names with variants if the owner of a
+   name has not registered them.
+	<a name="section-5.18"><h3>5.18   SE</h3></a>
+
+   The .SE TLD (for Sweden) publishes a policy page [SEPOLICY].  It has
+   published IDN tables for the Swedish and Yiddish languages, and the
+   Latin script, in [IANAIDN].  The policy does not discuss variants.
+
+</p><p class="rfcparagraph">	<a name="section-5.19"><h3>5.19   TW</h3></a>
+
+   The .TW TLD (for Taiwan) appears to only publish its policy as an IDN
+   table for the Chinese language in [IANAIDN].  The policy in that
+   table does not discuss variants.
+
+</p><p class="rfcparagraph">	<a name="section-5.20"><h3>5.20   UA</h3></a>
+
+   The .UA TLD (for Ukraine) publishes a policy page [UAPOLICY].  It has
+   published an IDN table for the Cyrillic script in [IANAIDN].  The
+   policy does not discuss variants.
+
+</p><p class="rfcparagraph">	<a name="section-5.21"><h3>5.21   VE</h3></a>
+
+   The .VE TLD (for Venezuela) appears to only publish its policy as an
+   IDN table for the Spanish language in [IANAIDN].  The policy in that
+   table does not discuss variants.
+
+</p><p class="rfcparagraph">	<a name="section-5.22"><h3>5.22   XN--90A3AC</h3></a>
+
+   The .XN--90A3AC TLD (for Serbia) (U+0441 U+0440 U+0431) publishes a
+   policy page [RSIDNPOLICY].  It has published IDN tables for the
+   Cyrillic script in [IANAIDN].  The policy does not discuss variants.
+
+</p><p class="rfcparagraph">	<a name="section-5.23"><h3>5.23   XN--MGBERP4A5D4AR</h3></a>
+
+   The .XN--MGBERP4A5D4AR TLD (for Saudi Arabia) (U+0627 U+0644 U+0633
+   U+0639 U+0648 U+062F U+064A U+0629) appears to only publish its
+   policy as an IDN table for the Arabic script in [IANAIDN].  The
+   policy permits the registration of variants, but it is not clear
+   whether others can register names with variants if the owner of a
+   name has not registered them.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.   Acknowledgements</h2></a>
+
+   Many people contributed to this document, particularly Nacho Amadoz,
+   Marc Blanchet, Michelle Coon, Jordi Iparraguirre, Frederico A. C.
+   Neves, Vaggelis Segredakis, Doron Shikmoni, Andrew Sullivan, Dennis
+   Tan, and Joseph Yee.
+	<a name="section-7"><h2>7.   Security Considerations</h2></a>
+
+   There are many potential security considerations for various methods
+   of dealing with IDN variants.  However, this document is only a
+   catalog of current variant policies and does not address whether they
+   are good or bad ideas from a security standpoint.  The documents
+   cited in the Terminology section have a little discussion of security
+   considerations for IDN variants.
+
+</p><p class="rfcparagraph">	<a name="section-8"><h2>8.   Informative References</h2></a>
+
+   [ASIACJK]    Dot.Asia Organisation, ".ASIA CJK (Chinese Japanese
+                Korean) IDN Policies", May 2011,
+                <http://dot.asia/policies/
+                DotAsia-CJK-IDN-Policies-COMPLETE--2011-05-04.pdf>.
+
+</p><p class="rfcparagraph">   [BGPOLICY]   Register.BG, "Terms and Conditions for Domain Name
+                Registration and Support in the .BG Zone and the Sub-
+                Zones", August 2011, <https://www.register.bg/user/
+                static/rules/en/index.html>.
+
+</p><p class="rfcparagraph">   [BRPOLICY]   Registro.br, "Dominios .br", September 2011,
+                <http://registro.br/dominio/regras.html>.
+
+</p><p class="rfcparagraph">   [CHANDIWALA12]
+                Chandiwala, S., "Letter from Sadik Chandiwala to John
+                Levine", December 2012.
+
+</p><p class="rfcparagraph">   [CLPOLICY]   NIC Chile, "Syntax Rules for Domain Names under .CL",
+                August 2005, <http://www.nic.cl/CL-IDN-policy.html>.
+
+</p><p class="rfcparagraph">   [ESIDN]      Red.es, "IDN area", <http://www.dominios.es/dominios/
+                en/todo-lo-que-necesitas-saber/valores-anadidos/
+                area-idn>.
+
+</p><p class="rfcparagraph">   [EUPOLICY]   EURid, ".eu Domain Name Registration Terms and
+                Conditions", <http://link.eurid.eu/trm-con>.
+
+</p><p class="rfcparagraph">   [G1]         ICANN, "Guidelines for the Implementation of
+                Internationalized Domain Names, Version 1.0",
+                <http://www.icann.org/en/resources/idn/
+                idn-guidelines-20jun03-en.htm>.
+
+</p><p class="rfcparagraph">   [G3]         ICANN, "Guidelines for the Implementation of
+                Internationalized Domain Names, Version 3.0",
+                <http://www.icann.org/en/resources/idn/
+                idn-guidelines-02sep11-en.htm>.
+   [GRFAQ]      Foundation for Research and Technology - Hellas,
+                "Frequently Asked Questions regarding [.gr] Domain Name
+                registrations",
+                <https://grweb.ics.forth.gr/faq.jsp?lang=en>.
+
+</p><p class="rfcparagraph">   [GRPOLICY]   Foundation for Research and Technology - Hellas,
+                "Regulation on Management and Assignment of [.gr] Domain
+                Names", 2011, <https://grweb.ics.forth.gr/tomcat_docs/
+                AP592_012_2011_.pdf>.
+
+</p><p class="rfcparagraph">   [IANAIDN]    IANA, "Repository of IDN Practices",
+                <http://www.iana.org/domains/idn-tables>.
+
+</p><p class="rfcparagraph">   [ICANNAGREE] ICANN, "ICANN Registry Agreements",
+                <http://www.icann.org/en/about/agreements/registries>.
+
+</p><p class="rfcparagraph">   [ICANNBIZ9]  ICANN, "Appendix 9 of ICANN .BIZ Registry Agreement",
+                December 2006, <http://www.icann.org/en/about/
+                agreements/registries/biz/appendix-09-08dec06-en.htm>.
+
+</p><p class="rfcparagraph">   [ICANNCATS]  ICANN, "Appendix S of ICANN .CAT Registry Agreement",
+                March 2006, <http://www.icann.org/en/about/agreements/
+                registries/cat/cat-appendixs-22mar06-en.htm>.
+
+</p><p class="rfcparagraph">   [ICANNINFO9] ICANN, "Appendix 9 of ICANN .INFO Registry Agreement",
+                December 2006, <http://www.icann.org/en/tlds/agreements/
+                info/appendix-09-08dec06.htm>.
+
+</p><p class="rfcparagraph">   [ICANNMOBIS] ICANN, "Appendix S of ICANN .MOBI Registry Agreement",
+                November 2005,
+                <http://www.icann.org/en/about/agreements/
+                registries/mobi/mobi-appendixs-23nov05-en.htm>.
+
+</p><p class="rfcparagraph">   [ILPOLICY]   Israel Internet Association (ISOC-IL), "Rules for the
+                Allocation of Domain Names Under the Israel Country Code
+                Top Level Domain ("IL ")", August 2010,
+                <http://www.isoc.org.il/domains/il-domain-rules.html>.
+
+</p><p class="rfcparagraph">   [INFOTABLES] Afilias, "Internationalized Domain Names",
+                <http://info.info/information/
+                internationalized-domain-names>.
+
+</p><p class="rfcparagraph">   [IRPOLICY]   IPM/IRNIC, "Internationalized Domain Names in .IR",
+                <http://www.nic.ir/Internationalized_Domain_Names>.
+
+</p><p class="rfcparagraph">   [JPPOLICY]   JPRS, "Technology bylaws regarding generic domain name
+                registration JP",
+                <http://jprs.jp/doc/rule/saisoku-1-wideusejp.html>.
+   [LEWIS03]    Lewis, R., "Letter from Russell Lewis to Paul Twomey",
+                October 2003, <http://www.icann.org/en/news/
+                correspondence/lewis-to-twomey-13oct03-en.htm>.
+
+</p><p class="rfcparagraph">   [MUSEUMPOLICY]
+                MuseDoma, "Internationalized Domain Names (IDN) in
+                .museum - Policies and terms of use", January 2009,
+                <http://about.museum/idn/idnpolicy.html>.
+
+</p><p class="rfcparagraph">   [NZPOLICY]   .nz Registry Services, "Internationalised Domain Names
+                (IDN)", <http://nzrs.net.nz/dns/idn>.
+
+</p><p class="rfcparagraph">   [PIRFAQ]     Public Interest Registry, "Internationalized Domain Name
+                (IDN) Questions", <http://www.pir.org/why/global/idn>.
+
+</p><p class="rfcparagraph">   [PIRIDN]     Public Interest Registry, "Go Global",
+                <http://www.pir.org/why/global>.
+
+</p><p class="rfcparagraph">   [PLPOLICY]   NASK (PL-TLD), "Registering Internationalized Domain
+                Names under .PL", July 2007,
+                <http://www.dns.pl/IDN/idn-registration-policy.txt>.
+
+</p><p class="rfcparagraph">   [RFC1035]    Mockapetris, P., "Domain names - implementation and
+                specification", STD 13, RFC 1035, November 1987.
+
+</p><p class="rfcparagraph">   [RFC3743]    Konishi, K., Huang, K., Qian, H., and Y. Ko, "Joint
+                Engineering Team (JET) Guidelines for Internationalized
+                Domain Names (IDN) Registration and Administration for
+                Chinese, Japanese, and Korean", RFC 3743, April 2004.
+
+</p><p class="rfcparagraph">   [RFC4713]    Lee, X., Mao, W., Chen, E., Hsu, N., and J. Klensin,
+                "Registration and Administration Recommendations for
+                Chinese Domain Names", RFC 4713, October 2006.
+
+</p><p class="rfcparagraph">   [RFC5890]    Klensin, J., "Internationalized Domain Names for
+                Applications (IDNA): Definitions and Document
+                Framework", RFC 5890, August 2010.
+
+</p><p class="rfcparagraph">   [RFC6672]    Rose, S. and W. Wijngaards, "DNAME Redirection in the
+                DNS", RFC 6672, June 2012.
+
+</p><p class="rfcparagraph">   [RSIDNPOLICY]
+                RNIDS, "Internationalized Domain Names (IDN) in
+                xn--90a3ac ccTLD", October 2011, <http://www.rnids.rs/
+                data/DOKUMENTI/idn-srb-policy-termsofuse-v1.4-eng.pdf>.
+   [RSPOLICY]   RNIDS, "General Terms And Conditions For Registration of
+                .rs Domain Names", June 2009, <http://www.rnids.rs/
+                data/DOKUMENTI/Opsti%20akti/list0029_en.pdf>.
+
+</p><p class="rfcparagraph">   [SAPOLICY]   Saudi Network Information Center, "Saudi Domain Name
+                Registration Regulation", March 2011,
+                <http://nic.sa/docs/
+                Saudi_Domain_Name_Registration_Regulation_V3.0_EN.pdf>.
+
+</p><p class="rfcparagraph">   [SEPOLICY]   .SE (The Internet Infrastructure Foundation), "Domain
+                names (IDN)",
+                <https://www.iis.se/english/register/idn/>.
+
+</p><p class="rfcparagraph">   [TELPOLICY]  Telnic, ".TEL Policies",
+                <http://www.telnic.org/policies.html>.
+
+</p><p class="rfcparagraph">   [TURNER03]   Turner, B., "Letter from Ben Turner to Paul Twomey",
+                November 2003, <http://www.icann.org/en/news/
+                correspondence/turner-to-twomey-17nov03-en.htm>.
+
+</p><p class="rfcparagraph">   [TWOMEY03]   Twomey, P., "Letter from Paul Twomey to Ram Mohan",
+                August 2003, <http://www.icann.org/en/news/
+                correspondence/twomey-to-mohan-19aug03-en.htm>.
+
+</p><p class="rfcparagraph">   [TWOMEY03A]  Twomey, P., "Letter from Paul Twomey to Edward Viltz",
+                October 2003, <http://www.icann.org/en/news/
+                correspondence/twomey-to-viltz-21oct03-en.htm>.
+
+</p><p class="rfcparagraph">   [TWOMEY04]   Twomey, P., "Letter from Paul Twomey to Cary Karp",
+                January 2004, <http://www.icann.org/en/news/
+                correspondence/twomey-to-karp-20jan04-en.htm>.
+
+</p><p class="rfcparagraph">   [TWOMEY04A]  Twomey, P., "Letter from Paul Twomey to Richard Tindal",
+                July 2004, <http://www.icann.org/en/correspondence/
+                twomey-to-tindal-29jul04.pdf>.
+
+</p><p class="rfcparagraph">   [UAPOLICY]   UA ccTLD, "Registration Schedule of IDN-domains",
+                <http://www.hostmaster.ua/idn/>.
+
+</p><p class="rfcparagraph">   [VIPREPORT]  ICANN, "A Study of Issues Related to the Management of
+                IDN Variant TLDs (Integrated Issues Report)",
+                <http://www.icann.org/en/topics/idn/
+                idn-vip-integrated-issues-final-clean-20feb12-en.pdf>.
+
+</p><p class="rfcparagraph">   [VRSNADDL]   Verisign, "Additional Logic",
+                <http://www.verisigninc.com/en_US/products-and-services/
+                domain-name-services/domain-information-center/
+                idn-code-points/additional-logic/index.xhtml>.
+   [VRSNCHAR]   Verisign, "Character Variants",
+                <http://www.verisigninc.com/en_US/products-and-services/
+                domain-name-services/domain-information-center/
+                idn-resources/character-variants/index.xhtml>.
+
+</p><p class="rfcparagraph">   [VRSNLANG]   Verisign, "Scripts and Languages",
+                <http://www.verisigninc.com/en_US/products-and-services/
+                domain-name-services/domain-information-center/
+                idn-resources/scripts-languages/index.xhtml>.
+
+</p><p class="rfcparagraph">   [VRSNRULES]  Verisign, "Registration Rules",
+                <http://www.verisigninc.com/en_US/products-and-services/
+                domain-name-services/domain-information-center/
+                idn-code-points/registration-rules/index.xhtml>.
+
+</p>Authors' Addresses
+
+   John Levine
+   Taughannock Networks
+
+   EMail: standards@taugh.com
+
+
+   Paul Hoffman
+   VPN Consortium
+
+   EMail: paul.hoffman@vpnc.org
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Levine & Hoffman              Informational                    [Page 18]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

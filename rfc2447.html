@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                         F. Dawson<br>Request for Comments: 2447                                        Lotus<br>Category: Standards Track                                    S. Mansour<br>                                                               Netscape<br>                                                          S. Silverberg<br>                                                              Microsoft<br>                                                          November 1998<br><br></p>
+                  <h1>
+           iCalendar Message-Based Interoperability Protocol
+                                 (iMIP)</h1>
+                  <h2>Status of this Memo</h2>
+
+   This document specifies an Internet standards track protocol for the
+   Internet community, and requests discussion and suggestions for
+   improvements.  Please refer to the current edition of the "Internet
+   Official Protocol Standards" (STD 1) for the standardization state
+   and status of this protocol.  Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (1998).  All Rights Reserved.<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This document, [iMIP], specifies a binding from the iCalendar
+   Transport-independent Interoperability Protocol (iTIP) to Internet
+   email-based transports. Calendaring entries defined by the iCalendar
+   Object Model [iCAL] are composed using constructs from [RFC-822],
+   [RFC-2045], [RFC-2046], [RFC-2047], [RFC-2048] and [RFC-2049].
+
+</p><p class="rfcparagraph">   This document is based on discussions within the Internet Engineering
+   Task Force (IETF) Calendaring and Scheduling (CALSCH) working group.
+   More information about the IETF CALSCH working group activities can
+   be found on the IMC web site at http://www.imc.org, the IETF web site
+   at http://www.ietf.org/html.charters/calsch-charter.html. Refer to
+   the references within this document for further information on how to
+   access these various documents.
+<h2>Table of Contents</h2>
+<a href="#section-1" class="">1 INTRODUCTION.......................................................</a><br>
+<a href="#section-1.1" class="indent-1">1.1 RELATED MEMOS ..................................................</a><br>
+<a href="#section-1.2" class="indent-1">1.2 FORMATTING CONVENTIONS .........................................</a><br>
+<a href="#section-1.3" class="indent-1">1.3 TERMINOLOGY ....................................................</a><br>
+<a href="#section-2" class="">2 MIME MESSAGE FORMAT BINDING........................................</a><br>
+<a href="#section-2.1" class="indent-1">2.1 MIME MEDIA TYPE ................................................</a><br>
+<a href="#section-2.2" class="indent-1">2.2 SECURITY .......................................................</a><br>
+<a href="#section-2.2.1" class="indent-2">2.2.1 Authorization ..............................................</a><br>
+<a href="#section-2.2.2" class="indent-2">2.2.2 Authentication .............................................</a><br>
+<a href="#section-2.2.3" class="indent-2">2.2.3 Confidentiality ............................................</a><br>
+<a href="#section-2.3" class="indent-1">2.3 [RFC-822] ADDRESSES ............................................</a><br>
+<a href="#section-2.4" class="indent-1">2.4 CONTENT TYPE ...................................................</a><br>
+<a href="#section-2.5" class="indent-1">2.5 CONTENT-TRANSFER-ENCODING ......................................</a><br>
+<a href="#section-2.6" class="indent-1">2.6 CONTENT-DISPOSITION ............................................</a><br>
+<a href="#section-3" class="">3 SECURITY CONSIDERATIONS............................................</a><br>
+<a href="#section-4" class="">4 EXAMPLES...........................................................</a><br>
+<a href="#section-4.1" class="indent-1">4.1 SINGLE COMPONENT WITH AN ATTACH PROPERTY .......................</a><br>
+<a href="#section-4.2" class="indent-1">4.2 USING MULTIPART ALTERNATIVE FOR LOW FIDELITY CLIENTS ...........</a><br>
+<a href="#section-4.3" class="indent-1">4.3 SINGLE COMPONENT WITH AN ATTACH PROPERTY AND INLINE ATTACHMENT .</a><br>
+<a href="#section-4.4" class="indent-1">4.4 MULTIPLE SIMILAR COMPONENTS ...................................</a><br>
+<a href="#section-4.5" class="indent-1">4.5 MULTIPLE MIXED COMPONENTS .....................................</a><br>
+<a href="#section-4.6" class="indent-1">4.6 DETAILED COMPONENTS WITH AN ATTACH PROPERTY ...................</a><br>
+<a href="#section-5" class="">5 RECOMMENDED PRACTICES.............................................</a><br>
+<a href="#section-5.1" class="indent-1">5.1 USE OF CONTENT AND MESSAGE IDS ................................</a><br>
+<a href="#section-6" class="">6 BIBLIOGRAPHY......................................................</a><br>
+<a href="#section-7" class="">7 AUTHORS' ADDRESSES................................................</a><br>
+<a href="#section-8" class="">8 FULL COPYRIGHT STATEMENT..........................................</a><br>
+
+	<a name="section-1"><h2>1.  Introduction</h2></a>
+
+   This binding document provides the transport specific information
+   necessary convey iCalendar Transport-independent Interoperability
+   Protocol (iTIP) over MIME as defined in [RFC-822] and [RFC-2045].
+
+</p><p class="rfcparagraph">	<a name="section-1.1"><h3>1.1  Related Memos</h3></a>
+
+   Implementers will need to be familiar with several other memos that,
+   along with this memo, form a framework for Internet calendaring and
+   scheduling standards.
+
+</p><p class="rfcparagraph">   This document, [iMIP], specifies an Internet email binding for iTIP.
+
+</p><p class="rfcparagraph">   [iCAL] - specifies a core specification of objects, data types,
+   properties and property parameters;
+   [iTIP] - specifies an interoperability protocol for scheduling
+   between different implementations;
+
+</p><p class="rfcparagraph">   This memo does not attempt to repeat the specification of concepts or
+   definitions from these other memos. Where possible, references are
+   made to the memo that provides for the specification of these
+   concepts or definitions.
+
+</p><p class="rfcparagraph">	<a name="section-1.2"><h3>1.2  Formatting Conventions</h3></a>
+
+   The mechanisms defined in this memo are defined in prose. In order to
+   refer to elements of the calendaring and scheduling model, core
+   object or interoperability protocol defined in [iCAL] and [iTIP] some
+   formatting conventions have been used.
+
+</p><p class="rfcparagraph">   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY" and "OPTIONAL" in this
+   document are to be interpreted as described in [RFC-2119].
+
+</p><p class="rfcparagraph">   Calendaring and scheduling roles are referred to in quoted-strings of
+   text with the first character of each word in upper case. For
+   example, "Organizer" refers to a role of a "Calendar User" within the
+   scheduling protocol defined by [iTIP].
+
+</p><p class="rfcparagraph">   Calendar components defined by [iCAL] are referred to with
+   capitalized, quoted-strings of text. All calendar components start
+   with the letter "V". For example, "VEVENT" refers to the event
+   calendar component, "VTODO" refers to the to-do calendar component
+   and "VJOURNAL" refers to the daily journal calendar component.
+
+</p><p class="rfcparagraph">   Scheduling methods defined by [iTIP] are referred to with
+   capitalized, quoted-strings of text. For example, "REQUEST" refers to
+   the method for requesting a scheduling calendar component be created
+   or modified, "REPLY" refers to the method a recipient of a request
+   uses to update their status with the "Organizer" of the calendar
+   component.
+
+</p><p class="rfcparagraph">   Properties defined by [iCAL] are referred to with capitalized,
+   quoted-strings of text, followed by the word "property". For example,
+   "ATTENDEE" property refers to the iCalendar property used to convey
+   the calendar address of a calendar user.
+
+</p><p class="rfcparagraph">   Property parameters defined by [iCAL] are referred to with lower
+   case, quoted-strings of text, followed by the word "parameter". For
+   example, "value" parameter refers to the iCalendar property parameter
+   used to override the default data type for a property value.
+	<a name="section-1.3"><h3>1.3  Terminology</h3></a>
+
+   The email terms used in this memo are defined in [RFC-822] and [RFC-
+   2045]. The calendaring and scheduling terms used in this memo are
+   defined in [iCAL] and [iTIP].
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.  MIME Message Format Binding</h2></a>
+
+   This section defines the message binding to the MIME electronic mail
+   transport.
+
+</p><p class="rfcparagraph">   The sections below refer to the "originator" and the "respondent" of
+   an iMIP message. Typically, the originator is the "Organizer" of an
+   event.  The respondent is an "Attendee" of the event.
+
+</p><p class="rfcparagraph">   The [RFC-822] "Reply-To" header typically contains the email address
+   of the originator or respondent of an event. However, this cannot be
+   guaranteed as Mail User Agents (MUA) are not required to enforce iMIP
+   semantics.
+
+</p><p class="rfcparagraph">	<a name="section-2.1"><h3>2.1  MIME Media Type</h3></a>
+
+   A MIME entity containing content information formatted according to
+   this document will be referenced as a "text/calendar" content type.
+   It is assumed that this content type will be transported through a
+   MIME electronic mail transport.
+
+</p><p class="rfcparagraph">	<a name="section-2.2"><h3>2.2  Security</h3></a>
+
+   This section addresses several aspects of security including
+   Authentication, Authorization and Confidentiality. Authentication and
+   confidentiality can be achieved using [RFC-1847] that specifies the
+   Security Multiparts for MIME. This framework defines new content
+   types and subtypes of multipart: signed and encrypted. Each contains
+   two body parts: one for the protected data and another for the
+   control information necessary to remove the protection.
+
+</p><p class="rfcparagraph">	<a name="section-2.2.1"><h4>2.2.1  Authorization</h4></a>
+
+   In [iTIP] messages, only the "Organizer" is authorized to modify or
+   cancel calendar entries they organize. That is, spoof@xyz.com is not
+   allowed to modify or cancel a meeting that was organized by
+   a@example.com. Furthermore, only the respondent has the authorization
+   to indicate their status to the "Organizer". That is, the "Organizer"
+   must ignore an [iTIP] message from spoof@xyz.com that declines a
+   meeting invitation for b@example.com.
+   Implementations of iMIP SHOULD verify the authenticity of the creator
+   of an iCalendar object before taking any action. The methods for
+   doing this are presented later in this document.
+
+</p><p class="rfcparagraph">   [RFC-1847] Message flow in iTIP supports someone working on behalf of
+   a "Calendar User" through use of the "sent-by" parameter that is
+   associated with the "ATTENDEE" and "ORGANIZER" properties. However,
+   there is no mechanism to verify whether or not a "Calendar User" has
+   authorized someone to work on their behalf. It is left to
+   implementations to provide mechanisms for the "Calendar Users" to
+   make that decision.
+
+</p><p class="rfcparagraph">	<a name="section-2.2.2"><h4>2.2.2  Authentication</h4></a>
+
+   Authentication can be performed using an implementation of [RFC-1847]
+   "multipart/signed" that supports public/private key certificates.
+   Authentication is possible only on messages that have been signed.
+   Authenticating an unsigned message may not be reliable.
+
+</p><p class="rfcparagraph">	<a name="section-2.2.3"><h4>2.2.3  Confidentiality</h4></a>
+
+   To ensure confidentiality using iMIP implementations should utilize
+   [RFC-1847]-compliant encryption. The protocol does not restrict a
+   "Calendar User Agent" (CUA) from forwarding iCalendar objects to
+   other users or agents.
+
+</p><p class="rfcparagraph">	<a name="section-2.3"><h3>2.3  [RFC-822] Addresses</h3></a>
+
+   The calendar address specified within the "ATTENDEE" property in an
+   iCalendar object MUST be a fully qualified, [RFC-822] address
+   specification for the corresponding "Organizer" or "Attendee" of the
+   "VEVENT" or "VTODO".
+
+</p><p class="rfcparagraph">   Because [iTIP] does not preclude "Attendees" from forwarding
+   "VEVENTS" or "VTODOS" to others, the [RFC-822] "Sender" value may not
+   equal that of the "Organizer". Additionally, the "Organizer" or
+   "Attendee" cannot be reliably inferred by the [RFC-822] "Sender" or
+   "Reply-to" values of an iMIP message. The relevant address MUST be
+   ascertained by opening the "text/calendar" MIME body part and
+   examining the "ATTENDEE" and "ORGANIZER" properties.
+
+</p><p class="rfcparagraph">	<a name="section-2.4"><h3>2.4  Content Type</h3></a>
+
+   A MIME body part containing content information that conforms to this
+   document MUST have an [RFC-2045] "Content-Type" value of
+   "text/calendar". The [RFC-2045] "Content-Type" header field must also
+   include the type parameter "method". The value MUST be the same as
+   the value of the "METHOD" calendar property within the iCalendar
+   object.  This means that a MIME message containing multiple iCalendar
+   objects with different method values must be further encapsulated
+   with a "multipart/mixed" MIME entity. This will allow each of the
+   iCalendar objects to be encapsulated within their own "text/calendar"
+   MIME entity.
+
+</p><p class="rfcparagraph">   A "charset" parameter MUST be present if the iCalendar object
+   contains characters that are not part of the US-ASCII character set.
+   [RFC-2046] discusses the selection of an appropriate "charset" value.
+
+</p><p class="rfcparagraph">   The optional "component" parameter defines the iCalendar component
+   type contained within the iCalendar object.
+
+</p><p class="rfcparagraph">   The following is an example of this header field with a value that
+   indicates an event message.
+
+</p><p class="rfcparagraph">        Content-Type:text/calendar; method=request; charset=UTF-8;
+              component=vevent
+
+   The "text/calendar" content type allows for the scheduling message
+   type to be included in a MIME message with other content information
+   (i.e., "multipart/mixed") or included in a MIME message with a
+   clear-text, human-readable form of the scheduling message (i.e.,
+   "multipart/alternative").
+
+</p><p class="rfcparagraph">   In order to permit the information in the scheduling message to be
+   understood by MIME user agents (UA) that do not support the
+   "text/calendar" content type, scheduling messages SHOULD be sent with
+   an alternative, human-readable form of the information.
+
+</p><p class="rfcparagraph">	<a name="section-2.5"><h3>2.5  Content-Transfer-Encoding</h3></a>
+
+   Note that the default character set for iCalendar objects is UTF-8. A
+   transfer encoding SHOULD be used for iCalendar objects containing any
+   characters that are not part of the US-ASCII character set.
+
+</p><p class="rfcparagraph">	<a name="section-2.6"><h3>2.6  Content-Disposition</h3></a>
+
+   The handling of a MIME part should be based on its [RFC-2045]
+   "Content-Type". However, this is not guaranteed to work in all
+   environments. Some environments handle MIME attachments based on
+   their file type or extension. To operate correctly in these
+   environments, implementations may wish to include a "Content-
+   Disposition" property to define a file name.
+	<a name="section-3"><h2>3.  Security Considerations</h2></a>
+
+   The security threats that applications must address when implementing
+   iTIP are detailed in [iTIP]. Two spoofing threats are identified:
+   Spoofing the "Organizer", and Spoofing an "Attendee". To address
+   these threats, the originator of an iCalendar object must be
+   authenticated by a recipient. Once authenticated, a determination can
+   be made as to whether or not the originator is authorized to perform
+   the requested operation. Compliant applications MUST support signing
+   and encrypting text/calendar attachments using a mechanism based on
+   Security Multiparts for MIME [RFC-1847] to facilitate the
+   authentication the originator of the iCalendar object.
+   Implementations MAY provide a means for users to disable signing and
+   encrypting. The steps are described below:
+
+</p><p class="rfcparagraph">   1. The iCalendar object MUST be signed by the "Organizer" sending an
+   update or the "Attendee" sending a reply.
+
+</p><p class="rfcparagraph">   2. Using the [RFC-1847]-compliant security mechanism, determine who
+   signed the iCalendar object. This is the "signer". Note that the
+   signer is not necessarily the person sending an e-mail message since
+   an e-mail message can be forwarded.
+
+</p><p class="rfcparagraph">   3. Correlate the signer to an "ATTENDEE" property in the iCalendar
+   object. If the signer cannot be correlated to an "ATTENDEE" property,
+   ignore the message.
+
+</p><p class="rfcparagraph">   4. Determine whether or not the "ATTENDEE" is authorized to perform
+   the operation as defined by [iTIP]. If the conditions are not met,
+   ignore the message.
+
+</p><p class="rfcparagraph">   5. If all the above conditions are met, the message can be processed.
+
+</p><p class="rfcparagraph">   To address the confidentiality security threats, signed iMIP messages
+   SHOULD be encrypted by a mechanism based on Security Multiparts for
+   MIME [RFC-1847].
+
+</p><p class="rfcparagraph">   It is possible to receive iMIP messages sent by someone working on
+   behalf of another "Calendar User". This is determined by examining
+   the "sent-by" parameter in the relevant "ORGANIZER" or "ATTENDEE"
+   property.  [iCAL] and [iTIP] provide no mechanism to verify that a
+   "Calendar User" has authorized someone else to work on their behalf.
+   To address this security issue, implementations MUST provide
+   mechanisms for the "Calendar Users" to make that decision before
+   applying changes from someone working on behalf of a "Calendar User".
+	<a name="section-4"><h2>4.  Examples</h2></a>
+
+	<a name="section-4.1"><h3>4.1  Single Component With An ATTACH Property</h3></a>
+
+   This minimal message shows how an iCalendar object references an
+   attachment. The attachment is accessible via its URL.
+
+</p><p class="rfcparagraph">   From: sman@netscape.com
+   To: stevesil@microsoft.com
+   Subject: Phone Conference
+   Mime-Version: 1.0
+   Content-Type:text/calendar; method=REQUEST; charset=US-ASCII
+   Content-Transfer-Encoding: 7bit
+
+   BEGIN:VCALENDAR
+   PRODID:-//ACME/DesktopCalendar//EN
+   METHOD:REQUEST
+   VERSION:2.0
+   BEGIN:VEVENT
+   ORGANIZER:mailto:sman@netscape.com
+   ATTENDEE;ROLE=CHAIR;ATTSTAT=ACCEPTED:mailto:sman@netscape.com
+   ATTENDEE;RSVP=YES:mailto:stevesil@microsoft.com
+   DTSTAMP:19970611T190000Z
+   DTSTART:19970701T210000Z
+   DTEND:19970701T230000Z
+   SUMMARY:Phone Conference
+   DESCRIPTION:Please review the attached document.
+   UID:calsvr.example.com-873970198738777
+   ATTACH:ftp://ftp.bar.com/pub/docs/foo.doc
+   STATUS:CONFIRMED
+   END:VEVENT
+   END:VCALENDAR
+
+	<a name="section-4.2"><h3>4.2  Using Multipart Alternative for Low Fidelity Clients</h3></a>
+
+   This example shows how a client can emit a multipart message that
+   includes both a plain text version as well as the full iCalendar
+   object.  Clients that do not support text/calendar will still be
+   capable of rendering the plain text representation.
+
+</p><p class="rfcparagraph">   From: foo1@example.com
+   To: foo2@example.com
+   Subject: Phone Conference
+   Mime-Version: 1.0
+   Content-Type: multipart/alternative;boundary="01BD3665.3AF0D360"
+
+   --01BD3665.3AF0D360
+   Content-Type: text/plain;charset=us-ascii
+   Content-Transfer-Encoding: 7bit
+
+   This is an alternative representation of a TEXT/CALENDAR MIME Object
+   When: 7/1/1997 10:00AM PDT - 7/1/97 10:30AM PDT
+   Where:
+   Organizer: foo1@example.com
+   Summary: Phone Conference
+
+   --01BD3665.3AF0D360
+   Content-Type:text/calendar; method=REQUEST; charset=US-ASCII
+   Content-Transfer-Encoding: 7bit
+
+   BEGIN:VCALENDAR
+   PRODID:-//ACME/DesktopCalendar//EN
+   METHOD:REQUEST
+   VERSION:2.0
+   BEGIN:VEVENT
+   ORGANIZER:mailto:foo1@example.com
+   ATTENDEE;ROLE=CHAIR;ATTSTAT=ACCEPTED:mailto:foo1@example.com
+   ATTENDEE;RSVP=YES;TYPE=INDIVIDUAL:mailto:foo2@example.com
+   DTSTAMP:19970611T190000Z
+   DTSTART:19970701T170000Z
+   DTEND:19970701T173000Z
+   SUMMARY:Phone Conference
+   UID:calsvr.example.com-8739701987387771
+   SEQUENCE:0
+   STATUS:CONFIRMED
+   END:VEVENT
+   END:VCALENDAR
+
+   --01BD3665.3AF0D360
+
+	<a name="section-4.3"><h3>4.3  Single Component With An ATTACH Property and Inline Attachment</h3></a>
+
+   This example shows how a message containing an iCalendar object
+   references an attached document. The reference is made using a
+   Content-id (CID). Thus, the iCalendar object and the document are
+   packaged in a multipart/related encapsulation.
+
+</p><p class="rfcparagraph">   From: foo1@example.com
+   To: foo2@example.com
+   Subject: Phone Conference
+   Mime-Version: 1.0
+   Content-Type: multipart/related; boundary="boundary-example-1";
+                 type=text/calendar
+
+   --boundary-example-1
+   Content-Type:text/calendar; method=REQUEST; charset=US-ASCII
+   Content-Transfer-Encoding: 7bit
+   Content-Disposition: attachment; filename="event.vcs"
+
+   BEGIN:VCALENDAR
+   PRODID:-//ACME/DesktopCalendar//EN
+   METHOD:REQUEST
+   VERSION:2.0
+   BEGIN:VEVENT
+   ORGANIZER:mailto:foo1@example.com
+   ATTENDEE;ROLE=CHAIR;ATTSTAT=ACCEPTED:mailto:foo1@example.com
+   ATTENDEE;RSVP=YES;TYPE=INDIVIDUAL:mailto:foo2@example.com
+   DTSTAMP:19970611T190000Z
+   DTSTART:19970701T180000Z
+   DTEND:19970701T183000Z
+   SUMMARY:Phone Conference
+   UID:calsvr.example.com-8739701987387771
+   ATTACH:cid:123456789@example.com
+   SEQUENCE:0
+   STATUS:CONFIRMED
+   END:VEVENT
+   END:VCALENDAR
+
+   --boundary-example-1
+   Content-Type: application/msword; name="FieldReport.doc"
+   Content-Transfer-Encoding: base64
+   Content-Disposition: inline; filename="FieldReport.doc"
+   Content-ID: <123456789@example.com>
+
+   0M8R4KGxGuEAAAAAAAAAAAAAAAAAAAAAPgADAP7/CQAGAAAAAAAAAAABAAAARAAAAAAA
+   AAAAEAAAQAAAAAEAAAD+////AAAAAEUAAAD/////////////////////////////////
+
+   --boundary-example-1--
+
+	<a name="section-4.4"><h3>4.4  Multiple Similar Components</h3></a>
+
+   Multiple iCalendar components of the same type can be included in the
+   iCalendar object when the METHOD is the same for each component.
+
+</p><p class="rfcparagraph">   From: foo1@example.com
+   To: foo2@example.com
+   Subject: Summer Company Holidays
+   Mime-Version: 1.0
+   Content-Type:text/calendar; method=PUBLISH; charset=US-ASCII
+   Content-Transfer-Encoding: 7bit
+   Content-Disposition: attachment; filename="event.vcs"
+   BEGIN:VCALENDAR
+   PRODID:-//ACME/DESKTOPCALENDAR//EN
+   METHOD:PUBLISH
+   VERSION:2.0
+   BEGIN:VEVENT
+   ORGANIZER:MAILTO:FOO1@EXAMPLE.COM
+   DTSTAMP:19970611T150000Z
+   DTSTART:19970701T150000Z
+   DTEND:19970701T230000Z
+   SUMMARY:Company Picnic
+   DESCRIPTION:Food and drink will be provided
+   UID:CALSVR.EXAMPLE.COM-873970198738777-1
+   SEQUENCE:0
+   STATUS:CONFIRMED
+   END:VEVENT
+   BEGIN:VEVENT
+   ORGANIZER:MAILTO:FOO1@EXAMPLE.COM
+   DTSTAMP:19970611T190000Z
+   DTSTART:19970715T150000Z
+   DTEND:19970715T230000Z
+   SUMMARY:Company Bowling Tournament
+   DESCRIPTION:We have 10 lanes reserved
+   UID:CALSVR.EXAMPLE.COM-873970198738777-2
+   SEQUENCE:0
+   STATUS:CONFIRMED
+   END:VEVENT
+   END:VCALENDAR
+
+	<a name="section-4.5"><h3>4.5  Multiple Mixed Components</h3></a>
+
+   Different component types must be encapsulated in separate iCalendar
+   objects.
+
+</p><p class="rfcparagraph">   From: foo1@example.com
+   To: foo2@example.com
+   Subject: Phone Conference
+   Mime-Version: 1.0
+   Content-Type:multipart/mixed;boundary="--FEE3790DC7E35189CA67CE2C"
+
+   This is a multi-part message in MIME format.
+
+</p><p class="rfcparagraph">   ----FEE3790DC7E35189CA67CE2C
+   Content-Type:text/calendar; method=REQUEST; charset=US-ASCII
+   Content-Transfer-Encoding: 7bit
+   Content-Disposition: attachment; filename="event1.vcs"
+   BEGIN:VCALENDAR
+   PRODID:-//ACME/DesktopCalendar//EN
+   METHOD:REQUEST
+   VERSION:2.0
+   BEGIN:VEVENT
+   ORGANIZER:mailto:foo1@example.com
+   ATTENDEE;ROLE=CHAIR;ATTSTAT=ACCEPTED:mailto:foo1@example.com
+   ATTENDEE;RSVP=YES;TYPE=INDIVIDUAL:mailto:foo2@example.com
+   DTSTAMP:19970611T190000Z
+   DTSTART:19970701T210000Z
+   DTEND:19970701T230000Z
+   SUMMARY:Phone Conference
+   DESCRIPTION:Discuss what happened at the last meeting
+   UID:calsvr.example.com-8739701987387772
+   SEQUENCE:0
+   STATUS:CONFIRMED
+   END:VEVENT
+   END:VCALENDAR
+
+   ----FEE3790DC7E35189CA67CE2C
+   Content-Type:text/calendar; method=REQUEST; charset=US-ASCII
+   Content-Transfer-Encoding:7bit
+   Content-Disposition: attachment; filename="todo1.vcs"
+
+   BEGIN:VCALENDAR
+   PRODID:-//ACME/DesktopCalendar//EN
+   METHOD:REQUEST
+   VERSION:2.0
+   BEGIN:VTODO
+   DUE:19970701T090000-0700
+   ORGANIZER:mailto:foo1@example.com
+   ATTENDEE;ROLE=CHAIR;ATTSTAT=ACCEPTED:mailto:foo1@example.com
+   ATTENDEE;RSVP=YES:mailto:foo2@example.com
+   SUMMARY:Phone Conference
+   DESCRIPTION:Discuss a new location for the company picnic
+   UID:calsvr.example.com-td-8739701987387773
+   SEQUENCE:0
+   STATUS:NEEDS ACTION
+   END:VEVENT
+   END:VCALENDAR
+
+   ----FEE3790DC7E35189CA67CE2C
+	<a name="section-4.6"><h3>4.6  Detailed Components With An ATTACH Property</h3></a>
+
+   This example shows the format of a message containing a group meeting
+   between three individuals. The multipart/related encapsulation is
+   used because the iCalendar object contains an ATTACH property that
+   uses a CID to reference the attachment.
+
+</p><p class="rfcparagraph">   From: foo1@example.com
+   MIME-Version: 1.0
+   To: foo2@example.com,foo3@example.com
+   Subject: REQUEST - Phone Conference
+   Content-Type:multipart/related;boundary="--FEE3790DC7E35189CA67CE2C"
+
+   ----FEE3790DC7E35189CA67CE2C
+   Content-Type: multipart/alternative;
+                 boundary="--00FEE3790DC7E35189CA67CE2C00"
+
+   ----00FEE3790DC7E35189CA67CE2C00
+   Content-Type: text/plain; charset=us-ascii
+   Content-Transfer-Encoding: 7bit
+
+   When: 7/1/1997 10:00PM PDT- 7/1/97 10:30 PM PDT
+   Where:
+   Organizer: foo1@example.com
+   Summary: Let's discuss the attached document
+
+   ----00FEE3790DC7E35189CA67CE2C00
+
+   Content-Type:text/calendar; method=REQUEST; charset=US-ASCII;
+                    Component=vevent
+   Content-Transfer-Encoding: 7bit
+   Content-Disposition: attachment; filename="event.vcs"
+
+   BEGIN:VCALENDAR
+   PRODID:-//ACME/DesktopCalendar//EN
+   PROFILE:REQUEST
+   PROFILE-VERSION:1.0
+   VERSION:2.0
+   BEGIN:VEVENT
+   ORGANIZER:foo1@example.com
+   ATTENDEE;ROLE=CHAIR;ATTSTAT=ACCEPTED:foo1@example.com
+   ATTENDEE;RSVP=YES;TYPE=INDIVIDUAL:mailto:foo2@example.com
+   ATTENDEE;RSVP=YES;TYPE=INDIVIDUAL:mailto:foo3@example.com
+   DTSTAMP:19970611T190000Z
+   DTSTART:19970621T170000Z
+   DTEND:199706211T173000Z
+   SUMMARY:Let's discuss the attached document
+   UID:calsvr.example.com-873970198738777-8aa
+   ATTACH:cid:calsvr.example.com-12345aaa
+   SEQUENCE:0
+   STATUS:CONFIRMED
+   END:VEVENT
+   END:VCALENDAR
+
+   ----00FEE3790DC7E35189CA67CE2C00
+
+   ----FEE3790DC7E35189CA67CE2C
+   Content-Type: application/msword; name="FieldReport.doc"
+   Content-Transfer-Encoding: base64
+   Content-Disposition: inline; filename="FieldReport.doc"
+   Content-ID: <calsvr.example.com-12345aaa>
+
+
+   R0lGODdhTAQZAJEAAFVVVd3d3e4AAP///ywAAAAATAQZAAAC/5yPOSLhD6OctNqLs94XqAG
+   4kiW5omm6sq27gvH8kzX9o1y+s73/g8MCofEovGITCoxKMbyCR16cNSq9YrNarfcrvdriIH
+   5LL5jE6rxc3G+v2cguf0uv2Oz+v38L7/DxgoOKjURnjIIbe3yNjo+AgZWYVIWWl5iZnJY6J.
+
+</p><p class="rfcparagraph">   ----FEE3790DC7E35189CA67CE2C
+
+	<a name="section-5"><h2>5.  Recommended Practices</h2></a>
+
+   This section outlines a series of recommended practices when using a
+   messaging transport to exchange iCalendar objects.
+
+</p><p class="rfcparagraph">	<a name="section-5.1"><h3>5.1  Use of Content and Message IDs</h3></a>
+
+   The [iCAL] specification makes frequent use of the URI for data types
+   in properties such as "DESCRIPTION", "ATTACH", "CONTACT" and others.
+   Two forms of URIs are Message ID (MID) and Content ID (CID). These
+   are defined in [RFC-2111]. Although [RFC-2111] allows referencing
+   messages or MIME body parts in other MIME entities or stores, it is
+   strongly recommended that iMIP implementations include all referenced
+   messages and body parts in a single MIME entity. Simply put, if an
+   iCalendar object contains CID or MID references to other messages or
+   body parts, implementations should ensure that these messages and/or
+   body parts are transmitted with the iCalendar object. If they are not
+   there is no guarantee that the receiving "CU" will have the access or
+   the authorization to view those objects.
+	<a name="section-6"><h2>6.  Bibliography</h2></a>
+
+   [CHST]     Character Sets, ftp://ftp.isi.edu/in-
+              notes/iana/assignments/character-sets
+
+   [iCAL]     Dawson, F. and D. Stenerson, "Internet Calendaring and
+              Scheduling Core Object Specification - iCalendar", RFC
+              2445, November 1998.
+
+</p><p class="rfcparagraph">   [iTIP]     Silverberg, S., Mansour, S., Dawson, F. and R. Hopson,
+              "iCalendar Transport-Independent Interoperability Protocol
+              (iTIP): Scheduling Events, Busy Time, To-dos and Journal
+              Entries", RFC 2446, November 1998.
+
+</p><p class="rfcparagraph">   [RFC-822]  Crocker, D., "Standard for the Format of ARPA Internet
+              Text Messages", STD 11, RFC 822, August 1982.
+
+</p><p class="rfcparagraph">   [RFC-1847] Galvin, J., Murphy, S., Crocker, S. and N. Freed,
+              "Security Multiparts for MIME: Multipart/Signed and
+              Multipart/Encrypted", RFC 1847, October 1995.
+
+</p><p class="rfcparagraph">   [RFC-2045] Freed, N. and N. Borenstein, "Multipurpose Internet Mail
+              Extensions (MIME) - Part One: Format of Internet Message
+              Bodies", RFC 2045, November 1996.
+
+</p><p class="rfcparagraph">   [RFC-2046] Freed, N. and N. Borenstein, "Multipurpose Internet Mail
+              Extensions (MIME) - Part Two: Media Types", RFC 2046,
+              November 1996.
+
+</p><p class="rfcparagraph">   [RFC-2047] Moore, K., "Multipurpose Internet Mail Extensions (MIME) -
+              Part Three: Message Header Extensions for Non-ASCII Text",
+              RFC 2047, November 1996.
+
+</p><p class="rfcparagraph">   [RFC-2048] Freed, N., Klensin, J. and J. Postel, "Multipurpose
+              Internet Mail Extensions (MIME) - Part Four: Registration
+              Procedures", RFC 2048, January 1997.
+
+</p><p class="rfcparagraph">   [RFC-2111] Levinson, E., "Content-ID and Message-ID Uniform Resource
+              Locators", RFC 2111, March 1997.
+
+</p><p class="rfcparagraph">   [RFC-2119] Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119, March 1997.
+	<a name="section-7"><h2>7.  Authors' Addresses</h2></a>
+
+   The following address information is provided in a vCard v3.0,
+   Electronic Business Card, format.
+
+</p><p class="rfcparagraph">   BEGIN:VCARD
+   VERSION:3.0
+   N:Dawson;Frank
+   FN:Frank Dawson
+   ORG:Lotus Development Corporation
+   ADR;TYPE=WORK,POSTAL,PARCEL:;;6544 Battleford
+    Drive;Raleigh;NC;27613-3502;USA
+   TEL;TYPE=WORK,MSG:+1-919-676-9515
+   TEL;TYPE=WORK,FAX:+1-919-676-9564
+   EMAIL;TYPE=INTERNET:fdawson@earthlink.net
+   URL:http://home.earthlink.net/~fdawson
+   END:VCARD
+
+   BEGIN:VCARD
+   VERSION:3.0
+   N:Mansour;Steve
+   FN:Steve Mansour
+   ORG:Netscape Communications Corporation
+   ADR;TYPE=WORK,POSTAL,PARCEL:;;501 East Middlefield Road;Mountain
+    View;CA;94043;USA
+   TEL;TYPE=WORK,MSG:+1-650-937-2378
+   TEL;TYPE=WORK,FAX:+1-650-937-2103
+   EMAIL;TYPE=INTERNET:sman@netscape.com
+   END:VCARD
+
+   BEGIN:VCARD
+   VERSION:3.0
+   N:Silverberg;Steve
+   FN:Steve Silverberg
+   ORG:Microsoft Corporation
+   ADR;TYPE=WORK,POSTAL,PARCEL:;;One Microsoft Way;
+    Redmond;WA;98052-6399;USA
+   TEL;TYPE=WORK,MSG:+1-425-936-9277
+   TEL;TYPE=WORK,FAX:+1-425-936-8019
+   EMAIL;TYPE=INTERNET:stevesil@Microsoft.com
+   END:VCARD
+   The iCalendar Object is a result of the work of the Internet
+   Engineering Task Force Calendaring and scheduling Working Group. The
+   chairmen of that working group are:
+
+</p><p class="rfcparagraph">   BEGIN:VCARD
+   VERSION:3.0
+   N:Ganguly;Anik
+   FN:Anik Ganguly
+   ORG:Open Text Inc.
+   ADR;TYPE=WORK,POSTAL,PARCEL:;Suite 101;38777 West Six Mile Road;
+    Livonia;MI;48152;USA
+   TEL;TYPE=WORK,MSG:+1-734-542-5955
+   EMAIL;TYPE=INTERNET:ganguly@acm.org
+   END:VCARD
+
+   BEGIN:VCARD
+   VERSION:3.0
+   N:Moskowitz;Robert
+   FN:Robert Moskowitz
+   EMAIL;TYPE=INTERNET:rgm-ietf@htt-consult.com
+   END:VCARD
+	<a name="section-8"><h2>8.   Full Copyright Statement</h2></a>
+
+   Copyright (C) The Internet Society (1998).  All Rights Reserved.<br>
+
+</p><p class="rfcparagraph">   This document and translations of it may be copied and furnished to
+   others, and derivative works that comment on or otherwise explain it
+   or assist in its implementation may be prepared, copied, published
+   and distributed, in whole or in part, without restriction of any
+   kind, provided that the above copyright notice and this paragraph are
+   included on all such copies and derivative works.  However, this
+   document itself may not be modified in any way, such as by removing
+   the copyright notice or references to the Internet Society or other
+   Internet organizations, except as needed for the purpose of
+   developing Internet standards in which case the procedures for
+   copyrights defined in the Internet Standards process must be
+   followed, or as required to translate it into languages other than
+   English.
+
+</p><p class="rfcparagraph">   The limited permissions granted above are perpetual and will not be
+   revoked by the Internet Society or its successors or assigns.
+
+</p><p class="rfcparagraph">   This document and the information contained herein is provided on an
+   "AS IS" basis and THE INTERNET SOCIETY AND THE INTERNET ENGINEERING
+   TASK FORCE DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING
+   BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION
+   HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED WARRANTIES OF
+   MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Dawson, et. al.             Standards Track                    [Page 18]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

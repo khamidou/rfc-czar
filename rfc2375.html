@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                         R. Hinden<br>Request for Comments: 2375                             Ipsilon Networks<br>Category: Informational                                      S. Deering<br>                                                                  Cisco<br>                                                              July 1998<br><br></p>
+                  <h1>
+                   IPv6 Multicast Address Assignments</h1>
+                  <h2>Status of this Memo</h2>
+
+   This memo provides information for the Internet community.  It does
+   not specify an Internet standard of any kind.  Distribution of this
+   memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (1998).  All Rights Reserved.<br>
+
+</p><p class="rfcparagraph">	<a name="section-1.0"><h3>1.0  Introduction</h3></a>
+
+   This document defines the initial assignment of IPv6 multicast
+   addresses.  It is based on the "IP Version 6 Addressing Architecture"
+   [ADDARCH] and current IPv4 multicast address assignment found in
+   <ftp://venera.isi.edu/in-notes/iana/assignments/multicast-addresses>.
+   It adapts the IPv4 assignments that are relevant to IPv6 assignments.
+   IPv4 assignments that were not relevant were not converted into IPv6
+   assignments.  Comments are solicited on this conversion.
+
+</p><p class="rfcparagraph">   All other IPv6 multicast addresses are reserved.
+
+</p><p class="rfcparagraph">   Sections 2 and 3 specify reserved and preassigned IPv6 multicast
+   addresses.
+
+</p><p class="rfcparagraph">   [ADDRARCH] defines rules for assigning new IPv6 multicast addresses.
+
+</p><p class="rfcparagraph">   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in [RFC 2119].
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.  Fixed Scope Multicast Addresses</h2></a>
+
+   These permanently assigned multicast addresses are valid over a
+   specified scope value.
+	<a name="section-2.1"><h3>2.1  Node-Local Scope</h3></a>
+
+   FF01:0:0:0:0:0:0:1     All Nodes Address                  [ADDARCH]
+   FF01:0:0:0:0:0:0:2     All Routers Address                [ADDARCH]
+
+	<a name="section-2.2"><h3>2.2  Link-Local Scope</h3></a>
+
+   FF02:0:0:0:0:0:0:1     All Nodes Address                  [ADDARCH]
+   FF02:0:0:0:0:0:0:2     All Routers Address                [ADDARCH]
+   FF02:0:0:0:0:0:0:3     Unassigned                             [JBP]
+   FF02:0:0:0:0:0:0:4     DVMRP Routers                  [RFC1075,JBP]
+   FF02:0:0:0:0:0:0:5     OSPFIGP                        [RFC2328,Moy]
+   FF02:0:0:0:0:0:0:6     OSPFIGP Designated Routers     [RFC2328,Moy]
+   FF02:0:0:0:0:0:0:7     ST Routers                    [RFC1190,KS14]
+   FF02:0:0:0:0:0:0:8     ST Hosts                      [RFC1190,KS14]
+   FF02:0:0:0:0:0:0:9     RIP Routers                        [RFC2080]
+   FF02:0:0:0:0:0:0:A     EIGRP Routers                    [Farinacci]
+   FF02:0:0:0:0:0:0:B     Mobile-Agents                 [Bill Simpson]
+
+   FF02:0:0:0:0:0:0:D     All PIM Routers                  [Farinacci]
+   FF02:0:0:0:0:0:0:E     RSVP-ENCAPSULATION                  [Braden]
+
+   FF02:0:0:0:0:0:1:1     Link Name                       [Harrington]
+   FF02:0:0:0:0:0:1:2     All-dhcp-agents              [Bound,Perkins]
+
+   FF02:0:0:0:0:1:FFXX:XXXX     Solicited-Node Address       [ADDARCH]
+
+	<a name="section-2.3"><h3>2.3  Site-Local Scope</h3></a>
+
+   FF05:0:0:0:0:0:0:2       All Routers Address              [ADDARCH]
+
+   FF05:0:0:0:0:0:1:3       All-dhcp-servers           [Bound,Perkins]
+   FF05:0:0:0:0:0:1:4       All-dhcp-relays            [Bound,Perkins]
+   FF05:0:0:0:0:0:1:1000    Service Location                 [RFC2165]
+    -FF05:0:0:0:0:0:1:13FF
+
+	<a name="section-3.0"><h3>3.0  All Scope Multicast Addresses</h3></a>
+
+   These permanently assigned multicast addresses are valid over all
+   scope ranges.  This is shown by an "X" in the scope field of the
+   address that means any legal scope value.
+
+</p><p class="rfcparagraph">   Note that, as defined in [ADDARCH], IPv6 multicast addresses which
+   are only different in scope represent different groups.  Nodes must
+   join each group individually.
+
+</p><p class="rfcparagraph">   The IPv6 multicast addresses with variable scope are as follows:
+   FF0X:0:0:0:0:0:0:0     Reserved Multicast Address         [ADDARCH]
+
+   FF0X:0:0:0:0:0:0:100   VMTP Managers Group           [RFC1045,DRC3]
+   FF0X:0:0:0:0:0:0:101   Network Time Protocol (NTP)   [RFC1119,DLM1]
+   FF0X:0:0:0:0:0:0:102   SGI-Dogfight                           [AXC]
+   FF0X:0:0:0:0:0:0:103   Rwhod                                  [SXD]
+   FF0X:0:0:0:0:0:0:104   VNP                                   [DRC3]
+   FF0X:0:0:0:0:0:0:105   Artificial Horizons - Aviator          [BXF]
+   FF0X:0:0:0:0:0:0:106   NSS - Name Service Server             [BXS2]
+   FF0X:0:0:0:0:0:0:107   AUDIONEWS - Audio News Multicast      [MXF2]
+   FF0X:0:0:0:0:0:0:108   SUN NIS+ Information Service          [CXM3]
+   FF0X:0:0:0:0:0:0:109   MTP Multicast Transport Protocol       [SXA]
+   FF0X:0:0:0:0:0:0:10A   IETF-1-LOW-AUDIO                       [SC3]
+   FF0X:0:0:0:0:0:0:10B   IETF-1-AUDIO                           [SC3]
+   FF0X:0:0:0:0:0:0:10C   IETF-1-VIDEO                           [SC3]
+   FF0X:0:0:0:0:0:0:10D   IETF-2-LOW-AUDIO                       [SC3]
+   FF0X:0:0:0:0:0:0:10E   IETF-2-AUDIO                           [SC3]
+   FF0X:0:0:0:0:0:0:10F   IETF-2-VIDEO                           [SC3]
+
+   FF0X:0:0:0:0:0:0:110   MUSIC-SERVICE             [Guido van Rossum]
+   FF0X:0:0:0:0:0:0:111   SEANET-TELEMETRY             [Andrew Maffei]
+   FF0X:0:0:0:0:0:0:112   SEANET-IMAGE                 [Andrew Maffei]
+   FF0X:0:0:0:0:0:0:113   MLOADD                              [Braden]
+   FF0X:0:0:0:0:0:0:114   any private experiment                 [JBP]
+   FF0X:0:0:0:0:0:0:115   DVMRP on MOSPF                         [Moy]
+   FF0X:0:0:0:0:0:0:116   SVRLOC                            [Veizades]
+   FF0X:0:0:0:0:0:0:117   XINGTV                      <hgxing@aol.com>
+   FF0X:0:0:0:0:0:0:118   microsoft-ds         <arnoldm@microsoft.com>
+   FF0X:0:0:0:0:0:0:119   nbc-pro           <bloomer@birch.crd.ge.com>
+   FF0X:0:0:0:0:0:0:11A   nbc-pfn           <bloomer@birch.crd.ge.com>
+   FF0X:0:0:0:0:0:0:11B   lmsc-calren-1                         [Uang]
+   FF0X:0:0:0:0:0:0:11C   lmsc-calren-2                         [Uang]
+   FF0X:0:0:0:0:0:0:11D   lmsc-calren-3                         [Uang]
+   FF0X:0:0:0:0:0:0:11E   lmsc-calren-4                         [Uang]
+   FF0X:0:0:0:0:0:0:11F   ampr-info                          [Janssen]
+
+   FF0X:0:0:0:0:0:0:120   mtrace                              [Casner]
+   FF0X:0:0:0:0:0:0:121   RSVP-encap-1                        [Braden]
+   FF0X:0:0:0:0:0:0:122   RSVP-encap-2                        [Braden]
+   FF0X:0:0:0:0:0:0:123   SVRLOC-DA                         [Veizades]
+   FF0X:0:0:0:0:0:0:124   rln-server                            [Kean]
+   FF0X:0:0:0:0:0:0:125   proshare-mc                          [Lewis]
+   FF0X:0:0:0:0:0:0:126   dantz                               [Yackle]
+   FF0X:0:0:0:0:0:0:127   cisco-rp-announce                [Farinacci]
+   FF0X:0:0:0:0:0:0:128   cisco-rp-discovery               [Farinacci]
+   FF0X:0:0:0:0:0:0:129   gatekeeper                            [Toga]
+   FF0X:0:0:0:0:0:0:12A   iberiagames                        [Marocho]
+   FF0X:0:0:0:0:0:0:201  "rwho" Group (BSD) (unofficial)         [JBP]
+   FF0X:0:0:0:0:0:0:202   SUN RPC PMAPPROC_CALLIT               [BXE1]
+
+   FF0X:0:0:0:0:0:2:0000
+    -FF0X:0:0:0:0:0:2:7FFD  Multimedia Conference Calls          [SC3]
+   FF0X:0:0:0:0:0:2:7FFE    SAPv1 Announcements                  [SC3]
+   FF0X:0:0:0:0:0:2:7FFF    SAPv0 Announcements (deprecated)     [SC3]
+   FF0X:0:0:0:0:0:2:8000
+    -FF0X:0:0:0:0:0:2:FFFF  SAP Dynamic Assignments              [SC3]
+
+	<a name="section-5.0"><h3>5.0  References</h3></a>
+
+   [ADDARCH] Hinden, R., and S. Deering, "IP Version 6 Addressing
+             Architecture", RFC 2373, July 1998.
+
+</p><p class="rfcparagraph">   [AUTORFC] Thompson, S., and T. Narten, "IPv6 Stateless Address
+             Autoconfiguration", RFC 1971, August 1996.
+
+</p><p class="rfcparagraph">   [ETHER]   Crawford, M., "Transmission of IPv6 Packets over Ethernet
+             Networks", Work in Progress.
+
+</p><p class="rfcparagraph">   [RFC1045] Cheriton, D., "VMTP: Versatile Message Transaction Protocol
+             Specification", RFC 1045, February 1988.
+
+</p><p class="rfcparagraph">   [RFC1075] Waitzman, D., Partridge, C., and S. Deering, "Distance
+             Vector Multicast Routing Protocol", RFC 1075, November
+             1988.
+
+</p><p class="rfcparagraph">   [RFC1112] Deering, S., "Host Extensions for IP Multicasting", STD 5,
+             RFC 1112, Stanford University, August 1989.
+
+</p><p class="rfcparagraph">   [RFC1119] Mills, D., "Network Time Protocol (Version 1),
+             Specification and Implementation", STD 12, RFC 1119, July
+             1988.
+
+</p><p class="rfcparagraph">   [RFC1190] Topolcic, C., Editor, "Experimental Internet Stream
+             Protocol, Version 2 (ST-II)", RFC 1190, October 1990.
+
+</p><p class="rfcparagraph">   [RFC2080] Malkin, G., and R. Minnear, "RIPng for IPv6", RFC 2080,
+             January 1997.
+
+</p><p class="rfcparagraph">   [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate
+             Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">   [RFC2165] Veizades, J., Guttman, E., Perkins, C., and S. Kaplan
+             "Service Location Protocol", RFC 2165 June 1997.
+
+</p><p class="rfcparagraph">   [RFC2328] Moy, J., "OSPF Version 2", STD 54, RFC 2328, April 1998.
+	<a name="section-6"><h2>6.  People</h2></a>
+
+   <arnoldm@microsoft.com>
+
+   [AXC] Andrew Cherenson <arc@SGI.COM>
+
+   [Braden] Bob Braden, <braden@isi.edu>, April 1996.
+
+</p><p class="rfcparagraph">   [Bob Brenner]
+
+   [Bressler] David J. Bressler, <bressler@tss.com>, April 1996.
+
+</p><p class="rfcparagraph">   <bloomer@birch.crd.ge.com>
+
+   [Bound] Jim Bound <bound@zk3.dec.com>
+
+   [BXE1] Brendan Eic <brendan@illyria.wpd.sgi.com>
+
+   [BXF] Bruce Factor <ahi!bigapple!bruce@uunet.UU.NET>
+
+   [BXS2] Bill Schilit <schilit@parc.xerox.com>
+
+   [Casner] Steve Casner, <casner@isi.edu>, January 1995.
+
+</p><p class="rfcparagraph">   [CXM3] Chuck McManis <cmcmanis@sun.com>
+
+   [Tim Clark]
+
+   [DLM1] David Mills <Mills@HUEY.UDEL.EDU>
+
+   [DRC3] Dave Cheriton <cheriton@PESCADERO.STANFORD.EDU>
+
+   [DXS3] Daniel Steinber <Daniel.Steinberg@Eng.Sun.COM>
+
+   [Farinacci] Dino Farinacci, <dino@cisco.com>
+
+   [GSM11] Gary S. Malkin <GMALKIN@XYLOGICS.COM>
+
+   [Harrington] Dan Harrington, <dan@lucent.com>, July 1996.
+
+</p><p class="rfcparagraph">   <hgxing@aol.com>
+
+   [IANA] IANA <iana@iana.org>
+
+   [Janssen] Rob Janssen, <rob@pe1chl.ampr.org>, January 1995.
+
+</p><p class="rfcparagraph">   [JBP] Jon Postel <postel@isi.edu>
+   [JXM1] Jim Miner <miner@star.com>
+
+   [Kean] Brian Kean, <bkean@dca.com>, August 1995.
+
+</p><p class="rfcparagraph">   [KS14] <mystery contact>
+
+   [Lee] Choon Lee, <cwl@nsd.3com.com>, April 1996.
+
+</p><p class="rfcparagraph">   [Lewis] Mark Lewis, <Mark_Lewis@ccm.jf.intel.com>, October 1995.
+
+</p><p class="rfcparagraph">   [Malamud] Carl Malamud, <carl@radio.com>, January 1996.
+
+</p><p class="rfcparagraph">   [Andrew Maffei]
+
+   [Marohco] Jose Luis Marocho, <73374.313@compuserve.com>, July 1996.
+
+</p><p class="rfcparagraph">   [Moy] John Moy <jmoy@casc.com>
+
+   [MXF2] Martin Forssen <maf@dtek.chalmers.se>
+
+   [Perkins] Charlie Perkins, <cperkins@corp.sun.com>
+
+   [Guido van Rossum]
+
+   [SC3] Steve Casner <casner@isi.edu>
+
+   [Simpson] Bill Simpson <bill.simpson@um.cc.umich.edu> November 1994.
+
+</p><p class="rfcparagraph">   [Joel Snyder]
+
+   [SXA] Susie Armstrong <Armstrong.wbst128@XEROX.COM>
+
+   [SXD] Steve Deering <deering@PARC.XEROX.COM>
+
+   [tynan] Dermot Tynan, <dtynan@claddagh.ie>, August 1995.
+
+</p><p class="rfcparagraph">   [Toga] Jim Toga, <jtoga@ibeam.jf.intel.com>, May 1996.
+
+</p><p class="rfcparagraph">   [Uang] Yea Uang <uang@force.decnet.lockheed.com> November 1994.
+
+</p><p class="rfcparagraph">   [Veizades] John Veizades,  <veizades@tgv.com>, May 1995.
+
+</p><p class="rfcparagraph">   [Yackle] Dotty Yackle, <ditty_yackle@dantz.com>, February 1996.
+	<a name="section-7.0"><h3>7.0  Security Considerations</h3></a>
+
+   This document defines the initial assignment of IPv6 multicast
+   addresses.  As such it does not directly impact the security of the
+   Internet infrastructure or its applications.
+
+</p><p class="rfcparagraph">	<a name="section-8.0"><h3>8.0  Authors' Addresses</h3></a>
+
+   Robert M. Hinden
+   Ipsilon Networks, Inc.
+   232 Java Drive
+   Sunnyvale, CA 94089
+   USA
+
+   Phone: +1 415 990 2004
+   EMail: hinden@ipsilon.com
+
+
+   Stephen E. Deering
+   Cisco Systems, Inc.
+   170 West Tasman Drive
+   San Jose, CA 95134-1706
+   USA
+
+   Phone: +1 408 527-8213
+   EMail: deering@cisco.com
+	<a name="section-9.0"><h3>9.0   Full Copyright Statement</h3></a>
+
+   Copyright (C) The Internet Society (1998).  All Rights Reserved.<br>
+
+</p><p class="rfcparagraph">   This document and translations of it may be copied and furnished to
+   others, and derivative works that comment on or otherwise explain it
+   or assist in its implementation may be prepared, copied, published
+   and distributed, in whole or in part, without restriction of any
+   kind, provided that the above copyright notice and this paragraph are
+   included on all such copies and derivative works.  However, this
+   document itself may not be modified in any way, such as by removing
+   the copyright notice or references to the Internet Society or other
+   Internet organizations, except as needed for the purpose of
+   developing Internet standards in which case the procedures for
+   copyrights defined in the Internet Standards process must be
+   followed, or as required to translate it into languages other than
+   English.
+
+</p><p class="rfcparagraph">   The limited permissions granted above are perpetual and will not be
+   revoked by the Internet Society or its successors or assigns.
+
+</p><p class="rfcparagraph">   This document and the information contained herein is provided on an
+   "AS IS" basis and THE INTERNET SOCIETY AND THE INTERNET ENGINEERING
+   TASK FORCE DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING
+   BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION
+   HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED WARRANTIES OF
+   MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Hinden & Deering             Informational                      [Page 8]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

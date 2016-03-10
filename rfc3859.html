@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                        J. Peterson<br>Request for Comments: 3859                                       NeuStar<br>Category: Standards Track                                    August 2004<br><br></p>
+                  <h1>
+                   Common Profile for Presence (CPP)</h1>
+                  <h2>Status of this Memo</h2>
+
+   This document specifies an Internet standards track protocol for the
+   Internet community, and requests discussion and suggestions for
+   improvements.  Please refer to the current edition of the "Internet
+   Official Protocol Standards" (STD 1) for the standardization state
+   and status of this protocol.  Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (2004).<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   At the time this document was written, numerous presence protocols
+   were in use (largely as components of commercial instant messaging
+   services), and little interoperability between services based on
+   these protocols has been achieved.  This specification defines common
+   semantics and data formats for presence to facilitate the creation of
+   gateways between presence services.
+
+</p><p class="rfcparagraph">Table of Contents
+<a href="#section-1" class="">1. Introduction . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2" class="">2. Terminology  . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3" class="">3. Abstract Presence Service  . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.1" class="indent-1">3.1. Overview of the Presence Service . . . . . . . . . . . </a><br>
+<a href="#section-3.2" class="indent-1">3.2. Identification of PRESENTITIES and WATCHERS  . . . . . </a><br>
+<a href="#section-3.2.1" class="indent-2">3.2.1. Address Resolution . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.3" class="indent-1">3.3. Format of Presence Information . . . . . . . . . . . . </a><br>
+<a href="#section-3.4" class="indent-1">3.4. The Presence Service . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.4.1" class="indent-2">3.4.1. The Subscribe Operation  . . . . . . . . . . . </a><br>
+<a href="#section-3.4.2" class="indent-2">3.4.2. The Notify Operation . . . . . . . . . . . . . </a><br>
+<a href="#section-3.4.3" class="indent-2">3.4.3. Subscribe Operation (with Zero Duration) . . . </a><br>
+<a href="#section-4" class="">4. Security Considerations  . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-5" class="">5. IANA Considerations  . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-5.1" class="indent-1">5.1. The PRES URI Scheme  . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-6" class="">6. Contributors . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-7" class="">7. References . . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-7.1" class="indent-1">7.1. Normative References . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-7.2" class="indent-1">7.2. Informative References . . . . . . . . . . . . . . . . </a><br>
+   A.  PRES URI IANA Registration Template  . . . . . . . . . . . . . 12
+       A.1.  URI Scheme Name  . . . . . . . . . . . . . . . . . . . . 12
+       A.2.  URI Scheme Syntax  . . . . . . . . . . . . . . . . . . . 12
+       A.3.  Character Encoding Considerations  . . . . . . . . . . . 12
+       A.4.  Intended Usage . . . . . . . . . . . . . . . . . . . . . 12
+       A.5.  Applications and/or Protocols which use this URI Scheme
+             Name . . . . . . . . . . . . . . . . . . . . . . . . . . 12
+       A.6.  Interoperability Considerations  . . . . . . . . . . . . 13
+       A.7.  Security Considerations  . . . . . . . . . . . . . . . . 13
+       A.8.  Relevant Publications  . . . . . . . . . . . . . . . . . 13
+       A.9.  Person & Email Address to Contact for Further
+             Information. . . . . . . . . . . . . . . . . . . . . . . 13
+       A.10. Author/Change Controller . . . . . . . . . . . . . . . . 13
+       A.11. Applications and/or Protocols which use this URI Scheme
+             Name . . . . . . . . . . . . . . . . . . . . . . . . . . 13
+   B.  Issues of Interest . . . . . . . . . . . . . . . . . . . . . . 13
+       B.1.  Address Mapping  . . . . . . . . . . . . . . . . . . . . 13
+       B.2.  Source-Route Mapping . . . . . . . . . . . . . . . . . . 13
+   C.  Acknowledgments  . . . . . . . . . . . . . . . . . . . . . . . 14
+   Author's Address . . . . . . . . . . . . . . . . . . . . . . . . . 14
+   Full Copyright Statement . . . . . . . . . . . . . . . . . . . . . 15
+
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   Presence is defined in RFC2778 [5].  At the time this document was
+   written, numerous presence protocols are in use (largely as
+   components of commercial instant messaging services), and little
+   interoperability between services based on these protocols has been
+   achieved.  This specification defines semantics and data formats for
+   common services of presence to facilitate the creation of gateways
+   between presence services: a common profile for presence (CPP).
+
+</p><p class="rfcparagraph">   Service behavior is described abstractly in terms of operations
+   invoked between the consumer and provider of a service.  Accordingly,
+   each presence service must specify how this behavior is mapped onto
+   its own protocol interactions.  The choice of strategy is a local
+   matter, providing that there is a clear relation between the abstract
+   behaviors of the service (as specified in this memo) and how it is
+   faithfully realized by a particular presence service.   For example,
+   one strategy might transmit presence information as key/value pairs,
+   another might use a compact binary representation, and a third might
+   use nested containers.
+
+</p><p class="rfcparagraph">   The parameters for each operation are defined using an abstract
+   syntax.  Although the syntax specifies the range of possible data
+   values, each presence service must specify how well-formed instances
+   of the abstract representation are encoded as a concrete series of
+   bits.
+   In order to provide a means for the preservation of end-to-end
+   features (especially security) to pass through presence
+   interoperability gateways, this specification also provides
+   recommendations for presence document formats that could be employed
+   by presence protocols.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Terminology</h2></a>
+
+   In this document, the key words "MUST", "MUST NOT", "REQUIRED",
+   "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT
+   RECOMMENDED", "MAY", and "OPTIONAL" are to be interpreted as
+   described in BCP 14, RFC 2119 [1] and indicate requirement levels for
+   compliant implementations.
+
+</p><p class="rfcparagraph">   This memos makes use of the vocabulary defined in RFC 2778 [5].
+   Terms such as CLOSED, INSTANT INBOX, PRESENCE, and OPEN are used in
+   the same meaning as defined therein.
+
+</p><p class="rfcparagraph">   The term 'gateway' used in this document denotes a network element
+   responsible for interworking between diverse presence protocols.
+   Although the presence protocols themselves are diverse, under the
+   model in this document these protocols can carry a common payload
+   that is relayed by the gateway.  Whether these interworking
+   intermediaries should be called 'gateways' or 'relays' is therefore
+   somewhat debatable; for the purposes of this document, they are
+   called 'CPP gateways'.
+
+</p><p class="rfcparagraph">   The term 'presence service' also derives from RFC 2778, but its
+   meaning changes slightly due to the existence of gateways in the CPP
+   model.  When a client sends an operation to a presence service, that
+   service might either be an endpoint or an intermediary such as a CPP
+   gateway - in fact, the client should not have to be aware which it is
+   addressing, as responses from either will appear the same.
+
+</p><p class="rfcparagraph">   This document defines operations and attributes of an abstract
+   presence protocol.  In order for a compliant protocol to interface
+   with a presence gateway, it must support all of the operations
+   described in this document (i.e., the presence protocol must have
+   some message or capability that provides the function described by
+   all given operations).  Similarly, the attributes defined for these
+   operations must correspond to information available in the presence
+   protocol in order for the protocol to interface with gateways defined
+   by this specification.  Note that these attributes provide only the
+   minimum possible information that needs to be specified for
+   interoperability - the functions in a presence protocol that
+   correspond to the operations described in this document can contain
+   additional information that will not be mapped by CPP.
+	<a name="section-3"><h2>3.   Abstract Presence Service</h2></a>
+
+	<a name="section-3.1"><h3>3.1   Overview of the Presence Service</h3></a>
+
+   When an application wants to subscriber to the presence information
+   associated with a PRESENTITY (in order to receive periodic
+   notifications of presence information), it invokes the subscribe
+   operation, e.g.,<pre>
+
+             +-------+                    +-------+
+             |       |                    |       |
+             | appl. | -- subscribe ----> | pres. |
+             |       |                    | svc.  |
+             +-------+                    +-------+
+
+   The subscribe operation has the following attributes: watcher,
+   target, duration, SubscriptID and TransID.  The 'watcher' and
+   'target' identify the WATCHER and PRESENTITY, respectively, using the
+   identifiers described in Section 3.2.  The duration specifies the
+   maximum number of seconds that the SUBSCRIPTION should be active
+   (which may be zero, in which case this is a one-time request for
+   presence information).  The SubscriptID creates a reference to the
+   SUBSCRIPTION that is used when unsubscribing.  The TransID is a
+   unique identifier used to correlate the subscribe operation with a
+   response operation.  Gateways should be capable of handling TransIDs
+   and SubscriptIDs up to 40 bytes in length.
+
+</p><p class="rfcparagraph">   Upon receiving a subscribe operation, the service immediately
+   responds by invoking the response operation containing the same
+   TransID, e.g.,
+
+             +-------+                    +-------+
+             |       |                    |       |
+             | appl. | <----- response -- | pres. |
+             |       |                    | svc.  |
+             +-------+                    +-------+
+
+   The response operation has the following attributes: status, TransID,
+   and duration.  'status' indicates whether the subscribe operation has
+   succeeded or failed.  The TransID of the response operation
+   corresponds to the TransID of the subscription operation to which it
+   is responding.  The 'duration' attribute specifies the number of
+   seconds for which the subscription will be active (which may differ
+   from the value requested in the subscribe operation).
+   If the response operation indicates success, the service immediately
+   invokes the notify operation to communicate the presence information
+   to the WATCHER, e.g.,
+
+             +-------+                    +-------+
+             |       |                    |       |
+             | appl. | <------- notify -- | pres. |
+             |       |                    | svc.  |
+             +-------+                    +-------+
+
+   The notify operation has the following attributes: watcher, target,
+   and TransID.  The values of 'watcher' and 'target' are identical to
+   those given in the subscribe operation that triggered this notify
+   operation.  The TransID is a unique identifier for this notification.
+
+</p><p class="rfcparagraph">   The notify operation also has content, namely PRESENCE INFORMATION.
+   Content details are specified in Section 3.3.
+
+</p><p class="rfcparagraph">   If the duration parameter is non-zero, then for up to the specified
+   duration, the service invokes the notify operation whenever there are
+   any changes to the PRESENTITY's presence information.  Otherwise,
+   exactly one notify operation is invoked, achieving a one-time poll of
+   the presence information.  Regardless, there is no application
+   response to the notify operation (i.e., the application does not
+   invoke a response operation when a notify operation occurs) defined
+   in CPP.
+
+</p><p class="rfcparagraph">   The application may prematurely cancel a subscription by re-invoking
+   the subscribe operation (as described above) with a duration of 0 and
+   the same SubscriptID as the original subscribe operation , e.g.,
+
+             +-------+                    +-------+
+             |       |                    |       |
+             | appl. | -- subscribe 0 --> | pres. |
+             |       |                    | svc.  |
+             +-------+                    +-------+
+
+   Note that a notify operation will be invoked when a subscription is
+   prematurely canceled in this fashion; this notification may be
+   discarded by the watcher.
+   The service immediately responds by invoking the response operation
+   containing the same TransID; e.g.,
+
+             +-------+                    +-------+
+             |       |                    |       |
+             | appl. | <----- response -- | pres. |
+             |       |                    | svc.  |
+             +-------+                    +-------+
+</pre>
+
+
+   Note that this specification assumes that CPP-compliant presence
+   protocols provide reliable message delivery; there are no
+   application-layer message delivery assurance provisions in this
+   specification.
+
+</p><p class="rfcparagraph">	<a name="section-3.2"><h3>3.2   Identification of PRESENTITIES and WATCHERS</h3></a>
+
+   A PRESENTITY is specified using the PRES URI scheme, which is further
+   described in Appendix A.  An example would be:
+   "pres:fred@example.com"
+
+   WATCHERs identify themselves in the same manner as PRESENTITIES; that
+   is, with a pres URI.
+
+</p><p class="rfcparagraph">	<a name="section-3.2.1"><h4>3.2.1   Address Resolution</h4></a>
+
+   A presence service client determines the next hop to forward an
+   operation to by resolving the domain name portion of the service
+   destination.  Compliant implementations SHOULD follow the guidelines
+   for dereferencing URIs given in [2].
+
+</p><p class="rfcparagraph">	<a name="section-3.3"><h3>3.3   Format of Presence Information</h3></a>
+
+   This specification defines an abstract interoperability mechanism for
+   presence protocols; the message content definition given here
+   pertains to semantics rather than syntax.  However, some important
+   properties for interoperability can only be provided if a common
+   end-to-end format for presence is employed by the interoperating
+   presence protocols, especially with respect to security.  In order to
+   maintain end-to-end security properties, applications that send
+   notification operations through a CPP gateway MUST support the format
+   defined in PIDF [4].  Applications MAY support other content formats.
+
+</p><p class="rfcparagraph">   CPP gateways MUST be capable of relaying the body of a notification
+   operation between supported presence protocols without needing to
+   modify or inspect the content.
+	<a name="section-3.4"><h3>3.4   The Presence Service</h3></a>
+
+   An implementation of the service must maintain information about both
+   presence information and continual operations (like periodic
+   notification) in persistent storage.
+
+</p><p class="rfcparagraph">   Note that the subscription-identifier attribute used by the subscribe
+   operation is potentially long-lived.  Accordingly, the values
+   generated for this parameter should be unique across a significant
+   duration of time.  The SubscriptID parameter should be intrinsically
+   globally unique over time, not merely unique among operations sent to
+   or from a particular WATCHER and PRESENTITY.
+
+</p><p class="rfcparagraph">	<a name="section-3.4.1"><h4>3.4.1   The Subscribe Operation</h4></a>
+
+   When an application wants to subscribe to the presence information
+   associated with a PRESENTITY, it invokes the subscribe operation.
+
+</p><p class="rfcparagraph">   When the service is informed of the subscribe operation, it performs
+   these steps:
+
+</p><p class="rfcparagraph">   1.  If the watcher or target parameter does not refer to a valid
+       PRESENTITY, a response operation having status "failure" is
+       invoked.
+
+</p><p class="rfcparagraph">   2.  If access control does not permit the application to request this
+       operation, a response operation having status "failure" is
+       invoked.
+
+</p><p class="rfcparagraph">   3.  If the duration parameter is non-zero, and if the watcher and
+       target parameters refer to an in-progress subscribe operation for
+       the application, a response operation having status "failure" is
+       invoked.
+
+</p><p class="rfcparagraph">   4.  Otherwise, if the service is able to successfully deliver the
+       message:
+
+</p><p class="rfcparagraph">         A response operation having status "success" is immediately
+         invoked.  (If the service chooses a different duration for the
+         subscription then it conveys this information in the response
+         operation.)
+
+         A notify operation, corresponding to the target's presence
+         information, is immediately invoked for the watcher.
+         For up to the amount of time indicated by the duration
+         parameter of the notify operation (measured from the time that
+         the subscribe operation was received), if the target's presence
+         information changes, and if access control allows, a notify
+         operation is invoked for the watcher.
+
+</p><p class="rfcparagraph">   Note that if the duration parameter is zero-valued, then the
+   subscribe operation is making a one-time poll of the presence
+   information.  Accordingly, the final step above (continued
+   notifications for the duration of the subscription) does not occur.
+
+</p><p class="rfcparagraph">   When the service invokes a response operation as a result of this
+   processing, the transID parameter is identical to the value found in
+   the subscribe operation invoked by the application.
+
+</p><p class="rfcparagraph">	<a name="section-3.4.2"><h4>3.4.2   The Notify Operation</h4></a>
+
+   The service invokes the notify operation whenever the presence
+   information associated with a PRESENTITY changes and there are
+   subscribers requesting notifications for that PRESENTITY.
+
+</p><p class="rfcparagraph">   There is no application response to the notify operation.
+
+</p><p class="rfcparagraph">	<a name="section-3.4.3"><h4>3.4.3   Subscribe Operation (with Zero Duration)</h4></a>
+
+   When an application wants to terminate a subscription, it issues a
+   SUBSCRIBE 0 with the SubscriptID of an existing subscription.  Note
+   that a notify operation will be invoked by the presentity when a
+   subscription is canceled in this fashion; this notification can be
+   discarded by the watcher.  There is no independent UNSUBSCRIBE
+   operation.
+
+</p><p class="rfcparagraph">   When an application wants to directly request presence information to
+   be supplied immediately without initiating any persistent
+   subscription, it issues a SUBSCRIBE 0 with a new SubscriptID.  There
+   is no independent FETCH operation.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   Security Considerations</h2></a>
+
+   Detailed security considerations for presence protocols given in RFC
+<a href="#section-2779" class="">2779 [6] (in particular, requirements are given in sections 5</a><br>
+   through 5.3 with some motivating discussion in 8.2).
+
+</p><p class="rfcparagraph">   CPP defines an interoperability function that is employed by gateways
+   between presence protocols.  CPP gateways MUST be compliant with the
+   minimum security requirements of the presence protocols with which
+   they interface.
+   The introduction of gateways to the security model of presence in RFC
+   2779 also introduces some new risks.  End-to-end security properties
+   (especially confidentiality and integrity) between presentities and
+   watchers that interface through a CPP gateway can only be provided if
+   a common presence format (such as the format described in [4]) is
+   supported by the protocols interfacing with the CPP gateway.
+
+</p><p class="rfcparagraph">   When end-to-end security is required, the notify operation MUST use
+   PIDF, and MUST secure the PIDF MIME body with S/MIME [8], with
+   encryption (CMS EnvelopeData) and/or S/MIME signatures (CMS
+   SignedData).
+
+</p><p class="rfcparagraph">   The S/MIME algorithms are set by CMS [9].  The AES [11] algorithm
+   should be preferred, as it is expected that AES best suits the
+   capabilities of many platforms.  Implementations MAY use AES as an
+   encryption algorithm, but are REQUIRED to support only the baseline
+   algorithms mandated by S/MIME and CMS.
+
+</p><p class="rfcparagraph">   When PRES URIs are used in presence protocols, they convey the
+   identity of watchers and/or presentities.  Certificates that are used
+   for S/MIME presence operations SHOULD, for the purposes of reference
+   integrity, contain a subjectAltName field containing the PRES URI of
+   their subject.  Note that such certificates may also contain other
+   identifiers, including those specific to particular presence
+   protocols.  In order to further facilitate interoperability of secure
+   presence services through CPP gateways, users and service providers
+   are encouraged to employ trust anchors for certificates that are
+   widely accepted rather than trust anchors specific to any particular
+   presence service or provider.
+
+</p><p class="rfcparagraph">   In some cases, anonymous presence services may be desired.  Such a
+   capability is beyond the scope of this specification.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   IANA Considerations</h2></a>
+
+   The IANA has assigned the "pres" URI scheme.
+
+</p><p class="rfcparagraph">	<a name="section-5.1"><h3>5.1   The PRES URI Scheme</h3></a>
+
+   The Presence (PRES) URI scheme designates an Internet resource,
+   namely a PRESENTITY or WATCHER.
+
+</p><p class="rfcparagraph">   The syntax of a PRES URI is given in Appendix A.
+	<a name="section-6"><h2>6.   Contributors</h2></a>
+
+   Dave Crocker edited earlier versions of this document.
+
+</p><p class="rfcparagraph">   The following individuals made substantial textual contributions to
+   this document:
+
+</p><p class="rfcparagraph">      Athanassios Diacakis (thanos.diacakis@openwave.com)
+
+      Florencio Mazzoldi (flo@networkprojects.com)
+
+      Christian Huitema (huitema@microsoft.com)
+
+      Graham Klyne (gk@ninebynine.org)
+
+      Jonathan Rosenberg (jdrosen@dynamicsoft.com)
+
+      Robert Sparks (rsparks@dynamicsoft.com)
+
+      Hiroyasu Sugano (suga@flab.fujitsu.co.jp)
+
+	<a name="section-7"><h2>7.   References</h2></a>
+
+	<a name="section-7.1"><h3>7.1   Normative References</h3></a>
+
+   [1]  Bradner, S., "Key words for use in RFCs to indicate requirement
+        levels", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">   [2]  Peterson, J., "Address Resolution for Instant Messaging and
+        Presence", RFC 3861, August 2004.
+
+</p><p class="rfcparagraph">   [3]  Resnick, P., "Internet Message Format", STD 11, RFC 2822, April
+        2001.
+
+</p><p class="rfcparagraph">   [4]  Sugano, H., Fujimoto, S., Klyne, G., Bateman, A., Carr, W., and
+        J. Peterson, "Presence Information Data Format (PIDF)", RFC
+        3863, August 2004.
+
+</p><p class="rfcparagraph">   [5]  Day, M., Rosenberg, J., and H. Sugano, "A Model for Presence and
+        Instant Messaging", RFC 2778, February 2000.
+
+</p><p class="rfcparagraph">   [6]  Day, M., Aggarwal, S., and J. Vincent, "Instant Messaging /
+        Presence Protocol Requirements", RFC 2779, February 2000.
+
+</p><p class="rfcparagraph">   [7]  Allocchio, C., "GSTN Address Element Extensions in Email
+        Services", RFC 2846, June 2000.
+   [8]  Ramsdell, B., "Secure/Multipurpose Internet Mail Extensions
+        (S/MIME) Version 3.1 Message Specification", RFC 3851, July
+        2004.
+
+</p><p class="rfcparagraph">   [9]  Housley, R., "Cryptographic Message Syntax (CMS)", RFC 3852,
+        July 2004.
+
+</p><p class="rfcparagraph">   [10] Berners-Lee, T., Fielding, R., and L. Masinter, "Uniform
+        Resource Identifiers (URI): Generic Syntax", RFC 2396, August
+        1998.
+
+</p><p class="rfcparagraph">	<a name="section-7.2"><h3>7.2   Informative References</h3></a>
+
+   [11] Schaad, J., "Use of the Advanced Encryption Standard (AES)
+        Encryption Algorithm and in Cryptographic Message Syntax (CMS)",
+        RFC 3565, July 2003.
+Appendix A.  PRES URI IANA Registration Template
+
+   This section provides the information to register the pres: presence
+   URI .
+
+</p><p class="rfcparagraph">A.1.  URI Scheme Name
+
+   pres
+
+A.2.  URI Scheme Syntax
+
+   The syntax follows the existing mailto: URI syntax specified in RFC
+   2368.  The ABNF is:
+
+</p><p class="rfcparagraph">   PRES-URI         = "pres:" [ to ] [ headers ]
+   to             =  mailbox
+   headers        =  "?" header *( "&" header )
+   header         =  hname "=" hvalue
+   hname          =  *uric
+   hvalue         =  *uric
+
+   Here the symbol "mailbox" represents an encoded mailbox name as
+   defined in RFC 2822 [3], and the symbol "uric" denotes any character
+   that is valid in a URL (defined in RFC 2396 [10]).
+
+</p><p class="rfcparagraph">A.3.  Character Encoding Considerations
+
+   Representation of non-ASCII character sets in local-part strings is
+   limited to the standard methods provided as extensions to RFC 2822
+   [3].
+
+</p><p class="rfcparagraph">A.4.  Intended Usage
+
+   Use of the pres: URI follows closely usage of the mailto: URI.  That
+   is, invocation of an PRES URI will cause the user's instant messaging
+   application to start, with destination address and message headers
+   fill-in according to the information supplied in the URI.
+
+</p><p class="rfcparagraph">A.5.  Applications and/or Protocols which use this URI Scheme Name
+
+   It is anticipated that protocols compliant with RFC 2779, and meeting
+   the interoperability requirements specified here, will make use of
+   this URI scheme name.
+A.6.  Interoperability Considerations
+
+   The underlying exchange protocol used to send an instant message may
+   vary from service to service.  Therefore complete, Internet-scale
+   interoperability cannot be guaranteed.  However, a service conforming
+   to this specification permits gateways to achieve interoperability
+   sufficient to the requirements of RFC 2779.
+
+</p><p class="rfcparagraph">A.7.  Security Considerations
+
+   See Section 4.
+
+</p><p class="rfcparagraph">A.8.  Relevant Publications
+
+   RFC 2779, RFC 2778
+
+A.9.  Person & Email Address to Contact for Further Information
+
+   Jon Peterson [mailto:jon.peterson@neustar.biz]
+
+A.10.  Author/Change Controller
+
+   This scheme is registered under the IETF tree.  As such, IETF
+   maintains change control.
+
+</p><p class="rfcparagraph">A.11.  Applications and/or Protocols which use this URI Scheme Name
+
+   Instant messaging service; presence service
+
+Appendix B.  Issues of Interest
+
+   This appendix briefly discusses issues that may be of interest when
+   designing an interoperation gateway.
+
+</p><p class="rfcparagraph">B.1.  Address Mapping
+
+   When mapping the service described in this memo, mappings that place
+   special information into the im: address local-part MUST use the
+   meta-syntax defined in RFC2846 [7].
+
+</p><p class="rfcparagraph">B.2.  Source-Route Mapping
+
+   The easiest mapping technique is a form of source-routing and usually
+   is the least friendly to humans having to type the string.  Source-
+   routing also has a history of operational problems.
+   Use of source-routing for exchanges between different services is by
+   a transformation that places the entire, original address string into
+   the im: address local part and names the gateway in the domain part.
+
+</p><p class="rfcparagraph">   For example, if the destination INSTANT INBOX is "pepp://example.com/
+   fred", then, after performing the necessary character conversions,
+   the resulting mapping is:
+
+</p><p class="rfcparagraph">             im:pepp=example.com/fred@relay-domain
+
+   where "relay-domain" is derived from local configuration information.
+
+</p><p class="rfcparagraph">   Experience shows that it is vastly preferable to hide this mapping
+   from end-users - if possible, the underlying software should perform
+   the mapping automatically.
+
+</p><p class="rfcparagraph">Appendix C.  Acknowledgments
+
+   The author would like to acknowledge John Ramsdell for his comments,
+   suggestions and enthusiasm.  Thanks to Derek Atkins for editorial
+   fixes.
+
+</p><p class="rfcparagraph">Author's Address
+
+   Jon Peterson
+   NeuStar, Inc.
+   1800 Sutter St
+   Suite 570
+   Concord, CA  94520
+   US
+
+   Phone: +1 925/363-8720
+   EMail: jon.peterson@neustar.biz
+Full Copyright Statement
+
+   Copyright (C) The Internet Society (2004).  This document is subject<br>
+   to the rights, licenses and restrictions contained in BCP 78, and
+   except as set forth therein, the authors retain all their rights.
+
+</p><p class="rfcparagraph">   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY AND THE INTERNET
+   ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED,
+   INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE
+   INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED
+   WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Intellectual Property
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the procedures with respect to rights in RFC documents can be
+   found in BCP 78 and BCP 79.
+
+</p><p class="rfcparagraph">   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+</p><p class="rfcparagraph">   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at ietf-
+   ipr@ietf.org.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is currently provided by the
+   Internet Society.
+
+</p>
+
+
+
+
+
+
+
+Peterson                    Standards Track                    [Page 15]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

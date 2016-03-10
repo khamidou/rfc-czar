@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                         J. Degener<br>Request for Comments: 3894                                Sendmail, Inc.<br>Category: Standards Track                                   October 2004<br><br></p>
+                  <h1>
+             Sieve Extension: Copying Without Side Effects</h1>
+                  <h2>Status of this Memo</h2>
+
+   This document specifies an Internet standards track protocol for the
+   Internet community, and requests discussion and suggestions for
+   improvements.  Please refer to the current edition of the "Internet
+   Official Protocol Standards" (STD 1) for the standardization state
+   and status of this protocol.  Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (2004).<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   The Sieve scripting language allows users to control handling and
+   disposal of their incoming e-mail.  By default, an e-mail message
+   that is processed by a Sieve script is saved in the owner's "inbox".
+   Actions such as "fileinto" and "redirect" cancel this default
+   behavior.
+
+</p><p class="rfcparagraph">   This document defines a new keyword parameter, ":copy", to be used
+   with the Sieve "fileinto" and "redirect" actions.  Adding ":copy" to
+   an action suppresses cancellation of the default "inbox" save.  It
+   allows users to add commands to an existing script without changing
+   the meaning of the rest of the script.
+
+</p><p class="rfcparagraph">	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   The Sieve scripting language [SIEVE] allows users to control handling
+   and disposal of their incoming e-mail.  Two frequently used Sieve
+   commands are "fileinto" (saving into a local message store, such as
+   an IMAP server) and "redirect" (forwarding to another e-mail
+   address).  Both of these cancel the Sieve default behavior of saving
+   into the user's "inbox".
+
+</p><p class="rfcparagraph">   But some users have the notion of forwarding an extra copy of a
+   message for safekeeping to another e-mail address, or of saving a
+   copy in a folder - in addition to the regular message delivery, which
+   shouldn't be affected by the copy.
+   If saving an extra copy is all the user wanted to do,
+
+      fileinto "unfiltered";
+      keep;
+
+</p><p class="rfcparagraph">   would do the job.  The "keep" command does explicitly what the
+   cancelled default behavior did.  But the explicit "keep" is a poor
+   substitute for the implicit "keep" when more processing follows:
+
+</p><p class="rfcparagraph">      fileinto "unfiltered";
+      keep;
+
+</p><p class="rfcparagraph">      if header "Subject" "MAKE MONEY FAST!!!"
+      {
+              discard;
+      }
+
+   In this example, the "discard" is ineffective against the explicit
+   "keep"; the discarded message still ends up in the user's inbox.
+
+</p><p class="rfcparagraph">   It is possible to generate Sieve code that perfectly expresses a
+   user's wishes, but such code quickly grows unwieldy because it needs
+   to keep track of the state that the implicit "keep" would have had
+   without the "fileinto" or "redirect" command.
+
+</p><p class="rfcparagraph">   This extension tries to make life easier for user interface designers
+   and script writers by allowing them to express the "copy" semantics
+   directly.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Conventions used</h2></a>
+
+   Conventions for notations are as in [SIEVE] section 1.1, including
+   use of [KEYWORDS] and "Syntax:" label for the definition of action
+   and tagged arguments syntax.
+
+</p><p class="rfcparagraph">   The capability string associated with extension defined in this
+   document is "copy".
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   ":copy" extension to the "fileinto" and "redirect" commands</h2></a>
+
+   Syntax:
+        "fileinto" [":copy"] <folder: string>
+        "redirect" [":copy"] <address: string>
+
+   If the optional ":copy" keyword is specified with "fileinto" or
+   "redirect", the tagged command does not cancel the implicit "keep".
+   Instead, it merely files or redirects a copy in addition to whatever
+   else is happening to the message.
+   Example:
+
+</p><p class="rfcparagraph">      require ["copy", "fileinto"];
+      fileinto :copy "incoming";
+
+</p><p class="rfcparagraph">      # ... more processing follows ...
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   Security Considerations</h2></a>
+
+   The "copy" extension makes it easier to eavesdrop on a user's message
+   stream without the user noticing.  This was technically possible
+   before if an attacker gained read/write access to a user's Sieve
+   scripts, but now an attacker no longer needs to parse a script in
+   order to modify it.  Write access to Sieve scripts must be protected
+   as strongly as read/write access to e-mail, for example by using
+   secure directory protocols such as correctly parameterized LDAP over
+   TLS [LDAP].
+
+</p><p class="rfcparagraph">   Organizations that wish to monitor their users' e-mail traffic must
+   familiarize themselves with local data protection laws before
+   creating stores of old e-mail traffic without control, or perhaps
+   even knowledge, of the sender or intended recipients.
+
+</p><p class="rfcparagraph">   Organizations that legally use "redirect :copy" to eavesdrop on
+   correspondence (for example, by keeping a log to answer questions
+   about insider trading at a later time) can avoid future problems by
+   setting users' privacy expectations correctly.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   IANA Considerations</h2></a>
+
+   The following template specifies the IANA registration of the "copy"
+   Sieve extension specified in this document.
+
+</p><p class="rfcparagraph">   To: iana@iana.org
+   Subject: Registration of new Sieve extension
+
+   Capability name: copy
+   Capability keyword: copy
+   Capability arguments: N/A
+   Standards Track: RFC 3894
+   Person and email address to contact for further information:
+
+</p><p class="rfcparagraph">      Jutta Degener
+      Sendmail, Inc.
+      6425 Christie Ave, 4th Floor
+      Emeryville, CA 94608
+
+      Email: jutta@sendmail.com
+   This information has been added to the list of Sieve extensions given
+   on http://www.iana.org/assignments/sieve-extensions.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.   Acknowledgments</h2></a>
+
+   Thanks to Eric Allman, Ned Freed, Will Lee, Nigel Swinson, and Rand
+   Wacker for corrections and comments.
+
+</p><p class="rfcparagraph">	<a name="section-7"><h2>7.   References</h2></a>
+
+	<a name="section-7.1"><h3>7.1   Normative References</h3></a>
+
+   [KEYWORDS] Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">   [SIEVE]    Showalter, T., "Sieve: A Mail Filtering Language", RFC
+              3028, January 2001.
+
+</p><p class="rfcparagraph">	<a name="section-7.2"><h3>7.2   Informative References</h3></a>
+
+   [LDAP]     Wahl, M., Alvestrand, H., Hodges, J., and R. Morgan,
+              "Authentication Methods for LDAP", RFC 2829, May 2000.
+
+</p><p class="rfcparagraph">Author's Address
+
+   Jutta Degener
+   Sendmail, Inc.
+   6425 Christie Ave, 4th Floor
+   Emeryville, CA 94608
+
+   EMail: jutta@sendmail.com
+Full Copyright Statement
+
+   Copyright (C) The Internet Society (2004).<br>
+
+</p><p class="rfcparagraph">   This document is subject to the rights, licenses and restrictions
+   contained in BCP 78, and except as set forth therein, the authors
+   retain all their rights.
+
+</p><p class="rfcparagraph">   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/S HE
+   REPRESENTS OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY AND THE
+   INTERNET ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF
+   THE INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED
+   WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Intellectual Property
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the IETF's procedures with respect to rights in IETF Documents can
+   be found in BCP 78 and BCP 79.
+
+</p><p class="rfcparagraph">   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+</p><p class="rfcparagraph">   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at ietf-
+   ipr@ietf.org.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is currently provided by the
+   Internet Society.
+
+</p>
+
+
+
+
+
+Degener                     Standards Track                     [Page 5]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

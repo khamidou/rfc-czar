@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph">
+Network Working Group                                    J. Postel - ISI
+Request for Comments: 868                           K. Harrenstien - SRI
+                                                                May 1983
+
+
+
+                             Time Protocol
+
+
+
+
+This RFC specifies a standard for the ARPA Internet community.  Hosts on
+the ARPA Internet that choose to implement a Time Protocol are expected
+to adopt and implement this standard.
+
+</p><p class="rfcparagraph">This protocol provides a site-independent, machine readable date and
+time.  The Time service sends back to the originating source the time in
+seconds since midnight on January first 1900.
+
+</p><p class="rfcparagraph">One motivation arises from the fact that not all systems have a
+date/time clock, and all are subject to occasional human or machine
+error.  The use of time-servers makes it possible to quickly confirm or
+correct a system's idea of the time, by making a brief poll of several
+independent sites on the network.
+
+</p><p class="rfcparagraph">This protocol may be used either above the Transmission Control Protocol
+(TCP) or above the User Datagram Protocol (UDP).
+
+</p><p class="rfcparagraph">When used via TCP the time service works as follows:
+
+</p><p class="rfcparagraph">   S: Listen on port 37 (45 octal).
+
+</p><p class="rfcparagraph">   U: Connect to port 37.
+
+</p><p class="rfcparagraph">   S: Send the time as a 32 bit binary number.
+
+</p><p class="rfcparagraph">   U: Receive the time.
+
+</p><p class="rfcparagraph">   U: Close the connection.
+
+</p><p class="rfcparagraph">   S: Close the connection.
+
+</p><p class="rfcparagraph">   The server listens for a connection on port 37.  When the connection
+   is established, the server returns a 32-bit time value and closes the
+   connection.  If the server is unable to determine the time at its
+   site, it should either refuse the connection or close it without
+   sending anything.
+
+</p><p class="rfcparagraph">Postel                                                          [Page 1]
+
+
+
+RFC 868                                                         May 1983
+Time Protocol                                                           
+
+
+When used via UDP the time service works as follows:
+
+</p><p class="rfcparagraph">   S: Listen on port 37 (45 octal).
+
+</p><p class="rfcparagraph">   U: Send an empty datagram to port 37.
+
+</p><p class="rfcparagraph">   S: Receive the empty datagram.
+
+</p><p class="rfcparagraph">   S: Send a datagram containing the time as a 32 bit binary number.
+
+</p><p class="rfcparagraph">   U: Receive the time datagram.
+
+</p><p class="rfcparagraph">   The server listens for a datagram on port 37.  When a datagram
+   arrives, the server returns a datagram containing the 32-bit time
+   value.  If the server is unable to determine the time at its site, it
+   should discard the arriving datagram and make no reply.
+
+</p><p class="rfcparagraph">The Time
+
+The time is the number of seconds since 00:00 (midnight) 1 January 1900
+GMT, such that the time 1 is 12:00:01 am on 1 January 1900 GMT; this
+base will serve until the year 2036.
+
+</p><p class="rfcparagraph">For example:
+
+</p><p class="rfcparagraph">   the time  2,208,988,800 corresponds to 00:00  1 Jan 1970 GMT,
+
+             2,398,291,200 corresponds to 00:00  1 Jan 1976 GMT,
+
+             2,524,521,600 corresponds to 00:00  1 Jan 1980 GMT,
+
+             2,629,584,000 corresponds to 00:00  1 May 1983 GMT,
+
+        and -1,297,728,000 corresponds to 00:00 17 Nov 1858 GMT.
+
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Postel                                                          [Page 2]
+
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

@@ -1,0 +1,1796 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                        A. Siddiqui<br>Request for Comments: 4711                                  D. Romascanu<br>Category: Standards Track                                          Avaya<br>                                                           E. Golovinsky<br>                                                             Alert Logic<br>                                                            October 2006<br><br></p>
+                  <h1>
+    Real-time Application Quality-of-Service Monitoring (RAQMON) MIB</h1>
+                  <h2>Status of This Memo</h2>
+
+   This document specifies an Internet standards track protocol for the
+   Internet community, and requests discussion and suggestions for
+   improvements.  Please refer to the current edition of the "Internet
+   Official Protocol Standards" (STD 1) for the standardization state
+   and status of this protocol.  Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (2006).<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This memo defines a portion of the Management Information Base (MIB)
+   for use with network management protocols in the Internet community.
+   The document proposes an extension to the Remote Monitoring MIB, RFC
+   2819.  In particular, it describes managed objects used for real-time
+   application Quality of Service (QoS) monitoring.
+
+</p><p class="rfcparagraph">Table of Contents
+<a href="#section-1" class="">1. Introduction ...................................................</a><br>
+<a href="#section-2" class="">2. The Internet-Standard Management Framework .....................</a><br>
+<a href="#section-3" class="">3. RAQMON Framework ...............................................</a><br>
+<a href="#section-4" class="">4. Structure of the RAQMON MIB ....................................</a><br>
+<a href="#section-5" class="">5. RAQMON MIB Definitions .........................................</a><br>
+<a href="#section-6" class="">6. Security Considerations .......................................</a><br>
+<a href="#section-7" class="">7. IANA Considerations ...........................................</a><br>
+<a href="#section-8" class="">8. Acknowledgements ..............................................</a><br>
+<a href="#section-9" class="">9. Normative References ..........................................</a><br>
+<a href="#section-10" class="">10. Informative References .......................................</a><br>
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   This memo defines a portion of the Management Information Base (MIB)
+   for use with network management protocols in the Internet community.
+   In particular, it extends [RFC2819] with managed objects used for
+   real-time application QoS monitoring.
+
+</p><p class="rfcparagraph">   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in [RFC2119].
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   The Internet-Standard Management Framework</h2></a>
+
+   For a detailed overview of the documents that describe the current
+   Internet-Standard Management Framework, please refer to section 7 of
+   RFC 3410 [RFC3410].
+
+</p><p class="rfcparagraph">   Managed objects are accessed via a virtual information store, termed
+   the Management Information Base or MIB.  MIB objects are generally
+   accessed through the Simple Network Management Protocol (SNMP).
+   Objects in the MIB are defined using the mechanisms defined in the
+   Structure of Management Information (SMI).  This memo specifies a MIB
+   module that is compliant to the SMIv2, which is described in STD 58,
+   RFC 2578 [RFC2578], STD 58, RFC 2579 [RFC2579] and STD 58, RFC 2580
+   [RFC2580].
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   RAQMON Framework</h2></a>
+
+   As outlined in [RFC4710], the RAQMON framework is based on three
+   entities:
+
+</p><p class="rfcparagraph">      - RAQMON Data Source (RDS)
+
+      - RAQMON Report Collector (RRC)
+
+      - RAQMON MIB Structure
+
+   The RAQMON MIB describes information passed between RRCs and a RAQMON
+   Application ("RAQMON manager").
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   Structure of the RAQMON MIB</h2></a>
+
+   The RAQMON MIB module is composed of three MIB groups:
+   raqmonSession, raqmonException, and raqmonConfig.
+
+</p><p class="rfcparagraph">   The raqmonSession MIB group incorporates the following tables:
+      - The raqmonParticpantTable contains information about
+        participants in open and closed (terminated) sessions, including
+        parameters of the sessions they are involved in, aggregated
+        since the beginning of the session.
+
+</p><p class="rfcparagraph">      - The raqmonQosTable contains historical information about QoS
+        during sessions.  The set of parameters represented in this
+        table is more restricted, but it includes historical per-
+        RAQMON-report information.
+
+</p><p class="rfcparagraph">      - The raqmonParticpantAddrTable maps participant addresses into
+        the indices of the raqmonParticpantTable.  This table allows
+        management applications to find entries sorted by
+        raqmonParticipantAddr rather than raqmonParticipantStartDate.
+
+</p><p class="rfcparagraph">   The raqmonException MIB group includes a table of filters that
+   trigger notifications for sessions with poor QoS.
+
+</p><p class="rfcparagraph">   The raqmonConfig MIB group includes objects that define the
+   configuration of the RAQMON Report Collector.
+
+</p><p class="rfcparagraph">   This MIB module MUST be implemented by RAQMON Report Collectors.
+
+</p><p class="rfcparagraph">   A separate MIB module is defined in [RFC4712] for mapping the RAQMON
+   PDUs onto an SNMP transport.  The MIB module defined in [RFC4712] is
+   normally implemented by RAQMON Data Sources (RDS).
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   RAQMON MIB Definitions</h2></a>
+
+   The MIB module herein IMPORTS definitions from the following:
+         SNMPv2-SMI [RFC2578]
+         SNMPv2-TC [RFC2579]
+         SNMPv2-CONF [RFC2580]
+         RMON-MIB [RFC2819]
+         SNMP-FRAMEWORK-MIB [RFC3411]
+         INET-ADDRESS-MIB [RFC4001]
+
+   It also uses REFERENCE clauses to refer to [RFC4710].
+
+</p><p class="rfcparagraph">   It also mentions [RFC3737] with respect to the MODULE-IDENTITY OID
+   allocation.
+   RAQMON-MIB DEFINITIONS ::= BEGIN
+
+       IMPORTS
+           OBJECT-GROUP, NOTIFICATION-GROUP, MODULE-COMPLIANCE
+               FROM SNMPv2-CONF
+           Integer32, Unsigned32,
+           Gauge32, Counter32, OBJECT-TYPE,
+           MODULE-IDENTITY, NOTIFICATION-TYPE
+               FROM SNMPv2-SMI
+           InetAddressType, InetAddress, InetPortNumber
+               FROM INET-ADDRESS-MIB
+                    SnmpAdminString
+           FROM SNMP-FRAMEWORK-MIB
+           rmon
+               FROM RMON-MIB
+           RowStatus, TruthValue, DateAndTime, RowPointer
+               FROM SNMPv2-TC;
+
+</p><p class="rfcparagraph">       raqmonMIB MODULE-IDENTITY
+           LAST-UPDATED "200610100000Z"     -- October 10, 2006
+           ORGANIZATION
+               "IETF RMON MIB Working Group"
+           CONTACT-INFO
+               "WG Charter:
+                http://www.ietf.org/html.charters/rmonmib-charter.html
+
+                Mailing lists:
+                    General Discussion: rmonmib@ietf.org
+                    To Subscribe: rmonmib-requests@ietf.org
+                    In Body: subscribe your_email_address
+
+                Chair: Andy Bierman
+                       Email: ietf@andybierman.com
+
+                Editor: Dan Romascanu
+                        Avaya
+                        Email:  dromasca@avaya.com"
+           DESCRIPTION
+               "Real-Time Application QoS Monitoring MIB.
+
+</p><p class="rfcparagraph">                Copyright (c) The Internet Society (2006).<br>
+                This version of this MIB module is part of
+                RFC 4711; See the RFC itself for full legal notices."
+           REVISION    "200610100000Z"
+           DESCRIPTION
+               "Initial version, published as RFC 4711."
+           ::= { rmon 31 }
+   -- This OID allocation conforms to [RFC3737]
+   --
+   -- Node definitions
+   --
+       raqmonNotifications OBJECT IDENTIFIER ::= { raqmonMIB 0 }
+
+       raqmonSessionAlarm NOTIFICATION-TYPE
+           OBJECTS { raqmonParticipantAddr,
+               raqmonParticipantName,
+               raqmonParticipantPeerAddrType,
+               raqmonParticipantPeerAddr,
+               raqmonQoSEnd2EndNetDelay,
+               raqmonQoSInterArrivalJitter,
+               raqmonQosLostPackets,
+               raqmonQosRcvdPackets }
+           STATUS current
+           DESCRIPTION
+               "A notification generated by an entry in the
+                raqmonSessionExceptionTable."
+           ::= { raqmonNotifications 1 }
+
+
+       raqmonMIBObjects OBJECT IDENTIFIER ::= { raqmonMIB 1 }
+
+       raqmonSession OBJECT IDENTIFIER ::= { raqmonMIBObjects 1 }
+
+       raqmonParticipantTable OBJECT-TYPE
+           SYNTAX SEQUENCE OF RaqmonParticipantEntry
+           MAX-ACCESS not-accessible
+           STATUS current
+           DESCRIPTION
+               "This table contains information about participants in
+                both active and closed (terminated) sessions."
+           ::= { raqmonSession 1 }
+
+       raqmonParticipantEntry OBJECT-TYPE
+           SYNTAX RaqmonParticipantEntry
+           MAX-ACCESS not-accessible
+           STATUS current
+           DESCRIPTION
+               "Each row contains information for a single session
+                (application) run by one participant.
+                Indexation by the start time of the session aims
+                to ease sorting by management applications.  Agents MUST
+                NOT report identical start times for any two sessions
+                on the same host.
+                Rows are removed for inactive sessions
+                when implementation-specific age or space limits are
+                reached."
+           INDEX { raqmonParticipantStartDate, raqmonParticipantIndex }
+           ::= { raqmonParticipantTable 1 }
+
+       RaqmonParticipantEntry ::=
+           SEQUENCE {
+               raqmonParticipantStartDate     DateAndTime,
+               raqmonParticipantIndex         Unsigned32,
+               raqmonParticipantReportCaps    BITS,
+               raqmonParticipantAddrType      InetAddressType,
+               raqmonParticipantAddr          InetAddress,
+               raqmonParticipantSendPort      InetPortNumber,
+               raqmonParticipantRecvPort      InetPortNumber,
+               raqmonParticipantSetupDelay    Integer32,
+               raqmonParticipantName          SnmpAdminString,
+               raqmonParticipantAppName       SnmpAdminString,
+               raqmonParticipantQosCount      Gauge32,
+               raqmonParticipantEndDate       DateAndTime,
+               raqmonParticipantDestPayloadType  Integer32,
+               raqmonParticipantSrcPayloadType   Integer32,
+               raqmonParticipantActive        TruthValue,
+               raqmonParticipantPeer          RowPointer,
+               raqmonParticipantPeerAddrType  InetAddressType,
+               raqmonParticipantPeerAddr      InetAddress,
+               raqmonParticipantSrcL2Priority     Integer32,
+               raqmonParticipantDestL2Priority    Integer32,
+               raqmonParticipantSrcDSCP       Integer32,
+               raqmonParticipantDestDSCP      Integer32,
+               raqmonParticipantCpuMean       Integer32,
+               raqmonParticipantCpuMin        Integer32,
+               raqmonParticipantCpuMax        Integer32,
+               raqmonParticipantMemoryMean    Integer32,
+               raqmonParticipantMemoryMin     Integer32,
+               raqmonParticipantMemoryMax     Integer32,
+               raqmonParticipantNetRTTMean    Integer32,
+               raqmonParticipantNetRTTMin     Integer32,
+               raqmonParticipantNetRTTMax     Integer32,
+               raqmonParticipantIAJitterMean  Integer32,
+               raqmonParticipantIAJitterMin   Integer32,
+               raqmonParticipantIAJitterMax   Integer32,
+               raqmonParticipantIPDVMean      Integer32,
+               raqmonParticipantIPDVMin       Integer32,
+               raqmonParticipantIPDVMax       Integer32,
+               raqmonParticipantNetOwdMean    Integer32,
+               raqmonParticipantNetOwdMin     Integer32,
+               raqmonParticipantNetOwdMax     Integer32,
+               raqmonParticipantAppDelayMean  Integer32,
+               raqmonParticipantAppDelayMin   Integer32,
+               raqmonParticipantAppDelayMax   Integer32,
+               raqmonParticipantPacketsRcvd   Integer32,
+               raqmonParticipantPacketsSent   Integer32,
+               raqmonParticipantOctetsRcvd    Integer32,
+               raqmonParticipantOctetsSent    Integer32,
+               raqmonParticipantLostPackets   Integer32,
+               raqmonParticipantLostPacketsFrct  Integer32,
+               raqmonParticipantDiscards      Integer32,
+               raqmonParticipantDiscardsFrct  Integer32
+            }
+
+       raqmonParticipantStartDate OBJECT-TYPE
+           SYNTAX DateAndTime
+           MAX-ACCESS not-accessible
+           STATUS current
+           DESCRIPTION
+               "The date and time of this entry.
+                It will be the date and time
+                of the first report received."
+           ::= { raqmonParticipantEntry 1 }
+
+       raqmonParticipantIndex OBJECT-TYPE
+           SYNTAX Unsigned32 (1..2147483647)
+           MAX-ACCESS not-accessible
+           STATUS current
+           DESCRIPTION
+               "The index of the conceptual row, which is for SNMP
+                purposes only and has no relation to any protocol value.
+
+</p><p class="rfcparagraph">                There is no requirement that these rows be created or
+                maintained sequentially.  The index will be unique for a
+                particular date and time."
+           ::= { raqmonParticipantEntry 2 }
+
+       raqmonParticipantReportCaps   OBJECT-TYPE
+           SYNTAX      BITS {
+               raqmonPartRepDsrcName(0),<br>
+               raqmonPartRepRecvName(1),<br>
+               raqmonPartRepDsrcPort(2),<br>
+               raqmonPartRepRecvPort(3),<br>
+               raqmonPartRepSetupTime(4),<br>
+               raqmonPartRepSetupDelay(5),<br>
+               raqmonPartRepSessionDuration(6),<br>
+               raqmonPartRepSetupStatus(7),<br>
+               raqmonPartRepRTEnd2EndNetDelay(8),<br>
+               raqmonPartRepOWEnd2EndNetDelay(9),<br>
+               raqmonPartApplicationDelay(10),<br>
+               raqmonPartRepIAJitter(11),<br>
+               raqmonPartRepIPDV(12),<br>
+               raqmonPartRepRcvdPackets(13),<br>
+               raqmonPartRepRcvdOctets(14),<br>
+               raqmonPartRepSentPackets(15),<br>
+               raqmonPartRepSentOctets(16),<br>
+               raqmonPartRepCumPacketsLoss(17),<br>
+               raqmonPartRepFractionPacketsLoss(18),<br>
+               raqmonPartRepCumDiscards(19),<br>
+               raqmonPartRepFractionDiscards(20),<br>
+               raqmonPartRepSrcPayloadType(21),<br>
+               raqmonPartRepDestPayloadType(22),<br>
+               raqmonPartRepSrcLayer2Priority(23),<br>
+               raqmonPartRepSrcTosDscp(24),<br>
+               raqmonPartRepDestLayer2Priority(25),<br>
+               raqmonPartRepDestTosDscp(26),<br>
+               raqmonPartRepCPU(27),<br>
+               raqmonPartRepMemory(28),<br>
+               raqmonPartRepAppName(29)
+               }
+           MAX-ACCESS  read-only
+           STATUS      current
+           DESCRIPTION
+               "The Report capabilities of the participant, as perceived
+                by the Collector.
+
+</p><p class="rfcparagraph">                If the participant can report the Data Source Name as
+                defined in [RFC4710], Section 5.3, then the
+                raqmonPartRepDsrcName bit will be set.
+
+</p><p class="rfcparagraph">                If the participant can report the Receiver Name as
+                defined in [RFC4710], Section 5.4, then the
+                raqmonPartRepRecvName bit will be set.
+
+</p><p class="rfcparagraph">                If the participant can report the Data Source Port as
+                defined in [RFC4710], Section 5.5, then the
+                raqmonPartRepDsrcPort bit will be set.
+
+</p><p class="rfcparagraph">                If the participant can report the Receiver Port as
+                defined in [RFC4710], Section 5.6, then the
+                raqmonPartRepRecvPort bit will be set.
+
+</p><p class="rfcparagraph">                If the participant can report the Session Setup Time as
+                defined in [RFC4710], Section 5.7, then the
+                raqmonPartRepSetupTime bit will be set.
+
+</p><p class="rfcparagraph">                If the participant can report the Session Setup Delay as
+                defined in [RFC4710], Section 5.8, then the
+                raqmonPartRepSetupDelay bit will be set.
+                If the participant can report the Session Duration as
+                defined in [RFC4710], Section 5.9, then the
+                raqmonPartRepSessionDuration bit will be set.
+
+</p><p class="rfcparagraph">                If the participant can report the Setup Status as
+                defined in [RFC4710], Section 5.10, then the
+                raqmonPartRepSetupStatus bit will be set.
+
+</p><p class="rfcparagraph">                If the participant can report the Round-Trip End-to-end
+                Network Delay as defined in [RFC4710], Section 5.11,
+                then the raqmonPartRepRTEnd2EndNetDelay bit will be set.
+
+</p><p class="rfcparagraph">                If the participant can report the One-way End-to-end
+                Network Delay as defined in [RFC4710], Section 5.12,
+                then the raqmonPartRepOWEnd2EndNetDelay bit will be set.
+
+</p><p class="rfcparagraph">                If the participant can report the Application Delay as
+                defined in [RFC4710], Section 5.13, then the
+                raqmonPartApplicationDelay bit will be set.
+
+</p><p class="rfcparagraph">                If the participant can report the Inter-Arrival Jitter
+                as defined in [RFC4710], Section 5.14, then the
+                raqmonPartRepIAJitter bit will be set.
+
+</p><p class="rfcparagraph">                If the participant can report the IP Packet Delay
+                Variation as defined in [RFC4710], Section 5.15, then
+                the raqmonPartRepIPDV bit will be set.
+
+</p><p class="rfcparagraph">                If the participant can report the number of application
+                packets received as defined in [RFC4710], Section 5.16,
+                then the raqmonPartRepRcvdPackets bit will be set.
+
+</p><p class="rfcparagraph">                If the participant can report the number of application
+                octets received as defined in [RFC4710], Section 5.17,
+                then the raqmonPartRepRcvdOctets bit will be set.
+
+</p><p class="rfcparagraph">                If the participant can report the number of application
+                packets sent as defined in [RFC4710], Section 5.18, then
+                the raqmonPartRepSentPackets bit will be set.
+
+</p><p class="rfcparagraph">                If the participant can report the number of application
+                octets sent as defined in [RFC4710], Section 5.19, then
+                the raqmonPartRepSentOctets bit will be set.
+
+</p><p class="rfcparagraph">                If the participant can report the number of cumulative
+                packets lost as defined in [RFC4710], Section 5.20, then
+                the raqmonPartRepCumPacketsLoss bit will be set.
+                If the participant can report the fraction of packet
+                loss as defined in [RFC4710], Section 5.21, then the
+                raqmonPartRepFractionPacketsLoss bit will be set.
+
+</p><p class="rfcparagraph">                If the participant can report the number of cumulative
+                discards as defined in [RFC4710], Section 5.22, then the
+                raqmonPartRepCumDiscards bit will be set.
+
+</p><p class="rfcparagraph">                If the participant can report the fraction of discards
+                as defined in [RFC4710], Section 5.23, then the
+                raqmonPartRepFractionDiscards bit will be set.
+
+</p><p class="rfcparagraph">                If the participant can report the Source Payload Type as
+                defined in [RFC4710], Section 5.24, then the
+                raqmonPartRepSrcPayloadType bit will be set.
+
+</p><p class="rfcparagraph">                If the participant can report the Destination Payload
+                Type as defined in [RFC4710], Section 5.25, then the
+                raqmonPartRepDestPayloadType bit will be set.
+
+</p><p class="rfcparagraph">                If the participant can report the Source Layer 2
+                Priority as defined in [RFC4710], Section 5.26, then the
+                raqmonPartRepSrcLayer2Priority bit will be set.
+
+</p><p class="rfcparagraph">                If the participant can report the Source DSCP/ToS value
+                as defined in [RFC4710], Section 5.27, then the
+                raqmonPartRepSrcToSDscp bit will be set.
+
+</p><p class="rfcparagraph">                If the participant can report the Destination Layer 2
+                Priority as defined in [RFC4710], Section 5.28, then the
+                raqmonPartRepDestLayer2Priority bit will be set.
+
+</p><p class="rfcparagraph">                If the participant can report the Destination DSCP/ToS
+                Value as defined in [RFC4710], Section 5.29, then the
+                raqmonPartRepDestToSDscp bit will be set.
+
+</p><p class="rfcparagraph">                If the participant can report the CPU utilization as
+                defined in [RFC4710], Section 5.30, then the
+                raqmonPartRepCPU bit will be set.
+
+</p><p class="rfcparagraph">                If the participant can report the memory utilization as
+                defined in [RFC4710], Section 5.31, then the
+                raqmonPartRepMemory bit will be set.
+
+</p><p class="rfcparagraph">                If the participant can report the Application Name as
+                defined in [RFC4710], Section 5.32, then the
+                raqmonPartRepAppName bit will be set.
+                The capability of reporting of a specific metric does
+                not mandate that the metric must be reported permanently
+                by the data source to the respective collector.  Some
+                data sources MAY be configured not to send a metric, or
+                some metrics may not be relevant to the specific
+                application."
+           ::= { raqmonParticipantEntry 3 }
+
+       raqmonParticipantAddrType OBJECT-TYPE
+           SYNTAX InetAddressType
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "The type of the Internet address of the participant for
+                this session."
+           ::= { raqmonParticipantEntry 4 }
+
+      raqmonParticipantAddr OBJECT-TYPE
+           SYNTAX InetAddress
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "The Internet Address of the participant for this
+                session.  Formatting of this object is determined
+                by the value of raqmonParticipantAddrType."
+           ::= { raqmonParticipantEntry 5 }
+
+      raqmonParticipantSendPort OBJECT-TYPE
+           SYNTAX InetPortNumber
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "Port from which session data is sent.
+                If the value was not reported to the collector,
+                this object will have the value 0."
+           REFERENCE
+               "Section 5.5 of the [RFC4710]"
+           ::= { raqmonParticipantEntry 6 }
+
+       raqmonParticipantRecvPort OBJECT-TYPE
+           SYNTAX InetPortNumber
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "Port on which session data is received.
+                If the value was not reported to the collector,
+                this object will have the value 0."
+           REFERENCE
+               "Section 5.6 of the [RFC4710]"
+           ::= { raqmonParticipantEntry 7 }
+
+       raqmonParticipantSetupDelay OBJECT-TYPE
+           SYNTAX Integer32 (-1|0..2147483647)
+           UNITS  "milliseconds"
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "Session setup time.
+                If the value was not reported to the collector,
+                this object will have the value -1."
+           REFERENCE
+               "Section 5.8 of the [RFC4710]"
+           ::= { raqmonParticipantEntry 8 }
+
+       raqmonParticipantName OBJECT-TYPE
+           SYNTAX SnmpAdminString
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "The data source name for the participant."
+           REFERENCE
+               "Section 5.3 of the [RFC4710]"
+          ::= { raqmonParticipantEntry 9 }
+
+       raqmonParticipantAppName OBJECT-TYPE
+           SYNTAX SnmpAdminString
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "A string giving the name and possibly the version
+                of the application generating the stream, e.g.,
+                'videotool 1.2.'
+
+                This information may be useful for debugging purposes
+                and is similar to the Mailer or Mail-System-Version SMTP
+                headers.  The tool value is expected to remain constant
+                for the duration of the session."
+           REFERENCE
+               "Section 5.32 of the [RFC4710]"
+           ::= { raqmonParticipantEntry 10 }
+
+       raqmonParticipantQosCount OBJECT-TYPE
+           SYNTAX Gauge32
+           UNITS  "entries"
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "The current number of entries in the raqmonQosTable
+                for this participant and session."
+           ::= { raqmonParticipantEntry 11 }
+
+       raqmonParticipantEndDate OBJECT-TYPE
+           SYNTAX DateAndTime
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "The date and time of the most recent report received."
+           ::= { raqmonParticipantEntry 12 }
+
+       raqmonParticipantDestPayloadType OBJECT-TYPE
+           SYNTAX Integer32 (-1|0..127)
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "Destination Payload Type.
+                If the value was not reported to the collector,
+                this object will have the value -1."
+           REFERENCE
+               "RFC 3551 and Section 5.25 of the [RFC4710]"
+           ::= { raqmonParticipantEntry 13 }
+
+       raqmonParticipantSrcPayloadType OBJECT-TYPE
+           SYNTAX Integer32 (-1|0..127)
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "Source Payload Type.
+                If the value was not reported to the collector,
+                this object will have the value -1."
+           REFERENCE
+               "RFC 3551 and Section 5.24 of the [RFC4710]"
+           ::= { raqmonParticipantEntry 14 }
+
+       raqmonParticipantActive OBJECT-TYPE
+           SYNTAX TruthValue
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "Value 'true' indicates that the session
+                for this participant is active (open).
+                Value 'false' indicates that the session
+                is closed (terminated)."
+           ::= { raqmonParticipantEntry 15 }
+       raqmonParticipantPeer OBJECT-TYPE
+           SYNTAX RowPointer
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "The pointer to the corresponding entry in this table for
+                the other peer participant.  If there is no such entry
+                in the participant table of the collector represented by
+                this SNMP agent, then the value will be { 0 0 }.
+               "
+           ::= { raqmonParticipantEntry 16 }
+
+       raqmonParticipantPeerAddrType OBJECT-TYPE
+           SYNTAX InetAddressType
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "The type of the Internet address of the peer participant
+                for this session."
+           ::= { raqmonParticipantEntry 17 }
+
+      raqmonParticipantPeerAddr OBJECT-TYPE
+           SYNTAX InetAddress
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "The Internet Address of the peer participant for this
+                session.  Formatting of this object is determined by
+                the value of raqmonParticipantPeerAddrType."
+           ::= { raqmonParticipantEntry 18 }
+
+      raqmonParticipantSrcL2Priority OBJECT-TYPE
+           SYNTAX Integer32 (-1|0..7)
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "Source Layer 2 Priority.
+                If the value was not reported to the collector,
+                this object will have the value -1."
+           REFERENCE
+               "Section 5.26 of the [RFC4710]"
+           ::= { raqmonParticipantEntry 19 }
+
+       raqmonParticipantDestL2Priority OBJECT-TYPE
+           SYNTAX Integer32 (-1|0..7)
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "Destination Layer 2 Priority.
+                If the value was not reported to the collector,
+                this object will have the value -1."
+           REFERENCE
+               "Section 5.28 of the [RFC4710]"
+           ::= { raqmonParticipantEntry 20 }
+
+       raqmonParticipantSrcDSCP OBJECT-TYPE
+           SYNTAX Integer32 (-1|0..63)
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "Source Layer 3 DSCP value.
+                If the value was not reported to the collector,
+                this object will have the value -1."
+           REFERENCE
+               "Section 5.27 of the [RFC4710]"
+           ::= { raqmonParticipantEntry 21 }
+
+       raqmonParticipantDestDSCP OBJECT-TYPE
+           SYNTAX Integer32  (-1|0..63)
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "Destination Layer 3 DSCP value."
+           REFERENCE
+               "Section 5.29 of the [RFC4710]"
+           ::= { raqmonParticipantEntry 22 }
+
+       raqmonParticipantCpuMean OBJECT-TYPE
+           SYNTAX Integer32 (-1|0..100)
+           UNITS  "percents"
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "Mean CPU utilization.
+                If the value was not reported to the collector,
+                this object will have the value -1."
+           REFERENCE
+               "Section 5.30 of the [RFC4710]"
+           ::= { raqmonParticipantEntry 23 }
+
+       raqmonParticipantCpuMin OBJECT-TYPE
+           SYNTAX Integer32 (-1|0..100)
+           UNITS  "percents"
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "Minimum CPU utilization.
+                If the value was not reported to the collector,
+                this object will have the value -1."
+           REFERENCE
+               "Section 5.30 of the [RFC4710]"
+           ::= { raqmonParticipantEntry 24 }
+
+       raqmonParticipantCpuMax OBJECT-TYPE
+           SYNTAX Integer32 (-1|0..100)
+           UNITS  "percents"
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "Maximum CPU utilization.
+                If the value was not reported to the collector,
+                this object will have the value -1."
+           REFERENCE
+               "Section 5.30 of the [RFC4710]"
+           ::= { raqmonParticipantEntry 25 }
+
+       raqmonParticipantMemoryMean OBJECT-TYPE
+           SYNTAX Integer32 (-1|0..100)
+           UNITS  "percents"
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "Mean memory utilization.
+                If the value was not reported to the collector,
+                this object will have the value -1."
+           REFERENCE
+               "Section 5.31 of the [RFC4710]"
+           ::= { raqmonParticipantEntry 26 }
+
+       raqmonParticipantMemoryMin OBJECT-TYPE
+           SYNTAX Integer32 (-1|0..100)
+           UNITS  "percents"
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "Minimum memory utilization.
+                If the value was not reported to the collector,
+                this object will have the value -1."
+           REFERENCE
+               "Section 5.31 of the [RFC4710]"
+           ::= { raqmonParticipantEntry 27 }
+
+       raqmonParticipantMemoryMax OBJECT-TYPE
+           SYNTAX Integer32 (-1|0..100)
+           UNITS  "percents"
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "Maximum memory utilization.
+                If the value was not reported to the collector,
+                this object will have the value -1."
+           REFERENCE
+               "Section 5.31 of the [RFC4710]"
+           ::= { raqmonParticipantEntry 28 }
+
+       raqmonParticipantNetRTTMean OBJECT-TYPE
+           SYNTAX Integer32 (-1|0..2147483647)
+           UNITS  "milliseconds"
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "Mean round-trip end-to-end network
+                delay over the entire session.
+                If the value was not reported to the collector,
+                this object will have the value -1."
+           REFERENCE
+               "Section 5.11 of the [RFC4710]"
+           ::= { raqmonParticipantEntry 29 }
+
+       raqmonParticipantNetRTTMin OBJECT-TYPE
+           SYNTAX Integer32 (-1|0..2147483647)
+           UNITS  "milliseconds"
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "Minimum round-trip end-to-end network delay
+                over the entire session.
+                If the value was not reported to the collector,
+                this object will have the value -1."
+           REFERENCE
+               "Section 5.11 of the [RFC4710]"
+           ::= { raqmonParticipantEntry 30 }
+
+       raqmonParticipantNetRTTMax OBJECT-TYPE
+           SYNTAX Integer32 (-1|0..2147483647)
+           UNITS  "milliseconds"
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "Maximum round-trip end-to-end network delay
+                over the entire session.
+                If the value was not reported to the collector,
+                this object will have the value -1."
+           REFERENCE
+               "Section 5.11 of the [RFC4710]"
+           ::= { raqmonParticipantEntry 31 }
+
+       raqmonParticipantIAJitterMean OBJECT-TYPE
+           SYNTAX Integer32 (-1|0..2147483647)
+           UNITS  "milliseconds"
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "Mean inter-arrival jitter over the entire session.
+                If the value was not reported to the collector,
+                this object will have the value -1."
+           REFERENCE
+               "Section 5.14 of the [RFC4710]"
+           ::= { raqmonParticipantEntry 32 }
+
+       raqmonParticipantIAJitterMin OBJECT-TYPE
+           SYNTAX Integer32 (-1|0..2147483647)
+           UNITS  "milliseconds"
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "Minimum inter-arrival jitter over the entire session.
+                If the value was not reported to the collector,
+                this object will have the value -1."
+           REFERENCE
+               "Section 5.14 of the [RFC4710]"
+           ::= { raqmonParticipantEntry 33 }
+
+       raqmonParticipantIAJitterMax OBJECT-TYPE
+           SYNTAX Integer32 (-1|0..2147483647)
+           UNITS  "milliseconds"
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "Maximum inter-arrival jitter over the entire session.
+                If the value was not reported to the collector,
+                this object will have the value -1."
+           REFERENCE
+               "Section 5.14 of the [RFC4710]"
+           ::= { raqmonParticipantEntry 34 }
+
+       raqmonParticipantIPDVMean OBJECT-TYPE
+           SYNTAX Integer32 (-1|0..2147483647)
+           UNITS  "milliseconds"
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "Mean IP packet delay variation over the entire session.
+                If the value was not reported to the collector,
+                this object will have the value -1."
+           REFERENCE
+               "Section 5.15 of the [RFC4710]"
+           ::= { raqmonParticipantEntry 35 }
+
+       raqmonParticipantIPDVMin OBJECT-TYPE
+           SYNTAX Integer32 (-1|0..2147483647)
+           UNITS  "milliseconds"
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "Minimum IP packet delay variation over the entire
+                session.  If the value was not reported to the
+                collector, this object will have the value -1."
+           REFERENCE
+               "Section 5.15 of the [RFC4710]"
+           ::= { raqmonParticipantEntry 36 }
+
+       raqmonParticipantIPDVMax OBJECT-TYPE
+           SYNTAX Integer32 (-1|0..2147483647)
+           UNITS  "milliseconds"
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "Maximum IP packet delay variation over the entire
+                session.  If the value was not reported to the
+                collector, this object will have the value -1."
+           REFERENCE
+               "Section 5.15 of the [RFC4710]"
+           ::= { raqmonParticipantEntry 37 }
+
+       raqmonParticipantNetOwdMean OBJECT-TYPE
+           SYNTAX Integer32 (-1|0..2147483647)
+           UNITS  "milliseconds"
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "Mean Network one-way delay over the entire session.
+                If the value was not reported to the collector,
+                this object will have the value -1."
+           REFERENCE
+               "Section 5.12 of the [RFC4710]"
+           ::= { raqmonParticipantEntry 38 }
+       raqmonParticipantNetOwdMin OBJECT-TYPE
+           SYNTAX Integer32 (-1|0..2147483647)
+           UNITS  "milliseconds"
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "Minimum Network one-way delay over the entire session.
+                If the value was not reported to the collector,
+                this object will have the value -1."
+           REFERENCE
+               "Section 5.12 of the [RFC4710]"
+           ::= { raqmonParticipantEntry 39 }
+
+       raqmonParticipantNetOwdMax OBJECT-TYPE
+           SYNTAX Integer32 (-1|0..2147483647)
+           UNITS  "milliseconds"
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "Maximum Network one-way delay over the entire session.
+                If the value was not reported to the collector,
+                this object will have the value -1."
+           REFERENCE
+               "Section 5.1 of the [RFC4710]"
+           ::= { raqmonParticipantEntry 40 }
+
+       raqmonParticipantAppDelayMean OBJECT-TYPE
+           SYNTAX Integer32 (-1|0..2147483647)
+           UNITS  "milliseconds"
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "Mean application delay over the entire session.
+                If the value was not reported to the collector,
+                this object will have the value -1."
+           REFERENCE
+               "Section 5.13 of the [RFC4710]"
+           ::= { raqmonParticipantEntry 41 }
+
+       raqmonParticipantAppDelayMin OBJECT-TYPE
+           SYNTAX Integer32 (-1|0..2147483647)
+           UNITS  "milliseconds"
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "Minimum application delay over the entire session.
+                If the value was not reported to the collector,
+                this object will have the value -1."
+           REFERENCE
+               "Section 5.13 of the [RFC4710]"
+           ::= { raqmonParticipantEntry 42 }
+
+       raqmonParticipantAppDelayMax OBJECT-TYPE
+           SYNTAX Integer32 (-1|0..2147483647)
+           UNITS  "milliseconds"
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "Maximum application delay over the entire session.
+                If the value was not reported to the collector,
+                this object will have the value -1."
+           REFERENCE
+               "Section 5.13 of the [RFC4710]"
+           ::= { raqmonParticipantEntry 43 }
+
+       raqmonParticipantPacketsRcvd OBJECT-TYPE
+           SYNTAX Integer32 (-1|0..2147483647)
+           UNITS  "packets"
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "Count of packets received for the entire session.
+                If the value was not reported to the collector,
+                this object will have the value -1."
+           REFERENCE
+               "Section 5.16 of the [RFC4710]"
+           ::= { raqmonParticipantEntry 44 }
+
+       raqmonParticipantPacketsSent OBJECT-TYPE
+           SYNTAX Integer32 (-1|0..2147483647)
+           UNITS  "packets"
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "Count of packets sent for the entire session.
+                If the value was not reported to the collector,
+                this object will have the value -1."
+           REFERENCE
+               "Section 5.17 of the [RFC4710]"
+           ::= { raqmonParticipantEntry 45 }
+
+       raqmonParticipantOctetsRcvd OBJECT-TYPE
+           SYNTAX Integer32 (-1|0..2147483647)
+           UNITS  "Octets"
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "Count of octets received for the entire session.
+                If the value was not reported to the collector,
+                this object will have the value -1."
+           REFERENCE
+               "Section 5.18 of the [RFC4710]"
+           ::= { raqmonParticipantEntry 46 }
+
+       raqmonParticipantOctetsSent OBJECT-TYPE
+           SYNTAX Integer32 (-1|0..2147483647)
+           UNITS  "Octets"
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "Count of octets sent for the entire session.
+                If the value was not reported to the collector,
+                this object will have the value -1."
+           REFERENCE
+               "Section 5.19 of the [RFC4710]"
+           ::= { raqmonParticipantEntry 47 }
+
+       raqmonParticipantLostPackets OBJECT-TYPE
+           SYNTAX Integer32 (-1|0..2147483647)
+           UNITS  "packets"
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "Count of packets lost by this receiver for the entire
+                session.
+                If the value was not reported to the collector,
+                this object will have the value -1."
+           REFERENCE
+               "Section 5.20 of the [RFC4710]"
+           ::= { raqmonParticipantEntry 48 }
+
+       raqmonParticipantLostPacketsFrct OBJECT-TYPE
+           SYNTAX Integer32 (-1|0..100)
+           UNITS  "percents"
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "Fraction of lost packets out of total packets received.
+                If the value was not reported to the collector,
+                this object will have the value -1."
+           REFERENCE
+               "Section 5.21 of the [RFC4710]"
+           ::= { raqmonParticipantEntry 49 }
+       raqmonParticipantDiscards OBJECT-TYPE
+           SYNTAX Integer32 (-1|0..2147483647)
+           UNITS  "packets"
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "Count of packets discarded by this receiver for the
+                entire session.
+                If the value was not reported to the collector,
+                this object will have the value -1."
+           REFERENCE
+               "Section 5.22 of the [RFC4710]"
+           ::= { raqmonParticipantEntry 50 }
+
+       raqmonParticipantDiscardsFrct OBJECT-TYPE
+           SYNTAX Integer32 (-1|0..100)
+           UNITS  "percents"
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "Fraction of discarded packets out of total packets
+                received.  If the value was not reported to the
+                collector, this object will have the value -1."
+           REFERENCE
+               "Section 5.23 of the [RFC4710]"
+           ::= { raqmonParticipantEntry 51 }
+
+
+    raqmonQosTable OBJECT-TYPE
+           SYNTAX SEQUENCE OF RaqmonQosEntry
+           MAX-ACCESS not-accessible
+           STATUS current
+           DESCRIPTION
+               "Table of historical information about quality-of-service
+                data during sessions."
+           ::= { raqmonSession 2 }
+
+       raqmonQosEntry OBJECT-TYPE
+           SYNTAX RaqmonQosEntry
+           MAX-ACCESS not-accessible
+           STATUS current
+           DESCRIPTION
+               "Each entry contains information from a single RAQMON
+                packet, related to a single session
+                (application) run by one participant.
+                Indexation by the start time of the session aims
+                to ease sorting by management applications.  Agents MUST
+                NOT report identical start times for any two sessions
+                on the same host.
+                Rows are removed for inactive sessions when
+                implementation-specific time or space limits are
+                reached."
+           INDEX { raqmonParticipantStartDate,
+                   raqmonParticipantIndex,
+                   raqmonQosTime }
+           ::= { raqmonQosTable 1 }
+
+       RaqmonQosEntry ::=
+           SEQUENCE {
+               raqmonQosTime          Unsigned32,
+               raqmonQoSEnd2EndNetDelay           Integer32,
+               raqmonQoSInterArrivalJitter        Integer32,
+               raqmonQosRcvdPackets   Integer32,
+               raqmonQosRcvdOctets    Integer32,
+               raqmonQosSentPackets   Integer32,
+               raqmonQosSentOctets    Integer32,
+               raqmonQosLostPackets   Integer32,
+               raqmonQosSessionStatus SnmpAdminString
+               }
+
+       raqmonQosTime OBJECT-TYPE
+           SYNTAX Unsigned32 (0..2147483647)
+           UNITS  "seconds"
+           MAX-ACCESS not-accessible
+           STATUS current
+           DESCRIPTION
+               "Time of this entry measured from the start of the
+                corresponding participant session."
+           ::= { raqmonQosEntry 1 }
+
+       raqmonQoSEnd2EndNetDelay OBJECT-TYPE
+           SYNTAX Integer32 (-1 | 0..2147483647)
+           UNITS  "milliseconds"
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "The round-trip time.
+                Will contain the previous value if there was no report
+                for this time, or -1 if the value has never
+                been reported."
+           REFERENCE
+               "Section 5.11 of the [RFC4710]"
+           ::= { raqmonQosEntry 2 }
+
+       raqmonQoSInterArrivalJitter OBJECT-TYPE
+           SYNTAX Integer32 (-1 | 0..2147483647)
+           UNITS  "milliseconds"
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "An estimate of delay variation as observed by this
+                receiver.  Will contain the previous value if there
+                was no report for this time, or -1 if the value
+                has never been reported."
+           REFERENCE
+               "Section 5.14 of the [RFC4710]"
+           ::= { raqmonQosEntry 3 }
+
+       raqmonQosRcvdPackets OBJECT-TYPE
+           SYNTAX Integer32 (-1 | 0..2147483647)
+           UNITS  "packets"
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "Count of packets received by this receiver since the
+                previous entry.  Will contain the previous value if
+                there was no report for this time, or -1 if the value
+                has never been reported."
+           REFERENCE
+               "Section 5.16 of the [RFC4710]"
+       ::= { raqmonQosEntry 4 }
+
+       raqmonQosRcvdOctets OBJECT-TYPE
+           SYNTAX Integer32 (-1 | 0..2147483647)
+           UNITS  "octets"
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "Count of octets received by this receiver since the
+                previous report.  Will contain the previous value if
+                there was no report for this time, or -1 if the value
+                has never been reported."
+               REFERENCE
+                     "Section 5.18 of the [RFC4710]"
+           ::= { raqmonQosEntry 5 }
+
+       raqmonQosSentPackets OBJECT-TYPE
+           SYNTAX Integer32 (-1 | 0..2147483647)
+           UNITS  "packets"
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "Count of packets sent since the previous report.
+                Will contain the previous value if there
+                was no report for this time, or -1 if the value
+                has never been reported."
+          REFERENCE
+              "Section 5.17 of the [RFC4710]"
+       ::= { raqmonQosEntry 6 }
+
+       raqmonQosSentOctets OBJECT-TYPE
+           SYNTAX Integer32 (-1 | 0..2147483647)
+           UNITS  "octets"
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "Count of octets sent since the previous report.
+                Will contain the previous value if there
+                was no report for this time, or -1 if the value
+                has never been reported."
+           REFERENCE
+               "Section 5.19 of the [RFC4710]"
+           ::= { raqmonQosEntry 7 }
+
+       raqmonQosLostPackets OBJECT-TYPE
+           SYNTAX Integer32 (-1 | 0..2147483647)
+           UNITS  "packets"
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "A count of packets lost as observed by this receiver
+                since the previous report.  Will contain the previous
+                value if there was no report for this time, or -1 if
+                the value has never been reported."
+           REFERENCE
+               "Section 5.20 of the [RFC4710]"
+       ::= { raqmonQosEntry 8 }
+
+       raqmonQosSessionStatus OBJECT-TYPE
+           SYNTAX SnmpAdminString
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "The session status.  Will contain the previous value
+                if there was no report for this time or the zero-length
+                string if no value was ever reported."
+           REFERENCE
+               "Section 5.10 of the [RFC4710]"
+           ::= { raqmonQosEntry 9 }
+
+
+       raqmonParticipantAddrTable OBJECT-TYPE
+           SYNTAX SEQUENCE OF RaqmonParticipantAddrEntry
+           MAX-ACCESS not-accessible
+           STATUS current
+           DESCRIPTION
+               "Maps raqmonParticipantAddr to the index of the
+                raqmonParticipantTable.  This table allows
+                management applications to find entries
+                sorted by raqmonParticipantAddr rather than
+                raqmonParticipantStartDate."
+           ::= { raqmonSession 3 }
+
+       raqmonParticipantAddrEntry OBJECT-TYPE
+           SYNTAX RaqmonParticipantAddrEntry
+           MAX-ACCESS not-accessible
+           STATUS current
+           DESCRIPTION
+               "Each entry corresponds to exactly one entry in the
+                raqmonParticipantEntry: the entry containing the
+                index pair raqmonParticipantStartDate,
+                raqmonParticipantIndex.
+
+</p><p class="rfcparagraph">                Note that there is no concern about the indexation of
+                this table exceeding the limits defined by RFC 2578,
+                Section 3.5.  According to [RFC4710], Section
+                5.1, only IPv4 and IPv6 addresses can be reported as
+                participant addresses."
+           INDEX { raqmonParticipantAddrType,
+                   raqmonParticipantAddr,
+                   raqmonParticipantStartDate,
+                   raqmonParticipantIndex }
+           ::= { raqmonParticipantAddrTable 1 }
+
+       RaqmonParticipantAddrEntry ::=
+           SEQUENCE { raqmonParticipantAddrEndDate DateAndTime }
+
+       raqmonParticipantAddrEndDate OBJECT-TYPE
+           SYNTAX DateAndTime
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "The value of raqmonParticipantEndDate for the
+                corresponding raqmonParticipantEntry."
+           ::= { raqmonParticipantAddrEntry 1 }
+
+
+       raqmonException OBJECT IDENTIFIER ::= { raqmonMIBObjects 2 }
+
+       raqmonSessionExceptionTable OBJECT-TYPE
+           SYNTAX SEQUENCE OF RaqmonSessionExceptionEntry
+           MAX-ACCESS not-accessible
+           STATUS current
+           DESCRIPTION
+               "This table defines thresholds for the management
+                station to get notifications about sessions that
+                encountered poor quality of service.
+
+</p><p class="rfcparagraph">                The information in this table MUST be persistent
+                across agent reboots."
+           ::= { raqmonException 2 }
+
+       raqmonSessionExceptionEntry OBJECT-TYPE
+           SYNTAX RaqmonSessionExceptionEntry
+           MAX-ACCESS not-accessible
+           STATUS current
+           DESCRIPTION
+               "A conceptual row in the raqmonSessionExceptionTable."
+           INDEX { raqmonSessionExceptionIndex }
+           ::= { raqmonSessionExceptionTable 1 }
+
+       RaqmonSessionExceptionEntry ::=
+           SEQUENCE {
+               raqmonSessionExceptionIndex                Unsigned32,
+               raqmonSessionExceptionIAJitterThreshold    Unsigned32,
+               raqmonSessionExceptionNetRTTThreshold      Unsigned32,
+               raqmonSessionExceptionLostPacketsThreshold Unsigned32,
+               raqmonSessionExceptionRowStatus            RowStatus
+               }
+
+       raqmonSessionExceptionIndex OBJECT-TYPE
+           SYNTAX Unsigned32 (1..65535)
+           MAX-ACCESS not-accessible
+           STATUS current
+           DESCRIPTION
+               "An index that uniquely identifies an
+                entry in the raqmonSessionExceptionTable.
+                Management applications can determine unused indices
+                by performing GetNext or GetBulk operations on the
+                Table."
+           ::= { raqmonSessionExceptionEntry 2 }
+
+       raqmonSessionExceptionIAJitterThreshold OBJECT-TYPE
+           SYNTAX Unsigned32
+           UNITS  "milliseconds"
+           MAX-ACCESS read-create
+           STATUS current
+           DESCRIPTION
+               "Threshold for jitter.
+                The value during a session must be greater than or
+                equal to this value for an exception to be created."
+           ::= { raqmonSessionExceptionEntry 3 }
+
+       raqmonSessionExceptionNetRTTThreshold OBJECT-TYPE
+           SYNTAX Unsigned32
+           UNITS  "milliseconds"
+           MAX-ACCESS read-create
+           STATUS current
+           DESCRIPTION
+               "Threshold for round-trip time.
+                The value during a session must be greater than or
+                equal to this value for an exception to be created."
+           ::= { raqmonSessionExceptionEntry 4 }
+
+       raqmonSessionExceptionLostPacketsThreshold OBJECT-TYPE
+           SYNTAX Unsigned32 (0..1000)
+           UNITS  "tenth of a percent"
+           MAX-ACCESS read-create
+           STATUS current
+           DESCRIPTION
+               "Threshold for lost packets in units of tenths
+                of a percent.  The value during a session must
+                be greater than or equal to this value for an
+                exception to be created."
+           ::= { raqmonSessionExceptionEntry 5 }
+
+       raqmonSessionExceptionRowStatus OBJECT-TYPE
+           SYNTAX RowStatus
+           MAX-ACCESS read-create
+           STATUS current
+           DESCRIPTION
+               "This object has a value of 'active' when
+                exceptions are being monitored by the system.
+                A newly-created conceptual row must have all
+                the read-create objects initialized before
+                becoming 'active'.  A conceptual row that is in
+                the 'notReady' or 'notInService' state MAY be
+                removed after 5 minutes.  No writeable objects
+                can be changed while the row is active."
+           ::= { raqmonSessionExceptionEntry 7 }
+
+
+       raqmonConfig OBJECT IDENTIFIER ::= { raqmonMIBObjects 3 }
+
+       raqmonConfigPort OBJECT-TYPE
+           SYNTAX InetPortNumber
+           MAX-ACCESS read-write
+           STATUS current
+           DESCRIPTION
+               "The UDP port to listen on for RAQMON reports,
+                running on transport protocols other than SNMP.
+                If the RAQMON PDU transport protocol is SNMP,
+                a write operation on this object has no effect, as
+                the standard port 162 is always used.
+                The value of this object MUST be persistent across
+                agent reboots."
+           ::= { raqmonConfig 1 }
+
+          raqmonConfigPduTransport OBJECT-TYPE
+            SYNTAX BITS
+               {
+                   other(0),<br>
+                   tcp(1),<br>
+                   snmp(2)
+               }
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "The PDU transport(s) used by this collector.
+                If other(0) is set, the collector supports a<br>
+                transport other than SNMP or TCP.
+                If tcp(1) is set, the collector supports TCP as a<br>
+                transport protocol.
+                If snmp(2) is set, the collector supports SNMP as a<br>
+                transport protocol."
+           ::= { raqmonConfig 2 }
+
+
+       raqmonConfigRaqmonPdus OBJECT-TYPE
+           SYNTAX Counter32
+           UNITS  "PDUs"
+           MAX-ACCESS read-only
+           STATUS current
+           DESCRIPTION
+               "Count of RAQMON PDUs received by the Collector."
+           ::= { raqmonConfig 3 }
+
+       raqmonConfigRDSTimeout OBJECT-TYPE
+           SYNTAX Unsigned32
+           MAX-ACCESS read-write
+           STATUS current
+           DESCRIPTION
+               "The number of seconds since the reception of the
+                last RAQMON PDU from a RDS after which a session
+                between the respective RDS and the collector will be
+                considered terminated.
+                The value of this object MUST be persistent across
+                agent reboots."
+           ::= { raqmonConfig 4 }
+
+
+
+
+       raqmonConformance OBJECT IDENTIFIER ::= { raqmonMIB 2 }
+
+
+       raqmonCompliances OBJECT IDENTIFIER ::= { raqmonConformance 1 }
+       raqmonGroups OBJECT IDENTIFIER ::= { raqmonConformance 2 }
+
+       raqmonCompliance MODULE-COMPLIANCE
+           STATUS  current
+           DESCRIPTION
+               "Describes the requirements for conformance to the
+                RAQMON MIB."
+           MODULE  -- this module
+           MANDATORY-GROUPS { raqmonCollectorGroup,
+                              raqmonCollectorNotificationsGroup
+                            }
+
+           OBJECT raqmonParticipantAddrType
+           SYNTAX  InetAddressType { ipv4(1), ipv6(2) }<br>
+           DESCRIPTION
+               "Only IPv4 and IPv6 addresses need to be supported."
+
+           OBJECT raqmonParticipantAddr
+           SYNTAX  InetAddress (SIZE(4|16))
+           DESCRIPTION
+               "Only IPv4 and IPv6 addresses need to be supported."
+
+           OBJECT raqmonParticipantPeerAddrType
+           SYNTAX  InetAddressType { ipv4(1), ipv6(2) }<br>
+           DESCRIPTION
+               "Only IPv4 and IPv6 addresses need to be supported."
+
+           OBJECT raqmonParticipantPeerAddr
+           SYNTAX  InetAddress (SIZE(4|16))
+           DESCRIPTION
+               "Only IPv4 and IPv6 addresses need to be supported."
+
+              ::= { raqmonCompliances 1 }
+       raqmonCollectorGroup OBJECT-GROUP
+           OBJECTS {
+               raqmonParticipantReportCaps,
+               raqmonParticipantAddrType,
+               raqmonParticipantAddr,
+               raqmonParticipantSendPort,
+               raqmonParticipantRecvPort,
+               raqmonParticipantSetupDelay,
+               raqmonParticipantName,
+               raqmonParticipantAppName,
+               raqmonParticipantQosCount,
+               raqmonParticipantEndDate,
+               raqmonParticipantDestPayloadType,
+               raqmonParticipantSrcPayloadType,
+               raqmonParticipantActive,
+               raqmonParticipantPeer,
+               raqmonParticipantPeerAddrType,
+               raqmonParticipantPeerAddr,
+               raqmonParticipantSrcL2Priority,
+               raqmonParticipantDestL2Priority,
+               raqmonParticipantSrcDSCP,
+               raqmonParticipantDestDSCP,
+               raqmonParticipantCpuMean,
+               raqmonParticipantCpuMin,
+               raqmonParticipantCpuMax,
+               raqmonParticipantMemoryMean,
+               raqmonParticipantMemoryMin,
+               raqmonParticipantMemoryMax,
+               raqmonParticipantNetRTTMean,
+               raqmonParticipantNetRTTMin,
+               raqmonParticipantNetRTTMax,
+               raqmonParticipantIAJitterMean,
+               raqmonParticipantIAJitterMin,
+               raqmonParticipantIAJitterMax,
+               raqmonParticipantIPDVMean,
+               raqmonParticipantIPDVMin,
+               raqmonParticipantIPDVMax,
+               raqmonParticipantNetOwdMean,
+               raqmonParticipantNetOwdMin,
+               raqmonParticipantNetOwdMax,
+               raqmonParticipantAppDelayMean,
+               raqmonParticipantAppDelayMin,
+               raqmonParticipantAppDelayMax,
+               raqmonParticipantPacketsRcvd,
+               raqmonParticipantPacketsSent,
+               raqmonParticipantOctetsRcvd,
+               raqmonParticipantOctetsSent,
+               raqmonParticipantLostPackets,
+               raqmonParticipantLostPacketsFrct,
+               raqmonParticipantDiscards,
+               raqmonParticipantDiscardsFrct,
+               raqmonQoSEnd2EndNetDelay,
+               raqmonQoSInterArrivalJitter,
+               raqmonQosRcvdPackets,
+               raqmonQosRcvdOctets,
+               raqmonQosSentPackets,
+               raqmonQosSentOctets,
+               raqmonQosLostPackets,
+               raqmonQosSessionStatus,
+               raqmonParticipantAddrEndDate,
+               raqmonConfigPort,
+               raqmonSessionExceptionIAJitterThreshold,
+               raqmonSessionExceptionNetRTTThreshold,
+               raqmonSessionExceptionLostPacketsThreshold,
+               raqmonSessionExceptionRowStatus,
+               raqmonConfigPduTransport,
+               raqmonConfigRaqmonPdus,
+               raqmonConfigRDSTimeout}
+           STATUS current
+           DESCRIPTION
+               "Objects used in RAQMON by a collector."
+
+
+           ::= { raqmonGroups 1 }
+
+       raqmonCollectorNotificationsGroup NOTIFICATION-GROUP
+           NOTIFICATIONS { raqmonSessionAlarm }
+           STATUS current
+           DESCRIPTION
+               "Notifications emitted by a RAQMON collector."
+           ::= { raqmonGroups 2 }
+
+   END
+
+	<a name="section-6"><h2>6.   Security Considerations</h2></a>
+
+   There are a number of management objects defined in this MIB module
+   with a MAX-ACCESS clause of read-write.  Such objects may be
+   considered sensitive or vulnerable in some network environments.  The
+   support for SET operations in a non-secure environment without proper
+   protection can have a negative effect on network operations.
+
+</p><p class="rfcparagraph">   Setting the value of the object raqmonRDSTimeout to too low a value
+   would result in RDS sessions being terminated sooner than necessary,
+   while setting at too high a value may result in terminated sessions
+   continuing to be managed, with unnecessary memory allocations.
+   Setting the following object to incorrect values can result in the
+   collectors either flooding the management applications with
+   unnecessary notifications, or not sending notifications when the QoS
+   in the network may be degraded.
+
+</p><p class="rfcparagraph">      raqmonSessionExceptionIAJitterThreshold
+      raqmonSessionExceptionRTTThreshold
+      raqmonSessionExceptionLostPacketsThreshold
+
+   Setting the raqmonConfigPort object to incorrect values can result in
+   the collector not being able to receive RAQMON PDUs from the data
+   sources.
+
+</p><p class="rfcparagraph">   Some of the readable objects in this MIB module (i.e., objects with a
+   MAX-ACCESS other than not-accessible) may be considered sensitive or
+   vulnerable in some network environments.  These are:
+
+</p><p class="rfcparagraph">      raqmonParticipantTable
+      raqmonQoSTable
+      raqmonParticpantAddrTable
+
+   Unauthorized exposure of these objects may lead to disclosure of the
+   addresses of the participants in applications, or information about
+   the traffic patents of the applications, which may be considered
+   sensitive in certain environments.
+
+</p><p class="rfcparagraph">   It is thus important to control even GET and/or NOTIFY access to
+   these objects and possibly to even encrypt their values when sending
+   them over the network via SNMP.
+
+</p><p class="rfcparagraph">   The structure of the RAQMON tables limits what can be usefully done
+   for access control configuration using View-based Access Control
+   Model (VACM).  For example, with these structures it would not be
+   possible to provide a group, with access to performance data for a
+   specific group of devices, since the index values for
+   raqmonParticpantEntry cannot be known in advance. Likewise,
+   raqmonSessionExceptionEntries apply to all entries in the
+   raqmonQoSTable.
+
+</p><p class="rfcparagraph">   SNMP versions prior to SNMPv3 did not include adequate security.
+   Even if the network itself is secure (for example by using IPsec),
+   even then, there is no control as to who on the secure network is
+   allowed to access and GET/SET (read/change/create/delete) the objects
+   in this MIB module.
+   It is RECOMMENDED that implementers consider the security features as
+   provided by the SNMPv3 framework (see [RFC3410], section 8),
+   including full support for the SNMPv3 cryptographic mechanisms (for
+   authentication and privacy).
+
+</p><p class="rfcparagraph">   Further, deployment of SNMP versions prior to SNMPv3 is NOT
+   RECOMMENDED.  Instead, it is RECOMMENDED to deploy SNMPv3 and to
+   enable cryptographic security.  It is then a customer/operator
+   responsibility to ensure that the SNMP entity giving access to an
+   instance of this MIB module is properly configured to give access to
+   the objects only to those principals (users) that have legitimate
+   rights to indeed GET or SET (change/create/delete) them.
+
+</p><p class="rfcparagraph">	<a name="section-7"><h2>7.   IANA Considerations</h2></a>
+
+   No requirements from IANA are defined in this document.  The root OID
+   of the MIB module defined in this document belongs to the RMON
+   subtree, as reserved in [RFC3737].
+
+</p><p class="rfcparagraph">	<a name="section-8"><h2>8.   Acknowledgements</h2></a>
+
+   Richard Smith created the first proprietary version of this MIB.
+
+</p><p class="rfcparagraph">   The authors would also like to thank all the participants in the
+   Remote Monitoring MIB Working Group, and especially Andy Bierman,
+   Steven Waldbusser, Alan Clark, Itai Zilbershtein, and Robert Cole for
+   interesting discussions, ideas, comments, and direct contributions to
+   this work.
+
+</p><p class="rfcparagraph">   The authors would also like to thank Randy Presuhn for the precious
+   technical comments, as well as for the laborious activity of
+   reviewing the syntax and spelling of the document.
+
+</p><p class="rfcparagraph">   The authors would like to thank Bert Wijnen for the review of the
+   final versions of the document, as well as for the guidance provided
+   during the whole period of editing.
+	<a name="section-9"><h2>9.   Normative References</h2></a>
+
+   [RFC2119]   Bradner, S., "Key words for use in RFCs to Indicate
+               Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">   [RFC2578]   McCloghrie, K., Perkins, D., Schoenwaelder, J., Case, J.,
+               Rose, M., and S. Waldbusser, "Structure of Management
+               Information Version 2 (SMIv2)", STD 58, RFC 2578, April
+               1999.
+
+</p><p class="rfcparagraph">   [RFC2579]   McCloghrie, K., Perkins, D., Schoenwaelder, J., Case, J.,
+               Rose, M., and S. Waldbusser, "Textual Conventions for
+               SMIv2", STD 58, RFC 2579, April 1999.
+
+</p><p class="rfcparagraph">   [RFC2580]   McCloghrie, K., Perkins, D., Schoenwaelder, J., Case, J.,
+               Rose, M., and S. Waldbusser, "Conformance Statements for
+               SMIv2", STD 58, RFC 2580, April 1999.
+
+</p><p class="rfcparagraph">   [RFC2819]   Waldbusser, S., "Remote Network Monitoring Management
+               Information Base", STD 59, RFC 2819, May 2000.
+
+</p><p class="rfcparagraph">   [RFC3411]   Harrington, D., Preshun, R., and B. Wijnen, "An
+               Architecture for Describing Simple Network Management
+               Protocol (SNMP) Management Frameworks", STD 62, RFC 3411,
+               December 2002.
+
+</p><p class="rfcparagraph">   [RFC4001]   Daniele, M., Haberman, B., Routhier, S., and J.
+               Schoenwalder, "Textual Conventions for Internet Network
+               Addresses", RFC 4001, February 2005.
+
+</p><p class="rfcparagraph">   [RFC4710]   Siddiqui, A., Romascanu, D., and E. Golovinsky, "Real-
+               time Application Quality-of-Service Monitoring (RAQMON)
+               Framework", RFC 4710, October 2006.
+
+</p><p class="rfcparagraph">	<a name="section-10"><h2>10.   Informative References</h2></a>
+
+   [RFC3410]   Case, J., Mundy, R., Partain, D., and B. Stewart,
+               "Introduction and Applicability Statements for Internet-
+               Standard Management Framework", RFC 3410, December 2002.
+
+</p><p class="rfcparagraph">   [RFC4712]   Siddiqui, A., Romascanu, D., Golovinsky, E., Ramhman, M.,
+               and Y. Kim, "Transport Mappings for Real-time Application
+               Quality-of-Service Monitoring (RAQMON) Protocol Data Unit
+               (PDU)", RFC 4712, October 2006.
+
+</p><p class="rfcparagraph">   [RFC3737]   Wijnen, B. and A. Bierman, "IANA Guidelines for the
+               Registry of Remote Monitoring (RMON) MIB modules", RFC
+               3737, April 2004.
+Authors' Addresses
+
+   Anwar A. Siddiqui
+   Avaya Labs
+   307 Middletown Lincroft Road
+   Lincroft, New Jersey 07738
+   USA
+
+   Phone: +1 732 852-3200
+   Fax:   +1 732 817-5922
+   EMail: anwars@avaya.com
+
+
+   Dan Romascanu
+   Avaya
+   Atidim Technology Park, Bldg. #3
+   Tel Aviv, 61131
+   Israel
+
+   Phone: +972 3-645-8414
+   EMail: dromasca@avaya.com
+
+
+   Eugene Golovinsky
+
+   EMail: gene@alertlogic.net
+Full Copyright Statement
+
+   Copyright (C) The Internet Society (2006).<br>
+
+</p><p class="rfcparagraph">   This document is subject to the rights, licenses and restrictions
+   contained in BCP 78, and except as set forth therein, the authors
+   retain all their rights.
+
+</p><p class="rfcparagraph">   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY AND THE INTERNET
+   ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED,
+   INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE
+   INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED
+   WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Intellectual Property
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the procedures with respect to rights in RFC documents can be
+   found in BCP 78 and BCP 79.
+
+</p><p class="rfcparagraph">   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+</p><p class="rfcparagraph">   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at
+   ietf-ipr@ietf.org.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is provided by the IETF
+   Administrative Support Activity (IASA).
+
+</p>
+
+
+
+
+
+Siddiqui, et al.            Standards Track                    [Page 38]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

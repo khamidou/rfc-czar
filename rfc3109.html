@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                          R. Braden<br>Request for Comments: 3109                                           ISI<br>Category: Informational                                          R. Bush<br>                                                                   RGnet<br>                                                              J. Klensin<br>                                                                    AT&T<br>                                                                May 2001<br><br></p>
+                  <h1>
+               Request to Move STD 39 to Historic Status</h1>
+                  <h2>Status of this Memo</h2>
+
+   This memo provides information for the Internet community.  It does
+   not specify an Internet standard of any kind.  Distribution of this
+   memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (2001).  All Rights Reserved.<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This memo changes the status of STD 39, BBN Report 1822,
+   "Specification of the Interconnection of a Host and an IMP", from
+   Standard to Historic.
+
+</p><p class="rfcparagraph">	<a name="section-1"><h2>1.  Introduction</h2></a>
+
+   The Internet design grew out of the pioneering packet-switched
+   network called the ARPAnet.  The ARPAnet was a mostly-US national
+   network built of mini-computer packet switches, called Interface
+   Message Processors (IMPs), that were linked by 56kbps leased
+   telephone lines.  The IMPs were designed and built by Bolt, Beranek,
+   and Neumann (BBN) under contract with ARPA, beginning in 1968.  One
+   of BBN's first tasks was to define the standard hardware interface
+   between a host and a colocated IMP.  This interface was described in
+   BBN Report 1822 [BBN1822], which was a bible for the administrators
+   of the many different hosts that connected to the ARPAnet.
+
+</p><p class="rfcparagraph">   The BBN Report 1822 host/IMP hardware interface was bit-serial and
+   asynchronous.  In 1968, the 8-bit byte had not yet been adopted as an
+   industry standard, so the interface had to cope with word-based
+   machines with arbitrary word length -- some common word lengths were
+   8, 12, 16, 24, 36, and 60, but there were others.  From the software
+   viewpoint, Report 1822 defined what would today be called the link-
+   layer access protocol for the ARPAnet.
+   In 1983 the US DoD moved the ARPAnet technology to TCP/IP and split
+   off parts of the ARPAnet to form a production facility called MILNET.
+   The DoD mandated a byte-oriented, X.25-based interface for the MILNET
+   IMPs.  However, the machines on the research-oriented ARPAnet
+   continued to use the 1822 interface under the new Internet protocol
+   suite.  Therefore, BBN Report 1822 was made an Internet Standard, STD
+   39, although the report was not republished as an RFC.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.  Action</h2></a>
+
+   Since the ARPAnet technology and the BBN 1822 interface are no longer
+   in use, the IESG is moving BBN Report 1822 from Standard to Historic
+   status.  The STD number 39 is retired.
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.  Security Considerations</h2></a>
+
+   Moving STD 39 to historic has no known effect on the security of the
+   Internet.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.  References</h2></a>
+
+   [BBN1822] STD 39 is BBN Report 1822 "Specification for the
+             Interconnection of a Host and an IMP".  This can be ordered
+             from Bolt, Beranek, and Newman, 10 Moulton Street,
+             Cambridge, MA 02138.
+	<a name="section-5"><h2>5.  Authors' Addresses</h2></a>
+
+   Robert Braden
+   USC/Information Sciences Institute
+   4676 Admiralty Way
+   Marina del Rey, CA 90292-6695
+
+   Phone: +1 310-822-1511
+   EMail: braden@isi.edu
+
+
+   Randy Bush
+   5147 Crystal Springs
+   Bainbridge Island, WA US-98110
+
+   Phone: +1 206-780-0431
+   EMail: randy@psg.com
+
+
+   John C. Klensin
+   1770 Massachusetts Ave, Suite 322
+   Cambridge, MA 02140, USA
+
+   EMail: klensin@jck.com
+	<a name="section-6"><h2>6.  Full Copyright Statement</h2></a>
+
+   Copyright (C) The Internet Society (2001).  All Rights Reserved.<br>
+
+</p><p class="rfcparagraph">   This document and translations of it may be copied and furnished to
+   others, and derivative works that comment on or otherwise explain it
+   or assist in its implementation may be prepared, copied, published
+   and distributed, in whole or in part, without restriction of any
+   kind, provided that the above copyright notice and this paragraph are
+   included on all such copies and derivative works.  However, this
+   document itself may not be modified in any way, such as by removing
+   the copyright notice or references to the Internet Society or other
+   Internet organizations, except as needed for the purpose of
+   developing Internet standards in which case the procedures for
+   copyrights defined in the Internet Standards process must be
+   followed, or as required to translate it into languages other than
+   English.
+
+</p><p class="rfcparagraph">   The limited permissions granted above are perpetual and will not be
+   revoked by the Internet Society or its successors or assigns.
+
+</p><p class="rfcparagraph">   This document and the information contained herein is provided on an
+   "AS IS" basis and THE INTERNET SOCIETY AND THE INTERNET ENGINEERING
+   TASK FORCE DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING
+   BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION
+   HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED WARRANTIES OF
+   MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is currently provided by the
+   Internet Society.
+
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Braden, et al.               Informational                      [Page 4]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

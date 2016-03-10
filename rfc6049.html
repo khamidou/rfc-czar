@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph">Internet Engineering Task Force (IETF)                         A. Morton
+Request for Comments: 6049                                     AT&T Labs
+Category: Standards Track                                     E. Stephan
+ISSN: 2070-1721                                    France Telecom Orange
+                                                            January 2011
+
+
+                     Spatial Composition of Metrics
+
+<h2>Abstract</h2>
+
+   This memo utilizes IP performance metrics that are applicable to both
+   complete paths and sub-paths, and it defines relationships to compose
+   a complete path metric from the sub-path metrics with some accuracy
+   with regard to the actual metrics.  This is called "spatial
+   composition" in RFC 2330.  The memo refers to the framework for
+   metric composition, and provides background and motivation for
+   combining metrics to derive others.  The descriptions of several
+   composed metrics and statistics follow.
+
+</p><p class="rfcparagraph">Status of This Memo
+
+   This is an Internet Standards Track document.
+
+</p><p class="rfcparagraph">   This document is a product of the Internet Engineering Task Force
+   (IETF).  It represents the consensus of the IETF community.  It has
+   received public review and has been approved for publication by the
+   Internet Engineering Steering Group (IESG).  Further information on
+   Internet Standards is available in Section 2 of RFC 5741.
+
+</p><p class="rfcparagraph">   Information about the current status of this document, any errata,
+   and how to provide feedback on it may be obtained at
+   http://www.rfc-editor.org/info/rfc6049.
+<h2>Copyright Notice</h2>
+
+   Copyright (c) 2011 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+</p><p class="rfcparagraph">   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (http://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
+   the Trust Legal Provisions and are provided without warranty as
+   described in the Simplified BSD License.
+
+</p><p class="rfcparagraph">   This document may contain material from IETF Documents or IETF
+   Contributions published or made publicly available before November
+   10, 2008.  The person(s) controlling the copyright in some of this
+   material may not have granted the IETF Trust the right to allow
+   modifications of such material outside the IETF Standards Process.
+   Without obtaining an adequate license from the person(s) controlling
+   the copyright in such materials, this document may not be modified
+   outside the IETF Standards Process, and derivative works of it may
+   not be created outside the IETF Standards Process, except to format
+   it for publication as an RFC or to translate it into languages other
+   than English.
+<h2>Table of Contents</h2>
+<a href="#section-1" class="">1. Introduction ...................................................</a><br>
+<a href="#section-1.1" class="indent-1">1.1. Motivation ................................................</a><br>
+<a href="#section-1.2" class="indent-1">1.2. Requirements Language .....................................</a><br>
+<a href="#section-2" class="">2. Scope and Application ..........................................</a><br>
+<a href="#section-2.1" class="indent-1">2.1. Scope of Work .............................................</a><br>
+<a href="#section-2.2" class="indent-1">2.2. Application ...............................................</a><br>
+<a href="#section-2.3" class="indent-1">2.3. Incomplete Information ....................................</a><br>
+<a href="#section-3" class="">3. Common Specifications for Composed Metrics .....................</a><br>
+<a href="#section-3.1" class="indent-1">3.1. Name: Type-P ..............................................</a><br>
+<a href="#section-3.1.1" class="indent-2">3.1.1. Metric Parameters ..................................</a><br>
+<a href="#section-3.1.2" class="indent-2">3.1.2. Definition and Metric Units ........................</a><br>
+<a href="#section-3.1.3" class="indent-2">3.1.3. Discussion and Other Details .......................</a><br>
+<a href="#section-3.1.4" class="indent-2">3.1.4. Statistic ..........................................</a><br>
+<a href="#section-3.1.5" class="indent-2">3.1.5. Composition Function ...............................</a><br>
+<a href="#section-3.1.6" class="indent-2">3.1.6. Statement of Conjecture and Assumptions ...........</a><br>
+<a href="#section-3.1.7" class="indent-2">3.1.7. Justification of the Composition Function .........</a><br>
+<a href="#section-3.1.8" class="indent-2">3.1.8. Sources of Deviation from the Ground Truth ........</a><br>
+<a href="#section-3.1.9" class="indent-2">3.1.9. Specific Cases where the Conjecture Might Fail ....</a><br>
+<a href="#section-3.1.10" class="indent-2">3.1.10. Application of Measurement Methodology ...........</a><br>
+<a href="#section-4" class="">4. One-Way Delay Composed Metrics and Statistics .................</a><br>
+<a href="#section-4.1" class="indent-1">4.1. Name: Type-P-Finite-One-way-Delay-<Sample>-Stream ........</a><br>
+<a href="#section-4.1.1" class="indent-2">4.1.1. Metric Parameters .................................</a><br>
+<a href="#section-4.1.2" class="indent-2">4.1.2. Definition and Metric Units .......................</a><br>
+<a href="#section-4.1.3" class="indent-2">4.1.3. Discussion and Other Details ......................</a><br>
+<a href="#section-4.1.4" class="indent-2">4.1.4. Statistic .........................................</a><br>
+<a href="#section-4.2" class="indent-1">4.2. Name: Type-P-Finite-Composite-One-way-Delay-Mean .........</a><br>
+<a href="#section-4.2.1" class="indent-2">4.2.1. Metric Parameters .................................</a><br>
+<a href="#section-4.2.2" class="indent-2">4.2.2. Definition and Metric Units of the Mean Statistic .</a><br>
+<a href="#section-4.2.3" class="indent-2">4.2.3. Discussion and Other Details ......................</a><br>
+<a href="#section-4.2.4" class="indent-2">4.2.4. Statistic .........................................</a><br>
+<a href="#section-4.2.5" class="indent-2">4.2.5. Composition Function: Sum of Means ................</a><br>
+<a href="#section-4.2.6" class="indent-2">4.2.6. Statement of Conjecture and Assumptions ...........</a><br>
+<a href="#section-4.2.7" class="indent-2">4.2.7. Justification of the Composition Function .........</a><br>
+<a href="#section-4.2.8" class="indent-2">4.2.8. Sources of Deviation from the Ground Truth ........</a><br>
+<a href="#section-4.2.9" class="indent-2">4.2.9. Specific Cases where the Conjecture Might Fail ....</a><br>
+<a href="#section-4.2.10" class="indent-2">4.2.10. Application of Measurement Methodology ...........</a><br>
+<a href="#section-4.3" class="indent-1">4.3. Name: Type-P-Finite-Composite-One-way-Delay-Minimum ......</a><br>
+<a href="#section-4.3.1" class="indent-2">4.3.1. Metric Parameters .................................</a><br>
+           4.3.2. Definition and Metric Units of the Minimum
+                  Statistic ..........................................16
+<a href="#section-4.3.3" class="indent-2">4.3.3. Discussion and Other Details ......................</a><br>
+<a href="#section-4.3.4" class="indent-2">4.3.4. Statistic .........................................</a><br>
+<a href="#section-4.3.5" class="indent-2">4.3.5. Composition Function: Sum of Minima ...............</a><br>
+<a href="#section-4.3.6" class="indent-2">4.3.6. Statement of Conjecture and Assumptions ...........</a><br>
+<a href="#section-4.3.7" class="indent-2">4.3.7. Justification of the Composition Function .........</a><br>
+<a href="#section-4.3.8" class="indent-2">4.3.8. Sources of Deviation from the Ground Truth ........</a><br>
+<a href="#section-4.3.9" class="indent-2">4.3.9. Specific Cases where the Conjecture Might Fail ....</a><br>
+<a href="#section-4.3.10" class="indent-2">4.3.10. Application of Measurement Methodology ...........</a><br>
+<a href="#section-5" class="">5. Loss Metrics and Statistics ...................................</a><br>
+      5.1. Type-P-Composite-One-way-Packet-Loss-Empirical-Probability 18
+<a href="#section-5.1.1" class="indent-2">5.1.1. Metric Parameters .................................</a><br>
+<a href="#section-5.1.2" class="indent-2">5.1.2. Definition and Metric Units .......................</a><br>
+<a href="#section-5.1.3" class="indent-2">5.1.3. Discussion and Other Details ......................</a><br>
+           5.1.4. Statistic:
+                  Type-P-One-way-Packet-Loss-Empirical-Probability ...18
+           5.1.5. Composition Function: Composition of
+                  Empirical Probabilities ............................18
+<a href="#section-5.1.6" class="indent-2">5.1.6. Statement of Conjecture and Assumptions ...........</a><br>
+<a href="#section-5.1.7" class="indent-2">5.1.7. Justification of the Composition Function .........</a><br>
+<a href="#section-5.1.8" class="indent-2">5.1.8. Sources of Deviation from the Ground Truth ........</a><br>
+<a href="#section-5.1.9" class="indent-2">5.1.9. Specific Cases where the Conjecture Might Fail ....</a><br>
+<a href="#section-5.1.10" class="indent-2">5.1.10. Application of Measurement Methodology ...........</a><br>
+<a href="#section-6" class="">6. Delay Variation Metrics and Statistics ........................</a><br>
+<a href="#section-6.1" class="indent-1">6.1. Name: Type-P-One-way-pdv-refmin-<Sample>-Stream ..........</a><br>
+<a href="#section-6.1.1" class="indent-2">6.1.1. Metric Parameters .................................</a><br>
+<a href="#section-6.1.2" class="indent-2">6.1.2. Definition and Metric Units .......................</a><br>
+<a href="#section-6.1.3" class="indent-2">6.1.3. Discussion and Other Details ......................</a><br>
+<a href="#section-6.1.4" class="indent-2">6.1.4. Statistics: Mean, Variance, Skewness, Quantile ....</a><br>
+<a href="#section-6.1.5" class="indent-2">6.1.5. Composition Functions .............................</a><br>
+<a href="#section-6.1.6" class="indent-2">6.1.6. Statement of Conjecture and Assumptions ...........</a><br>
+<a href="#section-6.1.7" class="indent-2">6.1.7. Justification of the Composition Function .........</a><br>
+<a href="#section-6.1.8" class="indent-2">6.1.8. Sources of Deviation from the Ground Truth ........</a><br>
+<a href="#section-6.1.9" class="indent-2">6.1.9. Specific Cases where the Conjecture Might Fail ....</a><br>
+<a href="#section-6.1.10" class="indent-2">6.1.10. Application of Measurement Methodology ...........</a><br>
+<a href="#section-7" class="">7. Security Considerations .......................................</a><br>
+<a href="#section-7.1" class="indent-1">7.1. Denial-of-Service Attacks ................................</a><br>
+<a href="#section-7.2" class="indent-1">7.2. User Data Confidentiality ................................</a><br>
+<a href="#section-7.3" class="indent-1">7.3. Interference with the Metrics ............................</a><br>
+<a href="#section-8" class="">8. IANA Considerations ...........................................</a><br>
+<a href="#section-9" class="">9. Contributors and Acknowledgements .............................</a><br>
+<a href="#section-10" class="">10. References ...................................................</a><br>
+<a href="#section-10.1" class="indent-1">10.1. Normative References ....................................</a><br>
+<a href="#section-10.2" class="indent-1">10.2. Informative References ..................................</a><br>
+
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   The IP Performance Metrics (IPPM) framework [RFC2330] describes two
+   forms of metric composition: spatial and temporal.  The composition
+   framework [RFC5835] expands and further qualifies these original
+   forms into three categories.  This memo describes spatial
+   composition, one of the categories of metrics under the umbrella of
+   the composition framework.
+   Spatial composition encompasses the definition of performance metrics
+   that are applicable to a complete path, based on metrics collected on
+   various sub-paths.
+
+</p><p class="rfcparagraph">   The main purpose of this memo is to define the deterministic
+   functions that yield the complete path metrics using metrics of the
+   sub-paths.  The effectiveness of such metrics is dependent on their
+   usefulness in analysis and applicability with practical measurement
+   methods.
+
+</p><p class="rfcparagraph">   The relationships may involve conjecture, and [RFC2330] lists four
+   points that the metric definitions should include:
+
+</p><p class="rfcparagraph">   o  the specific conjecture applied to the metric and assumptions of
+      the statistical model of the process being measured (if any; see
+      [RFC2330], Section 12),
+
+   o  a justification of the practical utility of the composition in
+      terms of making accurate measurements of the metric on the path,
+
+   o  a justification of the usefulness of the composition in terms of
+      making analysis of the path using A-frame concepts more effective,
+      and
+
+   o  an analysis of how the conjecture could be incorrect.
+
+</p><p class="rfcparagraph">   Also, [RFC2330] gives an example using the conjecture that the delay
+   of a path is very nearly the sum of the delays of the exchanges and
+   clouds of the corresponding path digest.  This example is
+   particularly relevant to those who wish to assess the performance of
+   an inter-domain path without direct measurement, and the performance
+   estimate of the complete path is related to the measured results for
+   various sub-paths instead.
+
+</p><p class="rfcparagraph">   Approximate functions between the sub-path and complete path metrics
+   are useful, with knowledge of the circumstances where the
+   relationships are/are not applicable.  For example, we would not
+   expect that delay singletons from each sub-path would sum to produce
+   an accurate estimate of a delay singleton for the complete path
+   (unless all the delays were essentially constant -- very unlikely).
+   However, other delay statistics (based on a reasonable sample size)
+   may have a sufficiently large set of circumstances where they are
+   applicable.
+	<a name="section-1.1"><h3>1.1   Motivation</h3></a>
+
+   One-way metrics defined in other RFCs (such as [RFC2679] and
+   [RFC2680]) all assume that the measurement can be practically carried
+   out between the source and the destination of interest.  Sometimes
+   there are reasons that the measurement cannot be executed from the
+   source to the destination.  For instance, the measurement path may
+   cross several independent domains that have conflicting policies,
+   measurement tools and methods, and measurement time assignment.  The
+   solution then may be the composition of several sub-path
+   measurements.  This means each domain performs the one-way
+   measurement on a sub-path between two nodes that are involved in the
+   complete path, following its own policy, using its own measurement
+   tools and methods, and using its own measurement timing.  Under the
+   appropriate conditions, one can combine the sub-path one-way metric
+   results to estimate the complete path one-way measurement metric with
+   some degree of accuracy.
+
+</p><p class="rfcparagraph">	<a name="section-1.2"><h3>1.2   Requirements Language</h3></a>
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in RFC 2119 [RFC2119].
+
+</p><p class="rfcparagraph">   In this memo, the characters "<=" should be read as "less than or
+   equal to" and ">=" as "greater than or equal to".
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Scope and Application</h2></a>
+
+	<a name="section-2.1"><h3>2.1   Scope of Work</h3></a>
+
+   For the primary IP Performance Metrics RFCs for loss [RFC2680], delay
+   [RFC2679], and delay variation [RFC3393], this memo gives a set of
+   metrics that can be composed from the same or similar sub-path
+   metrics.  This means that the composition function may utilize:
+
+</p><p class="rfcparagraph">   o  the same metric for each sub-path;
+
+</p><p class="rfcparagraph">   o  multiple metrics for each sub-path (possibly one that is the same
+      as the complete path metric);
+
+</p><p class="rfcparagraph">   o  a single sub-path metric that is different from the complete path
+      metric;
+
+</p><p class="rfcparagraph">   o  different measurement techniques like active [RFC2330], [RFC3432]
+      and passive [RFC5474].
+   We note a possibility: using a complete path metric and all but one
+   sub-path metric to infer the performance of the missing sub-path,
+   especially when the "last" sub-path metric is missing.  However, such
+   de-composition calculations, and the corresponding set of issues they
+   raise, are beyond the scope of this memo.
+
+</p><p class="rfcparagraph">	<a name="section-2.2"><h3>2.2   Application</h3></a>
+
+   The composition framework [RFC5835] requires the specification of the
+   applicable circumstances for each metric.  In particular, each
+   section addresses whether the metric:
+
+</p><p class="rfcparagraph">   o  Requires the same test packets to traverse all sub-paths or may
+      use similar packets sent and collected separately in each
+      sub-path.
+
+</p><p class="rfcparagraph">   o  Requires homogeneity of measurement methodologies or can allow a
+      degree of flexibility (e.g., active, active spatial division
+      [RFC5644], or passive methods produce the "same" metric).  Also,
+      the applicable sending streams will be specified, such as Poisson,
+      Periodic, or both.
+
+</p><p class="rfcparagraph">   o  Needs information or access that will only be available within an
+      operator's domain, or is applicable to inter-domain composition.
+
+</p><p class="rfcparagraph">   o  Requires synchronized measurement start and stop times in all
+      sub-paths or largely overlapping measurement intervals, or no
+      timing requirements.
+
+</p><p class="rfcparagraph">   o  Requires the assumption of sub-path independence with regard to
+      the metric being defined/composed or other assumptions.
+
+</p><p class="rfcparagraph">   o  Has known sources of inaccuracy/error and identifies the sources.
+
+</p><p class="rfcparagraph">	<a name="section-2.3"><h3>2.3   Incomplete Information</h3></a>
+
+   In practice, when measurements cannot be initiated on a sub-path (and
+   perhaps the measurement system gives up during the test interval),
+   then there will not be a value for the sub-path reported, and the
+   entire test result SHOULD be recorded as "undefined".  This case
+   should be distinguished from the case where the measurement system
+   continued to send packets throughout the test interval, but all were
+   declared lost.
+
+</p><p class="rfcparagraph">   When a composed metric requires measurements from sub-paths A, B, and
+   C, and one or more of the sub-path results are undefined, then the
+   composed metric SHOULD also be recorded as undefined.
+	<a name="section-3"><h2>3.   Common Specifications for Composed Metrics</h2></a>
+
+   To reduce the redundant information presented in the detailed metrics
+   sections that follow, this section presents the specifications that
+   are common to two or more metrics.  The section is organized using
+   the same subsections as the individual metrics, to simplify
+   comparisons.
+
+</p><p class="rfcparagraph">   Also, the index variables are represented as follows:
+
+</p><p class="rfcparagraph">   o  m = index for packets sent.
+
+</p><p class="rfcparagraph">   o  n = index for packets received.
+
+</p><p class="rfcparagraph">   o  s = index for involved sub-paths.
+
+</p><p class="rfcparagraph">	<a name="section-3.1"><h3>3.1   Name: Type-P</h3></a>
+
+   All metrics use the "Type-P" convention as described in [RFC2330].
+   The rest of the name is unique to each metric.
+
+</p><p class="rfcparagraph">	<a name="section-3.1.1"><h4>3.1.1   Metric Parameters</h4></a>
+
+   o  Src, the IP address of a host.
+
+</p><p class="rfcparagraph">   o  Dst, the IP address of a host.
+
+</p><p class="rfcparagraph">   o  T, a time (start of test interval).
+
+</p><p class="rfcparagraph">   o  Tf, a time (end of test interval).
+
+</p><p class="rfcparagraph">   o  lambda, a rate in reciprocal seconds (for Poisson Streams).
+
+</p><p class="rfcparagraph">   o  incT, the nominal duration of inter-packet interval, first bit to
+      first bit (for Periodic Streams).
+
+</p><p class="rfcparagraph">   o  dT, the duration of the allowed interval for Periodic Stream
+      sample start times.
+
+</p><p class="rfcparagraph">   o  T0, a time that MUST be selected at random from the interval
+      [T, T + dT] to start generating packets and taking measurements
+      (for Periodic Streams).
+
+</p><p class="rfcparagraph">   o  TstampSrc, the wire time of the packet as measured at MP(Src)
+      (measurement point at the source).
+
+</p><p class="rfcparagraph">   o  TstampDst, the wire time of the packet as measured at MP(Dst),
+      assigned to packets that arrive within a "reasonable" time.
+   o  Tmax, a maximum waiting time for packets at the destination, set
+      sufficiently long to disambiguate packets with long delays from
+      packets that are discarded (lost); thus, the distribution of delay
+      is not truncated.
+
+</p><p class="rfcparagraph">   o  M, the total number of packets sent between T0 and Tf.
+
+</p><p class="rfcparagraph">   o  N, the total number of packets received at Dst (sent between T0
+      and Tf).
+
+</p><p class="rfcparagraph">   o  S, the number of sub-paths involved in the complete Src-Dst path.
+
+</p><p class="rfcparagraph">   o  Type-P, as defined in [RFC2330], which includes any field that may
+      affect a packet's treatment as it traverses the network.
+
+</p><p class="rfcparagraph">   In metric names, the term "<Sample>" is intended to be replaced by
+   the name of the method used to define a sample of values of parameter
+   TstampSrc.  This can be done in several ways, including:
+
+</p><p class="rfcparagraph">   1.  Poisson: a pseudo-random Poisson process of rate lambda, whose
+       values fall between T and Tf.  The time interval between
+       successive values of TstampSrc will then average 1/lambda, as per
+       [RFC2330].
+
+</p><p class="rfcparagraph">   2.  Periodic: a Periodic stream process with pseudo-random start time
+       T0 between T and dT, and nominal inter-packet interval incT, as
+       per [RFC3432].
+
+</p><p class="rfcparagraph">	<a name="section-3.1.2"><h4>3.1.2   Definition and Metric Units</h4></a>
+
+   This section is unique for every metric.
+
+</p><p class="rfcparagraph">	<a name="section-3.1.3"><h4>3.1.3   Discussion and Other Details</h4></a>
+
+   This section is unique for every metric.
+
+</p><p class="rfcparagraph">	<a name="section-3.1.4"><h4>3.1.4   Statistic</h4></a>
+
+   This section is unique for every metric.
+
+</p><p class="rfcparagraph">	<a name="section-3.1.5"><h4>3.1.5   Composition Function</h4></a>
+
+   This section is unique for every metric.
+	<a name="section-3.1.6"><h4>3.1.6   Statement of Conjecture and Assumptions</h4></a>
+
+   This section is unique for each metric.  The term "ground truth" is
+   frequently used in these sections and is defined in Section 4.7 of
+   [RFC5835].
+
+</p><p class="rfcparagraph">	<a name="section-3.1.7"><h4>3.1.7   Justification of the Composition Function</h4></a>
+
+   It is sometimes impractical to conduct active measurements between
+   every Src-Dst pair.  Since the full mesh of N measurement points
+   grows as N x N, the scope of measurement may be limited by testing
+   resources.
+
+</p><p class="rfcparagraph">   There may be varying limitations on active testing in different parts
+   of the network.  For example, it may not be possible to collect the
+   desired sample size in each test interval when access link speed is
+   limited, because of the potential for measurement traffic to degrade
+   the user traffic performance.  The conditions on a low-speed access
+   link may be understood well enough to permit use of a small sample
+   size/rate, while a larger sample size/rate may be used on other
+   sub-paths.
+
+</p><p class="rfcparagraph">   Also, since measurement operations have a real monetary cost, there
+   is value in re-using measurements where they are applicable, rather
+   than launching new measurements for every possible source-destination
+   pair.
+
+</p><p class="rfcparagraph">	<a name="section-3.1.8"><h4>3.1.8   Sources of Deviation from the Ground Truth</h4></a>
+
+<a name="section-3.1.8.1"><h4>3.1.8.1   Sub-Path List Differs from Complete Path</h4></a>
+                        <a href="raw/text/rfc6049.txt" class="rawLink">raw</a>
+                    
+
+   The measurement packets, each having source and destination addresses
+   intended for collection at edges of the sub-path, may take a
+   different specific path through the network equipment and links when
+   compared to packets with the source and destination addresses of the
+   complete path.  Example sources of parallel paths include Equal Cost
+   Multi-Path and parallel (or bundled) links.  Therefore, the
+   performance estimated from the composition of sub-path measurements
+   may differ from the performance experienced by packets on the
+   complete path.  Multiple measurements employing sufficient sub-path
+   address pairs might produce bounds on the extent of this error.
+
+</p><p class="rfcparagraph">   We also note the possibility of re-routing during a measurement
+   interval, as it may affect the correspondence between packets
+   traversing the complete path and the sub-paths that were "involved"
+   prior to the re-route.
+<a name="section-3.1.8.2"><h4>3.1.8.2   Sub-Path Contains Extra Network Elements</h4></a>
+                        <a href="raw/text/rfc6049.txt" class="rawLink">raw</a>
+                    
+
+   Related to the case of an alternate path described above is the case
+   where elements in the measured path are unique to measurement system
+   connectivity.  For example, a measurement system may use a dedicated
+   link to a LAN switch, and packets on the complete path do not
+   traverse that link.  The performance of such a dedicated link would
+   be measured continuously, and its contribution to the sub-path
+   metrics SHOULD be minimized as a source of error.
+
+</p><p class="rfcparagraph"><a name="section-3.1.8.3"><h4>3.1.8.3   Sub-Paths Have Incomplete Coverage</h4></a>
+                        <a href="raw/text/rfc6049.txt" class="rawLink">raw</a>
+                    
+
+   Measurements of sub-path performance may not cover all the network
+   elements on the complete path.  For example, the network exchange
+   points might be excluded unless a cooperative measurement is
+   conducted.  In this example, test packets on the previous sub-path
+   are received just before the exchange point, and test packets on the
+   next sub-path are injected just after the same exchange point.
+   Clearly, the set of sub-path measurements SHOULD cover all critical
+   network elements in the complete path.
+
+</p><p class="rfcparagraph"><a name="section-3.1.8.4"><h4>3.1.8.4   Absence of Route</h4></a>
+                        <a href="raw/text/rfc6049.txt" class="rawLink">raw</a>
+                    
+
+   At a specific point in time, no viable route exists between the
+   complete path source and destination.  The routes selected for one or
+   more sub-paths therefore differ from the complete path.
+   Consequently, spatial composition may produce finite estimation of a
+   ground truth metric (see Section 4.7 of [RFC5835]) between a source
+   and a destination, even when the route between them is undefined.
+
+</p><p class="rfcparagraph">	<a name="section-3.1.9"><h4>3.1.9   Specific Cases where the Conjecture Might Fail</h4></a>
+
+   This section is unique for most metrics (see the metric-specific
+   sections).
+
+</p><p class="rfcparagraph">   For delay-related metrics, one-way delay always depends on packet
+   size and link capacity, since it is measured in [RFC2679] from first
+   bit to last bit.  If the size of an IP packet changes on its route
+   (due to encapsulation), this can influence delay performance.
+   However, the main error source may be the additional processing
+   associated with encapsulation and encryption/decryption if not
+   experienced or accounted for in sub-path measurements.
+
+</p><p class="rfcparagraph">   Fragmentation is a major issue for composition accuracy, since all
+   metrics require all fragments to arrive before proceeding, and
+   fragmented complete path performance is likely to be different from
+   performance with non-fragmented packets and composed metrics based on
+   non-fragmented sub-path measurements.
+   Highly manipulated routing can cause measurement error if not
+   expected and compensated for.  For example, policy-based MPLS routing
+   could modify the class of service for the sub-paths and complete
+   path.
+
+</p><p class="rfcparagraph">	<a name="section-3.1.10"><h4>3.1.10   Application of Measurement Methodology</h4></a>
+
+   o  The methodology SHOULD use similar packets sent and collected
+      separately in each sub-path, where "similar" in this case means
+      that Type-P contains as many equal attributes as possible, while
+      recognizing that there will be differences.  Note that Type-P
+      includes stream characteristics (e.g., Poisson, Periodic).
+
+</p><p class="rfcparagraph">   o  The methodology allows a degree of flexibility regarding test
+      stream generation (e.g., active or passive methods can produce an
+      equivalent result, but the lack of control over the source,
+      timing, and correlation of passive measurements is much more
+      challenging).
+
+</p><p class="rfcparagraph">   o  Poisson and/or Periodic streams are RECOMMENDED.
+
+</p><p class="rfcparagraph">   o  The methodology applies to both inter-domain and intra-domain
+      composition.
+
+</p><p class="rfcparagraph">   o  The methodology SHOULD have synchronized measurement time
+      intervals in all sub-paths, but largely overlapping intervals MAY
+      suffice.
+
+</p><p class="rfcparagraph">   o  Assumption of sub-path independence with regard to the metric
+      being defined/composed is REQUIRED.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   One-Way Delay Composed Metrics and Statistics</h2></a>
+
+	<a name="section-4.1"><h3>4.1   Name: Type-P-Finite-One-way-Delay-<Sample>-Stream</h3></a>
+
+   This metric is a necessary element of delay composition metrics, and
+   its definition does not formally exist elsewhere in IPPM literature.
+
+</p><p class="rfcparagraph">	<a name="section-4.1.1"><h4>4.1.1   Metric Parameters</h4></a>
+
+   See the common parameters section (Section 3.1.1).
+
+</p><p class="rfcparagraph">	<a name="section-4.1.2"><h4>4.1.2   Definition and Metric Units</h4></a>
+
+   Using the parameters above, we obtain the value of the Type-P-One-
+   way-Delay singleton as per [RFC2679].
+   For each packet "[i]" that has a finite one-way delay (in other
+   words, excluding packets that have undefined one-way delay):
+
+</p><p class="rfcparagraph">   Type-P-Finite-One-way-Delay-<Sample>-Stream[i] =
+
+      FiniteDelay[i] = TstampDst - TstampSrc
+
+   This metric is measured in units of time in seconds, expressed in
+   sufficiently low resolution to convey meaningful quantitative
+   information.  For example, resolution of microseconds is usually
+   sufficient.
+
+</p><p class="rfcparagraph">	<a name="section-4.1.3"><h4>4.1.3   Discussion and Other Details</h4></a>
+
+   The "Type-P-Finite-One-way-Delay" metric permits calculation of the
+   sample mean statistic.  This resolves the problem of including lost
+   packets in the sample (whose delay is undefined) and the issue with
+   the informal assignment of infinite delay to lost packets (practical
+   systems can only assign some very large value).
+
+</p><p class="rfcparagraph">   The Finite-One-way-Delay approach handles the problem of lost packets
+   by reducing the event space.  We consider conditional statistics, and
+   estimate the mean one-way delay conditioned on the event that all
+   packets in the sample arrive at the destination (within the specified
+   waiting time, Tmax).  This offers a way to make some valid statements
+   about one-way delay, at the same time avoiding events with undefined
+   outcomes.  This approach is derived from the treatment of lost
+   packets in [RFC3393], and is similar to [Y.1540].
+
+</p><p class="rfcparagraph">	<a name="section-4.1.4"><h4>4.1.4   Statistic</h4></a>
+
+   All statistics defined in [RFC2679] are applicable to the finite one-
+   way delay, and additional metrics are possible, such as the mean (see
+   below).
+
+</p><p class="rfcparagraph">	<a name="section-4.2"><h3>4.2   Name: Type-P-Finite-Composite-One-way-Delay-Mean</h3></a>
+
+   This section describes a statistic based on the Type-P-Finite-One-
+   way-Delay-<Sample>-Stream metric.
+
+</p><p class="rfcparagraph">	<a name="section-4.2.1"><h4>4.2.1   Metric Parameters</h4></a>
+
+   See the common parameters section (Section 3.1.1).
+	<a name="section-4.2.2"><h4>4.2.2   Definition and Metric Units of the Mean Statistic</h4></a>
+
+   We define
+
+   Type-P-Finite-One-way-Delay-Mean =
+
+                                     N
+                                    ---
+                               1    \
+                   MeanDelay = - *   >   (FiniteDelay [n])
+                               N    /
+                                    ---
+                                   n = 1
+
+   where all packets n = 1 through N have finite singleton delays.
+
+</p><p class="rfcparagraph">   This metric is measured in units of time in seconds, expressed in
+   sufficiently fine resolution to convey meaningful quantitative
+   information.  For example, resolution of microseconds is usually
+   sufficient.
+
+</p><p class="rfcparagraph">	<a name="section-4.2.3"><h4>4.2.3   Discussion and Other Details</h4></a>
+
+   The Type-P-Finite-One-way-Delay-Mean metric requires the conditional
+   delay distribution described in Section 4.1.3.
+
+</p><p class="rfcparagraph">	<a name="section-4.2.4"><h4>4.2.4   Statistic</h4></a>
+
+   This metric, a mean, does not require additional statistics.
+
+</p><p class="rfcparagraph">	<a name="section-4.2.5"><h4>4.2.5   Composition Function: Sum of Means</h4></a>
+
+   The Type-P-Finite-Composite-One-way-Delay-Mean, or CompMeanDelay, for
+   the complete source to destination path can be calculated from the
+   sum of the mean delays of all of its S constituent sub-paths.
+   Then the
+
+   Type-P-Finite-Composite-One-way-Delay-Mean =
+
+                                      S
+                                     ---
+                                     \
+                    CompMeanDelay =   >   (MeanDelay [s])
+                                     /
+                                     ---
+                                    s = 1
+
+   where sub-paths s = 1 to S are involved in the complete path.
+
+</p><p class="rfcparagraph">	<a name="section-4.2.6"><h4>4.2.6   Statement of Conjecture and Assumptions</h4></a>
+
+   The mean of a sufficiently large stream of packets measured on each
+   sub-path during the interval [T, Tf] will be representative of the
+   ground truth mean of the delay distribution (and the distributions
+   themselves are sufficiently independent), such that the means may be
+   added to produce an estimate of the complete path mean delay.
+
+</p><p class="rfcparagraph">   It is assumed that the one-way delay distributions of the sub-paths
+   and the complete path are continuous.  The mean of multi-modal
+   distributions has the unfortunate property that such a value may
+   never occur.
+
+</p><p class="rfcparagraph">	<a name="section-4.2.7"><h4>4.2.7   Justification of the Composition Function</h4></a>
+
+   See the common section (Section 3).
+
+</p><p class="rfcparagraph">	<a name="section-4.2.8"><h4>4.2.8   Sources of Deviation from the Ground Truth</h4></a>
+
+   See the common section (Section 3).
+
+</p><p class="rfcparagraph">	<a name="section-4.2.9"><h4>4.2.9   Specific Cases where the Conjecture Might Fail</h4></a>
+
+   If any of the sub-path distributions are multi-modal, then the
+   measured means may not be stable, and in this case the mean will not
+   be a particularly useful statistic when describing the delay
+   distribution of the complete path.
+
+</p><p class="rfcparagraph">   The mean may not be a sufficiently robust statistic to produce a
+   reliable estimate, or to be useful even if it can be measured.
+
+</p><p class="rfcparagraph">   If a link contributing non-negligible delay is erroneously included
+   or excluded, the composition will be in error.
+	<a name="section-4.2.10"><h4>4.2.10   Application of Measurement Methodology</h4></a>
+
+   The requirements of the common section (Section 3) apply here as
+   well.
+
+</p><p class="rfcparagraph">	<a name="section-4.3"><h3>4.3   Name: Type-P-Finite-Composite-One-way-Delay-Minimum</h3></a>
+
+   This section describes a statistic based on the Type-P-Finite-One-
+   way-Delay-<Sample>-Stream metric, and the composed metric based on
+   that statistic.
+
+</p><p class="rfcparagraph">	<a name="section-4.3.1"><h4>4.3.1   Metric Parameters</h4></a>
+
+   See the common parameters section (Section 3.1.1).
+
+</p><p class="rfcparagraph">	<a name="section-4.3.2"><h4>4.3.2   Definition and Metric Units of the Minimum Statistic</h4></a>
+
+   We define
+
+   Type-P-Finite-One-way-Delay-Minimum =
+
+               MinDelay = (FiniteDelay [j])
+
+               such that for some index, j, where 1 <= j <= N
+               FiniteDelay[j] <= FiniteDelay[n] for all n
+
+   where all packets n = 1 through N have finite singleton delays.
+
+</p><p class="rfcparagraph">   This metric is measured in units of time in seconds, expressed in
+   sufficiently fine resolution to convey meaningful quantitative
+   information.  For example, resolution of microseconds is usually
+   sufficient.
+
+</p><p class="rfcparagraph">	<a name="section-4.3.3"><h4>4.3.3   Discussion and Other Details</h4></a>
+
+   The Type-P-Finite-One-way-Delay-Minimum metric requires the
+   conditional delay distribution described in Section 4.1.3.
+
+</p><p class="rfcparagraph">	<a name="section-4.3.4"><h4>4.3.4   Statistic</h4></a>
+
+   This metric, a minimum, does not require additional statistics.
+
+</p><p class="rfcparagraph">	<a name="section-4.3.5"><h4>4.3.5   Composition Function: Sum of Minima</h4></a>
+
+   The Type-P-Finite-Composite-One-way-Delay-Minimum, or CompMinDelay,
+   for the complete source to destination path can be calculated from
+   the sum of the minimum delays of all of its S constituent sub-paths.
+   Then the
+
+   Type-P-Finite-Composite-One-way-Delay-Minimum =
+
+                                       S
+                                      ---
+                                      \
+                     CompMinDelay =    >  (MinDelay [s])
+                                      /
+                                      ---
+                                     s = 1
+
+	<a name="section-4.3.6"><h4>4.3.6   Statement of Conjecture and Assumptions</h4></a>
+
+   The minimum of a sufficiently large stream of packets measured on
+   each sub-path during the interval [T, Tf] will be representative of
+   the ground truth minimum of the delay distribution (and the
+   distributions themselves are sufficiently independent), such that the
+   minima may be added to produce an estimate of the complete path
+   minimum delay.
+
+</p><p class="rfcparagraph">   It is assumed that the one-way delay distributions of the sub-paths
+   and the complete path are continuous.
+
+</p><p class="rfcparagraph">	<a name="section-4.3.7"><h4>4.3.7   Justification of the Composition Function</h4></a>
+
+   See the common section (Section 3).
+
+</p><p class="rfcparagraph">	<a name="section-4.3.8"><h4>4.3.8   Sources of Deviation from the Ground Truth</h4></a>
+
+   See the common section (Section 3).
+
+</p><p class="rfcparagraph">	<a name="section-4.3.9"><h4>4.3.9   Specific Cases where the Conjecture Might Fail</h4></a>
+
+   If the routing on any of the sub-paths is not stable, then the
+   measured minimum may not be stable.  In this case the composite
+   minimum would tend to produce an estimate for the complete path that
+   may be too low for the current path.
+
+</p><p class="rfcparagraph">	<a name="section-4.3.10"><h4>4.3.10   Application of Measurement Methodology</h4></a>
+
+   The requirements of the common section (Section 3) apply here as
+   well.
+	<a name="section-5"><h2>5.   Loss Metrics and Statistics</h2></a>
+
+	<a name="section-5.1"><h3>5.1   Type-P-Composite-One-way-Packet-Loss-Empirical-Probability</h3></a>
+
+	<a name="section-5.1.1"><h4>5.1.1   Metric Parameters</h4></a>
+
+   See the common parameters section (Section 3.1.1).
+
+</p><p class="rfcparagraph">	<a name="section-5.1.2"><h4>5.1.2   Definition and Metric Units</h4></a>
+
+   Using the parameters above, we obtain the value of the Type-P-One-
+   way-Packet-Loss singleton and stream as per [RFC2680].
+
+</p><p class="rfcparagraph">   We obtain a sequence of pairs with elements as follows:
+
+</p><p class="rfcparagraph">   o  TstampSrc, as above.
+
+</p><p class="rfcparagraph">   o  L, either zero or one, where L = 1 indicates loss and L = 0
+      indicates arrival at the destination within TstampSrc + Tmax.
+
+</p><p class="rfcparagraph">	<a name="section-5.1.3"><h4>5.1.3   Discussion and Other Details</h4></a>
+
+   None.
+
+</p><p class="rfcparagraph">	<a name="section-5.1.4"><h4>5.1.4   Statistic: Type-P-One-way-Packet-Loss-Empirical-Probability</h4></a>
+
+   Given the stream parameter M, the number of packets sent, we can
+   define the Empirical Probability of Loss Statistic (Ep), consistent
+   with average loss in [RFC2680], as follows:
+
+</p><p class="rfcparagraph">   Type-P-One-way-Packet-Loss-Empirical-Probability =
+
+                                        M
+                                       ---
+                                  1    \
+                             Ep = - *   >  (L[m])
+                                  M    /
+                                       ---
+                                      m = 1
+
+   where all packets m = 1 through M have a value for L.
+
+</p><p class="rfcparagraph">	<a name="section-5.1.5"><h4>5.1.5   Composition Function: Composition of Empirical Probabilities</h4></a>
+
+   The Type-P-One-way-Composite-Packet-Loss-Empirical-Probability, or
+   CompEp, for the complete source to destination path can be calculated
+   by combining the Ep of all of its constituent sub-paths (Ep1, Ep2,
+   Ep3, ...  Epn) as
+   Type-P-Composite-One-way-Packet-Loss-Empirical-Probability =
+
+     CompEp = 1 - {(1 - Ep1) x (1 - Ep2) x (1 - Ep3) x ... x (1 - EpS)}
+
+   If any Eps is undefined in a particular measurement interval,
+   possibly because a measurement system failed to report a value, then
+   any CompEp that uses sub-path s for that measurement interval is
+   undefined.
+
+</p><p class="rfcparagraph">	<a name="section-5.1.6"><h4>5.1.6   Statement of Conjecture and Assumptions</h4></a>
+
+   The empirical probability of loss calculated on a sufficiently large
+   stream of packets measured on each sub-path during the interval
+   [T, Tf] will be representative of the ground truth empirical loss
+   probability (and the probabilities themselves are sufficiently
+   independent), such that the sub-path probabilities may be combined to
+   produce an estimate of the complete path empirical loss probability.
+
+</p><p class="rfcparagraph">	<a name="section-5.1.7"><h4>5.1.7   Justification of the Composition Function</h4></a>
+
+   See the common section (Section 3).
+
+</p><p class="rfcparagraph">	<a name="section-5.1.8"><h4>5.1.8   Sources of Deviation from the Ground Truth</h4></a>
+
+   See the common section (Section 3).
+
+</p><p class="rfcparagraph">	<a name="section-5.1.9"><h4>5.1.9   Specific Cases where the Conjecture Might Fail</h4></a>
+
+   A concern for loss measurements combined in this way is that root
+   causes may be correlated to some degree.
+
+</p><p class="rfcparagraph">   For example, if the links of different networks follow the same
+   physical route, then a single catastrophic event like a fire in a
+   tunnel could cause an outage or congestion on remaining paths in
+   multiple networks.  Here it is important to ensure that measurements
+   before the event and after the event are not combined to estimate the
+   composite performance.
+
+</p><p class="rfcparagraph">   Or, when traffic volumes rise due to the rapid spread of an email-
+   borne worm, loss due to queue overflow in one network may help
+   another network to carry its traffic without loss.
+
+</p><p class="rfcparagraph">	<a name="section-5.1.10"><h4>5.1.10   Application of Measurement Methodology</h4></a>
+
+   See the common section (Section 3).
+	<a name="section-6"><h2>6.   Delay Variation Metrics and Statistics</h2></a>
+
+	<a name="section-6.1"><h3>6.1   Name: Type-P-One-way-pdv-refmin-<Sample>-Stream</h3></a>
+
+   This packet delay variation (PDV) metric is a necessary element of
+   Composed Delay Variation metrics, and its definition does not
+   formally exist elsewhere in IPPM literature (with the exception of
+   [RFC5481]).
+
+</p><p class="rfcparagraph">	<a name="section-6.1.1"><h4>6.1.1   Metric Parameters</h4></a>
+
+   In addition to the parameters of Section 3.1.1:
+
+</p><p class="rfcparagraph">   o  TstampSrc[i], the wire time of packet[i] as measured at MP(Src)
+      (measurement point at the source).
+
+</p><p class="rfcparagraph">   o  TstampDst[i], the wire time of packet[i] as measured at MP(Dst),
+      assigned to packets that arrive within a "reasonable" time.
+
+</p><p class="rfcparagraph">   o  B, a packet length in bits.
+
+</p><p class="rfcparagraph">   o  F, a selection function unambiguously defining the packets from
+      the stream that are selected for the packet-pair computation of
+      this metric.  F(current packet), the first packet of the pair,
+      MUST have a valid Type-P-Finite-One-way-Delay less than Tmax (in
+      other words, excluding packets that have undefined one-way delay)
+      and MUST have been transmitted during the interval [T, Tf].  The
+      second packet in the pair, F(min_delay packet) MUST be the packet
+      with the minimum valid value of Type-P-Finite-One-way-Delay for
+      the stream, in addition to the criteria for F(current packet).  If
+      multiple packets have equal minimum Type-P-Finite-One-way-Delay
+      values, then the value for the earliest arriving packet SHOULD be
+      used.
+
+</p><p class="rfcparagraph">   o  MinDelay, the Type-P-Finite-One-way-Delay value for F(min_delay
+      packet) given above.
+
+</p><p class="rfcparagraph">   o  N, the number of packets received at the destination that meet the
+      F(current packet) criteria.
+
+</p><p class="rfcparagraph">	<a name="section-6.1.2"><h4>6.1.2   Definition and Metric Units</h4></a>
+
+   Using the definition above in Section 5.1.2, we obtain the value of
+   Type-P-Finite-One-way-Delay-<Sample>-Stream[n], the singleton for
+   each packet[i] in the stream (a.k.a. FiniteDelay[i]).
+   For each packet[n] that meets the F(first packet) criteria given
+   above: Type-P-One-way-pdv-refmin-<Sample>-Stream[n] =
+
+      PDV[n] = FiniteDelay[n] - MinDelay
+
+   where PDV[i] is in units of time in seconds, expressed in
+   sufficiently fine resolution to convey meaningful quantitative
+   information.  For example, resolution of microseconds is usually
+   sufficient.
+
+</p><p class="rfcparagraph">	<a name="section-6.1.3"><h4>6.1.3   Discussion and Other Details</h4></a>
+
+   This metric produces a sample of delay variation normalized to the
+   minimum delay of the sample.  The resulting delay variation
+   distribution is independent of the sending sequence (although
+   specific FiniteDelay values within the distribution may be
+   correlated, depending on various stream parameters such as packet
+   spacing).  This metric is equivalent to the IP Packet Delay Variation
+   parameter defined in [Y.1540].
+
+</p><p class="rfcparagraph">	<a name="section-6.1.4"><h4>6.1.4   Statistics: Mean, Variance, Skewness, Quantile</h4></a>
+
+   We define the mean PDV as follows (where all packets n = 1 through N
+   have a value for PDV[n]):
+
+</p><p class="rfcparagraph">   Type-P-One-way-pdv-refmin-Mean = MeanPDV =
+
+                                   N
+                                  ---
+                             1    \
+                             - *   >   (PDV[n])
+                             N    /
+                                  ---
+                                 n = 1
+
+   We define the variance of PDV as follows:
+
+</p><p class="rfcparagraph">   Type-P-One-way-pdv-refmin-Variance = VarPDV =
+
+                               N
+                              ---
+                        1     \                      2
+                     -------   >   (PDV[n] - MeanPDV)
+                     (N - 1)  /
+                              ---
+                             n = 1
+   We define the skewness of PDV as follows:
+
+</p><p class="rfcparagraph">   Type-P-One-way-pdv-refmin-Skewness = SkewPDV =
+
+                         N
+                        ---                        3
+                        \     /                  \
+                         >   |  PDV[n] - MeanPDV  |
+                        /     \                  /
+                        ---
+                       n = 1
+                    -----------------------------------
+                        /                         \
+                       |                  ( 3/2 )  |
+                        \ (N - 1) * VarPDV        /
+
+   (See Appendix X of [Y.1541] for additional background information.)
+
+   We define the quantile of the PDV sample as the value where the
+   specified fraction of singletons is less than the given value.
+
+</p><p class="rfcparagraph">	<a name="section-6.1.5"><h4>6.1.5   Composition Functions</h4></a>
+
+   This section gives two alternative composition functions.  The
+   objective is to estimate a quantile of the complete path delay
+   variation distribution.  The composed quantile will be estimated
+   using information from the sub-path delay variation distributions.
+
+</p><p class="rfcparagraph"><a name="section-6.1.5.1"><h4>6.1.5.1   Approximate Convolution</h4></a>
+                        <a href="raw/text/rfc6049.txt" class="rawLink">raw</a>
+                    
+
+   The Type-P-Finite-One-way-Delay-<Sample>-Stream samples from each
+   sub-path are summarized as a histogram with 1-ms bins representing
+   the one-way delay distribution.
+
+</p><p class="rfcparagraph">   From [STATS], the distribution of the sum of independent random
+   variables can be derived using the relation:
+
+</p><p class="rfcparagraph">   Type-P-Composite-One-way-pdv-refmin-quantile-a =
+
+                       .  .
+                      /  /
+  P(X + Y + Z <= a) = |  | P(X <= a - y - z) * P(Y = y) * P(Z = z) dy dz
+                      /  /
+                     `  `
+                     z  y
+   Note that dy and dz indicate partial integration above, and that y
+   and z are the integration variables.  Also, the probability of an
+   outcome is indicated by the symbol P(outcome), where X, Y, and Z are
+   random variables representing the delay variation distributions of
+   the sub-paths of the complete path (in this case, there are three
+   sub-paths), and "a" is the quantile of interest.
+
+</p><p class="rfcparagraph">   This relation can be used to compose a quantile of interest for the
+   complete path from the sub-path delay distributions.  The histograms
+   with 1-ms bins are discrete approximations of the delay
+   distributions.
+
+</p><p class="rfcparagraph"><a name="section-6.1.5.2"><h4>6.1.5.2   Normal Power Approximation (NPA)</h4></a>
+                        <a href="raw/text/rfc6049.txt" class="rawLink">raw</a>
+                    
+
+   Type-P-One-way-Composite-pdv-refmin-NPA for the complete source to
+   destination path can be calculated by combining the statistics of all
+   the constituent sub-paths in the process described in [Y.1541],
+   Clause 8 and Appendix X.
+
+</p><p class="rfcparagraph">	<a name="section-6.1.6"><h4>6.1.6   Statement of Conjecture and Assumptions</h4></a>
+
+   The delay distribution of a sufficiently large stream of packets
+   measured on each sub-path during the interval [T, Tf] will be
+   sufficiently stationary, and the sub-path distributions themselves
+   are sufficiently independent, so that summary information describing
+   the sub-path distributions can be combined to estimate the delay
+   distribution of the complete path.
+
+</p><p class="rfcparagraph">   It is assumed that the one-way delay distributions of the sub-paths
+   and the complete path are continuous.
+
+</p><p class="rfcparagraph">	<a name="section-6.1.7"><h4>6.1.7   Justification of the Composition Function</h4></a>
+
+   See the common section (Section 3).
+
+</p><p class="rfcparagraph">	<a name="section-6.1.8"><h4>6.1.8   Sources of Deviation from the Ground Truth</h4></a>
+
+   In addition to the common deviations, a few additional sources exist
+   here.  For one, very tight distributions with ranges on the order of
+   a few milliseconds are not accurately represented by a histogram with
+   1-ms bins.  This size was chosen assuming an implicit requirement on
+   accuracy: errors of a few milliseconds are acceptable when assessing
+   a composed distribution quantile.
+
+</p><p class="rfcparagraph">   Also, summary statistics cannot describe the subtleties of an
+   empirical distribution exactly, especially when the distribution is
+   very different from a classical form.  Any procedure that uses these
+   statistics alone may incur error.
+	<a name="section-6.1.9"><h4>6.1.9   Specific Cases where the Conjecture Might Fail</h4></a>
+
+   If the delay distributions of the sub-paths are somehow correlated,
+   then neither of these composition functions will be reliable
+   estimators of the complete path distribution.
+
+</p><p class="rfcparagraph">   In practice, sub-path delay distributions with extreme outliers have
+   increased the error of the composed metric estimate.
+
+</p><p class="rfcparagraph">	<a name="section-6.1.10"><h4>6.1.10   Application of Measurement Methodology</h4></a>
+
+   See the common section (Section 3).
+
+</p><p class="rfcparagraph">	<a name="section-7"><h2>7.   Security Considerations</h2></a>
+
+	<a name="section-7.1"><h3>7.1   Denial-of-Service Attacks</h3></a>
+
+   This metric requires a stream of packets sent from one host (source)
+   to another host (destination) through intervening networks.  This
+   method could be abused for denial-of-service attacks directed at the
+   destination and/or the intervening network(s).
+
+</p><p class="rfcparagraph">   Administrators of source, destination, and intervening networks
+   should establish bilateral or multilateral agreements regarding the
+   timing, size, and frequency of collection of sample metrics.  Use of
+   this method in excess of the terms agreed upon between the
+   participants may be cause for immediate rejection or discarding of
+   packets, or other escalation procedures defined between the affected
+   parties.
+
+</p><p class="rfcparagraph">	<a name="section-7.2"><h3>7.2   User Data Confidentiality</h3></a>
+
+   Active use of this method generates packets for a sample, rather than
+   taking samples based on user data, and does not threaten user data
+   confidentiality.  Passive measurement MUST restrict attention to the
+   headers of interest.  Since user payloads may be temporarily stored
+   for length analysis, suitable precautions MUST be taken to keep this
+   information safe and confidential.  In most cases, a hashing function
+   will produce a value suitable for payload comparisons.
+
+</p><p class="rfcparagraph">	<a name="section-7.3"><h3>7.3   Interference with the Metrics</h3></a>
+
+   It may be possible to identify that a certain packet or stream of
+   packets is part of a sample.  With that knowledge at the destination
+   and/or the intervening networks, it is possible to change the
+   processing of the packets (e.g., increasing or decreasing delay),
+   which may distort the measured performance.  It may also be possible
+   to generate additional packets that appear to be part of the sample
+   metric.  These additional packets are likely to perturb the results
+   of the sample measurement.
+
+</p><p class="rfcparagraph">   To discourage the kind of interference mentioned above, packet
+   interference checks, such as cryptographic hash, may be used.
+
+</p><p class="rfcparagraph">	<a name="section-8"><h2>8.   IANA Considerations</h2></a>
+
+   Metrics defined in the IETF are typically registered in the IANA IPPM
+   Metrics Registry as described in the initial version of the registry
+   [RFC4148].
+
+</p><p class="rfcparagraph">   IANA has registered the following metrics in the
+   IANA-IPPM-METRICS-REGISTRY-MIB:
+
+</p><p class="rfcparagraph">      ietfFiniteOneWayDelayStream OBJECT-IDENTITY
+         STATUS current
+         DESCRIPTION
+            "Type-P-Finite-One-way-Delay-Stream"
+         REFERENCE "RFC 6049, Section 4.1."
+         ::= { ianaIppmMetrics 71 }
+
+
+      ietfFiniteOneWayDelayMean OBJECT-IDENTITY
+         STATUS current
+         DESCRIPTION
+            "Type-P-Finite-One-way-Delay-Mean"
+         REFERENCE "RFC 6049, Section 4.2."
+         ::= { ianaIppmMetrics 72 }
+
+
+      ietfCompositeOneWayDelayMean OBJECT-IDENTITY
+         STATUS current
+         DESCRIPTION
+            "Type-P-Finite-Composite-One-way-Delay-Mean"
+         REFERENCE "RFC 6049, Section 4.2.5."
+         ::= { ianaIppmMetrics 73 }
+
+
+      ietfFiniteOneWayDelayMinimum OBJECT-IDENTITY
+         STATUS current
+         DESCRIPTION
+            "Type-P-Finite-One-way-Delay-Minimum"
+         REFERENCE "RFC 6049, Section 4.3.2."
+         ::= { ianaIppmMetrics 74 }
+      ietfCompositeOneWayDelayMinimum OBJECT-IDENTITY
+         STATUS current
+         DESCRIPTION
+            "Type-P-Finite-Composite-One-way-Delay-Minimum"
+         REFERENCE "RFC 6049, Section 4.3."
+         ::= { ianaIppmMetrics 75 }
+
+
+      ietfOneWayPktLossEmpiricProb OBJECT-IDENTITY
+         STATUS current
+         DESCRIPTION
+            "Type-P-One-way-Packet-Loss-Empirical-Probability"
+         REFERENCE "RFC 6049, Section 5.1.4"
+         ::= { ianaIppmMetrics 76 }
+
+
+      ietfCompositeOneWayPktLossEmpiricProb OBJECT-IDENTITY
+         STATUS current
+         DESCRIPTION
+            "Type-P-Composite-One-way-Packet-Loss-Empirical-Probability"
+         REFERENCE "RFC 6049, Section 5.1."
+         ::= { ianaIppmMetrics 77 }
+
+
+      ietfOneWayPdvRefminStream OBJECT-IDENTITY
+         STATUS current
+         DESCRIPTION
+            "Type-P-One-way-pdv-refmin-Stream"
+         REFERENCE "RFC 6049, Section 6.1."
+         ::= { ianaIppmMetrics 78 }
+
+
+      ietfOneWayPdvRefminMean OBJECT-IDENTITY
+         STATUS current
+         DESCRIPTION
+            "Type-P-One-way-pdv-refmin-Mean"
+         REFERENCE "RFC 6049, Section 6.1.4."
+         ::= { ianaIppmMetrics 79 }
+
+
+      ietfOneWayPdvRefminVariance OBJECT-IDENTITY
+         STATUS current
+         DESCRIPTION
+            "Type-P-One-way-pdv-refmin-Variance"
+         REFERENCE "RFC 6049, Section 6.1.4."
+         ::= { ianaIppmMetrics 80 }
+      ietfOneWayPdvRefminSkewness OBJECT-IDENTITY
+         STATUS current
+         DESCRIPTION
+            "Type-P-One-way-pdv-refmin-Skewness"
+         REFERENCE "RFC 6049, Section 6.1.4."
+         ::= { ianaIppmMetrics 81 }
+
+
+      ietfCompositeOneWayPdvRefminQtil OBJECT-IDENTITY
+         STATUS current
+         DESCRIPTION
+            "Type-P-Composite-One-way-pdv-refmin-quantile-a"
+         REFERENCE "RFC 6049, Section 6.1.5.1."
+         ::= { ianaIppmMetrics 82 }
+
+
+      ietfCompositeOneWayPdvRefminNPA OBJECT-IDENTITY
+         STATUS current
+         DESCRIPTION
+            "Type-P-One-way-Composite-pdv-refmin-NPA"
+         REFERENCE "RFC 6049, Section 6.1.5.2."
+         ::= { ianaIppmMetrics 83 }
+
+
+	<a name="section-9"><h2>9.   Contributors and Acknowledgements</h2></a>
+
+   The following people have contributed useful ideas, suggestions, or
+   the text of sections that have been incorporated into this memo:
+
+</p><p class="rfcparagraph">   - Phil Chimento <vze275m9@verizon.net>
+
+   - Reza Fardid <RFardid@cariden.com>
+
+   - Roman Krzanowski <roman.krzanowski@verizon.com>
+
+   - Maurizio Molina <maurizio.molina@dante.org.uk>
+
+   - Lei Liang <L.Liang@surrey.ac.uk>
+
+   - Dave Hoeflin <dhoeflin@att.com>
+
+   A long time ago, in a galaxy far, far away (Minneapolis), Will Leland
+   suggested the simple and elegant Type-P-Finite-One-way-Delay concept.
+   Thanks Will.
+
+</p><p class="rfcparagraph">   Yaakov Stein and Donald McLachlan also provided useful comments along
+   the way.
+	<a name="section-10"><h2>10.   References</h2></a>
+
+	<a name="section-10.1"><h3>10.1   Normative References</h3></a>
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">   [RFC2330]  Paxson, V., Almes, G., Mahdavi, J., and M. Mathis,
+              "Framework for IP Performance Metrics", RFC 2330,
+              May 1998.
+
+</p><p class="rfcparagraph">   [RFC2679]  Almes, G., Kalidindi, S., and M. Zekauskas, "A One-way
+              Delay Metric for IPPM", RFC 2679, September 1999.
+
+</p><p class="rfcparagraph">   [RFC2680]  Almes, G., Kalidindi, S., and M. Zekauskas, "A One-way
+              Packet Loss Metric for IPPM", RFC 2680, September 1999.
+
+</p><p class="rfcparagraph">   [RFC3393]  Demichelis, C. and P. Chimento, "IP Packet Delay Variation
+              Metric for IP Performance Metrics (IPPM)", RFC 3393,
+              November 2002.
+
+</p><p class="rfcparagraph">   [RFC3432]  Raisanen, V., Grotefeld, G., and A. Morton, "Network
+              performance measurement with periodic streams", RFC 3432,
+              November 2002.
+
+</p><p class="rfcparagraph">   [RFC4148]  Stephan, E., "IP Performance Metrics (IPPM) Metrics
+              Registry", BCP 108, RFC 4148, August 2005.
+
+</p><p class="rfcparagraph">   [RFC5835]  Morton, A. and S. Van den Berghe, "Framework for Metric
+              Composition", RFC 5835, April 2010.
+
+</p><p class="rfcparagraph">	<a name="section-10.2"><h3>10.2   Informative References</h3></a>
+
+   [RFC5474]  Duffield, N., Chiou, D., Claise, B., Greenberg, A.,
+              Grossglauser, M., and J. Rexford, "A Framework for Packet
+              Selection and Reporting", RFC 5474, March 2009.
+
+</p><p class="rfcparagraph">   [RFC5481]  Morton, A. and B. Claise, "Packet Delay Variation
+              Applicability Statement", RFC 5481, March 2009.
+
+</p><p class="rfcparagraph">   [RFC5644]  Stephan, E., Liang, L., and A. Morton, "IP Performance
+              Metrics (IPPM): Spatial and Multicast", RFC 5644,
+              October 2009.
+
+</p><p class="rfcparagraph">   [STATS]    Mood, A., Graybill, F., and D. Boes, "Introduction to the
+              Theory of Statistics, 3rd Edition", McGraw-Hill, New York,
+              NY, 1974.
+   [Y.1540]   ITU-T Recommendation Y.1540, "Internet protocol data
+              communication service - IP packet transfer and
+              availability performance parameters", November 2007.
+
+</p><p class="rfcparagraph">   [Y.1541]   ITU-T Recommendation Y.1541, "Network Performance
+              Objectives for IP-based Services", February 2006.
+
+</p>Authors' Addresses
+
+   Al Morton
+   AT&T Labs
+   200 Laurel Avenue South
+   Middletown, NJ  07748
+   USA
+
+   Phone: +1 732 420 1571
+   Fax:   +1 732 368 1192
+   EMail: acmorton@att.com
+   URI:   http://home.comcast.net/~acmacm/
+
+
+   Stephan Emile
+   France Telecom Orange
+   2 avenue Pierre Marzin
+   Lannion,   F-22307
+   France
+
+   EMail: emile.stephan@orange-ftgroup.com
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Morton & Stephan             Standards Track                   [Page 29]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

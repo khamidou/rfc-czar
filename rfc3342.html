@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                           G. Klyne<br>Request for Comments: 3342                        Clearswift Corporation<br>Category: Standards Track                                        M. Rose<br>                                            Dover Beach Consulting, Inc.<br>                                                             M. Schwartz<br>                                                   Code On The Road, LLC<br>                                                                E. Dixon<br>                                                             H. Franklin<br>                                                                 J. Kint<br>                                                                  D. New<br>                                                                 S. Pead<br>                                                               July 2002<br><br></p>
+                  <h1>
+     The Application Exchange (APEX) Option Party Pack, Part Deux!</h1>
+                  <h2>Status of this Memo</h2>
+
+   This document specifies an Internet standards track protocol for the
+   Internet community, and requests discussion and suggestions for
+   improvements.  Please refer to the current edition of the "Internet
+   Official Protocol Standards" (STD 1) for the standardization state
+   and status of this protocol.  Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (2002).  All Rights Reserved.<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   Application Exchange (APEX), at its core, provides a best-effort
+   application-layer datagram service.  Options are used to alter the
+   semantics of the core service.  This memo defines various options to
+   change the default behavior of APEX's "relaying mesh".
+<h2>Table of Contents</h2>
+<a href="#section-1" class="">1. The attachOverride Option  . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2" class="">2. The dataTiming Option  . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2.1" class="indent-1">2.1 Upper-Bounds on Delivery . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2.1.1" class="indent-2">2.1.1 Final Hop Report . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2.1.2" class="indent-2">2.1.2 Timing Error Report  . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2.2" class="indent-1">2.2 Reporting on Delayed Delivery  . . . . . . . . . . . . . . </a><br>
+<a href="#section-2.2.1" class="indent-2">2.2.1 Transient Timing Report  . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3" class="">3. The hold4Endpoint Option . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4" class="">4. The dataHopping Option . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-5" class="">5. Initial Registrations  . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-5.1" class="indent-1">5.1 Registration: The attachOverride Option  . . . . . . . . . </a><br>
+<a href="#section-5.2" class="indent-1">5.2 Registration: The dataTiming Option  . . . . . . . . . . . </a><br>
+<a href="#section-5.3" class="indent-1">5.3 Registration: The hold4Endpoint Option . . . . . . . . . . </a><br>
+<a href="#section-5.4" class="indent-1">5.4 Registration: The dataHopping Option . . . . . . . . . . . </a><br>
+<a href="#section-6" class="">6. The APEX Party Pack DTD  . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-7" class="">7. Security Considerations  . . . . . . . . . . . . . . . . . </a><br>
+         References . . . . . . . . . . . . . . . . . . . . . . . . . 18
+   A.    Acknowledgements . . . . . . . . . . . . . . . . . . . . . . 19
+   B.    IANA Considerations  . . . . . . . . . . . . . . . . . . . . 19
+         Authors' Addresses . . . . . . . . . . . . . . . . . . . . . 20
+         Full Copyright Statement . . . . . . . . . . . . . . . . . . 22
+
+	<a name="section-1"><h2>1.  The attachOverride Option</h2></a>
+
+   Section 5.1 contains the APEX option registration for the
+   "attachOverride" option.
+
+</p><p class="rfcparagraph">   The default behavior of the APEX relaying mesh, in the absence of
+   processing options, is to allow at most one application to attach as
+   a particular endpoint, on a "first come, first served" basis.  The
+   "attachOverride" option provides gives preference to the current
+   application trying to attach.
+
+</p><p class="rfcparagraph">   If this option is present in the "attach" operation (c.f., Section
+   4.4.1 of [1]) and if any application is already attached as the
+   specified endpoint, that endpoint has its attachment terminated
+   (c.f., Section 4.4.3 of [1]) concurrently with processing of that
+   "attach" operation.  The "code" attribute of the resulting
+   "terminate" operation is set to 556.
+
+</p><p class="rfcparagraph">   Note that any data being expected by the previously-attached
+   application may instead be delivered to the last application to
+   successfully attach.  Accordingly, applications should take care to
+   properly deal with incoming data having unrecognized transaction-
+   identifiers (c.f., Section 6.1.1 of [1]).
+   This option provides for a new attachment to automatically terminate
+   any existing attachment for the same endpoint.  For example, this
+   might be helpful when a new attachment is required from a different
+   device while a previously-used device is still attached e.g.,<pre>
+
+        +-------+                  +-------+
+        |       | -- attach -----> |       |
+        | appl. |                  | relay |
+        |   #1  | <--------- ok -- |       |
+        +-------+                  +-------+
+
+      C: <attach endpoint='fred@example.com' transID='1' />
+      S: <ok />
+
+    ... some time later appl #2 starts on a different computer ...
+
+</p><p class="rfcparagraph">                                   +-------+                  +-------+
+                                   |       | <----- attach -- |       |
+        +-------+                  |       |                  | appl. |
+        |       | <-- terminate -- | relay | -- ok ---------> |   #2  |
+        | appl. |                  |       |                  +-------+
+        |   #1  | -- ok ---------> |       |
+        +-------+                  +-------+
+
+                C: <attach endpoint='fred@example.com' transID='2'>
+                       <option internal='attachOverride' transID='3' />
+                   </attach>
+                S: <ok />
+
+      C: <terminate transID='1' code='556'>overriden</terminate>
+      S: <ok />
+
+	<a name="section-2"><h2>2.  The dataTiming Option</h2></a>
+
+   Section 5.2 contains the APEX option registration for the
+   "dataTiming" option.  This option contains a "dataTiming" element
+   (c.f., Section 6).
+
+</p><p class="rfcparagraph">   The default behavior of the APEX relaying mesh is "immediate, best
+   effort", and expects that all relays and endpoints are able to
+   process and transfer data without delay -- in the absence of
+   processing options, if a relay is unavailable, then data is silently
+   dropped.  The "dataTiming" option provides for controlled queuing
+   delays in processing, whilst providing reasonable deterministic
+   behavior for the originator.
+   There are two types of delays addressed by the "dataTiming" option:
+
+</p><p class="rfcparagraph">   o  delays in transit through the relaying mesh, possibly due to
+      intermittent or slow connections, or congested relays; and,
+
+   o  delays because the intended endpoint is not available to receive
+      the data, when used in conjunction with the hold4Endpoint option
+      (Section 3).
+
+</p><p class="rfcparagraph">   Accordingly, the "dataTiming" option allows for:
+
+</p><p class="rfcparagraph">   o  data to be discarded if not delivered within a finite amount of
+      time as specified using the "noLaterThan" attribute (Section 2.1);
+
+</p><p class="rfcparagraph">   o  a "statusResponse" message (c.f., Section 5.1 of [1]) to be
+      generated if data is not delivered within a known amount of time
+      as specified using the "reportAfter" attribute (Section 2.2); and,
+
+   o  an upper limit on the amount of time for the "statusResponse"
+      message to be delivered using the "returnTrip" attribute (Section
+      2.1.1), after which the sender may presume the message to be lost.
+
+</p><p class="rfcparagraph">   This option does not provide any functionality with respect to the
+   priority of the data.  Nor does this option have any effect on other
+   parts of the relaying process.
+
+</p><p class="rfcparagraph">   Further, note that because this option is processed on a per-hop
+   basis, the originator must set the "targetHop" attribute to the value
+   "all" and the "mustUnderstand" attribute to the value "true".
+
+</p><p class="rfcparagraph">	<a name="section-2.1"><h3>2.1  Upper-Bounds on Delivery</h3></a>
+
+   The "noLaterThan" attribute of the "dataTiming" option provides for
+   control over delays that may occur in transit through the relaying
+   mesh or to the recipient endpoint.
+
+</p><p class="rfcparagraph">   If this option is present in the "data" operation (c.f., Section
+   4.4.4 of [1]) and the value of the "noLaterThan" attribute is non-
+   zero, then:
+
+</p><p class="rfcparagraph">   o  For Step 5.2 of Section 4.4.4.1 of [1]:
+
+</p><p class="rfcparagraph">      Immediately prior to sending the data to the next relay, the value
+      of the "noLaterThan" attribute is adjusted to reflect the
+      processing time of the data at the local relay (e.g., the time
+      required to determine the next relay, to successfully issue a
+      "bind" operation, and then be ready to immediately issue a "data"
+      operation).
+      If the value of the "noLaterThan" attribute becomes less than or
+      equal to zero, an error in processing has occurred, the data
+      element is not sent to the next relay, and if the "reportErrors"
+      attribute is true, the APEX report service is invoked to send a
+      timing error report.
+
+</p><p class="rfcparagraph">   o  For Step 5.3 of Section 4.4.4.1 of [1]:
+
+</p><p class="rfcparagraph">      If the relay does not receive an "ok" element from the recipient
+      endpoint within the number of milli-seconds indicated by the value
+      of the "noLaterThan" attribute, an error in processing has
+      occurred, and if the "reportErrors" attribute is true, the APEX
+      report service is invoked to send a timing error report.
+
+</p><p class="rfcparagraph">      Otherwise, if the data is successfully transmitted to the
+      recipient, and the "returnTrip" attribute is non-zero, the APEX
+      report service is invoked to send a final hop report.
+
+</p><p class="rfcparagraph">   Note that in some cases, a relay may be able to predict this outcome
+   without actually connecting to the next relay; if so, a timing error
+   report may be sent without connecting to the next relay.
+
+</p><p class="rfcparagraph">	<a name="section-2.1.1"><h4>2.1.1  Final Hop Report</h4></a>
+
+   If the APEX report service (c.f., Section 6.2 of [1]) is invoked to
+   send a final hop report, it issues a data operation with:
+
+</p><p class="rfcparagraph">   o  its originator identifying the report service associated with the
+      issuing relay
+
+   o  its recipient identifying the endpoint address of the originator
+      associated with the "dataTiming" option
+
+   o  a new "dataTiming" option having:
+
+</p><p class="rfcparagraph">      *  its "noLaterThan" attribute equal to the "returnTrip" attribute
+         of the original "dataTiming" option
+
+      *  and no other attributes present
+
+   o  its content consisting of a "statusResponse" element having:
+
+</p><p class="rfcparagraph">      *  its "transID" attribute equal to the "transID" attribute of the
+         "dataTiming" option
+
+      *  and identifying the original recipient with a permanent success
+         indicator
+   For example:
+
+</p><p class="rfcparagraph">                                  +-------+                  +-------+
+                                  |       | -- data -------> |       |
+                                  | relay |                  | appl. |
+                                  |       | <--------- ok -- |   #2  |
+                                  +-------+                  +-------+
+
+     C: <data content='cid:1@example.com'>
+            <originator identity='fred@example.com' />
+            <recipient identity='barney@example.com' />
+            <option internal='dataTiming' targetHop='all'
+                    mustUnderstand='true' transID='86'>
+                <dataTiming noLaterThan='10000' returnTrip='20000' />
+            </option>
+        </data>
+     S: <ok />
+
+       +-------+                  +-------+
+       |       | <------- data -- |       |
+       | appl. |                  | relay |
+       |   #1  | -- ok ---------> |       |
+       +-------+                  +-------+
+
+     C: <data content='#Content'>
+            <originator identity='apex=report@example.com' />
+            <recipient identity='fred@example.com' />
+            <option internal='dataTiming' targetHop='all'
+                    mustUnderstand='true' transID='99'>
+                <dataTiming noLaterThan='20000' />
+            </option>
+            <data-content Name='Content'>
+                <statusResponse transID='86'>
+                    <destination identity='barney@example.com'>
+                        <reply code='250' />
+                    </destination>
+                </statusResponse>
+            </data-content>
+        </data>
+     S: <ok />
+	<a name="section-2.1.2"><h4>2.1.2  Timing Error Report</h4></a>
+
+   If the APEX report service (c.f., Section 6.2 of [1]) is invoked to
+   send a timing error report, it issues a data operation with:
+
+</p><p class="rfcparagraph">   o  its originator identifying the report service associated with the
+      issuing relay
+
+   o  its recipient identifying the endpoint address of the originator
+      associated with the "dataTiming" option
+
+   o  its content consisting of a "statusResponse" element having:
+
+</p><p class="rfcparagraph">      *  its "transID" attribute equal to the "transID" attribute of the
+         "dataTiming" option
+
+      *  and identifying the original recipient with a permanent failure
+         indicator
+   For example:
+
+</p><p class="rfcparagraph">       +-------+                  +-------+
+       |       | -- data -------> |       |
+       | appl. |                  | relay |
+       |       | <--------- ok -- |       |
+       +-------+                  +-------+
+
+     C: <data content='cid:1@example.com'>
+            <originator identity='fred@example.com' />
+            <recipient identity='barney@example.com' />
+            <option internal='dataTiming' targetHop='all'
+                    mustUnderstand='true' transID='86'>
+                <dataTiming noLaterThan='6000' reportErrors='true' />
+            </option>
+        </data>
+     S: <ok />
+
+      ... some time later ...
+
+</p><p class="rfcparagraph">          +-------+                  +-------+
+          |       | <------- data -- |       |
+          | appl. |                  | relay |
+          |       | -- ok ---------> |       |
+          +-------+                  +-------+
+
+        C: <data content='#Content'>
+               <originator identity='apex=report@example.com' />
+               <recipient identity='fred@example.com' />
+               <data-content Name='Content'>
+                   <statusResponse transID='86'>
+                       <destination identity='barney@example.com'>
+                           <reply code='550' />
+                       </destination>
+                   </statusResponse>
+               </data-content>
+           </data>
+        S: <ok />
+
+	<a name="section-2.2"><h3>2.2  Reporting on Delayed Delivery</h3></a>
+
+   The "reportAfter" attribute of the "dataTiming" option provides for
+   the originator to be notified if delivery is delayed beyond a
+   specified time.  Delivery of the data is not affected.  Note that if
+   the value of the "noLaterThan" attribute is non-zero, then it
+   provides the operational upper-bounds for the "reportAfter"
+   attribute.
+   If this option is present in the "data" operation (c.f., Section
+   4.4.4 of [1]) and the value of the "reportAfter" attribute is non-
+   zero, then:
+
+</p><p class="rfcparagraph">   o  For Step 5.2 of Section 4.4.4.1 of [1]:
+
+</p><p class="rfcparagraph">      Immediately prior to sending the data to the next relay, the value
+      of the "reportAfter" attribute is adjusted to reflect the
+      processing time of the data at the local relay (e.g., the time
+      required to determine the next relay, to successfully issue a
+      "bind" operation, and then be ready to immediately issue a "data"
+      operation).
+
+</p><p class="rfcparagraph">      If the value of the "reportAfter" attribute becomes less than or
+      equal to zero, then its value is set to zero and the APEX report
+      service is invoked to send a transient timing report; regardless,
+      the data element is sent to the next relay.
+
+</p><p class="rfcparagraph">   o  For Step 5.3 of Section 4.4.4.1 of [1]:
+
+</p><p class="rfcparagraph">      If the relay does not receive an "ok" element from the recipient
+      endpoint within the number of milli-seconds indicated by the value
+      of the "reportAfter" attribute, then its value is set to zero and
+      the APEX report service is invoked to send a transient timing
+      report.
+
+</p><p class="rfcparagraph">	<a name="section-2.2.1"><h4>2.2.1  Transient Timing Report</h4></a>
+
+   If the APEX report service (c.f., Section 6.2 of [1]) is invoked to
+   send a transient timing report, it issues a data operation with:
+
+</p><p class="rfcparagraph">   o  its originator identifying the report service associated with the
+      issuing relay
+
+   o  its recipient identifying the endpoint address of the originator
+      associated with the "dataTiming" option
+
+   o  its content consisting of a "statusResponse" element having:
+
+</p><p class="rfcparagraph">      *  its "transID" attribute equal to the "transID" attribute of the
+         "dataTiming" option
+
+      *  and identifying the original recipient with a transient success
+         indicator
+   For example:
+
+</p><p class="rfcparagraph">        +-------+                  +-------+
+        |       | -- data -------> |       |
+        | appl. |                  | relay |
+        |   #1  | <--------- ok -- |       |
+        +-------+                  +-------+
+
+      C: <data content='cid:1@example.com'>
+             <originator identity='fred@example.com' />
+             <recipient identity='barney@example.com' />
+             <option internal='dataTiming' targetHop='all'
+                     mustUnderstand='true' transID='86'>
+                 <dataTiming reportAfter='60000' />
+             </option>
+         </data>
+      S: <ok />
+
+    ... some time later ...
+
+</p><p class="rfcparagraph">                                   +-------+                  +-------+
+                                   |       | <------- data -- |       |
+                                   | relay |                  | relay |
+                                   |  #n-1 | -- ok ---------> |   #n  |
+                                   +-------+                  +-------+
+
+      C: <data content='#Content'>
+             <originator identity='apex=report@example.com' />
+             <recipient identity='fred@example.com' />
+             <data-content Name='Content'>
+                 <statusResponse transID='86'>
+                     <destination identity='barney@example.com'>
+                         <reply code='350' />
+                     </destination>
+                 </statusResponse>
+             </data-content>
+         </data>
+      S: <ok />
+
+	<a name="section-3"><h2>3.  The hold4Endpoint Option</h2></a>
+
+   Section 5.3 contains the APEX option registration for the
+   "hold4Endpoint" option.
+
+</p><p class="rfcparagraph">   The default behavior of the APEX relaying mesh, in the absence of
+   processing options, is to silently drop data for a recipient if its
+   endpoint isn't attached.  The "hold4Endpoint" option provides for
+   data to be queued if the recipient endpoint is not attached.
+   If this option is present in the "data" operation (c.f., Section
+   4.4.4 of [1]), and the value of the "hold4Endpoint" attribute is true
+   then:
+
+</p><p class="rfcparagraph">   o  For Step 5.3 of Section 4.4.4.1 of [1]:
+
+</p><p class="rfcparagraph">      If the recipient's endpoint is not currently attached, the relay
+      will queue the data waiting for an application to attach as that
+      endpoint.
+
+</p><p class="rfcparagraph">   Note that in the absence of an upper-bounds on delivery, such as
+   limits provided by the dataTiming option (Section 2), the data will
+   be queued indefinitely for the endpoint.
+   For example:
+
+</p><p class="rfcparagraph">        +-------+                  +-------+
+        |       | -- data -------> |       |
+        | appl. |                  | relay |
+        |   #1  | <--------- ok -- |       |
+        +-------+                  +-------+
+
+      C: <data content='cid:1@example.com'>
+             <originator identity='fred@example.com' />
+             <recipient identity='barney@example.com' />
+             <option internal='hold4Endpoint' />
+             <option internal='dataTiming' targetHop='all'
+                     mustUnderstand='true' transID='86'>
+                 <dataTiming noLaterThan='60000' />
+             </option>
+         </data>
+      S: <ok />
+
+    ... some time later the recipient's endpoint attaches ...
+
+</p><p class="rfcparagraph">                                   +-------+                  +-------+
+                                   |       | <----- attach -- |       |
+                                   |       |                  |       |
+                                   |       | -- ok ---------> |       |
+                                   | relay |                  | appl. |
+                                   |       | -- data -------> |   #2  |
+                                   |       |                  |       |
+                                   |       | <--------- ok -- |       |
+                                   +-------+                  +-------+
+
+      C: <attach endpoint='barney@example.com' transID='2'>
+             <option internal='attachOverride' transID='3' />
+         </attach>
+      S: <ok />
+
+      C: <data content='cid:1@example.com'>
+             <originator identity='fred@example.com' />
+             <recipient identity='barney@example.com' />
+             <option internal='hold4Endpoint' />
+             <option internal='dataTiming' targetHop='all'
+                     mustUnderstand='true' transID='86'>
+                 <dataTiming noLaterThan='18000' />
+             </option>
+         </data>
+      S: <ok />
+	<a name="section-4"><h2>4.  The dataHopping Option</h2></a>
+
+   To detect misconfigurations that cause forwarding loops in the APEX
+   relaying mesh, the APEX pubsub service re-introduces a mechanism
+   similar to the IP TTL [2] mechanism, in the form of an APEX option.
+   Section 5.4 contains the APEX option registration for the
+   "dataHopping" option.
+
+</p><p class="rfcparagraph">   If this option is present in the "data" operation (c.f., Section
+   4.4.4 of [1]) and the value of the "noMoreThan" attribute is non-
+   zero, then:
+
+</p><p class="rfcparagraph">   o  For Step 5.2 of Section 4.4.4.1 of [1]:
+
+</p><p class="rfcparagraph">      Immediately prior to sending the data to the next relay, the value
+      of the "noMoreThan" attribute is reduced by 1.
+
+</p><p class="rfcparagraph">      If the value of the "noMoreThan" attribute becomes less than or
+      equal to zero, an error in processing has occurred, the data
+      element is not sent to the next relay, and if the "reportErrors"
+      attribute is true, the APEX report service is invoked to send an
+      error report.
+
+</p><p class="rfcparagraph">   Further, note that because this option is processed on a per-hop
+   basis, the originator must set the "targetHop" attribute to the value
+   "all" and the "mustUnderstand" attribute to the value "true".
+
+</p><p class="rfcparagraph">   If the APEX report service (c.f., Section 6.2 of [1]) is invoked to
+   send an error report, it issues a data operation with:
+
+</p><p class="rfcparagraph">   o  its originator identifying the report service associated with the
+      issuing relay
+
+   o  its recipient identifying the endpoint address of the originator
+      associated with the "dataHopping" option
+
+   o  its content consisting of a "statusResponse" element having:
+
+</p><p class="rfcparagraph">      *  its "transID" attribute equal to the "transID" attribute of the
+         "dataHopping" option
+
+      *  and identifying the original recipient with a permanent failure
+         indicator
+   For example:
+
+</p><p class="rfcparagraph">       +-------+                  +-------+
+       |       | -- data -------> |       |
+       | appl. |                  | relay |
+       |       | <--------- ok -- |   #1  |
+       +-------+                  +-------+
+
+     C: <data content='cid:1@example.com'>
+            <originator identity='appl=pubsub/topic=fred@example.com' />
+            <recipient identity='barney@example.com' />
+            <option internal='dataHopping' targetHop='all'
+                    mustUnderstand='true' transID='86'>
+                <dataHopping noMoreThan='2' reportErrors='true' />
+            </option>
+        </data>
+     S: <ok />
+                                  +-------+                  +-------+
+                                  |       | -- data -------> |       |
+                                  | relay |                  | relay |
+                                  |   #1  | <--------- ok -- |   #2  |
+                                  +-------+                  +-------+
+
+     C: <data content='cid:1@example.com'>
+            <originator identity='appl=pubsub/topic=fred@example.com' />
+            <recipient identity='barney@example.com' />
+            <option internal='dataHopping' targetHop='all'
+                    mustUnderstand='true' transID='86'>
+                <dataHopping noMoreThan='1' reportErrors='true' />
+            </option>
+        </data>
+     S: <ok />
+   relay #2 determines that further relaying is necessary:
+
+</p><p class="rfcparagraph">       +-------+                  +-------+
+       |       | <------- data -- |       |
+       | relay |                  | relay |
+       |   #1  | -- ok ---------> |   #2  |
+       +-------+                  +-------+
+</pre>
+
+
+     C: <data content='#Content'>
+            <originator identity='apex=report@example.com' />
+            <recipient identity='appl=pubsub/topic=fred@example.com' />
+            <data-content Name='Content'>
+                <statusResponse transID='86'>
+                    <destination identity='barney@example.com'>
+                        <reply code='550' />
+                    </destination>
+                </statusResponse>
+            </data-content>
+        </data>
+     S: <ok />
+
+	<a name="section-5"><h2>5.  Initial Registrations</h2></a>
+
+   The APEX option registration template is defined in Section 7.1 of
+   [1].
+
+</p><p class="rfcparagraph">	<a name="section-5.1"><h3>5.1  Registration: The attachOverride Option</h3></a>
+
+   Option Identification: attachOverride
+
+   Present in: APEX's "attach" element
+
+   Contains: nothing
+
+   Processing Rules: c.f., Section 1
+
+   Contact Information: c.f., the "Authors' Addresses" section of this
+      memo
+	<a name="section-5.2"><h3>5.2  Registration: The dataTiming Option</h3></a>
+
+   Option Identification: dataTiming
+
+   Present in: APEX's "data" element
+
+   Contains: dataTiming (c.f., Section 6)
+
+   Processing Rules: c.f., Section 2
+
+   Contact Information: c.f., the "Authors' Addresses" section of this
+      memo
+
+	<a name="section-5.3"><h3>5.3  Registration: The hold4Endpoint Option</h3></a>
+
+   Option Identification: hold4Endpoint
+
+   Present in: APEX's "data" element
+
+   Contains: nothing
+
+   Processing Rules: c.f., Section 3
+
+   Contact Information: c.f., the "Authors' Addresses" section of this
+      memo
+
+	<a name="section-5.4"><h3>5.4  Registration: The dataHopping Option</h3></a>
+
+   Option Identification: dataHopping
+
+   Present in: APEX's "data" element
+
+   Contains: dataHopping (c.f., Section 6)
+
+   Processing Rules: c.f., Section 4
+
+   Contact Information: c.f., the "Authors' Addresses" section of this
+      memo
+	<a name="section-6"><h2>6.  The APEX Party Pack DTD</h2></a>
+
+   <!--
+     DTD for the APEX option party pack, as of 2001-05-14
+
+
+     Refer to this DTD as:
+
+</p><p class="rfcparagraph">       <!ENTITY % APEXPARTY PUBLIC "-//IETF//DTD APEX PARTY//EN" "">
+       %APEXPARTY;
+     -->
+
+   <!ENTITY % APEXCORE PUBLIC "-//IETF//DTD APEX CORE//EN"
+   %APEXCORE;
+
+</p><p class="rfcparagraph">   <!--
+     DTD data types:
+
+</p><p class="rfcparagraph">          entity        syntax/reference     example
+          ======        ================     =======
+       hopcount
+           HOPS         0..255               17
+
+       milli-seconds
+           MILLISECS    0..2147483647        60000
+     -->
+
+   <!ENTITY  % HOPS     "CDATA">
+   <!ENTITY  % MILLISECS
+                         "CDATA">
+
+
+   <!ELEMENT dataHopping EMPTY>
+   <!ATTLIST dataHopping
+             noMoreThan  %HOPS;            "0"
+             reportErrors
+                         (true|false)      "false">
+
+   <!ELEMENT dataTiming  EMPTY>
+   <!ATTLIST dataTiming
+             noLaterThan %MILLISECS;       "0"
+             returnTrip  %MILLISECS;       "0"
+             reportAfter %MILLISECS;       "0"
+             reportErrors
+                         (true|false)      "false">
+	<a name="section-7"><h2>7.  Security Considerations</h2></a>
+
+   Consult [1]'s Section 11 for a discussion of security issues.
+
+</p><p class="rfcparagraph">   In addition:
+
+</p><p class="rfcparagraph">   o  The dataTiming option (Section 2) may be used to expose private
+      network topology.  Accordingly, an administrator may wish to
+      choose to disable this option except at the ingress/egress points
+      for its administrative domain.
+
+</p><p class="rfcparagraph">   o  The hold4Endpoint option (Section 3) may be used to facilitate
+      denial-of-service attacks.  Accordingly, an administrator may wish
+      to impose administrative limits on this attribute (e.g., always
+      require that the "dataTiming" option also be present with a
+      short-lived "noLaterThan" attribute).
+
+</p><p class="rfcparagraph">References
+
+   [1]   Rose, M., Klyne, G. and D. Crocker, "The Application Exchange
+         Core", RFC 3340, July 2002.
+
+</p><p class="rfcparagraph">   [2]   Postel, J., "Internet Protocol", STD 5, RFC 791, September
+         1981.
+
+</p><p class="rfcparagraph">   [3]   Newman, D., "Deliver By SMTP Service Extension", RFC 2852, June
+         2000.
+Appendix A. Acknowledgements
+
+   The authors gratefully acknowledge the contributions of Chris Newman
+   and Bob Wyman.  Further, the dataTiming option is similar in function
+   to "Deliver By" SMTP service extension defined by Dan Newman in [3].
+
+</p><p class="rfcparagraph">Appendix B. IANA Considerations
+
+   The IANA completed the registrations specified in Section 5.
+Authors' Addresses
+
+   Graham Klyne
+   Clearswift Corporation
+   1310 Waterside
+   Arlington Business Park
+   Theale, Reading  RG7 4SA
+   UK
+
+   Phone: +44 11 8903 8903
+   EMail: Graham.Klyne@MIMEsweeper.com
+
+
+   Marshall T. Rose
+   Dover Beach Consulting, Inc.
+   POB 255268
+   Sacramento, CA  95865-5268
+   US
+
+   Phone: +1 916 483 8878
+   EMail: mrose@dbc.mtview.ca.us
+
+
+   Michael F. Schwartz
+   Code On The Road, LLC
+
+   EMail: schwartz@CodeOnTheRoad.com
+   URI:   http://www.CodeOnTheRoad.com
+
+
+   Eric Dixon
+
+   EMail: edixon@myrealbox.com
+
+
+   Huston Franklin
+
+   EMail: huston@franklin.ro
+
+
+   Jay Kint
+
+   EMail: d20@icosahedron.org
+   Darren New
+   5390 Caminito Exquisito
+   San Diego, CA  92130
+   US
+
+   Phone: +1 858 350 9733
+   EMail: dnew@san.rr.com
+
+
+   Scott Pead
+
+   EMail: spead@fiber.net
+Full Copyright Statement
+
+   Copyright (C) The Internet Society (2002).  All Rights Reserved.<br>
+
+</p><p class="rfcparagraph">   This document and translations of it may be copied and furnished to
+   others, and derivative works that comment on or otherwise explain it
+   or assist in its implementation may be prepared, copied, published
+   and distributed, in whole or in part, without restriction of any
+   kind, provided that the above copyright notice and this paragraph are
+   included on all such copies and derivative works.  However, this
+   document itself may not be modified in any way, such as by removing
+   the copyright notice or references to the Internet Society or other
+   Internet organizations, except as needed for the purpose of
+   developing Internet standards in which case the procedures for
+   copyrights defined in the Internet Standards process must be
+   followed, or as required to translate it into languages other than
+   English.
+
+</p><p class="rfcparagraph">   The limited permissions granted above are perpetual and will not be
+   revoked by the Internet Society or its successors or assigns.
+
+</p><p class="rfcparagraph">   This document and the information contained herein is provided on an
+   "AS IS" basis and THE INTERNET SOCIETY AND THE INTERNET ENGINEERING
+   TASK FORCE DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING
+   BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION
+   HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED WARRANTIES OF
+   MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is currently provided by the
+   Internet Society.
+
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Klyne, et. al.              Standards Track                    [Page 22]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

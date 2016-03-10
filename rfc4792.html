@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                            S. Legg<br>Request for Comments: 4792                                       eB2Bcom<br>Updates: 3641                                               January 2007<br>Category: Standards Track<br><br></p>
+                  <h1>
+                     Encoding Instructions for the
+                  Generic String Encoding Rules (GSER)</h1>
+                  <h2>Status of This Memo</h2>
+
+   This document specifies an Internet standards track protocol for the
+   Internet community, and requests discussion and suggestions for
+   improvements.  Please refer to the current edition of the "Internet
+   Official Protocol Standards" (STD 1) for the standardization state
+   and status of this protocol.  Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The IETF Trust (2007).<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   Abstract Syntax Notation One (ASN.1) defines a general framework for
+   annotating types in an ASN.1 specification with encoding instructions
+   that alter how values of those types are encoded according to ASN.1
+   encoding rules.  This document defines the supporting notation for
+   encoding instructions that apply to the Generic String Encoding Rules
+   (GSER) and, in particular, defines an encoding instruction to provide
+   a machine-processable representation for the declaration of a GSER
+   ChoiceOfStrings type.
+
+</p><p class="rfcparagraph">Table of Contents
+<a href="#section-1" class="">1. Introduction ...................................................</a><br>
+<a href="#section-2" class="">2. Conventions ....................................................</a><br>
+<a href="#section-3" class="">3. Notation for GSER Encoding Instructions ........................</a><br>
+<a href="#section-4" class="">4. The CHOICE-OF-STRINGS Encoding Instruction .....................</a><br>
+<a href="#section-4.1" class="indent-1">4.1. Effect on GSER Encodings ..................................</a><br>
+<a href="#section-4.2" class="indent-1">4.2. Replacement of Existing ChoiceOfStrings Declarations ......</a><br>
+<a href="#section-5" class="">5. Security Considerations ........................................</a><br>
+<a href="#section-6" class="">6. Normative References ...........................................</a><br>
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   Abstract Syntax Notation One (ASN.1) [X.680] defines a general
+   framework for annotating types in an ASN.1 specification with
+   encoding instructions [X.680-1] that alter how values of those types
+   are encoded according to ASN.1 encoding rules.  This document defines
+   the supporting notation for encoding instructions that apply to the
+   Generic String Encoding Rules (GSER) [GSER], and in particular
+   defines an encoding instruction, the CHOICE-OF-STRINGS encoding
+   instruction, to provide a machine-processable representation for the
+   declaration of a GSER ChoiceOfStrings type.
+
+</p><p class="rfcparagraph">   The CHOICE-OF-STRINGS encoding instruction SHOULD be used instead of
+   simply declaring a ChoiceOfStrings type.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Conventions</h2></a>
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in BCP 14, RFC 2119
+   [BCP14].
+
+</p><p class="rfcparagraph">   Throughout this document, "type" shall be taken to mean an ASN.1
+   type, and "value" shall be taken to mean an ASN.1 abstract value,
+   unless qualified otherwise.
+
+</p><p class="rfcparagraph">   A reference to an ASN.1 production [X.680] (e.g., Type, NamedType) is
+   a reference to text in an ASN.1 specification corresponding to that
+   production.
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   Notation for GSER Encoding Instructions</h2></a>
+
+   The grammar of ASN.1 permits the application of encoding instructions
+   [X.680-1], through type prefixes and encoding control sections, that
+   modify how abstract values are encoded by nominated encoding rules.
+
+</p><p class="rfcparagraph">   The generic notation for type prefixes and encoding control sections
+   is defined by the ASN.1 basic notation [X.680] [X.680-1], and
+   includes an encoding reference to identify the specific encoding
+   rules that are affected by the encoding instruction.
+
+</p><p class="rfcparagraph">   The encoding reference that identifies the Generic String Encoding
+   Rules is literally GSER.
+
+</p><p class="rfcparagraph">   The specific notation for an encoding instruction for a particular
+   set of encoding rules is left to the specification of those encoding
+   rules.  Consequently, this companion document to the GSER
+   specification [GSER] defines the notation for GSER encoding
+   instructions.  Specifically, it elaborates the EncodingInstruction
+   and EncodingInstructionAssignmentList placeholder productions of the
+   ASN.1 basic notation.
+
+</p><p class="rfcparagraph">   In the context of the GSER encoding reference the EncodingInstruction
+   production is defined as follows, using the conventions of the ASN.1
+   basic notation:
+
+</p><p class="rfcparagraph">      EncodingInstruction ::=
+          ChoiceOfStringsInstruction
+
+   In the context of the GSER encoding reference the
+   EncodingInstructionAssignmentList production (which only appears in
+   an encoding control section) is empty:
+
+</p><p class="rfcparagraph">      EncodingInstructionAssignmentList ::= empty
+
+	<a name="section-4"><h2>4.   The CHOICE-OF-STRINGS Encoding Instruction</h2></a>
+
+   The CHOICE-OF-STRINGS encoding instruction allows a GSER encoder to
+   encode the alternative of a CHOICE (of restricted string types)
+   without the leading identifier.  The optional PrecedenceList also
+   allows a specification writer to alter the order in which a GSER
+   decoder will consider the alternatives of the CHOICE as it determines
+   which alternative has been encoded when the identifier is absent.
+
+</p><p class="rfcparagraph">   The notation for a CHOICE-OF-STRINGS encoding instruction is defined
+   as follows:
+
+</p><p class="rfcparagraph">      UnionInstruction ::= "CHOICE-OF-STRINGS" AlternativesPrecedence ?
+
+      AlternativesPrecedence ::= "PRECEDENCE" PrecedenceList
+
+      PrecedenceList ::= identifier PrecedenceList ?
+
+   The Type in the EncodingPrefixedType for a CHOICE-OF-STRINGS encoding
+   instruction SHALL be:
+
+</p><p class="rfcparagraph">   (a) a BuiltinType that is a ChoiceType, or
+
+   (b) a ConstrainedType that is not a TypeWithConstraint where the Type
+       in the ConstrainedType is one of (a) to (d), or
+
+   (c) a BuiltinType that is a PrefixedType that is a TaggedType where
+       the Type in the TaggedType is one of (a) to (d), or
+   (d) a BuiltinType that is a PrefixedType that is an
+       EncodingPrefixedType where the Type in the EncodingPrefixedType
+       is one of (a) to (d).
+
+</p><p class="rfcparagraph">   The effect of this condition is to force the CHOICE-OF-STRINGS
+   encoding instruction to be textually co-located with the CHOICE type
+   definition to which it applies.  This makes it clear to a reader that
+   the encoding instruction applies to every use of the CHOICE type no
+   matter how it might be referenced.
+
+</p><p class="rfcparagraph">   The ChoiceType in case (a) is said to be "subject to" the CHOICE-OF-
+   STRINGS encoding instruction.
+
+</p><p class="rfcparagraph">   The Type of each NamedType of the ChoiceType in case (a) MUST be:
+
+</p><p class="rfcparagraph">   (1) the NumericString, PrintableString, TeletexString (T61String),<br>
+       VideotexString, IA5String, GraphicString, VisibleString
+       (ISO646String), GeneralString, BMPString, UniversalString, or
+       UTF8String type, or
+
+   (2) a type notation that references a type that is one of (1) to (4),<br>
+       or
+
+   (3) a constrained type where the type that is constrained is one of<br>
+       (1) to (4), or<br>
+
+   (4) a prefixed type where the type that is prefixed is one of (1) to<br>
+       (4).<br>
+
+</p><p class="rfcparagraph">      ASIDE: A tagged type is a special case of a prefixed type.  An
+      effect of case (4) is that tagging is not significant.<br>
+
+</p><p class="rfcparagraph">   The ASN.1 restricted string type in case (1) MUST be different for<br>
+   each NamedType in the ChoiceType, i.e., no two alternatives have the
+   same restricted string type.
+
+</p><p class="rfcparagraph">   If case (3) applies to any NamedType, then the constraint in case (3)<br>
+   MUST be the same for each NamedType, i.e., either none of the
+   alternatives has a constraint, or all of the alternatives have
+   exactly the same constraint.
+
+</p><p class="rfcparagraph">   Each identifier in the PrecedenceList MUST be the identifier of a
+   NamedType of the ChoiceType.
+
+</p><p class="rfcparagraph">   A particular identifier SHALL NOT appear more than once in the same
+   PrecedenceList.
+	<a name="section-4.1"><h3>4.1   Effect on GSER Encodings</h3></a>
+
+   A value of a CHOICE type is encoded according to the <ChoiceValue>
+   [GSER] Augmented Backus-Naur Form [ABNF] rule.  The ABNF for
+   <ChoiceValue> is reproduced here for convenience:
+
+</p><p class="rfcparagraph">      ChoiceValue           = IdentifiedChoiceValue /
+                              ChoiceOfStringsValue
+
+      IdentifiedChoiceValue = identifier ":" Value
+      ChoiceOfStringsValue  = StringValue
+
+   The <IdentifiedChoiceValue> rule MUST be used to encode values of a
+   CHOICE type where the ChoiceType is not subject to a CHOICE-OF-
+   STRINGS encoding instruction.
+
+</p><p class="rfcparagraph">   The chosen alternative of a value of a CHOICE type corresponds to
+   some NamedType in the definition of the type.  The <identifier> in
+   the <IdentifiedChoiceValue> is the identifier of this NamedType.
+
+</p><p class="rfcparagraph">   Either the <IdentifiedChoiceValue> rule or the <ChoiceOfStringsValue>
+   rule is used to encode values of a CHOICE type where the ChoiceType
+   is subject to a CHOICE-OF-STRINGS encoding instruction.
+
+</p><p class="rfcparagraph">   If <ChoiceOfStringsValue> has been used, then a GSER decoder MUST
+   determine the chosen alternative by considering the alternatives of
+   the CHOICE in the order prescribed below and accepting the first
+   alternative that allows all of the characters in the <StringValue>.
+
+</p><p class="rfcparagraph">   If the CHOICE-OF-STRINGS encoding instruction has a PrecedenceList,
+   then the alternatives of the ChoiceType referenced by the
+   PrecedenceList are considered in the order identified by that
+   PrecedenceList, and then the remaining alternatives are considered in
+   the order of their definition in the ChoiceType.  If the CHOICE-OF-
+   STRINGS encoding instruction does not have a PrecedenceList, then all
+   the alternatives of the ChoiceType are considered in the order of
+   their definition in the ChoiceType.
+
+</p><p class="rfcparagraph">   A GSER encoder MUST use <IdentifiedChoiceValue> if a GSER decoder
+   would determine the chosen alternative to be something other than the
+   chosen alternative of the CHOICE value being encoded; otherwise,
+   <ChoiceOfStringsValue> MAY be used.
+   Example
+
+      Consider this type definition:
+
+</p><p class="rfcparagraph">         [GSER:CHOICE-OF-STRINGS PRECEDENCE basicName] CHOICE {
+             extendedName  UTF8String,
+             basicName     PrintableString
+         }
+
+      If a <ChoiceOfStringsValue> has been used, then a GSER decoder
+      would first consider whether the <StringValue> was a valid
+      basicName (a PrintableString) before considering whether it was a
+      valid extendedName (a UTF8String).
+
+</p><p class="rfcparagraph">	<a name="section-4.2"><h3>4.2   Replacement of Existing ChoiceOfStrings Declarations</h3></a>
+
+   In line with the previous declaration [GSER] of the DirectoryString
+   type as a ChoiceOfStrings type, applications using GSER MUST add this
+   encoding instruction:
+
+</p><p class="rfcparagraph">      [GSER:CHOICE-OF-STRINGS PRECEDENCE printableString uTF8String]
+
+   immediately before the "CHOICE" keyword in the definition of the
+   DirectoryString type in the third and every subsequent edition of the
+   SelectedAttributeTypes ASN.1 module of X.520 [X.520-3] [X.520-4]
+   [X.520-5].
+
+</p><p class="rfcparagraph">   For example, this is how the DirectoryString definition would appear
+   in the third, fourth and fifth editions:
+
+</p><p class="rfcparagraph">      DirectoryString{INTEGER:maxSize} ::=
+      [GSER:CHOICE-OF-STRINGS PRECEDENCE printableString uTF8String]
+      CHOICE {
+          teletexString     TeletexString(SIZE (1..maxSize)),
+          printableString   PrintableString(SIZE (1..maxSize)),
+          universalString   UniversalString(SIZE (1..maxSize)),
+          bmpString         BMPString(SIZE (1..maxSize)),
+          uTF8String        UTF8String(SIZE (1..maxSize))
+      }
+
+   The uTF8String alternative did not appear in the second edition of
+   the SelectedAttributeTypes ASN.1 module of X.520 [X.520-2].  For
+   compatibility, applications using GSER with the second edition of
+   X.520 MUST add this encoding instruction:
+
+</p><p class="rfcparagraph">      [GSER:CHOICE-OF-STRINGS PRECEDENCE printableString]
+   immediately before the "CHOICE" keyword in the definition of the
+   DirectoryString type.
+
+</p><p class="rfcparagraph">   For example, this is how the DirectoryString definition would appear
+   in the second edition:
+
+</p><p class="rfcparagraph">      DirectoryString{INTEGER:maxSize} ::=
+      [GSER:CHOICE-OF-STRINGS PRECEDENCE printableString]
+      CHOICE {
+          teletexString     TeletexString(SIZE (1..maxSize)),
+          printableString   PrintableString(SIZE (1..maxSize)),
+          universalString   UniversalString(SIZE (1..maxSize))
+      }
+
+	<a name="section-5"><h2>5.   Security Considerations</h2></a>
+
+   This specification changes the manner in which ChoiceOfStrings types
+   are declared but does not alter the existing behaviour of GSER
+   implementations.  The security considerations for GSER are unchanged
+   (see [GSER]).
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.   Normative References</h2></a>
+
+   [BCP14]    Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">   [GSER]     Legg, S., "Generic String Encoding Rules (GSER) for ASN.1
+              Types", RFC 3641, October 2003.
+
+</p><p class="rfcparagraph">   [ABNF]     Crocker, D., Ed., and P. Overell, "Augmented BNF for
+              Syntax Specifications: ABNF", RFC 4234, October 2005.
+
+</p><p class="rfcparagraph">   [X.520-2]  ITU-T Recommendation X.520 (1993) | ISO/IEC 9594-6:1994,<br>
+              Information Technology - Open Systems Interconnection -
+              The Directory: Selected attribute types
+
+   [X.520-3]  ITU-T Recommendation X.520 (08/97) | ISO/IEC 9594-6:1998,
+              Information Technology - Open Systems Interconnection -
+              The Directory: Selected attribute types
+
+   [X.520-4]  ITU-T Recommendation X.520 (02/01) | ISO/IEC 9594-6:2001,
+              Information technology - Open Systems Interconnection -
+              The Directory: Selected attribute types
+
+   [X.520-5]  ITU-T Recommendation X.520 (08/05) | ISO/IEC 9594-6:2005,
+              Information technology - Open Systems Interconnection -
+              The Directory: Selected attribute types
+   [X.680]    ITU-T Recommendation X.680 (07/02) | ISO/IEC 8824-1,
+              Information technology - Abstract Syntax Notation One
+              (ASN.1): Specification of basic notation.
+
+</p><p class="rfcparagraph">   [X.680-1]  ITU-T Recommendation X.680 (2002) Amendment 1 (10/03) |<br>
+              ISO/IEC 8824-1:2002/Amd 1:2004, Support for EXTENDED-XER.
+
+</p><p class="rfcparagraph">Author's Address
+
+   Dr. Steven Legg
+   eB2Bcom
+   Suite 3, Woodhouse Corporate Centre
+   935 Station Street
+   Box Hill North, Victoria 3129
+   AUSTRALIA
+
+   Phone: +61 3 9896 7830
+   Fax:   +61 3 9896 7801
+   EMail: steven.legg@eb2bcom.com
+Full Copyright Statement
+
+   Copyright (C) The IETF Trust (2007).<br>
+
+</p><p class="rfcparagraph">   This document is subject to the rights, licenses and restrictions
+   contained in BCP 78, and except as set forth therein, the authors
+   retain all their rights.
+
+</p><p class="rfcparagraph">   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY, THE IETF TRUST AND
+   THE INTERNET ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS
+   OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF
+   THE INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED
+   WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Intellectual Property
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the procedures with respect to rights in RFC documents can be
+   found in BCP 78 and BCP 79.
+
+</p><p class="rfcparagraph">   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+</p><p class="rfcparagraph">   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at
+   ietf-ipr@ietf.org.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is currently provided by the
+   Internet Society.
+
+</p>
+
+
+
+
+
+Legg                        Standards Track                     [Page 9]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

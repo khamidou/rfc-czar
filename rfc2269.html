@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                      G. Armitage<br>Request for Comments: 2269                         Lucent Technologies<br>Category: Informational                                   January 1998<br><br></p>
+                  <h1>
+             Using the MARS Model in non-ATM NBMA Networks</h1>
+                  <h2>Status of this Memo</h2>
+
+   This memo provides information for the Internet community.  It does
+   not specify an Internet standard of any kind.  Distribution of this
+   memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (1998).  All Rights Reserved.<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   Initially developed for IP over ATM, the RFC 2022 (MARS) model is
+   also applicable to other NBMA networks that provide the equivalent of
+   switched, point to multipoint connections. This short document is
+   intended to state the obvious equivalences, and explain the less
+   obvious implications. No changes to the MARS model per se are
+   suggested or required. RFC 2022 is not required over NBMA networks
+   that offer Ethernet-like group addressing functionality.
+
+</p><p class="rfcparagraph">	<a name="section-1"><h2>1.  Introduction</h2></a>
+
+   Most network layer models, like the one described in STD 5, RFC 1112
+   [1] for IP multicasting, assume sources may send their packets to an
+   abstract 'multicast group addresses'.  Link layer support for such an
+   abstraction is assumed to exist, and is provided by technologies such
+   as Ethernet.
+
+</p><p class="rfcparagraph">   Some NBMA networks (e.g. ATM using UNI3.0 or UNI3.1 signaling [4,5])
+   do not support a multicast (or group) address abstraction. In these
+   environments multicasting is typically supported through point to
+   multipoint calls (or emulated with multiple point to point calls).
+   The MARS model (RFC 2022) [2] was originally developed by the IP over
+   ATM working group, and so uses ATM-centric descriptive language.  For
+   completeness this memo explains how RFC 2022 can be applied to other
+   NBMA technologies.
+	<a name="section-2"><h2>2.   RFC 2022's basic assumptions.</h2></a>
+
+   Section 3 of [2] describes the basic assumptions that the MARS model
+   makes about the services available from the link layer network (using
+   ATM as the specific case).  In summary these are:
+
+</p><p class="rfcparagraph">      The ATM model broadly describes an 'AAL User' as any entity that
+      establishes and manages VCs and underlying AAL services to
+      exchange data.  An IP over ATM interface is a form of 'AAL User'
+
+      The most fundamental limitations of UNI 3.0/3.1's multicast
+      support are:
+
+</p><p class="rfcparagraph">         Only point to multipoint, unidirectional VCs may be
+         established.
+
+</p><p class="rfcparagraph">         Only the root (source) node of a given VC may add or remove
+         leaf nodes.
+
+</p><p class="rfcparagraph">      Leaf nodes are identified by their unicast ATM addresses.
+
+</p><p class="rfcparagraph">   Given this point to multipoint call service, the MARS document goes
+   on to describe two architectures for emulating multipoint to
+   multipoint IP multicasting - the VC Mesh, and the Multicast Server.
+   In either case it was assumed that IP/ATM interfaces (whether in
+   routers or hosts) are allowed to originate and manage outgoing point
+   to multipoint calls without network operator intervention or manual
+   provisioning.
+
+</p><p class="rfcparagraph">   The MARS document also specifies that AAL5 be used for all SVCs,
+   implying a requirement that the underlying link service supports the
+   atomic exchange of PDUs.
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   Generalising the MARS model.</h2></a>
+
+   Any NBMA service that offers an equivalent to (or superset of) the
+   ATM point to multipoint call service can use the MARS model directly.
+   It must be possible to transmit atomic data units bi-directionally
+   with point to point calls, and unidirectionally (from root to leaves)
+   on point to multipoint calls.
+
+</p><p class="rfcparagraph">   A MARS is an entity known by its NBMA address.
+
+</p><p class="rfcparagraph">   A MARS Client is an entity known by its NBMA address.
+
+</p><p class="rfcparagraph">   An MCS (where needed) is an entity known by its NBMA address.
+   The MARS control messages defined in sections 4 onwards of the MARS
+   document are shown carrying ATM addresses.  Using different mar$afn
+   (Address Family) values in the fixed header of MARS control messages
+   allows MARS entities to indicate they are carrying other types of
+   NBMA addresses (as done in NHRP [3]).  As for NHRP, the
+   interpretation of the 'sub-address' fields shall be in the context of
+   the address family selected (which means it will often simply be
+   null).
+
+</p><p class="rfcparagraph">   In all cases where {IP, ATM.1, ATM.2, ...} mappings are referred to,
+   they may be interpreted as {IP, NBMA.1, NBMA.2, ...} in the context
+   of whatever NBMA network you are deploying MARS.
+
+</p><p class="rfcparagraph">   The MARS Cluster is defined in [2] as:
+
+</p><p class="rfcparagraph">      The set of ATM interfaces chosing to participate in direct ATM
+      connections to achieve multicasting of AAL_SDUs between
+      themselves.
+
+</p><p class="rfcparagraph">   It is trivial to observe that the cluster definition is independent
+   of the underlying link layer technology. A revised definition
+   becomes:
+
+</p><p class="rfcparagraph">      The set of NBMA interfaces chosing to participate in direct NBMA
+      connections to achieve multicasting of packets between themselves.
+
+</p><p class="rfcparagraph">   The term 'Cluster Member' continues to refer to an endpoint that is
+   currently using a specific MARS for multicast support.  The potential
+   scope of a cluster may be the entire membership of a LIS, while the
+   actual scope of a cluster depends on which LIS members are actually
+   registered with the cluster's MARS at any given time.
+
+</p><p class="rfcparagraph">   Section 3.4 of [2] provided a set of mneumonics for the signalling
+   functions available to AAL Users. These mneumonics are then used in
+   the remainder of [2] to indicate link layer events to which MARS
+   entities might react. Recast from the perspective of an NBMA based
+   MARS entity, the descriptions would now read:
+
+</p><p class="rfcparagraph">      The following generic signalling functions are presumed to be
+      available to local MARS entities:
+
+</p><p class="rfcparagraph">      L_CALL_RQ     Establish a pt-pt call to a specific endpoint.
+      L_MULTI_RQ    Establish pt-mpt call to a specific endpoint.
+      L_MULTI_ADD   Add new leaf node to previously established pt-mpt
+                    call.
+      L_MULTI_DROP  Remove specific leaf node from established pt-mpt
+                    call.
+      L_RELEASE     Release pt-pt call, or all Leaves of a pt-mpt call.
+      The signalling exchanges and local information passed between MARS
+      entity and NBMA signalling entity with these functions are outside
+      the scope of this document.
+
+</p><p class="rfcparagraph">      The following indications are assumed to be available to MARS
+      entities, generated by by the local NBMA signalling entity:
+
+</p><p class="rfcparagraph">      L_ACK           Succesful completion of a local request.
+      L_REMOTE_CALL   A new call has been established to the MARS
+                      entity.
+      ERR_L_RQFAILED  A remote NBMA endpoint rejected an L_CALL_RQ,
+                      L_MULTI_RQ, or L_MULTI_ADD.
+      ERR_L_DROP      A remote NBMA endpoint dropped off an existing
+                      call.
+      ERR_L_RELEASE   An existing call was terminated.
+
+</p><p class="rfcparagraph">      The signalling exchanges and local information passed between MARS
+      entity and NBMA signalling entity with these functions are outside
+      the scope of this document.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   Open Issues.</h2></a>
+
+   The trade offs between VC Mesh and Multicast Server modes may look
+   quite different for each NBMA technology. This will be especially
+   true in the area of VC (or equivalent) resource consumption in the
+   NICs of hosts, routers, and endpoints supporting MARSs or MCSs. The
+   use of VC mesh mode is most vulnerable to NBMA technologies that are
+   signalling intensive or resource challenged.
+
+</p><p class="rfcparagraph">   Sizing of Clusters (and hence LISes) will also be affected by a given
+   NBMA network's ability to support lots of pt-mpt calls.
+   Additionally, you cannot have more members in a cluster than you can
+   have leaf nodes on a pt-mpt call, without hacking the MARS model [6].
+
+</p><p class="rfcparagraph">   On going developments in server synchronisation protocols for
+   distributed RFC 2022 implementations are expected to be applicable to
+   non-ATM NBMA networks.
+
+</p><p class="rfcparagraph">   Quality of service considerations are outside the scope of this
+   document. They will be very specific to each NBMA technology's
+   capabilities. Related work is being pursued outside the ION Working
+   Group.
+
+</p><p class="rfcparagraph">   If the NBMA network offers some sort of native multipoint to
+   multipoint service then use of the MARS model may not be optimal.
+   Such situations require further analysis.
+Security Considerations
+
+   This memo is informational, and specifies no protocol for deployment.
+   No specific non-ATM NBMA network technologies or security
+   characteristics are discussed. Should enhancements to security be
+   required, they shall be added as an extension to the base
+   architecture in RFC 2022, or described in documents explicitly
+   proposing use of RFC 2022 over specific NBMA technologies.
+
+</p><p class="rfcparagraph">Acknowledgments
+
+   This memo was substantially developed while the author was with Bell
+   Communications Research (Bellcore).
+
+</p><p class="rfcparagraph">Author's Address
+
+   Grenville Armitage
+   Bell Laboratories, Lucent Technologies.
+   101 Crawfords Corner Rd,
+   Holmdel, NJ, 07733
+   USA
+
+   EMail: gja@lucent.com
+
+References
+
+   [1] Deering, S., "Host Extensions for IP Multicasting", STD 5, RFC
+   1112, Stanford University, August 1989.
+
+</p><p class="rfcparagraph">   [2] Armitage, G., "Support for Multicast over UNI 3.0/3.1 based ATM
+   Networks.", RFC 2022, November 1996.
+
+</p><p class="rfcparagraph">   [3] Luciani, J., et. al., "NBMA Next Hop Resolution Protocol (NHRP)",
+   Work in Progress.
+
+</p><p class="rfcparagraph">   [4] ATM Forum, "ATM User-Network Interface Specification Version
+   3.0", Englewood Cliffs, NJ: Prentice Hall, September 1993.
+
+</p><p class="rfcparagraph">   [5] ATM Forum, "ATM User Network Interface (UNI) Specification
+   Version 3.1", ISBN 0-13-393828-X, Prentice Hall, Englewood Cliffs,
+   NJ, June 1995.
+
+</p><p class="rfcparagraph">   [6] Armitage, G., "Issues affecting MARS Cluster Size", RFC 2121,
+   March 1997.
+Full Copyright Statement
+
+   Copyright (C) The Internet Society (1998).  All Rights Reserved.<br>
+
+</p><p class="rfcparagraph">   This document and translations of it may be copied and furnished to
+   others, and derivative works that comment on or otherwise explain it
+   or assist in its implementation may be prepared, copied, published
+   and distributed, in whole or in part, without restriction of any
+   kind, provided that the above copyright notice and this paragraph are
+   included on all such copies and derivative works.  However, this
+   document itself may not be modified in any way, such as by removing
+   the copyright notice or references to the Internet Society or other
+   Internet organizations, except as needed for the purpose of
+   developing Internet standards in which case the procedures for
+   copyrights defined in the Internet Standards process must be
+   followed, or as required to translate it into languages other than
+   English.
+
+</p><p class="rfcparagraph">   The limited permissions granted above are perpetual and will not be
+   revoked by the Internet Society or its successors or assigns.
+
+</p><p class="rfcparagraph">   This document and the information contained herein is provided on an
+   "AS IS" basis and THE INTERNET SOCIETY AND THE INTERNET ENGINEERING
+   TASK FORCE DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING
+   BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION
+   HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED WARRANTIES OF
+   MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Armitage                     Informational                      [Page 6]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

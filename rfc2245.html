@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                          C. Newman<br>Request for Comments: 2245                                      Innosoft<br>Category: Standards Track                                  November 1997<br><br></p>
+                  <h1>
+                        Anonymous SASL Mechanism</h1>
+                  <h2>Status of this Memo</h2>
+
+   This document specifies an Internet standards track protocol for the
+   Internet community, and requests discussion and suggestions for
+   improvements.  Please refer to the current edition of the "Internet
+   Official Protocol Standards" (STD 1) for the standardization state
+   and status of this protocol.  Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (1997).  All Rights Reserved.<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   It is common practice on the Internet to permit anonymous access to
+   various services.  Traditionally, this has been done with a plain
+   text password mechanism using "anonymous" as the user name and
+   optional trace information, such as an email address, as the
+   password.  As plaintext login commands are not permitted in new IETF
+   protocols, a new way to provide anonymous login is needed within the
+   context of the SASL [SASL] framework.
+
+</p><p class="rfcparagraph">	<a name="section-1"><h2>1.  Conventions Used in this Document</h2></a>
+
+   The key words "MUST", "MUST NOT", "SHOULD", "SHOULD NOT", and "MAY"
+   in this document are to be interpreted as defined in "Key words for
+   use in RFCs to Indicate Requirement Levels" [KEYWORDS].
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.  Anonymous SASL mechanism</h2></a>
+
+   The mechanism name associated with anonymous access is "ANONYMOUS".
+   The mechanism consists of a single message from the client to the
+   server.  The client sends optional trace information in the form of a
+   human readable string.  The trace information should take one of
+   three forms: an Internet email address, an opaque string which does
+   not contain the '@' character and can be interpreted by the system
+   administrator of the client's domain, or nothing.  For privacy
+   reasons, an Internet email address should only be used with
+   permission from the user.
+   A server which permits anonymous access will announce support for the
+   ANONYMOUS mechanism, and allow anyone to log in using that mechanism,
+   usually with restricted access.
+
+</p><p class="rfcparagraph">   The formal grammar for the client message using Augmented BNF [ABNF]
+   follows.
+
+</p><p class="rfcparagraph">   message         = [email / token]
+
+   TCHAR           = %x20-3F / %x41-7E
+                     ;; any printable US-ASCII character except '@'
+
+   email           = addr-spec
+                     ;; as defined in [IMAIL], except with no free
+                     ;; insertion of linear-white-space, and the
+                     ;; local-part MUST either be entirely enclosed in
+                     ;; quotes or entirely unquoted
+
+   token           = 1*255TCHAR
+
+	<a name="section-3"><h2>3.  Example</h2></a>
+
+
+   Here is a sample anonymous login between an IMAP client and server.
+   In this example, "C:" and "S:" indicate lines sent by the client and
+   server respectively.  If such lines are wrapped without a new "C:" or
+   "S:" label, then the wrapping is for editorial clarity and is not
+   part of the command.
+
+</p><p class="rfcparagraph">   Note that this example uses the IMAP profile [IMAP4] of SASL.  The
+   base64 encoding of challenges and responses, as well as the "+ "
+   preceding the responses are part of the IMAP4 profile, not part of
+   SASL itself.  Newer profiles of SASL will include the client message
+   with the AUTHENTICATE command itself so the extra round trip below
+   (the server response with an empty "+ ") can be eliminated.
+
+</p><p class="rfcparagraph">   In this example, the user's opaque identification token is "sirhc".
+
+</p><p class="rfcparagraph">        S: * OK IMAP4 server ready
+        C: A001 CAPABILITY
+        S: * CAPABILITY IMAP4 IMAP4rev1 AUTH=CRAM-MD5 AUTH=ANONYMOUS
+        S: A001 OK done
+        C: A002 AUTHENTICATE ANONYMOUS
+        S: +
+        C: c2lyaGM=
+        S: A003 OK Welcome, trace information has been logged.
+	<a name="section-4"><h2>4.  Security Considerations</h2></a>
+
+   The anonymous mechanism grants access to information by anyone.  For
+   this reason it should be disabled by default so the administrator can
+   make an explicit decision to enable it.
+
+</p><p class="rfcparagraph">   If the anonymous user has any write privileges, a denial of service
+   attack is possible by filling up all available space.  This can be
+   prevented by disabling all write access by anonymous users.
+
+</p><p class="rfcparagraph">   If anonymous users have read and write access to the same area, the
+   server can be used as a communication mechanism to anonymously
+   exchange information.  Servers which accept anonymous submissions
+   should implement the common "drop box" model which forbids anonymous
+   read access to the area where anonymous submissions are accepted.
+
+</p><p class="rfcparagraph">   If the anonymous user can run many expensive operations (e.g., an
+   IMAP SEARCH BODY command), this could enable a denial of service
+   attack.  Servers are encouraged to limit the number of anonymous
+   users and reduce their priority or limit their resource usage.
+
+</p><p class="rfcparagraph">   If there is no idle timeout for the anonymous user and there is a
+   limit on the number of anonymous users, a denial of service attack is
+   enabled.  Servers should implement an idle timeout for anonymous
+   users.
+
+</p><p class="rfcparagraph">   The trace information is not authenticated so it can be falsified.
+   This can be used as an attempt to get someone else in trouble for
+   access to questionable information.  Administrators trying to trace
+   abuse need to realize this information may be falsified.
+
+</p><p class="rfcparagraph">   A client which uses the user's correct email address as trace
+   information without explicit permission may violate that user's
+   privacy.  Information about who accesses an anonymous archive on a
+   sensitive subject (e.g., sexual abuse) has strong privacy needs.
+   Clients should not send the email address without explicit permission
+   of the user and should offer the option of supplying no trace token
+   -- thus only exposing the source IP address and time.  Anonymous
+   proxy servers could enhance this privacy, but would have to consider
+   the resulting potential denial of service attacks.
+
+</p><p class="rfcparagraph">   Anonymous connections are susceptible to man in the middle attacks
+   which view or alter the data transferred.  Clients and servers are
+   encouraged to support external integrity and encryption mechanisms.
+
+</p><p class="rfcparagraph">   Protocols which fail to require an explicit anonymous login are more
+   susceptible to break-ins given certain common implementation
+   techniques.  Specifically, Unix servers which offer user login may
+   initially start up as root and switch to the appropriate user id
+   after an explicit login command.  Normally such servers refuse all
+   data access commands prior to explicit login and may enter a
+   restricted security environment (e.g., the Unix chroot function) for
+   anonymous users.  If anonymous access is not explicitly requested,
+   the entire data access machinery is exposed to external security
+   attacks without the chance for explicit protective measures.
+   Protocols which offer restricted data access should not allow
+   anonymous data access without an explicit login step.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.  References</h2></a>
+
+   [ABNF] Crocker, D. and P. Overell, "Augmented BNF for Syntax
+   Specifications: ABNF", RFC 2234, November 1997.
+
+</p><p class="rfcparagraph">   [IMAIL] Crocker, D., "Standard for the Format of Arpa Internet Text
+   Messages", STD 11, RFC 822, August 1982.
+
+</p><p class="rfcparagraph">   [IMAP4] Crispin, M., "Internet Message Access Protocol - Version
+   4rev1", RFC 2060, December 1996.
+
+</p><p class="rfcparagraph">   [KEYWORDS] Bradner, S., "Key words for use in RFCs to Indicate
+   Requirement Levels", RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">   [SASL] Myers, J., "Simple Authentication and Security Layer (SASL)",
+   RFC 2222, October 1997.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.  Author's Address</h2></a>
+
+   Chris Newman
+   Innosoft International, Inc.
+   1050 Lakes Drive
+   West Covina, CA 91790 USA
+
+   Email: chris.newman@innosoft.com
+	<a name="section-7"><h2>7.   Full Copyright Statement</h2></a>
+
+   Copyright (C) The Internet Society (1997).  All Rights Reserved.<br>
+
+</p><p class="rfcparagraph">   This document and translations of it may be copied and furnished to
+   others, and derivative works that comment on or otherwise explain it
+   or assist in its implementation may be prepared, copied, published
+   and distributed, in whole or in part, without restriction of any
+   kind, provided that the above copyright notice and this paragraph are
+   included on all such copies and derivative works.  However, this
+   document itself may not be modified in any way, such as by removing
+   the copyright notice or references to the Internet Society or other
+   Internet organizations, except as needed for the purpose of
+   developing Internet standards in which case the procedures for
+   copyrights defined in the Internet Standards process must be
+   followed, or as required to translate it into languages other than
+   English.
+
+</p><p class="rfcparagraph">   The limited permissions granted above are perpetual and will not be
+   revoked by the Internet Society or its successors or assigns.
+
+</p><p class="rfcparagraph">   This document and the information contained herein is provided on an
+   "AS IS" basis and THE INTERNET SOCIETY AND THE INTERNET ENGINEERING
+   TASK FORCE DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING
+   BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION
+   HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED WARRANTIES OF
+   MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Newman                      Standards Track                     [Page 5]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

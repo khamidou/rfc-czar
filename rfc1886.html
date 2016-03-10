@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                         S. Thomson<br>Request for Comments: 1886                                      Bellcore<br>Category: Standards Track                                     C. Huitema<br>                                                                   INRIA<br>                                                           December 1995<br><br></p>
+                  <h1>
+                DNS Extensions to support IP version 6
+</h1>
+                  <h2>Status of this Memo</h2>
+
+   This document specifies an Internet standards track protocol for the
+   Internet community, and requests discussion and suggestions for
+   improvements.  Please refer to the current edition of the "Internet
+   Official Protocol Standards" (STD 1) for the standardization state
+   and status of this protocol.  Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph">
+<h2>Abstract</h2>
+
+   This document defines the changes that need to be made to the Domain
+   Name System to support hosts running IP version 6 (IPv6).  The
+   changes include a new resource record type to store an IPv6 address,
+   a new domain to support lookups based on an IPv6 address, and updated
+   definitions of existing query types that return Internet addresses as
+   part of additional section processing.  The extensions are designed
+   to be compatible with existing applications and, in particular, DNS
+   implementations themselves.
+	<a name="section-1"><h2>1.  INTRODUCTION</h2></a>
+
+   Current support for the storage of Internet addresses in the Domain
+   Name System (DNS)[1,2] cannot easily be extended to support IPv6
+   addresses[3] since applications assume that address queries return
+   32-bit IPv4 addresses only.
+
+</p><p class="rfcparagraph">   To support the storage of IPv6 addresses we define the following
+   extensions:
+
+</p><p class="rfcparagraph">      o A new resource record type is defined to map a domain name to an
+        IPv6 address.
+
+</p><p class="rfcparagraph">      o A new domain is defined to support lookups based on address.
+
+</p><p class="rfcparagraph">      o Existing queries that perform additional section processing to
+        locate IPv4 addresses are redefined to perform additional
+        section processing on both IPv4 and IPv6 addresses.
+
+</p><p class="rfcparagraph">   The changes are designed to be compatible with existing software. The
+   existing support for IPv4 addresses is retained. Transition issues
+   related to the co-existence of both IPv4 and IPv6 addresses in DNS
+   are discussed in [4].
+
+</p><p class="rfcparagraph">
+	<a name="section-2"><h2>2.  NEW RESOURCE RECORD DEFINITION AND DOMAIN</h2></a>
+
+   A new record type is defined to store a host's IPv6 address. A host
+   that has more than one IPv6 address must have more than one such
+   record.
+
+</p><p class="rfcparagraph">
+	<a name="section-2.1"><h3>2.1  AAAA record type</h3></a>
+
+   The AAAA resource record type is a new record specific to the
+   Internet class that stores a single IPv6 address.
+
+</p><p class="rfcparagraph">   The value of the type is 28 (decimal).
+
+</p><p class="rfcparagraph">
+	<a name="section-2.2"><h3>2.2  AAAA data format</h3></a>
+
+   A 128 bit IPv6 address is encoded in the data portion of an AAAA
+   resource record in network byte order (high-order byte first).
+	<a name="section-2.3"><h3>2.3  AAAA query</h3></a>
+
+   An AAAA query for a specified domain name in the Internet class
+   returns all associated AAAA resource records in the answer section of
+   a response.
+
+</p><p class="rfcparagraph">   A type AAAA query does not perform additional section processing.
+
+</p><p class="rfcparagraph">
+	<a name="section-2.4"><h3>2.4  Textual format of AAAA records</h3></a>
+
+   The textual representation of the data portion of the AAAA resource
+   record used in a master database file is the textual representation
+   of a IPv6 address as defined in [3].
+
+</p><p class="rfcparagraph">
+	<a name="section-2.5"><h3>2.5  IP6.INT Domain</h3></a>
+
+   A special domain is defined to look up a record given an address. The
+   intent of this domain is to provide a way of mapping an IPv6 address
+   to a host name, although it may be used for other purposes as well.
+   The domain is rooted at IP6.INT.
+
+</p><p class="rfcparagraph">   An IPv6 address is represented as a name in the IP6.INT domain by a
+   sequence of nibbles separated by dots with the suffix ".IP6.INT". The
+   sequence of nibbles is encoded in reverse order, i.e. the low-order
+   nibble is encoded first, followed by the next low-order nibble and so
+   on. Each nibble is represented by a hexadecimal digit. For example,
+   the inverse lookup domain name corresponding to the address
+
+       4321:0:1:2:3:4:567:89ab
+
+   would be
+
+b.a.9.8.7.6.5.0.4.0.0.0.3.0.0.0.2.0.0.0.1.0.0.0.0.0.0.0.1.2.3.4.IP6.INT.
+
+</p><p class="rfcparagraph">
+
+	<a name="section-3"><h2>3.  MODIFICATIONS TO EXISTING QUERY TYPES</h2></a>
+
+   All existing query types that perform type A additional section
+   processing, i.e. name server (NS), mail exchange (MX) and mailbox
+   (MB) query types, must be redefined to perform both type A and type
+   AAAA additional section processing. These new definitions mean that a
+   name server must add any relevant IPv4 addresses and any relevant
+   IPv6 addresses available locally to the additional section of a
+   response when processing any one of the above queries.
+
+</p><p class="rfcparagraph">
+	<a name="section-4"><h2>4.  SECURITY CONSIDERATIONS</h2></a>
+
+   Security issues are not discussed in this memo.
+	<a name="section-5"><h2>5.  REFERENCES</h2></a>
+
+
+   [1]  Mockapetris, P., "Domain Names - Concepts and Facilities", STD
+        13, RFC 1034, USC/Information Sciences Institute, November 1987.
+
+</p><p class="rfcparagraph">   [2]  Mockapetris, P., "Domain Names - Implementation and Specifica-
+        tion", STD 13, RFC 1035, USC/Information Sciences Institute,
+        November 1987.
+
+</p><p class="rfcparagraph">   [3]  Hinden, R., and S. Deering, Editors, "IP Version 6 Addressing
+        Architecture", RFC 1884, Ipsilon Networks, Xerox PARC, December
+        1995.
+
+</p><p class="rfcparagraph">
+   [4]  Gilligan, R., and E. Nordmark, "Transition Mechanisms for IPv6
+        Hosts and Routers", Work in Progress.
+
+</p><p class="rfcparagraph">
+Authors' Addresses
+
+   Susan Thomson
+   Bellcore
+   MRE 2P343
+   445 South Street
+   Morristown, NJ 07960
+   U.S.A.
+
+</p>   Phone: +1 201-829-4514
+   EMail: set@thumper.bellcore.com
+
+
+   Christian Huitema
+   INRIA, Sophia-Antipolis
+   2004 Route des Lucioles
+   BP 109
+   F-06561 Valbonne Cedex
+   France
+
+   Phone: +33 93 65 77 15
+   EMail: Christian.Huitema@MIRSA.INRIA.FR
+
+
+
+
+
+
+
+Thompson & Huitema          Standards Track                    [Page 5]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

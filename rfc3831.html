@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                         C. DeSanti<br>Request for Comments: 3831                                 Cisco Systems<br>Category: Standards Track                                      July 2004<br><br></p>
+                  <h1>
+            Transmission of IPv6 Packets over Fibre Channel</h1>
+                  <h2>Status of this Memo</h2>
+
+   This document specifies an Internet standards track protocol for the
+   Internet community, and requests discussion and suggestions for
+   improvements.  Please refer to the current edition of the "Internet
+   Official Protocol Standards" (STD 1) for the standardization state
+   and status of this protocol.  Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (2004).<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This document specifies the way of encapsulating IPv6 packets over
+   Fibre Channel, and the method of forming IPv6 link-local addresses
+   and statelessly autoconfigured addresses on Fibre Channel networks.
+
+</p><p class="rfcparagraph">Table Of Contents
+<a href="#section-1" class="">1. Introduction . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2" class="">2. Summary of Fibre Channel . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2.1" class="indent-1">2.1. Overview . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2.2" class="indent-1">2.2. Identifiers and Login. . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2.3" class="indent-1">2.3. FC Levels and Frame Format . . . . . . . . . . . . . . </a><br>
+<a href="#section-2.4" class="indent-1">2.4. Sequences and Exchanges  . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3" class="">3. IPv6 Capable Nx_Ports. . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4" class="">4. IPv6 Encapsulation . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.1" class="indent-1">4.1. FC Sequence Format . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.2" class="indent-1">4.2. FC Classes of Service. . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.3" class="indent-1">4.3. FC Header Code Points. . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.4" class="indent-1">4.4. FC Network_Header. . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.5" class="indent-1">4.5. LLC/SNAP Header. . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.6" class="indent-1">4.6. Bit and Byte Ordering. . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-5" class="">5. Maximum Transfer Unit. . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-6" class="">6. Stateless Address Autoconfiguration. . . . . . . . . . . . . </a><br>
+<a href="#section-6.1" class="indent-1">6.1. IPv6 Interface Identifier and Address Prefix . . . . . </a><br>
+       6.2.  Generating an Interface ID from a Format 1
+             N_Port_Name. . . . . . . . . . . . . . . . . . . . . . . 11
+       6.3.  Generating an Interface ID from a Format 2
+             N_Port_Name. . . . . . . . . . . . . . . . . . . . . . . 12
+       6.4.  Generating an Interface ID from a Format 5
+             N_Port_Name. . . . . . . . . . . . . . . . . . . . . . . 13
+       6.5.  Generating an Interface ID from an EUI-64
+             mapped N_Port_Name . . . . . . . . . . . . . . . . . . . 14
+<a href="#section-7" class="">7. Link-Local Addresses . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-8" class="">8. Address Mapping for Unicast. . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-9" class="">9. Address Mapping for Multicast. . . . . . . . . . . . . . . . </a><br>
+<a href="#section-10" class="">10. Sequence Management. . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-11" class="">11. Exchange Management. . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-12" class="">12. Security Considerations. . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-13" class="">13. Acknowledgments. . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-14" class="">14. References . . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-14.1" class="indent-1">14.1. Normative References. . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-14.2" class="indent-1">14.2. Informative References. . . . . . . . . . . . . . . . </a><br>
+   A.  Transmission of a Broadcast FC Sequence over FC Topologies . . 20
+   B.  Validation of the <N_Port_Name, N_Port_ID> mapping . . . . . . 21
+   C.  Fibre Channel Bit and Byte Numbering Guidance. . . . . . . . . 22
+   Author's Address . . . . . . . . . . . . . . . . . . . . . . . . . 23
+   Full Copyright Statement . . . . . . . . . . . . . . . . . . . . . 24
+
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   Fibre Channel (FC) is a high speed serial interface technology that
+   supports several Upper Layer Protocols including Small Computer
+   System Interface (SCSI) and IPv4 as specified in [IPFC].
+
+</p><p class="rfcparagraph">   The purpose of this document is to specify a way of encapsulating IP
+   version 6 [IPv6] over Fibre Channel and to describe a method of
+   forming IPv6 link-local addresses [AARCH] and statelessly
+   autoconfigured addresses on Fibre Channel networks.  This document
+   also describes the content of the Source/Target Link-layer Address
+   option used in Neighbor Discovery [DISC] when the messages are
+   transmitted on a Fibre Channel network.
+
+</p><p class="rfcparagraph">   Warning to readers familiar with Fibre Channel: both Fibre Channel
+   and IETF standards use the same byte transmission order.  However,
+   the bit numbering is different.  See Appendix C for guidance.
+
+</p><p class="rfcparagraph">   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in [KEYWORDS].
+	<a name="section-2"><h2>2.   Summary of Fibre Channel</h2></a>
+
+	<a name="section-2.1"><h3>2.1   Overview</h3></a>
+
+   Fibre Channel (FC) is a gigabit speed network technology primarily
+   used for Storage Networking.  Fibre Channel is standardized in the
+   T11 Technical Committee of the InterNational Committee for
+   Information Technology Standards (INCITS), an American National
+   Standard Institute (ANSI) accredited standards committee.
+
+</p><p class="rfcparagraph">   Fibre Channel devices are called Nodes.  Each Node has one or more
+   Ports that connect to Ports of other devices.  Fibre Channel may be
+   implemented using any combination of the following three topologies:
+
+</p><p class="rfcparagraph">   -  a point-to-point link between two Ports;
+   -  a set of Ports interconnected by a switching network called a
+      Fabric, as defined in [FC-FS];
+   -  a set of Ports interconnected with a loop topology, as defined in
+      [FC-AL-2].
+
+</p><p class="rfcparagraph">   A Node Port is more precisely called an N_Port.  A Node Port that is
+   capable of operating in a loop topology using the loop specific
+   protocols is designated as an NL_Port.  The term Nx_Port is used to
+   generically indicate these two kinds of Node Port.
+
+</p><p class="rfcparagraph">   A Fabric Port is more precisely called an F_Port.  A Fabric Port that
+   is capable of operating in a loop topology using the loop specific
+   protocols is designated as an FL_Port.  The term Fx_Port is used to
+   generically indicate these two kinds of Fabric Port.
+
+</p><p class="rfcparagraph">   From an IPv6 point of view, a Fibre Channel network, built with any
+   combination of the FC topologies described above, is an IPv6 Link
+   [IPv6].  IPv6-capable Nx_Ports are what [IPv6] calls Interfaces.
+
+</p><p class="rfcparagraph">	<a name="section-2.2"><h3>2.2   Identifiers and Login</h3></a>
+
+   Fibre Channel entities are identified by permanent 64 bit long
+   Name_Identifiers.  [FC-FS] defines several formats of
+   Name_Identifiers.  The value of the first four bits defines the
+   format of a Name_Identifier.  These names are referred to in a more
+   precise manner as follows:
+
+</p><p class="rfcparagraph">   -  an Nx_Port's Name_Identifier is called N_Port_Name;
+   -  an Fx_Port's Name_Identifier is called F_Port_Name;
+   -  a Node's Name_Identifier is called Node_Name;
+   -  a Fabric's Name_Identifier is called Fabric_Name.
+   An Nx_Port connected to a Fibre Channel network is associated with
+   two identifiers, its permanent N_Port_Name and a volatile 24 bit
+   address called N_Port_ID.  The N_Port_Name is used to identify the
+   Nx_Port, while the N_Port_ID is used for communications among
+   Nx_Ports.
+
+</p><p class="rfcparagraph">   Each Nx_Port acquires an N_Port_ID from the Fabric by performing a
+   process called Fabric Login or FLOGI.  The FLOGI process is used also
+   to negotiate several communications parameters between the Nx_Port
+   and the Fabric, such as the receive data field size, which determines
+   the maximum size of the Fibre Channel frames that may be transferred
+   between the Nx_Port and the Fabric.
+
+</p><p class="rfcparagraph">   Before effective communication may take place between two Nx_Ports,
+   they must complete a process called Port Login or PLOGI.  The PLOGI
+   process provides each Nx_Port with the other Nx_Port's N_Port_Name,
+   and negotiates several communication parameters, such as the receive
+   data field size, which determines the maximum size of the Fibre
+   Channel frames that may be transferred between the two Nx_Ports.
+
+</p><p class="rfcparagraph">   Both Fabric Login and Port Login may be explicit, i.e., performed
+   using specific FC control messages (called Extended Link Services or
+   ELS), or implicit, in which the parameters are specified by
+   configuration or other methods.
+
+</p><p class="rfcparagraph">	<a name="section-2.3"><h3>2.3   FC Levels and Frame Format</h3></a>
+
+   [FC-FS] describes the Fibre Channel protocol using 5 different
+   levels.  The FC-2 and FC-4 levels are relevant for this
+   specification.  The FC-2 level defines the FC frame format, the
+   transport services, and control functions necessary for information
+   transfer.  The FC-4 level supports Upper Level Protocols, such as
+   IPv4, IPv6 or SCSI.  The Fibre Channel frame format is depicted in
+   figure 1.
+
+</p><p class="rfcparagraph"><pre>    +-----+-----------+-----------+--------//-------+-----+-----+
+    |     |           |         Data Field          |     |     |
+    | SOF | FC Header |<--------------------------->| CRC | EOF |
+    |     |           | Optional  | Frame           |     |     |
+    |     |           | Header(s) | Payload         |     |     |
+    +-----+-----------+-----------+--------//-------+-----+-----+
+
+                    Fig. 1: Fibre Channel Frame Format
+
+   The Start of Frame (SOF) and End of Frame (EOF) are special FC
+   transmission words that act as frame delimiters.  The CRC is 4 octets
+   long and uses the same 32-bit polynomial used in FDDI.
+   The FC Header is 24 octets long and contains several fields
+   associated with the identification and control of the Data Field.
+
+</p><p class="rfcparagraph">   The Data Field is of variable size, ranging from 0 to 2112 octets,
+   and includes the user data in the Frame Payload field, and Optional
+   Headers.  The currently defined Optional Headers are:
+
+</p><p class="rfcparagraph">   -  ESP_Header;
+   -  Network_Header;
+   -  Association_Header;
+   -  Device_Header.
+
+</p><p class="rfcparagraph">   The value of the SOF field determines the FC Class of service
+   associated with the frame.  Five Classes of service are specified in
+   [FC-FS].  They are distinguished primarily by the method of flow
+   control between the communicating Nx_Ports and by the level of data
+   integrity provided.  A given Fabric or Nx_Port may support one or
+   more of the following Classes of service:
+
+</p><p class="rfcparagraph">   -  Class 1: Dedicated physical connection with delivery confirmation;
+   -  Class 2: Frame multiplexed service with delivery confirmation;
+   -  Class 3: Datagram service;
+   -  Class 4: Fractional bandwidth;
+   -  Class 6: Reliable multicast via dedicated connections.
+
+</p><p class="rfcparagraph">	<a name="section-2.4"><h3>2.4   Sequences and Exchanges</h3></a>
+
+   An application level payload such as IPv6 is called Information Unit
+   at the FC-4 level of Fibre Channel.  Each FC-4 Information Unit is
+   mapped to an FC Sequence by the FC-2 level.  An FC Sequence consists
+   of one or more FC frames related by the value of the Sequence_ID
+   (SEQ_ID) field of the FC Header.
+
+</p><p class="rfcparagraph">   The maximum data that may be carried by an FC frame is 2112 octets.
+   The maximum usable frame size depends on the Fabric and Nx_Port
+   implementations and is negotiated during the Login process.  Whenever
+   an Information Unit to be transmitted exceeds this value, the FC-2
+   level segments it into multiple FC frames, sent as a single Sequence.
+   The receiving Nx_Port reassembles the Sequence of frames and delivers
+   a reassembled Information Unit to the FC-4 level.  The Sequence Count
+   (SEQ_CNT) field of the FC Header may be used to ensure frame
+   ordering.
+
+</p><p class="rfcparagraph">   Multiple Sequences may be related together as belonging to the same
+   FC Exchange.  The Exchange is a mechanism used by two Nx_Ports to
+   identify and manage an operation between them.  The Exchange is
+   opened when the operation is started between the two Nx_Ports, and
+   closed when the operation ends.  FC frames belonging to the same
+   Exchange are related by the value of the Exchange_ID fields in the FC
+   Header.  An Originator Exchange_ID (OX_ID) and a Responder
+   Exchange_ID (RX_ID) uniquely identify the Exchange.
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   IPv6 Capable Nx_Ports</h2></a>
+
+   This specification requires an IPv6 capable Nx_Port to have the
+   following properties:
+
+</p><p class="rfcparagraph">   -  The format of its N_Port_Name MUST be one of 0x1, 0x2, 0x5, 0xC,
+      0xD, 0xE, 0xF (see section 6.1).  IPv6 support for other
+      Name_Identifier formats is outside the scope of this
+      specification;
+   -  It MUST support Class 3;
+   -  It MUST support continuously increasing SEQ_CNT [FC-FS];
+   -  It MUST be able to transmit and receive an FC-4 Information Unit
+      at least 1304 octets long;
+   -  It SHOULD support a receive data field size for Device_Data FC
+      frames of at least 1024 octets.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   IPv6 Encapsulation</h2></a>
+
+	<a name="section-4.1"><h3>4.1   FC Sequence Format</h3></a>
+
+   An IPv6 packet is mapped to an Information Unit at the FC-4 level of
+   Fibre Channel, which in turn is mapped to an FC Sequence by the FC-2
+   level.  An FC Information Unit containing an IPv6 packet MUST carry
+   the FC Network_Header [FC-FS] and the LLC/SNAP header [IEEE-LLC],
+   resulting in the FC Information Unit format depicted in figure 2.
+    +---------------+---------------+---------------+---------------+
+    |                                                               |
+    +-                                                             -+
+    |                        Network_Header                         |
+    +-                         (16 octets)                         -+
+    |                                                               |
+    +-                                                             -+
+    |                                                               |
+    +---------------+---------------+---------------+---------------+
+    |                        LLC/SNAP header                        |
+    +-                          (8 octets)                         -+
+    |                                                               |
+    +---------------+---------------+---------------+---------------+
+    |                                                               |
+    +-                                                             -+
+    /                          IPv6 Packet                          /
+    /                                                               /
+    +-                                                             -+
+    |                                                               |
+    +---------------+---------------+---------------+---------------+
+
+            Fig. 2: FC Information Unit Mapping an IPv6 Packet
+
+   The FC ESP_Header [FC-FS] MAY be used to secure the FC frames
+   composing the FC Sequence. [AH] or [ESP] may be used to provide
+   security at the IPv6 layer.  Other types of FC Optional Header MUST
+   NOT be used in an IPv6 FC Sequence.
+
+</p><p class="rfcparagraph">   Typically, a Sequence consists of more than one frame.  Only the
+   first frame of the Sequence MUST include the FC Network_Header and
+   the LLC/SNAP header.  The other frames MUST NOT include them, as
+   depicted in figure 3.
+
+</p><p class="rfcparagraph">
+                      First Frame of an IPv6 FC Sequence
+   +-----------+-------------------+-----------------+-------//--------+
+   | FC Header | FC Network_Header | LLC/SNAP header | First chunk of  |
+   |           |                   |                 | the IPv6 Packet |
+   +-----------+-------------------+-----------------+-------//--------+
+
+                  Subsequent Frames of an IPv6 FC Sequence
+             +-----------+-----------------//------------------+
+             | FC Header | Additional chunk of the IPv6 Packet |
+             +-----------+----------------//-------------------+
+
+              Fig. 3: Optional Headers in an IPv6 FC Sequence
+	<a name="section-4.2"><h3>4.2   FC Classes of Service</h3></a>
+
+   This specification uses FC Class 3.  IPv6 packets carrying Neighbor
+   Discovery [DISC] messages MUST be encapsulated in Class 3 FC frames.
+   Other IPv6 packets SHOULD use Class 3 as well.  The use of other
+   Classes of service is outside the scope of this specification.
+
+</p><p class="rfcparagraph">	<a name="section-4.3"><h3>4.3   FC Header Code Points</h3></a>
+
+   The fields of the Fibre Channel Header are depicted in figure 4.  The
+   D_ID and S_ID fields contain respectively the destination N_Port_ID
+   and the source N_Port_ID.  To encapsulate IPv6 over Fibre Channel the
+   following code points MUST be used:
+
+</p><p class="rfcparagraph">   -  R_CTL: 0x04 (Device_Data frame with Unsolicited Data Information
+      Category [FC-FS])
+   -  TYPE: 0x05 (IP over Fibre Channel)
+   -  CS_CTL/Prio:  0x0
+   -  DF_CTL: 0x20 (Network_Header) for the first FC frame of an IPv6
+      Sequence, 0x00 for the following FC frames.  If the FC ESP_Header
+      is used, then 0x60 for the first FC frame of an IPv6 Sequence,
+      0x40 for the following FC frames.
+   -  F_CTL, SEQ_ID, SEQ_CNT, OX_ID, RX_ID, Parameter: see section 10,
+      section 11, and [FC-FS] for additional requirements.
+
+</p><p class="rfcparagraph">     0                   1                   2                   3
+     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |     R_CTL     |                      D_ID                     |
+    +---------------+---------------+---------------+---------------+
+    |  CS_CTL/Prio  |                      S_ID                     |
+    +---------------+---------------+---------------+---------------+
+    |     TYPE      |                     F_CTL                     |
+    +---------------+---------------+---------------+---------------+
+    |    SEQ_ID     |    DF_CTL     |            SEQ_CNT            |
+    +---------------+---------------+---------------+---------------+
+    |             OX_ID             |             RX_ID             |
+    +---------------+---------------+---------------+---------------+
+    |                           Parameter                           |
+    +---------------+---------------+---------------+---------------+
+
+                         Fig. 4: FC Header Format
+	<a name="section-4.4"><h3>4.4   FC Network_Header</h3></a>
+
+   The fields of the FC Network_Header are depicted in figure 5.  For
+   use with IPv6 the N_Port_Names formats MUST be one of 0x1, 0x2, 0x5,
+   0xC, 0xD, 0xE, 0xF.  IPv6 support for other Name_Identifier formats
+   is outside the scope of this specification.
+
+</p><p class="rfcparagraph">     0                   1                   2                   3
+     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |                                                               |
+    +-                   Destination N_Port_Name                   -+
+    |                                                               |
+    +---------------------------------------------------------------+
+    |                                                               |
+    +-                     Source N_Port_Name                      -+
+    |                                                               |
+    +---------------------------------------------------------------+
+
+                     Fig. 5: FC Network_Header Format
+
+	<a name="section-4.5"><h3>4.5   LLC/SNAP Header</h3></a>
+
+   The fields of the LLC/SNAP Header [IEEE-LLC] are depicted in figure
+   6.  To encapsulate IPv6 over Fibre Channel the following code points
+   MUST be used:
+
+</p><p class="rfcparagraph">   -  DSAP: 0xAA
+   -  SSAP: 0xAA
+   -  CTRL: 0x03
+   -  OUI:  0x00-00-00
+   -  PID:  0x86-DD
+
+     0                   1                   2                   3
+     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |     DSAP      |     SSAP      |     CTRL      |      OUI      |
+    +---------------+---------------+---------------+---------------+
+    |              OUI              |              PID              |
+    +---------------+---------------+---------------+---------------+
+
+                      Fig. 6: LLC/SNAP Header Format
+
+	<a name="section-4.6"><h3>4.6   Bit and Byte Ordering</h3></a>
+
+   IPv6 packets are mapped to the FC-4 level using the big-endian byte
+   ordering that corresponds to the standard network byte order or
+   canonical form.
+	<a name="section-5"><h2>5.   Maximum Transfer Unit</h2></a>
+
+   The default MTU size for IPv6 [IPv6] packets over Fibre Channel is
+   65280 octets.  This size may be reduced by a Router Advertisement
+   [DISC] containing an MTU option that specifies a smaller MTU, or by
+   manual configuration of each Nx_Port.  However, as required by
+   [IPv6], the MTU MUST NOT be lower than 1280 octets.  If a Router
+   Advertisement received on an Nx_Port has an MTU option specifying an
+   MTU larger than 65280, or larger than a manually configured value,
+   that MTU option MAY be logged to system management but MUST be
+   otherwise ignored.
+
+</p><p class="rfcparagraph">   As the default MTU size far exceeds the message sizes typically used
+   in the Internet, an IPv6 over FC implementation SHOULD implement Path
+   MTU Discovery [PMTUD], or at least maintain different MTU values for
+   on-link and off-link destinations.
+
+</p><p class="rfcparagraph">   For correct operation in a routed environment, it is critically
+   important to configure an appropriate MTU option in Router
+   Advertisements.
+
+</p><p class="rfcparagraph">   For correct operation when mixed media (e.g., Ethernet and Fibre
+   Channel) are bridged together, the smallest MTU of all the media must
+   be advertised by routers in an MTU option.  If there are no routers
+   present, this MTU must be manually configured in each node which is
+   connected to a medium with a default MTU larger than the smallest
+   MTU.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.   Stateless Address Autoconfiguration</h2></a>
+
+	<a name="section-6.1"><h3>6.1   IPv6 Interface Identifier and Address Prefix</h3></a>
+
+   The IPv6 Interface ID [AARCH] for an Nx_Port is based on the EUI-64
+   address [EUI64] derived from the Nx_Port's N_Port_Name.  The IPv6
+   Interface Identifier is obtained by complementing the Universal/Local
+   bit of the OUI field of the derived EUI-64 address.
+
+</p><p class="rfcparagraph">   [FC-FS] specifies a method to map format 0x1 (IEEE 48 bit address),
+   or 0x2 (IEEE Extended), or 0x5 (IEEE Registered) FC Name_Identifiers
+   in EUI-64 addresses.  This allows the usage of these Name_Identifiers
+   to support IPv6. [FC-FS] also defines EUI-64 mapped FC
+   Name_Identifiers (formats 0xC, 0xD, 0xE, and 0xF), that are derived
+   from an EUI-64 address.  It is possible to reverse this address
+   mapping to obtain the original EUI-64 address in order to support
+   IPv6.
+   Stateless address autoconfiguration MUST be performed as specified in
+   [ACONF].  An IPv6 Address Prefix used for stateless address
+   autoconfiguration of an Nx_Port MUST have a length of 64 bits.
+
+</p><p class="rfcparagraph">	<a name="section-6.2"><h3>6.2   Generating an Interface ID from a Format 1 N_Port_Name</h3></a>
+
+   The Name_Identifier format 0x1 is depicted in figure 7.
+
+</p><p class="rfcparagraph">     0                   1                   2                   3
+     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |0 0 0 1|         0x000         |              OUI              |
+    +-------+-------+---------------+---------------+---------------+
+    |      OUI      |                      VSID                     |
+    +---------------+---------------+---------------+---------------+
+
+                    Fig. 7: Format 0x1 Name_Identifier
+
+   The EUI-64 address derived from this Name_Identifier has the format
+   depicted in figure 8 [FC-FS].
+
+</p><p class="rfcparagraph">     0                   1                   2                   3
+     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |         OUI with complemented U/L bit         |0 0 0 1|  VSID |
+    +---------------+---------------+-------+-------+-------+-------+
+    |                   VSID                |         0x000         |
+    +---------------+---------------+-------+-------+---------------+
+
+         Fig. 8: EUI-64 Address from a Format 0x1 Name_Identifier
+
+   The IPv6 Interface Identifier is obtained from this EUI-64 address by
+   complementing the U/L bit in the OUI field.  So the OUI in the IPv6
+   Interface ID is exactly as in the FC Name_Identifier.  The resulting
+   IPv6 Interface Identifier has local scope [AARCH] and the format
+   depicted in figure 9.
+
+</p><p class="rfcparagraph">     0                   1                   2                   3
+     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |                      OUI                      |0 0 0 1|  VSID |
+    +---------------+---------------+-------+-------+-------+-------+
+    |                   VSID                |         0x000         |
+    +---------------+---------------+-------+-------+---------------+
+
+        Fig. 9: IPv6 Interface ID from a Format 0x1 Name_Identifier
+   As an example, the FC Name_Identifier 0x10-00-34-63-46-AB-CD-EF
+   generates the IPv6 Interface Identifier 3463:461A:BCDE:F000.
+
+</p><p class="rfcparagraph">	<a name="section-6.3"><h3>6.3   Generating an Interface ID from a Format 2 N_Port_Name</h3></a>
+
+   The Name_Identifier format 0x2 is depicted in figure 10.
+
+</p><p class="rfcparagraph">     0                   1                   2                   3
+     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |0 0 1 0|    Vendor Specific    |              OUI              |
+    +-------+-------+---------------+---------------+---------------+
+    |      OUI      |                      VSID                     |
+    +---------------+---------------+---------------+---------------+
+
+                    Fig. 10: Format 0x2 Name_Identifier
+
+   The EUI-64 address derived from this Name_Identifier has the format
+   depicted in figure 11 [FC-FS].
+
+</p><p class="rfcparagraph">     0                   1                   2                   3
+     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |         OUI with complemented U/L bit         |0 0 1 0|  VSID |
+    +---------------+-----------------------+-------+-------+-------+
+    |                   VSID                |    Vendor Specific    |
+    +---------------+-----------------------+-------+---------------+
+
+         Fig. 11: EUI-64 Address from a Format 0x2 Name_Identifier
+
+   The IPv6 Interface Identifier is obtained from this EUI-64 address by
+   complementing the U/L bit in the OUI field.  So the OUI in the IPv6
+   Interface ID is exactly as in the FC Name_Identifier.  The resulting
+   IPv6 Interface Identifier has local scope [AARCH] and the format
+   depicted in figure 12.
+
+</p><p class="rfcparagraph">     0                   1                   2                   3
+     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |                      OUI                      |0 0 1 0|  VSID |
+    +---------------+-----------------------+-------+-------+-------+
+    |                   VSID                |    Vendor Specific    |
+    +---------------+-----------------------+-------+---------------+
+
+       Fig. 12: IPv6 Interface ID from a Format 0x2 Name_Identifier
+
+   As an example, the FC Name_Identifier 0x27-89-34-63-46-AB-CD-EF
+   generates the IPv6 Interface Identifier 3463:462A:BCDE:F789.
+	<a name="section-6.4"><h3>6.4   Generating an Interface ID from a Format 5 N_Port_Name</h3></a>
+
+   The Name_Identifier format 0x5 is depicted in figure 13.
+
+</p><p class="rfcparagraph">     0                   1                   2                   3
+     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |0 1 0 1|                      OUI                      |  VSID |
+    +-------+-------+---------------+---------------+-------+-------+
+    |                             VSID                              |
+    +---------------+---------------+---------------+---------------+
+
+                    Fig. 13: Format 0x5 Name_Identifier
+
+   The EUI-64 address derived from this Name_Identifier has the format
+   depicted in figure 14 [FC-FS].
+
+</p><p class="rfcparagraph">     0                   1                   2                   3
+     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |         OUI with complemented U/L bit         |0 1 0 1|  VSID |
+    +---------------+---------------+---------------+-------+-------+
+    |                             VSID                              |
+    +---------------+---------------+---------------+---------------+
+
+         Fig. 14: EUI-64 Address from a Format 0x5 Name_Identifier
+
+   The IPv6 Interface Identifier is obtained from this EUI-64 address
+   complementing the U/L bit in the OUI field.  So the OUI in the IPv6
+   Interface ID is exactly as in the FC Name_Identifier.  The resulting
+   IPv6 Interface Identifier has local scope [AARCH] and the format
+   depicted in figure 15.
+
+</p><p class="rfcparagraph">     0                   1                   2                   3
+     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |                      OUI                      |0 1 0 1|  VSID |
+    +---------------+---------------+---------------+-------+-------+
+    |                             VSID                              |
+    +---------------+---------------+---------------+---------------+
+
+       Fig. 15: IPv6 Interface ID from a Format 0x5 Name_Identifier
+
+   As an example, the FC Name_Identifier 0x53-46-34-6A-BC-DE-F7-89
+   generates the IPv6 Interface Identifier 3463:465A:BCDE:F789.
+	<a name="section-6.5"><h3>6.5   Generating an Interface ID from an EUI-64 mapped N_Port_Name</h3></a>
+
+   The EUI-64 mapped Name_Identifiers formats (formats 0xC through 0xF)
+   are derived from an EUI-64 address by compressing the OUI field of
+   such addresses.  The compression is performed by removing from the
+   OUI the Universal/Local and Individual/Group bits, and by putting
+   bits 0 to 5 of the OUI in the first octet of the Name_Identifier, and
+   bits 8 to 23 of the OUI in the second and third octet of the
+   Name_Identifier, as shown in figure 16.
+
+</p><p class="rfcparagraph">     0                   1                   2                   3
+     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |1 1| OUI[0..5] |           OUI[8..23]          |      VSID     |
+    +---+-----------+---------------+---------------+---------------+
+    |                             VSID                              |
+    +---------------+---------------+---------------+---------------+
+
+              Fig. 16: EUI-64 Mapped Name_Identifiers Format
+
+   The EUI-64 address used to generate the Name_Identifier shown in
+   figure 16 has the format depicted in figure 17.
+
+</p><p class="rfcparagraph">     0                   1                   2                   3
+     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    | OUI[0..5] |0 0|           OUI[8..23]          |      VSID     |
+    +-----------+---+---------------+---------------+---------------+
+    |                             VSID                              |
+    +---------------+---------------+---------------+---------------+
+
+       Fig. 17: EUI-64 Address from an EUI-64 Mapped Name_Identifier
+
+   The IPv6 Interface Identifier is obtained from this EUI-64 address by
+   complementing the U/L bit in the OUI field.  The resulting IPv6
+   Interface Identifier has global scope [AARCH] and the format depicted
+   in figure 18.
+
+</p><p class="rfcparagraph">     0                   1                   2                   3
+     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    | OUI[0..5] |1 0|           OUI[8..23]          |      VSID     |
+    +-----------+---+---------------+---------------+---------------+
+    |                             VSID                              |
+    +---------------+---------------+---------------+---------------+
+
+     Fig. 18: IPv6 Interface ID from an EUI-64 Mapped Name_Identifier
+   As an example, the FC Name_Identifier 0xCD-63-46-AB-01-25-78-9A
+   generates the IPv6 Interface Identifier 3663:46AB:0125:789A.
+
+</p><p class="rfcparagraph">	<a name="section-7"><h2>7.   Link-Local Addresses</h2></a>
+
+   The IPv6 link-local address [AARCH] for an Nx_Port is formed by
+   appending the Interface Identifier, as defined in section 6, to the
+   prefix FE80::/64.  The resulting address is depicted in figure 19.
+
+</p><p class="rfcparagraph">      10 bits            54 bits                  64 bits
+    +----------+-----------------------+----------------------------+
+    |1111111010|         (zeros)       |    Interface Identifier    |
+    +----------+-----------------------+----------------------------+
+
+                  Fig. 19: IPv6 link-local Address Format
+
+	<a name="section-8"><h2>8.   Address Mapping for Unicast</h2></a>
+
+   An Nx_Port has two kinds of Fibre Channel addresses:
+
+</p><p class="rfcparagraph">   -  a non-volatile 64-bit address, called N_Port_Name;
+   -  a volatile 24-bit address, called N_Port_ID.
+
+</p><p class="rfcparagraph">   The N_Port_Name is used to uniquely identify the Nx_Port, while the
+   N_Port_ID is used to route frames to the Nx_Port.  Both FC addresses
+   are required to resolve an IPv6 unicast address.  The fact that the
+   N_Port_ID is volatile implies that an Nx_Port MUST validate the
+   mapping between its N_Port_Name and N_Port_ID when certain Fibre
+   Channel events occur (see Appendix B).
+
+</p><p class="rfcparagraph">   The procedure for mapping IPv6 unicast addresses into Fibre Channel
+   link-layer addresses uses the Neighbor Discovery Protocol [DISC].
+   The Source/Target Link-layer Address option has the format depicted
+   in figure 20 when the link layer is Fibre Channel.
+
+</p><p class="rfcparagraph">     0                   1                   2                   3
+     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |     Type      |  Length = 2   |           Reserved            |
+    +---------------+---------------+---------------+---------------+
+    |                                                               |
+    +-                         N_Port_Name                         -+
+    |                                                               |
+    +---------------+---------------+---------------+---------------+
+    |   Reserved    |                   N_Port_ID                   |
+    +---------------+---------------+---------------+---------------+
+</pre>
+
+
+    Fig. 20: Source/Target Link-layer Address option for Fibre Channel
+   Type:            1 for Source Link-layer address.
+                    2 for Target Link-layer address.
+
+</p><p class="rfcparagraph">   Length:          2 (in units of 8 octets).
+
+</p><p class="rfcparagraph">   N_Port_Name:     This field contains the Nx_Port's N_Port_Name.
+   N_Port_ID:       This field contains the Nx_Port's N_Port_ID.
+
+</p><p class="rfcparagraph">   Reserved fields MUST be zero when transmitting, and MUST be ignored
+   when receiving.
+
+</p><p class="rfcparagraph">	<a name="section-9"><h2>9.   Address Mapping for Multicast</h2></a>
+
+   By default, all best-effort IPv6 multicast packets MUST be mapped to
+   FC Sequences addressed to the broadcast N_Port_ID 0xFF-FF-FF.  In
+   particular, datagrams addressed to all-nodes multicast address,
+   all-routers multicast address, and solicited-node multicast addresses
+   [AARCH] MUST be sent as Class 3 FC Sequences addressed to the
+   broadcast N_Port_ID 0xFF-FF-FF.  In this case, the Destination
+   N_Port_Name field of the FC Network_Header MUST be set to the value
+   0x10-00-FF-FF-FF-FF-FF-FF.  Appendix A specifies how to transmit a
+   Class 3 broadcast FC Sequence over various Fibre Channel topologies.
+
+</p><p class="rfcparagraph">   An Nx_Port supporting IPv6 MUST be able to map a received broadcast
+   Class 3 Device_Data FC frame to an implicit Port Login context in
+   order to handle IPv6 multicast packets.  The receive data field size
+   of this implicit Port Login MUST be the same across all the Nx_Ports
+   connected to the same Fabric, otherwise FC broadcast transmission
+   does not work.  In order to reduce the need for FC Sequence
+   segmentation, the receive data field size of this implicit Port Login
+   SHOULD be 1024 octets.  This receive data field size requirement
+   applies to broadcast Device_Data FC frames, not to ELSs.
+
+</p><p class="rfcparagraph">   Receiving an FC Sequence carrying an IPv6 multicast packet MAY
+   trigger some additional processing by the Nx_Port if that IPv6 packet
+   requires a unicast reply.  In this case, if a valid Port Login to the
+   Nx_Port that sent the IPv6 multicast packet does not exist, the
+   Nx_Port MUST perform such a Port Login, and then use it for the
+   unicast IPv6 reply.  In the case of Neighbor Discovery messages
+   [DISC], the N_Port_ID to which the Port Login is directed is taken
+   from the N_Port_ID field of the Source/Target Link-layer Address
+   option.
+
+</p><p class="rfcparagraph">   As an example, an Nx_Port processes a received broadcast FC Sequence
+   carrying an IPv6 multicast unsolicited router advertisement [DISC]
+   simply by passing the carried IPv6 packet to the IPv6 layer.
+   Instead, if a received broadcast FC Sequence carries an IPv6
+   multicast solicitation message [DISC] requiring a unicast reply, and
+   no valid Port Login exists with the Nx_Port sender of the multicast
+   packet, then a Port Login MUST be performed in order to send the
+   unicast reply message.  If a received broadcast FC Sequence carries
+   an IPv6 multicast solicitation message [DISC] requiring a multicast
+   reply, the reply is sent to the broadcast N_Port_ID 0xFF-FF-FF.
+
+</p><p class="rfcparagraph">   Best-effort IPv6 multicast for other multicast group addresses MAY
+   use Fibre Channel Multicast Groups [FC-FS], if supported by the
+   particular FC topology and implementation.
+
+</p><p class="rfcparagraph">	<a name="section-10"><h2>10.   Sequence Management</h2></a>
+
+   FC Sequences are REQUIRED to be non-streamed.  In order to avoid
+   missing FC frame aliasing by Sequence_ID reuse, an Nx_Port supporting
+   IPv6 is REQUIRED to use continuously increasing SEQ_CNT [FC-FS].
+   Each Exchange MUST start with SEQ_CNT = 0 in the first frame, and
+   every frame transmitted after that MUST increment the previous
+   SEQ_CNT by one.  Any frames received from the other N_Port in the
+   Exchange shall have no effect on the transmitted SEQ_CNT.
+
+</p><p class="rfcparagraph">	<a name="section-11"><h2>11.   Exchange Management</h2></a>
+
+   To transfer IPv6 packets, each Nx_Port MUST have a dedicated Exchange
+   for sending data to each Nx_Port in the network and a dedicated
+   Exchange for receiving data from each Nx_Port.
+
+</p><p class="rfcparagraph">   An Exchange Responder is not required to assign RX_IDs.  If an RX_ID
+   of 0xFFFF is assigned, the Exchange Responder is identifying
+   Exchanges based on S_ID / D_ID / OX_ID only.
+
+</p><p class="rfcparagraph">   When an Exchange is created between two Nx_Ports for unicast IPv6
+   packets, it remains active while the Nx_Ports are logged in with each
+   other.  Each FC broadcast and ELS [FC-FS] SHOULD use a separate short
+   lived Exchange.
+
+</p><p class="rfcparagraph">   For IPv6, Exchanges MUST NOT transfer Sequence Initiative, because
+   they are used in a unidirectional mode.  The Sequence Initiative bit
+   in the F_CTL field of the FC Header [FC-FS] MUST be set to 0.
+
+</p><p class="rfcparagraph">   The mechanism for aging or expiring exchanges based on activity,
+   timeout, or other methods is outside the scope of this document.
+
+</p><p class="rfcparagraph">   The Exchange Originator MAY terminate Exchanges by setting the F_CTL
+   LS bit [FC-FS].  Exchanges MAY be torn down by the Exchange
+   Originator or Exchange Responder by using the ABTS (Abort Sequence)
+   protocol [FC-FS].  IPv6 Exchanges SHOULD NOT be terminated by Logout,
+   since this may terminate active Exchanges on other FC-4s [FC-FS].
+	<a name="section-12"><h2>12.   Security Considerations</h2></a>
+
+   IPv6 does not introduce any additional security concerns beyond those
+   that already exist within the Fibre Channel protocols.  Zoning
+   techniques based on FC Name Server masking (soft zoning) do not work
+   with IPv6, because IPv6 over Fibre Channel does not use the FC Name
+   Server.  The FC ESP_Header [FC-FS] may be used to secure the FC
+   frames composing FC Sequences carrying IPv6 packets.  All the
+   techniques defined to secure IPv6 traffic at the IPv6 layer may be
+   used in a Fibre Channel environment.
+
+</p><p class="rfcparagraph">	<a name="section-13"><h2>13.   Acknowledgments</h2></a>
+
+   The author would like to acknowledge the authors of [IPFC], [ETHER],
+   and [IPv6-1394], since some part of this document has been derived
+   from them, as well as the ANSI INCITS T11.3 Task Group members who
+   reviewed this document.
+
+</p><p class="rfcparagraph">	<a name="section-14"><h2>14.  References</h2></a>
+
+	<a name="section-14.1"><h3>14.1   Normative References</h3></a>
+
+   [FC-FS]     ANSI INCITS 373-2003, "Fibre Channel - Framing and
+               Signaling (FC-FS)".
+
+</p><p class="rfcparagraph">   [FC-AL-2]   ANSI INCITS 332-1999, "Fibre Channel - Arbitrated Loop-2
+               (FC-AL-2)".
+
+</p><p class="rfcparagraph">   [IPv6]      Deering, S. and R. Hinden, "Internet Protocol, Version 6
+               (IPv6) Specification", RFC 2460, December 1998.
+
+</p><p class="rfcparagraph">   [AARCH]     Hinden, R. and S. Deering, "Internet Protocol Version 6
+               (IPv6) Addressing Architecture", RFC 3513, April 2003.
+
+</p><p class="rfcparagraph">   [ACONF]     Thomson, S. and T. Narten, "IPv6 Stateless Address
+               Autoconfiguration", RFC 2462, December 1998.
+
+</p><p class="rfcparagraph">   [DISC]      Narten, T., Nordmark, E., and W. Simpson, "Neighbor
+               Discovery for IP Version 6 (IPv6)", RFC 2461, December
+               1998.
+
+</p><p class="rfcparagraph">   [PMTUD]     McCann, J., Deering, S., and J. Mogul, "Path MTU
+               Discovery for IP version 6", RFC 1981, August 1996.
+
+</p><p class="rfcparagraph">   [IEEE-LLC]  IEEE Std 802-2001, "IEEE Standard for Local and
+               Metropolitan Area Networks: Overview and Architecture".
+   [KEYWORDS]  Bradner, S., "Key words for use in RFCs to Indicate
+               Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">	<a name="section-14.2"><h3>14.2   Informative References</h3></a>
+
+   [IPFC]      Rajagopal, M., Bhagwat, R., and W. Rickard, "IP and ARP
+               over Fibre Channel", RFC 2625, June 1999.
+
+</p><p class="rfcparagraph">   [AH]        Kent, S. and R. Atkinson, "IP Authentication Header", RFC
+               2402, November 1998.
+
+</p><p class="rfcparagraph">   [ESP]       Kent, S. and R. Atkinson, "IP Encapsulating Security
+               Payload (ESP)", RFC 2406, November 1998.
+
+</p><p class="rfcparagraph">   [EUI64]     "Guidelines For 64-bit Global Identifier (EUI-64)",
+               http://standards.ieee.org/db/oui/tutorials/EUI64.html
+
+   [ETHER]     Crawford, M., "Transmission of IPv6 Packets over Ethernet
+               Networks", RFC 2464, December 1998.
+
+</p><p class="rfcparagraph">   [IPv6-1394] Fujisawa, K. and A. Onoe, "Transmission of IPv6 Packets
+               over IEEE 1394 Networks", RFC 3146, October 2001.
+A.  Transmission of a Broadcast FC Sequence over FC Topologies
+
+A.1.  Point-to-Point Topology
+
+   No particular mechanisms are required for this case.  The Nx_Port
+   connected at the other side of the cable receives the broadcast FC
+   Sequence having D_ID 0xFFFFFF.
+
+</p><p class="rfcparagraph">A.2.  Private Loop Topology
+
+   An NL_Port attached to a private loop MUST transmit a Class 3
+   broadcast FC Sequence by using the OPN(fr) primitive signal
+   [FC-AL-2].
+
+</p><p class="rfcparagraph">   a) The source NL_Port first sends an Open Broadcast Replicate
+      (OPN(fr)) primitive signal, forcing all the NL_Ports in the loop
+      (except itself) to replicate the frames that they receive while
+      examining the FC Header's D_ID field.
+   b) The source NL_Port then removes the OPN(fr) signal when it returns
+      to it.
+   c) The source NL_Port then sends the Class 3 broadcast FC Sequence
+      having D_ID 0xFFFFFF.
+
+</p><p class="rfcparagraph">A.3.  Public Loop Topology
+
+   An NL_Port attached to a public loop MUST NOT use the OPN(fr)
+   primitive signal.  Rather, it MUST send the Class 3 broadcast FC
+   Sequence having D_ID 0xFFFFFF to the FL_Port at AL_PA = 0x00
+   [FC-AL-2].
+
+</p><p class="rfcparagraph">   The Fabric propagates the broadcast to all other FC_Ports [FC-FS],
+   including the FL_Port which the broadcast arrives on.  This includes
+   all F_Ports, and other FL_Ports.
+
+</p><p class="rfcparagraph">   Each FL_Port propagates the broadcast by using the primitive signal
+   OPN(fr), in order to prepare the loop to receive the broadcast
+   sequence.
+
+</p><p class="rfcparagraph">A.4.  Fabric Topology
+
+   An N_Port connected to an F_Port MUST transmit the Class 3 broadcast
+   FC Sequence having D_ID 0xFFFFFF to the F_Port.  The Fabric
+   propagates the broadcast to all other FC_Ports [FC-FS].
+B.  Validation of the <N_Port_Name, N_Port_ID> mapping
+
+B.1.  Overview
+
+   At all times, the <N_Port_Name, N_Port_ID> mapping must be valid
+   before use.
+
+</p><p class="rfcparagraph">   After an FC link interruption occurs, the N_Port_ID of an Nx_Port may
+   change, as well as the N_Port_IDs of all other Nx_Ports that have
+   previously performed Port Login with this Nx_Port.  Because of this,
+   address validation is required after a LIP in a loop topology
+   [FC-AL-2] or after NOS/OLS in a point-to-point topology [FC-FS].
+
+</p><p class="rfcparagraph">   N_Port_IDs do not change as a result of Link Reset (LR) [FC-FS], thus
+   address validation is not required in this case.
+
+</p><p class="rfcparagraph">B.2.  FC Layer Address Validation in a Point-to-Point Topology
+
+   No validation is required after LR.  In a point-to-point topology,
+   NOS/OLS causes implicit Logout of each N_Port and after a NOS/OLS
+   each N_Port must again perform a Port Login [FC-FS].
+
+</p><p class="rfcparagraph">B.3.  FC Layer Address Validation in a Private Loop Topology
+
+   After a LIP [FC-AL-2], an NL_Port must not transmit any data to
+   another NL_Port until the address of the other port has been
+   validated.  The validation consists of completing either ADISC or
+   PDISC [FC-FS].
+
+</p><p class="rfcparagraph">   For a requester, this specification prohibits PDISC and requires
+   ADISC.  As a responder, an implementation may need to respond to both
+   ADISC and PDISC for compatibility with other FC specifications.
+
+</p><p class="rfcparagraph">   If the three FC addresses (N_Port_ID, N_Port_Name, Node_Name) of a
+   logged remote NL_Port exactly match the values prior to the LIP, then
+   any active Exchange with that NL_Port may continue.
+
+</p><p class="rfcparagraph">   If any of the three FC addresses has changed, then the remote NL_Port
+   must be logged out.
+
+</p><p class="rfcparagraph">   If an NL_Port's N_Port_ID changes after a LIP, then all active logged
+   in NL_Ports must be logged out.
+B.4.  FC Layer Address Validation in a Public Loop Topology
+
+   A FAN ELS may be sent by the Fabric to all known previously logged in
+   NL_Ports following an initialization event.  Therefore, after a LIP
+   [FC-AL-2], NL_Ports may wait for this notification to arrive, or they
+   may perform an FLOGI.
+
+</p><p class="rfcparagraph">   If the F_Port_Name and Fabric_Name contained in the FAN ELS or FLOGI
+   response exactly match the values before the LIP and if the AL_PA
+   [FC-AL-2] obtained by the NL_Port is the same as the one before the
+   LIP, then the port may resume all Exchanges.  If not, then FLOGI must
+   be performed with the Fabric and all logged in Nx_Ports must be
+   logged out.
+
+</p><p class="rfcparagraph">   A public loop NL_Port must perform the private loop validation as
+   specified in section B.3 to any NL_Port on the local loop that has an
+   N_Port_ID of the form 0x00-00-XX.
+
+</p><p class="rfcparagraph">B.5.  FC Layer Address Validation in a Fabric Topology
+
+   No validation is required after LR (link reset).
+
+</p><p class="rfcparagraph">   After NOS/OLS, an N_Port must perform FLOGI.  If, after FLOGI, the
+   N_Port's N_Port_ID, the F_Port_Name, and the Fabric_Name are the same
+   as before the NOS/OLS, then the N_Port may resume all Exchanges.  If
+   not, all logged in Nx_Ports must be logged out [FC-FS].
+
+</p><p class="rfcparagraph">C.  Fibre Channel Bit and Byte Numbering Guidance
+
+   Both Fibre Channel and IETF standards use the same byte transmission
+   order.  However, the bit numbering is different.
+
+</p><p class="rfcparagraph">   Fibre Channel bit numbering can be observed if the data structure
+   heading shown in figure 21 is cut and pasted at the top of the
+   figures present in this document.
+
+</p><p class="rfcparagraph">       3                   2                   1                   0
+     1 0 9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+                   Fig. 21: Fibre Channel Bit Numbering
+Author's Address
+
+   Claudio DeSanti
+   Cisco Systems, Inc.
+   170 W. Tasman Dr.
+   San Jose, CA 95134
+   USA
+
+   Phone: +1 408 853-9172
+   EMail: cds@cisco.com
+Full Copyright Statement
+
+   Copyright (C) The Internet Society (2004).  This document is subject<br>
+   to the rights, licenses and restrictions contained in BCP 78, and
+   except as set forth therein, the authors retain all their rights.
+
+</p><p class="rfcparagraph">   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY AND THE INTERNET
+   ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED,
+   INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE
+   INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED
+   WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Intellectual Property
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the procedures with respect to rights in RFC documents can be
+   found in BCP 78 and BCP 79.
+
+</p><p class="rfcparagraph">   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+</p><p class="rfcparagraph">   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at ietf-
+   ipr@ietf.org.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is currently provided by the
+   Internet Society.
+
+</p>
+
+
+
+
+
+
+
+DeSanti                     Standards Track                    [Page 24]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

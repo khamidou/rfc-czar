@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph">
+
+<p>Network Working Group                                         C. Hedrick<br>Request for Comments: 1079                            Rutgers University<br>                                                           December 1988<br><br></p>
+                  <h1>
+                      Telnet Terminal Speed Option</h1>
+                  <h2>Status of This Memo</h2>
+
+   This RFC specifies a standard for the Internet community.  Hosts on
+   the Internet that exchange terminal speed information within the
+   Telnet protocol are expected to adopt and implement this standard.
+   Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph">   This standard is modelled on RFC 930 [1], the telnet terminal type
+   option.  Much of the text of this document is copied from that RFC.
+
+</p><p class="rfcparagraph">Motivation
+
+   Most operating systems have provisions to keep track of the speed
+   (bit rate) of directly attached terminals and modems.  This
+   information is used to control various timing-dependent display
+   processes, e.g., the number of padding characters used for delay.
+   Some software also has user interfaces that are tuned differently for
+   fast and slow terminals.  The purpose of this option is to provide
+   similar information for telnet connections.
+
+</p><p class="rfcparagraph">	<a name="section-1"><h2>1.  Command Name and Code</h2></a>
+
+      TERMINAL-SPEED
+
+      Code = 32
+
+	<a name="section-2"><h2>2.  Command Meanings</h2></a>
+
+      IAC WILL TERMINAL-SPEED
+
+         Sender is willing to send terminal speed information in a
+         subsequent sub-negotiation.
+
+</p><p class="rfcparagraph">      IAC WON'T TERMINAL-SPEED
+
+         Sender refuses to send terminal speed information.
+      IAC DO TERMINAL-SPEED
+
+         Sender is willing to receive terminal speed information in a
+         subsequent sub-negotiation.
+
+</p><p class="rfcparagraph">      IAC DON'T TERMINAL-SPEED
+
+         Sender refuses to accept terminal speed information.
+
+</p><p class="rfcparagraph">      IAC SB TERMINAL-SPEED SEND IAC SE
+
+         Sender requests receiver to transmit his (the receiver's)
+         terminal speed. The code for SEND is 1. (See below.)
+
+      IAC SB TERMINAL-SPEED IS ... IAC SE
+
+         Sender is stating his terminal speed. The code for IS is 0.
+         (See below.)
+
+	<a name="section-3"><h2>3.  Default</h2></a>
+
+      WON'T TERMINAL-SPEED
+
+         Terminal speed information will not be exchanged.
+
+</p><p class="rfcparagraph">      DON'T TERMINAL-SPEED
+
+         Terminal speed information will not be exchanged.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.  Description of the Option</h2></a>
+
+   WILL and DO are used only to obtain and grant permission for future
+   discussion. The actual exchange of status information occurs within
+   option subcommands (IAC SB TERMINAL-SPEED...).
+
+</p><p class="rfcparagraph">   Once the two hosts have exchanged a WILL and a DO, the sender of the
+   DO TERMINAL-SPEED is free to request speed information.  Only the
+   sender of the DO may send requests (IAC SB TERMINAL-SPEED SEND IAC
+   SE) and only the sender of the WILL may transmit actual speed
+   information (within an IAC SB TERMINAL-SPEED IS ... IAC SE command).
+   Terminal speed information may not be sent spontaneously, but only in
+   response to a request.
+
+</p><p class="rfcparagraph">   The terminal speed information is an NVT ASCII string.  This string
+   contains the decimal representation of the transmit and receive
+   speeds of the terminal, separated by a comma, e.g.,
+
+         9600,100
+   No leading zeros may be included.  No extraneous characters such as
+   spaces may be included.
+
+</p><p class="rfcparagraph">      The following is an example of use of the option:
+
+</p><p class="rfcparagraph">         Host1: IAC DO TERMINAL-SPEED
+
+         Host2: IAC WILL TERMINAL-SPEED
+
+      (Host1 is now free to request status information at any time.)
+
+         Host1: IAC SB TERMINAL-SPEED SEND IAC SE
+
+         Host2: IAC SB TERMINAL-SPEED IS "1200,1200" IAC SE
+
+      (This command is 15 octets.)
+
+	<a name="section-5"><h2>5.  Implementation Suggestions</h2></a>
+
+   Many systems allow only certain discrete terminal speeds.  In such
+   cases it is possible that a speed may be received that does not match
+   one of the allowed values.  We suggest that you pick the nearest
+   speed that is allowed, rounding in a "safe" direction.  Safety will
+   depend upon the use of the speed information.  If it is being used
+   for padding, it is best to round up, since too much padding is better
+   than too little.
+
+</p><p class="rfcparagraph">Reference
+
+   [1]  Solomon, M., and Wimmers, E., "Telnet Terminal Type Option",
+        RFC 930, January, 1985
+
+[AAuthor's Address:
+
+</p>   Charles Hedrick
+   Rutgers University
+   Center for Computer and Information Services
+   Hill Center, Busch Campus
+   P.O. Box 879
+   Piscataway, NJ 08855-0879
+
+   Phone: (201) 932-3088<br>
+
+   Email: HEDRICK@ARAMIS.RUTGERS.EDU
+
+
+
+
+
+
+
+Hedrick                                                         [Page 3]
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

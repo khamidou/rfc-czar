@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph">Internet Engineering Task Force (IETF)                         S. Venaas
+Request for Comments: 6166                                 Cisco Systems
+Category: Standards Track                                     April 2011
+ISSN: 2070-1721
+
+
+                    A Registry for PIM Message Types
+
+<h2>Abstract</h2>
+
+   This document provides instructions to IANA for the creation of a
+   registry for PIM message types.  It specifies the initial content of
+   the registry, based on existing RFCs specifying PIM message types.
+   It also specifies a procedure for registering new types.
+
+</p><p class="rfcparagraph">   In addition to this, one message type is reserved, and may be used
+   for a future extension of the message type space.
+
+</p><p class="rfcparagraph">Status of This Memo
+
+   This is an Internet Standards Track document.
+
+</p><p class="rfcparagraph">   This document is a product of the Internet Engineering Task Force
+   (IETF).  It represents the consensus of the IETF community.  It has
+   received public review and has been approved for publication by the
+   Internet Engineering Steering Group (IESG).  Further information on
+   Internet Standards is available in Section 2 of RFC 5741.
+
+</p><p class="rfcparagraph">   Information about the current status of this document, any errata,
+   and how to provide feedback on it may be obtained at
+   http://www.rfc-editor.org/info/rfc6166.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (c) 2011 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+</p><p class="rfcparagraph">   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (http://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
+   the Trust Legal Provisions and are provided without warranty as
+   described in the Simplified BSD License.
+<h2>Table of Contents</h2>
+<a href="#section-1" class="">1. Introduction ...................................................</a><br>
+<a href="#section-2" class="">2. Security Considerations ........................................</a><br>
+<a href="#section-3" class="">3. IANA Considerations ............................................</a><br>
+<a href="#section-3.1" class="indent-1">3.1. Initial Registry ..........................................</a><br>
+<a href="#section-3.2" class="indent-1">3.2. Assignment of New Message Types ...........................</a><br>
+<a href="#section-4" class="">4. Acknowledgements ...............................................</a><br>
+<a href="#section-5" class="">5. Informative References .........................................</a><br>
+
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   Apart from this document, there is no existing document specifying a
+   registry for PIM message types.  PIM version 1 made use of IGMP
+   [RFC1112], and there is an IGMP registry [IGMPREG] listing the
+   message types used by PIM version 1.  PIM version 2, however, is not
+   based on IGMP, and a separate PIM message type registry is needed.
+   There are currently several RFCs specifying new PIM version 2 message
+   types that should be in this new registry.  They are the RFCs for PIM
+   Dense Mode [RFC3973], PIM Sparse Mode [RFC4601], and Bidirectional
+   PIM [RFC5015].
+
+</p><p class="rfcparagraph">   This document specifies the initial content of the new PIM message
+   type registry, based on those existing RFCs.  This document also
+   specifies a procedure for registering new PIM message types.
+
+</p><p class="rfcparagraph">   In addition to this, this document reserves one message type.  This
+   type may be used for a future extension of the message type space.
+   The current message type space is only 4 bits, so it is not unlikely
+   that this will be needed.  How exactly the extension should be done
+   is left to a future document.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Security Considerations</h2></a>
+
+   This document only creates an IANA registry.  There may be a security
+   benefit in a well-known place for finding information on which PIM
+   message types are valid and how they are used.  Apart from that,
+   there are no security considerations.
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   IANA Considerations</h2></a>
+
+   IANA has created a PIM message type registry.  It has been placed in
+   the "Protocol Independent Multicast (PIM)" branch of the tree.  Each
+   entry in the registry consists of a message type, a message name, and
+   references to the documents defining the type.  The message type is a
+   4-bit integer with possible values from 0 to 15.
+	<a name="section-3.1"><h3>3.1   Initial Registry</h3></a>
+
+   The initial content of the registry should be as follows.
+
+</p><p class="rfcparagraph">   Type    Name                                      Reference
+   ------  ----------------------------------------  -------------------
+     0      Hello                                    [RFC3973] [RFC4601]
+     1      Register                                 [RFC4601]
+     2      Register Stop                            [RFC4601]
+     3      Join/Prune                               [RFC3973] [RFC4601]
+     4      Bootstrap                                [RFC4601]
+     5      Assert                                   [RFC3973] [RFC4601]
+     6      Graft                                    [RFC3973]
+     7      Graft-Ack                                [RFC3973]
+     8      Candidate RP Advertisement               [RFC4601]
+     9      State Refresh                            [RFC3973]
+    10      DF Election                              [RFC5015]
+    11-14   Unassigned
+    15      Reserved (for extension of type space)   this document
+
+	<a name="section-3.2"><h3>3.2   Assignment of New Message Types</h3></a>
+
+   Assignment of new message types is done according to the "IETF
+   Review" model; see [RFC5226].
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   Acknowledgements</h2></a>
+
+   Thanks to Toerless Eckert for his suggestion to reserve a type for
+   future extension of the message type space.  Also thanks to Mykyta
+   Yevstifeyev for reviewing the document and proposing improvements to
+   the text.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   Informative References</h2></a>
+
+   [IGMPREG]  IANA, "Internet Group Management Protocol (IGMP) Type
+              Numbers - per [RFC3228], [BCP57]", <http://www.iana.org/>.
+
+</p><p class="rfcparagraph">   [RFC1112]  Deering, S., "Host extensions for IP multicasting", STD 5,
+              RFC 1112, August 1989.
+
+</p><p class="rfcparagraph">   [RFC3973]  Adams, A., Nicholas, J., and W. Siadak, "Protocol
+              Independent Multicast - Dense Mode (PIM-DM): Protocol
+              Specification (Revised)", RFC 3973, January 2005.
+
+</p><p class="rfcparagraph">   [RFC4601]  Fenner, B., Handley, M., Holbrook, H., and I. Kouvelas,
+              "Protocol Independent Multicast - Sparse Mode (PIM-SM):
+              Protocol Specification (Revised)", RFC 4601, August 2006.
+   [RFC5015]  Handley, M., Kouvelas, I., Speakman, T., and L. Vicisano,
+              "Bidirectional Protocol Independent Multicast (BIDIR-
+              PIM)", RFC 5015, October 2007.
+
+</p><p class="rfcparagraph">   [RFC5226]  Narten, T. and H. Alvestrand, "Guidelines for Writing an
+              IANA Considerations Section in RFCs", BCP 26, RFC 5226,
+              May 2008.
+
+</p>Author's Address
+
+   Stig Venaas
+   Cisco Systems
+   Tasman Drive
+   San Jose, CA  95134
+   USA
+
+   EMail: stig@cisco.com
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Venaas                       Standards Track                    [Page 4]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                         G. Parsons<br>Request for Comments: 3804                               Nortel Networks<br>Category: Standards Track                                      June 2004<br><br></p>
+                  <h1>
+           Voice Profile for Internet Mail (VPIM) Addressing</h1>
+                  <h2>Status of this Memo</h2>
+
+   This document specifies an Internet standards track protocol for the
+   Internet community, and requests discussion and suggestions for
+   improvements.  Please refer to the current edition of the "Internet
+   Official Protocol Standards" (STD 1) for the standardization state
+   and status of this protocol.  Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (2004).<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This document lists the various Voice Profile for Internet Mail
+   (VPIM) email address formats that are currently in common use and
+   defines several new address formats for special case usage.
+   Requirements are imposed on the formats of addresses used in VPIM
+   submission mode.
+
+</p><p class="rfcparagraph">Table of Contents
+<a href="#section-1" class="">1. Introduction . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2" class="">2. Conventions used in this Document. . . . . . . . . . . . . . </a><br>
+<a href="#section-3" class="">3. VPIM v2 Addressing . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4" class="">4. VPIM Addressing. . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.1" class="indent-1">4.1. VPIM Gateways. . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.2" class="indent-1">4.2. VPIM Submission LHS. . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.3" class="indent-1">4.3. VPIM Submission Addresses. . . . . . . . . . . . . . . </a><br>
+<a href="#section-5" class="">5. Security Considerations. . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-6" class="">6. IANA Considerations. . . . . . . . . . . . . . . . . . . . . </a><br>
+       6.1.  IANA Registration form for new value of GSTN address
+             service-selector "VPIM". . . . . . . . . . . . . . . . .  8
+       6.2.  IANA Registration form for new value of GSTN address
+             service-selector "VOICE" . . . . . . . . . . . . . . . .  9
+       6.3.  IANA Registration form for new value of GSTN address
+             service-selector "AMIS". . . . . . . . . . . . . . . . . 10
+       6.4.  IANA Registration form for new value of GSTN address
+             qualif-type1 keyword and value "SYSNUM". . . . . . . . . 10
+       6.5.  IANA Registration form for new value of GSTN address
+             qualif-type1 keyword and value "EXT" . . . . . . . . . . 11
+       6.6.  IANA Registration form for new value of GSTN address
+             qualif-type1 keyword and value "DL". . . . . . . . . . . 12
+<a href="#section-7" class="">7 . References . . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-7.1" class="indent-1">7.1. Normative References . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-7.2" class="indent-1">7.2. Informative References . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-8" class="">8. Author's Address . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-9" class="">9. Full Copyright Statement . . . . . . . . . . . . . . . . . . </a><br>
+
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   This document lists the various VPIM email address formats that are
+   currently in common use and defines several new address formats for
+   special case usage.   Requirements are imposed on the formats of
+   addresses used in VPIM submission mode
+
+   [VPIM2] does not place any restrictions on the email address format.
+   However, it does recommend the use of a numeric LHS since many legacy
+   voice mail systems only use digits to identify mailboxes.  Further,
+   it recommends a structure to handle private, international and
+   extensions.  The private format has become deployed in most existing
+   VPIM v2 systems, further some systems will only accept messages from
+   addresses with a numeric LHS.
+
+</p><p class="rfcparagraph">   [IVM] does not describe addressing at all.  The LHS format is left to
+   the discretion of the mailbox owner.  However, it is useful in some
+   cases (like submission or tunneling) to specify a LHS format.  A
+   format based on GSTN addressing [GSTN] is presented.
+
+</p><p class="rfcparagraph">   This document defines the various recipient (i.e., TO) addresses for
+   VPIM and IVM messages.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Conventions used in this Document</h2></a>
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in RFC 2119 [RFC2119].
+
+</p><p class="rfcparagraph">   "LHS" as used in this document is to be interpreted as the left side
+   of the "@" in an email address.  It is defined as "local-part" in
+   RFC-2822.
+
+</p><p class="rfcparagraph">   "RHS" as used in this document is to be interpreted as the right side
+   of the "@" in an email address.  It is defined as "domain" in RFC-
+   2822.
+	<a name="section-3"><h2>3.   VPIM v2 Addressing</h2></a>
+
+   This is defined in section 4.1.1 of [VPIM2] and [VPIMV2R2].  Of the
+   four groups of addresses defined, the mailbox number format is the
+   most commonly used in VPIM v2 systems.
+
+</p><p class="rfcparagraph">           Example:  6137637582@nortelnetworks.com
+
+	<a name="section-4"><h2>4.   VPIM Addressing</h2></a>
+
+   VPIM places no restrictions on the form of the Internet address.
+   VPIM systems must be capable of receiving an arbitrary email address
+   and generating a reply to that address.  No inferences about the
+   structure of the local part (LHS) should be necessary.
+
+</p><p class="rfcparagraph">   Recipients email addresses must be created in a form compatible with
+   the recipients system and consistent with the address entry
+   capabilities of a telephone user interface.
+
+</p><p class="rfcparagraph">   The following sections use formal syntax compliant with RFC 2234,
+   "Augmented BNF for Syntax Specifications: ABNF".
+
+</p><p class="rfcparagraph">	<a name="section-4.1"><h3>4.1   VPIM Gateways</h3></a>
+
+   A gateway translates between dissimilar environments.  For VPIM, a
+   gateway connects between the VPIM profile of Internet mail and other
+   voice mail networking protocols (including voice call answer and
+   delivery).  These may be proprietary or standard (like AMIS [AMIS-
+   A]).  VPIM gateways typically service multiple voice mail users or,
+   in the case of call answer, service only one.  In the former case,
+   they serve as a classic "mail transfer agent" (MTA) and in the latter
+   as a classic "mail user agent" (UA).
+
+</p><p class="rfcparagraph">   An onramp is a gateway which connects from another voice mail
+   networking protocol to VPIM.  An offramp is a gateway which connects
+   from VPIM to another voice mail networking protocol.  Behavior of
+   onramps and offramps is out of scope for this specification.
+
+</p><p class="rfcparagraph">   This specification describes the VPIM service portion of onramp and
+   offramp addressing.
+
+</p><p class="rfcparagraph">	<a name="section-4.2"><h3>4.2   VPIM Submission LHS</h3></a>
+
+   Limited capability voice mail machines may send messages by default
+   to an external message submission gateway.  These gateways will
+   convert the unresolved telephone number of the recipient into a
+   legitimate email address.  Messages requiring address resolution must
+   be sent to a submission system which will convert the submitted
+   address into the route-able email address.
+
+</p><p class="rfcparagraph">   Additionally, limited capability email systems may send messages to a
+   VPIM onramp system indicated on the RHS.  The LHS would indicate that
+   the message is to be sent as a VPIM message to the telephone number
+   indicated.  In this case, address and message translation is
+   performed by the gateway.
+
+</p><p class="rfcparagraph">   Telephone numbers sent in a VPIM submission mode MUST be sent in one
+   of the following forms.
+
+</p><p class="rfcparagraph">   This is based on the format defined in [GSTN-ADDR] and extensions in
+   [GSTN].
+
+</p><p class="rfcparagraph">	<a name="section-4.2.1"><h4>4.2.1   The VPIM address</h4></a>
+
+   For voice messages that are intended to be sent as VPIM messages the
+   service-selector element is defined to be:
+
+</p><p class="rfcparagraph">   vpim-service-selector = "VPIM"
+
+   The resultant vpim-address and vpim-mbox are formally
+
+   vpim-address = vpim-mbox
+                 [ pstn-recipient ]
+
+   vpim-mbox = [ "VPIM=" ] ( global-phone / local-phone )
+               [ sub-addr-spec ext-addr-spec dl-addr-spec]
+
+   dl-addr-spec = "/DL=" sub-addr
+                           ;note that "/DL=" is case INSENSITIVE
+   ext-addr-spec = [ ext-sep sub-addr ]
+   ext-sep = ( "/EXT=" / "+" )
+                         ; note that "/EXT=" is case INSENSITIVE
+                         ; "+" is used for compatibility with current
+                         ; VPIM v2 addressing
+
+   For clarity, here is an example of a very simple vpim-mbox:
+
+</p><p class="rfcparagraph">        VPIM=6137637582
+
+   The extension syntax, that is a phone number followed by "/EXT="
+   defining the extension, would be used where the mailbox does not have
+   a direct dial number associated with it (e.g., typically behind a
+   non-ISDN PBX).  For example:
+        VPIM=7035255550/EXT=227
+
+   The distribution list syntax, that is a phone number followed by
+   "/DL=" defining the list, would be used to refer to a distribution
+   list associated with the phone number (with or without an extension).
+   For example:
+
+</p><p class="rfcparagraph">        VPIM=+14165977230/DL=93
+
+	<a name="section-4.2.2"><h4>4.2.2   The Voice address</h4></a>
+
+   For voice messages that are intended to be sent as a voice outdialing
+   at the destination system, the service-selector element is defined to
+   be:
+
+</p><p class="rfcparagraph">   voice-service-selector = "VOICE"
+
+   The resultant voice-address and voice-mbox are formally
+
+   voice-address = voice-mbox
+                  [ pstn-recipient ]
+
+   voice-mbox = "VOICE=" ( global-phone / local-phone )
+                      [ sub-addr-spec ] [post-sep post-dial]
+
+   For more clarity, here is an example of a very simple voice-mbox:
+
+</p><p class="rfcparagraph">   VOICE=+3940226338
+
+	<a name="section-4.2.3"><h4>4.2.3   The AMIS address</h4></a>
+
+   For voice messages that are intended to be sent as AMIS (Audio
+   Messaging Interchange Specification) voice mail messages (as defined
+   in [AMIS-A] and [AMIS-D]), the service-selector element is defined to
+   be:
+
+</p><p class="rfcparagraph">   amis-service-selector = "AMIS"
+
+   The resultant amis-address and amis-mbox are formally
+
+   amis-address = amis-mbox
+
+   amis-mbox = "AMIS=" amis-mailbox
+               [ "/SYSNUM=" amis-sysnum ]
+               ; note that "/SYSNUM=" is case INSENSITIVE
+
+   amis-mailbox = ( amis-a / amis-d )
+   amis-a = amis-a-number
+
+   amis-d = [ amis-mailbox-numberplan ][ "+" ] amis-mailbox-id
+               [ "+" ] [ amis-mailbox-extension ]
+        ; The "+" separators are used to be compatible
+               ; the X.400 AMIS-D mailbox definition --
+               ; if more than one element is present, both
+               ; "+" must appear.  Note also that the total
+               ; length of this field is restricted to 32
+               ; characters by AMIS-D.
+
+</p><p class="rfcparagraph">   amis-mailbox-numberplan = 1*VCHAR
+
+   amis-mailbox-id = 1*16(VCHAR)
+
+   amis-mailbox-extension = 1*VCHAR
+
+   amis-sysnum =  amis-a-number
+
+   amis-a-number = ( amis-PSTN-number / amis-private-number )
+
+   amis-PSTN-number = int-country-code "+"
+                      area-code "+"
+                      local-number "+"
+                      ; This is in agreement with ITU [E.164]
+                      ; specification and per [AMIS-A] - the
+                      ; maximum length is 15 numeric digits.
+                      ; The "+" separators are used to be
+                      ; compatible with the X.400 AMIS-D
+                      ; mailbox definition and replace the '#'
+                      ; separators of AMIS-A
+
+   amis-private-number = "0++" local-number "+"
+                      ; [AMIS-A] indicates that maximum permitted
+                      ; length of the private number is 14
+                      ; digits
+
+   int-country-code = 1*4(DIGIT)
+
+   area-code = 1*(DIGIT)
+
+   local-number = 1*(DIGIT)
+
+   For more clarity, here is an example of a simple AMIS-A amis-mbox:
+
+</p><p class="rfcparagraph">   AMIS=+1/401+3278144+/SYSNUM=1+401+3279542+
+	<a name="section-4.2.4"><h4>4.2.4   The fax address</h4></a>
+
+   Fax addresses used in VPIM are formatted as defined in [FAX-ADDR],
+   section 2.
+
+</p><p class="rfcparagraph">
+	<a name="section-4.3"><h3>4.3   VPIM Submission Addresses</h3></a>
+
+   Based on [GSTN-ADDR], these are the resultant email addresses for the
+   LHS presented above.  VPIM and IVM  systems that support submission
+   MUST accept, translate (if necessary), and forward messages sent to
+   these addresses.
+
+</p><p class="rfcparagraph">	<a name="section-4.3.1"><h4>4.3.1   The vpim-email</h4></a>
+
+   The vpim-email element is a specific version of pstn-email for VPIM
+   over the Internet e-mail transport system, where the service-selector
+   distinction is set to "VPIM".
+
+</p><p class="rfcparagraph">   vpim-email =  ["/"] vpim-address ["/"] "@" mta-I-pstn
+
+   In this case the mta-I-pstn will usually point to a VPIM capable
+   messaging system where the attached message will be delivered
+   properly.
+
+</p><p class="rfcparagraph">	<a name="section-4.3.2"><h4>4.3.2   The voice-email</h4></a>
+
+   The voice-email element is a specific version of pstn-email for the
+   voice outdialing over the Internet e-mail transport system, where the
+   service-selector distinction is set to "VOICE".
+
+</p><p class="rfcparagraph">   voice-email =  ["/"] voice-address ["/"] "@" mta-I-pstn
+
+   In this case the mta-I-pstn will usually point to a device that will
+   perform an outdial, that is for example, make a telephone call to the
+   specified number and play a voice attachment.
+
+</p><p class="rfcparagraph">	<a name="section-4.3.3"><h4>4.3.3   The amis-email</h4></a>
+
+   The amis-email element is a specific version of pstn-email for the
+   AMIS over the Internet e-mail transport system, where the service-
+   selector distinction is set to "AMIS".
+
+</p><p class="rfcparagraph">   amis-email =  ["/"] amis-address ["/"] "@" mta-I-pstn
+
+   In this case the mta-I-pstn will usually point to a device that acts
+   as a gateway to an AMIS network where the attached voice message will
+   be delivered properly.
+	<a name="section-4.3.4"><h4>4.3.4   The fax-email</h4></a>
+
+   Fax email addresses used in VPIM are formatted as defined in [FAX-
+   ADDR], section 4.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   Security Considerations</h2></a>
+
+   Most security considerations are already identified in [VPIM2] and
+   [IVM].
+
+</p><p class="rfcparagraph">   An additional concern would be that the sender must trust and also be
+   aware of the policies of the submission MTA to which the message is
+   submitted.  This is because, that MTA will make the determination of
+   where the final destination is and how it will be delivered based on
+   the VPIM submission LHS.
+
+</p><p class="rfcparagraph">   Submission MTAs should take care to not blindly place outdial calls
+   to any number submitted (e.g., international numbers or "1-900"
+   numbers).  Ideally, senders should be authenticated to confirm their
+   outdialing privileges.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.   IANA Considerations</h2></a>
+
+	<a name="section-6.1"><h3>6.1   IANA Registration form for new value of GSTN address</h3></a>
+      service-selector "VPIM"
+
+   To: IANA@iana.org
+
+   Subject: Registration of new values for the GSTN address
+      service-selector specifier "VPIM"
+
+   service-selector name:
+
+</p><p class="rfcparagraph">      VPIM
+
+   Description of Use:
+
+</p><p class="rfcparagraph">      VPIM - specify that the GSTN address refers to a voice
+      mailbox that is intended to accept a VPIM message.
+
+</p><p class="rfcparagraph">      For a complete description refer to "Voice Profile for Internet
+      Mail (VPIM) Addressing", RFC 3804.
+
+</p><p class="rfcparagraph">   Security Considerations:
+
+</p><p class="rfcparagraph">      See the Security Consideration section of "Voice Profile for
+      Internet Mail (VPIM) Addressing", RFC 3804.
+   Person & email address to contact for further information:
+
+</p><p class="rfcparagraph">      Glenn W. Parsons
+      Nortel Networks
+      P.0. Box 3511 Station C
+      Ottawa, On  K1Y 4H7
+      Canada
+      Phone: +1-613-763-7582
+      Fax  : +1-613-763-2697
+      Email: gparsons@nortelnetworks.com
+
+	<a name="section-6.2"><h3>6.2   IANA Registration form for new value of GSTN address</h3></a>
+      service-selector "VOICE"
+
+   To: IANA@iana.org
+
+   Subject: Registration of new values for the GSTN address
+            service-selector specifier "VOICE"
+
+   service-selector name:
+
+</p><p class="rfcparagraph">      VOICE
+
+   Description of Use:
+
+</p><p class="rfcparagraph">      VOICE - specify that the GSTN address refers to a voice
+      device that is intended to be sent a voice message via an
+      'outdialing'.
+
+</p><p class="rfcparagraph">   For a complete description refer to "Voice Profile for Internet Mail
+   (VPIM)  Addressing", RFC 3804.
+
+</p><p class="rfcparagraph">   Security Considerations:
+
+</p><p class="rfcparagraph">   See the Security Consideration section of "Voice Profile for Internet
+   Mail (VPIM) Addressing", RFC 3804.
+
+</p><p class="rfcparagraph">   Person & email address to contact for further information:
+
+</p><p class="rfcparagraph">      Glenn W. Parsons
+      Nortel Networks
+      P.0. Box 3511 Station C
+      Ottawa, On  K1Y 4H7
+      Canada
+      Phone: +1-613-763-7582
+      Fax  : +1-613-763-2697
+      Email: gparsons@nortelnetworks.com
+	<a name="section-6.3"><h3>6.3   IANA Registration form for new value of GSTN address</h3></a>
+      service-selector "AMIS"
+
+   To: IANA@iana.org
+
+   Subject: Registration of new values for the GSTN address
+            service-selector specifier "AMIS"
+
+   service-selector name:
+
+</p><p class="rfcparagraph">      AMIS
+
+   Description of Use:
+
+</p><p class="rfcparagraph">      AMIS - specify that the GSTN address refers to a voice
+      mailbox that is intended to be sent an AMIS (Audio
+      Messaging Interchange Specification) voice mail message.
+
+</p><p class="rfcparagraph">   For a complete description refer to "Voice Profile for Internet Mail
+   (VPIM) Addressing", RFC 3804.
+
+</p><p class="rfcparagraph">   Security Considerations:
+
+</p><p class="rfcparagraph">   See the Security Consideration section of "Voice Profile for Internet
+   Mail (VPIM) Addressing", RFC 3804.
+
+</p><p class="rfcparagraph">   Person & email address to contact for further information:
+
+</p><p class="rfcparagraph">      Glenn W. Parsons
+      Nortel Networks
+      P.0. Box 3511 Station C
+      Ottawa, On  K1Y 4H7
+      Canada
+      Phone: +1-613-763-7582
+      Fax  : +1-613-763-2697
+      Email: gparsons@nortelnetworks.com
+
+	<a name="section-6.4"><h3>6.4   IANA Registration form for new value of GSTN address</h3></a>
+      qualif-type1 keyword and value "SYSNUM"
+
+   To: IANA@iana.org
+
+   Subject: Registration of new values for the GSTN address
+            qualif-type1 element "sysnum"
+
+   qualif-type1 "keyword" name:
+
+</p><p class="rfcparagraph">      sysnum
+   qualif-type1 "value" ABNF definition:
+
+</p><p class="rfcparagraph">      sysnum = 1*(DIGIT / "+")
+
+   Description of Use:
+
+</p><p class="rfcparagraph">      sysnum is used to specify the numeric optional AMIS sub-
+      address element as described in "Voice Profile for Internet Mail
+      (VPIM) Addressing", RFC 3804.
+
+</p><p class="rfcparagraph">   Use Restriction:
+
+</p><p class="rfcparagraph">      The use of "SYSNUM" is restricted to "AMIS" service-
+      selector, is it has no meaning outside the AMIS service.
+
+</p><p class="rfcparagraph">   Security Considerations:
+
+</p><p class="rfcparagraph">      See the Security Consideration section of "Voice Profile for
+      Internet Mail (VPIM) Addressing", RFC 3804.
+
+</p><p class="rfcparagraph">   Person & email address to contact for further information:
+
+</p><p class="rfcparagraph">      Glenn W. Parsons
+      Nortel Networks
+      P.0. Box 3511 Station C
+      Ottawa, On  K1Y 4H7
+      Canada
+      Phone: +1-613-763-7582
+      Fax  : +1-613-763-2697
+      Email: gparsons@nortelnetworks.com
+
+	<a name="section-6.5"><h3>6.5   IANA Registration form for new value of GSTN address qualif-type1</h3></a>
+      keyword and value "EXT"
+
+   To: IANA@iana.org
+
+   Subject: Registration of new values for the GSTN address
+            qualif-type1 element "EXT"
+
+   qualif-type1 "keyword" name:
+
+</p><p class="rfcparagraph">      ext
+
+   qualif-type1 "value" ABNF definition:
+
+</p><p class="rfcparagraph">      ext = 1*(DIGIT)
+   Description of Use:
+
+</p><p class="rfcparagraph">      EXT is used to specify the numeric optional extension
+      That identifies a particular VPIM mailbox as
+      described in "Voice Profile for Internet Mail (VPIM)
+      Addressing", RFC 3804.
+
+</p><p class="rfcparagraph">   Use Restriction:
+
+</p><p class="rfcparagraph">      The use of "EXT" is intended for the "VPIM" service-
+      selector, however is may have meaning and be used outside
+      the VPIM service.
+
+</p><p class="rfcparagraph">   Security Considerations:
+
+</p><p class="rfcparagraph">      See the Security Consideration section of "Voice Profile for
+      Internet Mail (VPIM) Addressing", RFC 3804.
+
+</p><p class="rfcparagraph">   Person & email address to contact for further information:
+
+</p><p class="rfcparagraph">      Glenn W. Parsons
+      Nortel Networks
+      P.0. Box 3511 Station C
+      Ottawa, On  K1Y 4H7
+      Canada
+      Phone: +1-613-763-7582
+      Fax  : +1-613-763-2697
+      Email: gparsons@nortelnetworks.com
+
+	<a name="section-6.6"><h3>6.6   IANA Registration form for new value of GSTN address qualif-type1</h3></a>
+      keyword and value "DL"
+
+   To: IANA@iana.org
+
+   Subject: Registration of new values for the GSTN address
+            qualif-type1 element "DL"
+
+   qualif-type1 "keyword" name:
+
+</p><p class="rfcparagraph">      dl
+
+   qualif-type1 "value" ABNF definition:
+
+</p><p class="rfcparagraph">      dl = 1*(DIGIT)
+
+   Description of Use:
+
+</p><p class="rfcparagraph">      DL is used to specify the numeric optional personal
+      Distribution list for a particular VPIM mailbox as
+      described in "Voice Profile for Internet Mail (VPIM)
+      Addressing", RFC 3804.
+
+</p><p class="rfcparagraph">   Use Restriction:
+
+</p><p class="rfcparagraph">      The use of "DL" is intended for the "VPIM" service-
+      selector, however is may have meaning and be used outside
+      the VPIM service.
+
+</p><p class="rfcparagraph">   Security Considerations:
+
+</p><p class="rfcparagraph">      See the Security Consideration section of "Voice Profile for
+      Internet Mail (VPIM) Addressing", RFC 3804.
+
+</p><p class="rfcparagraph">   Person & email address to contact for further information:
+
+</p><p class="rfcparagraph">      Glenn W. Parsons
+      Nortel Networks
+      P.0. Box 3511 Station C
+      Ottawa, On  K1Y 4H7
+      Canada
+      Phone: +1-613-763-7582
+      Fax  : +1-613-763-2697
+      Email: gparsons@nortelnetworks.com
+
+	<a name="section-7"><h2>7.   References</h2></a>
+
+	<a name="section-7.1"><h3>7.1   Normative References</h3></a>
+
+   [GSTN]      Allocchio, C., "GSTN Address Element Extensions in e-mail
+               Services", RFC 2846, June 2000.
+
+</p><p class="rfcparagraph">   [RFC2119]   Bradner, S., "Key words for use in RFCs to Indicate
+               Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">   [RFC2822]   Resinick, P., "Internet Message Format", RFC 2822, April
+               2001.
+
+</p><p class="rfcparagraph">   [VPIM2]     Vaudreuil, G. and G. Parsons, "Voice Profile for Internet
+               Mail, Version 2", RFC 2421, September 1998.
+
+</p><p class="rfcparagraph">   [VPIMV2R2]  Vaudreuil, G. and G. Parsons,"Voice Profile for Internet
+               Mail - version 2 (VPIMv2)", RFC 3801, June 2004.
+
+</p><p class="rfcparagraph">   [FAX-ADDR]  Allocchio, C., "Minimal FAX address format in Internet
+               Mail", RFC 3192, October 2001.
+   [GSTN-ADDR] Allocchio, C., "Minimal GSTN address format in Internet
+               Mail", RFC 3191, October 2001.
+
+</p><p class="rfcparagraph">	<a name="section-7.2"><h3>7.2   Informative References</h3></a>
+
+   [AMIS-A]    Audio Messaging Interchange Specifications (AMIS) -
+               Analog Protocol Version 1, Issue 2, February 1992.
+
+</p><p class="rfcparagraph">   [AMIS-D]    Audio Messaging Interchange Specifications (AMIS) -
+               Digital Protocol Version 1, Issue 3, August 1993.
+
+</p><p class="rfcparagraph">   [E.164]     CCITT Recommendation E.164 (1991), Telephone Network and<br>
+               ISDN Operation, Numbering, Routing and  Mobile Service -
+               Numbering Plan for the ISDN Era.
+
+</p><p class="rfcparagraph">   [IVM]       McRae, S. and G. Parsons, "Internet Voice Mail", Work in
+               Progress.
+
+</p><p class="rfcparagraph">	<a name="section-8"><h2>8.   Author's Address</h2></a>
+
+   Glenn W. Parsons
+   Nortel Networks
+   Ottawa, ON K1Y 4H7
+
+   Phone: +1-613-763-7582
+   Fax  : +1-613-967-5060
+   EMail: gparsons@nortelnetworks.com
+	<a name="section-9"><h2>9.   Full Copyright Statement</h2></a>
+
+   Copyright (C) The Internet Society (2004).  This document is subject<br>
+   to the rights, licenses and restrictions contained in BCP 78, and
+   except as set forth therein, the authors retain all their rights.
+
+</p><p class="rfcparagraph">   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY AND THE INTERNET
+   ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED,
+   INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE
+   INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED
+   WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Intellectual Property
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the procedures with respect to rights in RFC documents can be
+   found in BCP 78 and BCP 79.
+
+</p><p class="rfcparagraph">   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+</p><p class="rfcparagraph">   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at ietf-
+   ipr@ietf.org.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is currently provided by the
+   Internet Society.
+
+</p>
+
+
+
+
+
+
+
+Parsons                     Standards Track                    [Page 15]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

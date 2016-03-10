@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph">Internet Engineering Task Force (IETF)                      M. Boucadair
+Request for Comments: 7371                                France Telecom
+Updates: 3306, 3956, 4291                                      S. Venaas
+Category: Standards Track                                          Cisco
+ISSN: 2070-1721                                           September 2014
+
+
+         Updates to the IPv6 Multicast Addressing Architecture
+
+<h2>Abstract</h2>
+
+   This document updates the IPv6 multicast addressing architecture by
+   redefining the reserved bits as generic flag bits.  The document also
+   provides some clarifications related to the use of these flag bits.
+
+</p><p class="rfcparagraph">   This document updates RFCs 3956, 3306, and 4291.
+
+</p><p class="rfcparagraph">Status of This Memo
+
+   This is an Internet Standards Track document.
+
+</p><p class="rfcparagraph">   This document is a product of the Internet Engineering Task Force
+   (IETF).  It represents the consensus of the IETF community.  It has
+   received public review and has been approved for publication by the
+   Internet Engineering Steering Group (IESG).  Further information on
+   Internet Standards is available in Section 2 of RFC 5741.
+
+</p><p class="rfcparagraph">   Information about the current status of this document, any errata,
+   and how to provide feedback on it may be obtained at
+   http://www.rfc-editor.org/info/rfc7371.
+<h2>Copyright Notice</h2>
+
+   Copyright (c) 2014 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+</p><p class="rfcparagraph">   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (http://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
+   the Trust Legal Provisions and are provided without warranty as
+   described in the Simplified BSD License.
+
+</p><p class="rfcparagraph">   This document may contain material from IETF Documents or IETF
+   Contributions published or made publicly available before November
+   10, 2008.  The person(s) controlling the copyright in some of this
+   material may not have granted the IETF Trust the right to allow
+   modifications of such material outside the IETF Standards Process.
+   Without obtaining an adequate license from the person(s) controlling
+   the copyright in such materials, this document may not be modified
+   outside the IETF Standards Process, and derivative works of it may
+   not be created outside the IETF Standards Process, except to format
+   it for publication as an RFC or to translate it into languages other
+   than English.
+
+</p><p class="rfcparagraph">Table of Contents
+<a href="#section-1" class="">1. Introduction ...................................................</a><br>
+<a href="#section-1.1" class="indent-1">1.1. Requirements Language .....................................</a><br>
+<a href="#section-2" class="">2. Addressing Architecture Update .................................</a><br>
+<a href="#section-3" class="">3. Flag Bits: New Processing Rules ................................</a><br>
+<a href="#section-4" class="">4. RFC Updates ....................................................</a><br>
+<a href="#section-4.1" class="indent-1">4.1. Updates to RFC 3306 .......................................</a><br>
+<a href="#section-4.1.1" class="indent-2">4.1.1. Update #1 ..........................................</a><br>
+<a href="#section-4.1.2" class="indent-2">4.1.2. Update #2 ..........................................</a><br>
+<a href="#section-4.2" class="indent-1">4.2. Updates to RFC 3956 .......................................</a><br>
+<a href="#section-4.2.1" class="indent-2">4.2.1. Update #1 ..........................................</a><br>
+<a href="#section-4.2.2" class="indent-2">4.2.2. Update #2 ..........................................</a><br>
+<a href="#section-4.2.3" class="indent-2">4.2.3. Update #3 ..........................................</a><br>
+<a href="#section-4.2.4" class="indent-2">4.2.4. Update #4 ..........................................</a><br>
+<a href="#section-5" class="">5. Security Considerations ........................................</a><br>
+<a href="#section-6" class="">6. Acknowledgements ...............................................</a><br>
+<a href="#section-7" class="">7. References .....................................................</a><br>
+<a href="#section-7.1" class="indent-1">7.1. Normative References ......................................</a><br>
+<a href="#section-7.2" class="indent-1">7.2. Informative References ...................................</a><br>
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   This document updates the IPv6 addressing architecture [RFC4291] by
+   redefining reserved bits as generic flag bits (Section 2).  The
+   document also provides some clarifications related to the use of
+   these flag bits (Section 3).
+
+</p><p class="rfcparagraph">   This document updates [RFC3956], [RFC3306], and [RFC4291].  These
+   updates are logical consequences of the new processing rules in
+   Section 3.
+
+</p><p class="rfcparagraph">   Textual representation of IPv6 addresses included in the RFC updates
+   follows the recommendation in [RFC5952].
+
+</p><p class="rfcparagraph">	<a name="section-1.1"><h3>1.1   Requirements Language</h3></a>
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in RFC 2119 [RFC2119].
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Addressing Architecture Update</h2></a>
+
+   Bits 17-20 of a multicast address, where bit 1 is the most
+   significant bit, are defined in [RFC3956] and [RFC3306] as reserved
+   bits.  This document defines these bits as generic flag bits so that
+   they apply to any multicast address.  These bits are referred to as
+   "ff2" (flag field 2), while the "flgs" bits in [RFC4291] [RFC3956]
+   are renamed to "ff1" (flag field 1).
+
+</p><p class="rfcparagraph">   Within this document, flag bits denote both ff1 and ff2.
+
+</p><p class="rfcparagraph">   Defining the bits 17-20 as flags for all IPv6 multicast addresses
+   allows addresses to be treated in a more uniform and generic way, and
+   allows for these bits to be defined in the future for different
+   purposes, irrespective of the specific type of multicast address.
+   For the record, this design choice was initially triggered by the
+   specification in [ADDR-FORMAT], which proposed associating a meaning
+   with one of the reserved bits.  Moreover, [ADDR-FORMAT] also
+   considered the use of the last remaining flag in ff1, but that
+   approach was abandoned because it is not clear at this stage whether
+   there are other usage scenarios of the flag.
+
+</p><p class="rfcparagraph">   Section 4 specifies the updated structure of the addressing
+   architecture.
+
+</p><p class="rfcparagraph">   Further specification documents may define a meaning for these
+   flag bits.
+	<a name="section-3"><h2>3.   Flag Bits: New Processing Rules</h2></a>
+
+   Some implementations and specification documents do not treat the
+   flag bits as separate bits but tend to use their combined value as a
+   4-bit integer.  This practice is a hurdle for assigning a meaning to
+   the remaining flag bits.  Below are listed some examples for
+   illustration purposes:
+
+</p><p class="rfcparagraph">   o  The reading of [RFC3306] may lead one to conclude that ff3x::/32
+      is the only allowed Source-Specific Multicast (SSM) IPv6 prefix
+      block.
+
+</p><p class="rfcparagraph">   o  [RFC3956] states that only ff70::/12 applies to Embedded-RP.
+      Particularly, implementations should not treat the fff0::/12 range
+      as Embedded-RP.
+
+</p><p class="rfcparagraph">   To avoid such confusion and to unambiguously associate a meaning with
+   the remaining flags, the following requirement is made:
+
+</p><p class="rfcparagraph">      Implementations MUST treat flag bits as separate bits.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   RFC Updates</h2></a>
+
+	<a name="section-4.1"><h3>4.1   Updates to RFC 3306</h3></a>
+
+	<a name="section-4.1.1"><h4>4.1.1   Update #1</h4></a>
+
+   This document changes Section 4 of [RFC3306] as follows:
+
+</p><p class="rfcparagraph">   OLD:
+
+</p><p class="rfcparagraph">      |   8    |  4 |  4 |   8    |    8   |       64       |    32    |<pre>
+      +--------+----+----+--------+--------+----------------+----------+
+      |11111111|flgs|scop|reserved|  plen  | network prefix | group ID |
+      +--------+----+----+--------+--------+----------------+----------+
+
+                                   +-+-+-+-+
+   flgs is a set of 4 flags:       |0|0|P|T|
+                                   +-+-+-+-+
+
+         o  P = 0 indicates a multicast address that is not assigned
+            based on the network prefix.  This indicates a multicast
+            address as defined in [ADDRARCH].
+
+</p><p class="rfcparagraph">         o  P = 1 indicates a multicast address that is assigned based
+            on the network prefix.
+         o  If P = 1, T MUST be set to 1, otherwise the setting of the T
+            bit is defined in Section 2.7 of [ADDRARCH].
+
+</p><p class="rfcparagraph">   The reserved field MUST be zero.
+
+</p><p class="rfcparagraph">      Note: [ADDRARCH] is a reference listed in [RFC3306].  [ADDRARCH]
+      has been since obsoleted by [RFC4291].
+
+</p><p class="rfcparagraph">   NEW:
+
+</p><p class="rfcparagraph">     |   8    |  4 |  4 |  4 |  4 |    8   |       64       |    32    |
+     +--------+----+----+----+----+--------+----------------+----------+
+     |11111111|ff1 |scop|ff2 |rsvd|  plen  | network prefix | group ID |
+     +--------+----+----+----+----+--------+----------------+----------+
+
+                                                  +-+-+-+-+
+   ff1 (flag field 1) is a set of 4 flags:        |X|Y|P|T|
+                                                  +-+-+-+-+
+
+   X and Y may each be set to 0 or 1.  Note that X is for future
+   assignment, while a meaning is associated with Y in RFC 3956.
+
+</p><p class="rfcparagraph">         o  P = 0 indicates a multicast address that is not assigned
+            based on the network prefix.  This indicates a multicast
+            address as defined in [RFC4291].
+
+</p><p class="rfcparagraph">         o  P = 1 indicates a multicast address that is assigned based
+            on the network prefix.
+
+</p><p class="rfcparagraph">         o  If P = 1, T MUST be set to 1; otherwise, the setting of the
+            T bit is defined in Section 2.7 of [RFC4291].
+
+</p><p class="rfcparagraph">                                                  +-+-+-+-+
+   ff2 (flag field 2) is a set of 4 flags:        |r|r|r|r|
+                                                  +-+-+-+-+
+
+   where "rrrr" are for future assignment as additional flag bits.
+   r bits MUST each be sent as zero and MUST be ignored on receipt.
+
+</p><p class="rfcparagraph">   Flag bits denote both ff1 and ff2.
+	<a name="section-4.1.2"><h4>4.1.2   Update #2</h4></a>
+
+   This document changes Section 6 of [RFC3306] as follows:
+
+</p><p class="rfcparagraph">   OLD:
+
+</p><p class="rfcparagraph">      These settings create an SSM range of FF3x::/32 (where 'x' is any
+      valid scope value).  The source address field in the IPv6 header
+      identifies the owner of the multicast address.
+
+</p><p class="rfcparagraph">   NEW:
+
+</p><p class="rfcparagraph">      If the flag bits in ff1 are set to 0011, these settings create an
+      SSM range of ff3x::/32 (where 'x' is any valid scope value).  The
+      source address field in the IPv6 header identifies the owner of
+      the multicast address.  ff3x::/32 is not the only allowed SSM
+      prefix range.  For example, if the most significant flag bit in
+      ff1 is set, then we would get the SSM range ffbx::/32.
+
+</p><p class="rfcparagraph">	<a name="section-4.2"><h3>4.2   Updates to RFC 3956</h3></a>
+
+	<a name="section-4.2.1"><h4>4.2.1   Update #1</h4></a>
+
+   This document changes Section 2 of [RFC3956] as follows:
+
+</p><p class="rfcparagraph">   OLD:
+
+</p><p class="rfcparagraph">      As described in [RFC3306], the multicast address format is
+      as follows:
+
+</p><p class="rfcparagraph">         |   8    |  4 |  4 |   8    | 8  |       64       |    32    |
+         +--------+----+----+--------+----+----------------+----------+
+         |11111111|flgs|scop|reserved|plen| network prefix | group ID |
+         +--------+----+----+--------+----+----------------+----------+
+
+      Where flgs are "0011".  (The first two bits are as yet undefined,
+      sent as zero and ignored on receipt.)
+   NEW:
+
+</p><p class="rfcparagraph">      The multicast address format is as follows:
+
+</p><p class="rfcparagraph">         |   8    |  4 |  4 |  4 |  4 | 8  |       64       |    32    |
+         +--------+----+----+----+----+----+----------------+----------+
+         |11111111|ff1 |scop|ff2 |rsvd|plen| network prefix | group ID |
+         +--------+----+----+----+----+----+----------------+----------+
+
+                                                        +-+-+-+-+
+         ff1 (flag field 1) is a set of four flags:     |X|R|P|T|
+                                                        +-+-+-+-+
+
+         where X is for future assignment as an additional flag bit.
+         X may be set to 0 or 1.
+
+</p><p class="rfcparagraph">                                                        +-+-+-+-+
+         ff2 (flag field 2) is a set of 4 flags:        |r|r|r|r|
+                                                        +-+-+-+-+
+
+         where "rrrr" are for future assignment as additional flag bits.
+         r bits MUST each be sent as zero and MUST be ignored
+         on receipt.
+
+</p><p class="rfcparagraph">         Flag bits denote both ff1 and ff2.
+
+</p><p class="rfcparagraph">	<a name="section-4.2.2"><h4>4.2.2   Update #2</h4></a>
+
+   This document changes Section 3 of [RFC3956] as follows:
+
+</p><p class="rfcparagraph">   OLD:
+
+</p><p class="rfcparagraph">       |   8    |  4 |  4 |  4 |  4 | 8  |       64       |    32    |
+       +--------+----+----+----+----+----+----------------+----------+
+       |11111111|flgs|scop|rsvd|RIID|plen| network prefix | group ID |
+       +--------+----+----+----+----+----+----------------+----------+
+                                       +-+-+-+-+
+       flgs is a set of four flags:    |0|R|P|T|
+                                       +-+-+-+-+
+
+    When the highest-order bit is 0, R = 1 indicates a multicast address
+    that embeds the address on the RP.  Then P MUST be set to 1, and
+    consequently T MUST be set to 1, as specified in [RFC3306].  In
+    effect, this implies the prefix FF70::/12.  In this case, the last 4
+    bits of the previously reserved field are interpreted as embedding
+    the RP interface ID, as specified in this memo.
+    The behavior is unspecified if P or T is not set to 1, as then the
+    prefix would not be FF70::/12.  Likewise, the encoding and the
+    protocol mode used when the two high-order bits in "flgs" are set to
+    11 ("FFF0::/12") is intentionally unspecified until such time that
+    the highest-order bit is defined.  Without further IETF
+    specification, implementations SHOULD NOT treat the FFF0::/12 range
+    as Embedded-RP.
+
+</p><p class="rfcparagraph">   NEW:
+
+</p><p class="rfcparagraph">         |   8    |  4 |  4 |  4 |  4 | 8  |       64       |    32    |
+         +--------+----+----+----+----+----+----------------+----------+
+         |11111111|ff1 |scop|ff2 |RIID|plen| network prefix | group ID |
+         +--------+----+----+----+----+----+----------------+----------+
+</pre>
+
+                                         +-+-+-+-+
+         ff1 is a set of four flags:     |X|R|P|T|
+                                         +-+-+-+-+
+         where X is for future assignment as an additional flag bit.
+         X may be set to 0 or 1.
+
+</p><p class="rfcparagraph">      R = 1 indicates a multicast address that embeds the address of the
+      RP.  Then, P MUST be set to 1, and consequently T MUST be set
+      to 1, according to [RFC3306], as this is a special case of
+      unicast-prefix-based addresses.  This implies that, for instance,
+      prefixes ff70::/12 and fff0::/12 are embedded RP prefixes.  When
+      the R-bit is set, the last 4 bits of the field that were reserved
+      in [RFC3306] are interpreted as embedding the RP interface ID, as
+      specified in this memo.
+
+</p><p class="rfcparagraph">	<a name="section-4.2.3"><h4>4.2.3   Update #3</h4></a>
+
+   This document changes Section 4 of [RFC3956] as follows:
+
+</p><p class="rfcparagraph">   OLD:
+
+</p><p class="rfcparagraph">   o It MUST be a multicast address with "flgs" set to 0111, that is, to
+      be of the prefix FF70::/12,
+
+   NEW:
+
+</p><p class="rfcparagraph">   o  It MUST be a multicast address with the R-bit set to 1.
+
+</p><p class="rfcparagraph">   o  It MUST have the P-bit and T-bit both set to 1 when using the
+      embedding in this document as it is a prefix-based address.
+	<a name="section-4.2.4"><h4>4.2.4   Update #4</h4></a>
+
+   This document changes Section 7.1 of [RFC3956] as follows:
+
+</p><p class="rfcparagraph">   OLD:
+
+</p><p class="rfcparagraph">      To avoid loops and inconsistencies, for addresses in the range
+      FF70::/12, the Embedded-RP mapping MUST be considered the longest
+      possible match and higher priority than any other mechanism.
+
+</p><p class="rfcparagraph">   NEW:
+
+</p><p class="rfcparagraph">      To avoid loops and inconsistencies, for addresses with the R-bit
+      set to 1, the Embedded-RP mapping MUST be considered the longest
+      possible match and higher priority than any other mechanism.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   Security Considerations</h2></a>
+
+   The same security considerations as those discussed in [RFC3956],
+   [RFC3306], and [RFC4291] are to be taken into account.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.   Acknowledgements</h2></a>
+
+   Special thanks to Brian Haberman for the discussions prior to the
+   publication of this document.
+
+</p><p class="rfcparagraph">   Many thanks to Jouni Korhonen, Tatuya Jinmei, Charlie Kaufman, and
+   Ben Campbell for their review.
+
+</p><p class="rfcparagraph">	<a name="section-7"><h2>7.   References</h2></a>
+
+	<a name="section-7.1"><h3>7.1   Normative References</h3></a>
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">   [RFC3306]  Haberman, B. and D. Thaler, "Unicast-Prefix-based IPv6
+              Multicast Addresses", RFC 3306, August 2002.
+
+</p><p class="rfcparagraph">   [RFC3956]  Savola, P. and B. Haberman, "Embedding the Rendezvous
+              Point (RP) Address in an IPv6 Multicast Address",
+              RFC 3956, November 2004.
+
+</p><p class="rfcparagraph">   [RFC4291]  Hinden, R. and S. Deering, "IP Version 6 Addressing
+              Architecture", RFC 4291, February 2006.
+
+</p><p class="rfcparagraph">   [RFC5952]  Kawamura, S. and M. Kawashima, "A Recommendation for IPv6
+              Address Text Representation", RFC 5952, August 2010.
+	<a name="section-7.2"><h3>7.2   Informative References</h3></a>
+
+   [ADDR-FORMAT]
+              Boucadair, M., Qin, J., Lee, Y., Venaas, S., Li, X., and
+              M. Xu, "IPv6 Multicast Address With Embedded IPv4
+              Multicast Address", Work in Progress, April 2013.
+
+</p>Authors' Addresses
+
+   Mohamed Boucadair
+   France Telecom
+   Rennes  35000
+   France
+
+   EMail: mohamed.boucadair@orange.com
+
+
+   Stig Venaas
+   Cisco
+   USA
+
+   EMail: stig@cisco.com
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Boucadair & Venaas           Standards Track                   [Page 10]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

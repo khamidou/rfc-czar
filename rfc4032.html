@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                       G. Camarillo<br>Request for Comments: 4032                                      Ericsson<br>Updates: 3312                                                 P. Kyzivat<br>Category: Standards Track                                  Cisco Systems<br>                                                              March 2005<br><br></p>
+                  <h1>
+            Update to the Session Initiation Protocol (SIP)
+                        Preconditions Framework</h1>
+                  <h2>Status of This Memo</h2>
+
+   This document specifies an Internet standards track protocol for the
+   Internet community, and requests discussion and suggestions for
+   improvements.  Please refer to the current edition of the "Internet
+   Official Protocol Standards" (STD 1) for the standardization state
+   and status of this protocol.  Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (2005).<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This document updates RFC 3312, which defines the framework for
+   preconditions in SIP.  We provide guidelines for authors of new
+   precondition types and describe how to use SIP preconditions in
+   situations that involve session mobility.
+
+</p><p class="rfcparagraph">Table of Contents
+<a href="#section-1" class="">1. Introduction . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2" class="">2. Terminology  . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3" class="">3. Defining New Precondition Types  . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.1" class="indent-1">3.1. Precondition Type Tag  . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.2" class="indent-1">3.2. Status Type  . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.3" class="indent-1">3.3. Precondition Strength  . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.4" class="indent-1">3.4. Suspending and Resuming Session Establishment  . . . . </a><br>
+<a href="#section-4" class="">4. Issues Related to Session Mobility . . . . . . . . . . . . . </a><br>
+<a href="#section-4.1" class="indent-1">4.1. Update to RFC 3312 . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.2" class="indent-1">4.2. Desired Status . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-5" class="">5. Security Considerations  . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-6" class="">6. IANA Considerations  . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-7" class="">7. Acknowledgements . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-8" class="">8. References . . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-8.1" class="indent-1">8.1. Normative References . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-8.2" class="indent-1">8.2. Informational References . . . . . . . . . . . . . . . </a><br>
+   Authors' Addresses . . . . . . . . . . . . . . . . . . . . . . . .  9
+   Full Copyright Statement . . . . . . . . . . . . . . . . . . . . . 10
+
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   RFC 3312 [3] defines the framework for SIP [2] preconditions, which
+   is a generic framework that allows SIP UAs (User Agents) to suspend
+   the establishment of a session until a set of preconditions are met.
+   Although only Quality of Service (QoS) preconditions have been
+   defined so far, this framework supports different types of
+   preconditions.  (QoS preconditions are defined by RFC 3312 as well).
+
+</p><p class="rfcparagraph">   This document updates RFC 3312,  provides guidelines for authors of
+   new precondition types and explains which topics they need to discuss
+   when defining them.  In addition, it updates some of the procedures
+   in RFC 3312 for using SIP preconditions in situations that involve
+   session mobility as described below.
+
+</p><p class="rfcparagraph">   RFC 3312 focuses on media sessions that do not move around.  That is,
+   media is sent between the same end-points throughout the duration of
+   the session.  Nevertheless, media sessions established by SIP are not
+   always static.
+
+</p><p class="rfcparagraph">   SIP offers mechanisms to provide session mobility, namely re-INVITEs
+   and UPDATEs [5].  While existing implementations of RFC 3312 can
+   probably handle session mobility, there is a need to explicitly point
+   out the issues involved and make a slight update on some of the
+   procedures defined there in.  With the updated procedures defined in
+   this document, messages carrying precondition information become more
+   explicit about the current status of the preconditions.
+
+</p><p class="rfcparagraph">   Specifically, we now allow answers to downgrade current status values
+   (this was disallowed by RFC 3312).  We consider moving an existing
+   stream to a new location as equivalent to establishing a new stream.
+   Therefore, answers moving streams to new locations set all the
+   current status values in their answers to "No" and start a new
+   precondition negotiation from scratch.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Terminology</h2></a>
+
+   In this document, the key words "MUST", "MUST NOT", "REQUIRED",
+   "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT
+   RECOMMENDED", "MAY", and "OPTIONAL" are to be interpreted as
+   described in BCP 14, RFC 2119 [1] and indicate requirement levels for
+   compliant implementations.
+	<a name="section-3"><h2>3.   Defining New Precondition Types</h2></a>
+
+   Specifications defining new precondition types need to discuss the
+   topics described in this section.  Having clear definitions of new
+   precondition types is essential to ensure interoperability among
+   different implementations.
+
+</p><p class="rfcparagraph">	<a name="section-3.1"><h3>3.1   Precondition Type Tag</h3></a>
+
+   New precondition types MUST have an associated precondition type tag
+   (e.g., "qos" is the tag for QoS preconditions).  Authors of new
+   preconditions MUST register new precondition types and their tags
+   with the IANA by following the instructions in Section 15 of RFC
+   3312.
+
+</p><p class="rfcparagraph">	<a name="section-3.2"><h3>3.2   Status Type</h3></a>
+
+   RFC 3312 defines two status types: end-to-end and segmented.
+   Specifications defining new precondition types MUST indicate which
+   status applies to the new precondition.  New preconditions can use
+   only one status type or both.  For example, the QoS preconditions
+   defined in RFC 3312 can use both.
+
+</p><p class="rfcparagraph">	<a name="section-3.3"><h3>3.3   Precondition Strength</h3></a>
+
+   RFC 3312 defines optional and mandatory preconditions.
+   Specifications defining new precondition types MUST describe whether
+   or not optional preconditions are applicable, and in case they are,
+   what is the expected behavior of a UA on reception of optional
+   preconditions.
+
+</p><p class="rfcparagraph">	<a name="section-3.4"><h3>3.4   Suspending and Resuming Session Establishment</h3></a>
+
+   Section 6 of RFC 3312 describes the behavior of UAs from the moment
+   session establishment is suspended, due to a set of preconditions,
+   until it is resumed when these preconditions are met.  In general,
+   the called user is not alerted until the preconditions are met.
+
+</p><p class="rfcparagraph">   In addition to not alerting the user, each precondition type MUST
+   define any extra actions UAs should perform or refrain from
+   performing when session establishment is suspended.  The behavior of
+   media streams during session suspension is therefore part of the
+   definition of a particular precondition type.  Some precondition
+   types may allow media streams to send and receive packets during
+   session suspension; others may not.  Consequently, the following
+   paragraph from RFC 3312 only applies to QoS preconditions:
+
+</p><p class="rfcparagraph">      While session establishment is suspended, user agents SHOULD not
+      send any data over any media stream.  In the case of RTP, neither
+      RTP nor RTCP packets are sent.
+
+</p><p class="rfcparagraph">   To clarify the previous paragraph, the control messages used to
+   establish connections in connection-oriented transport protocols
+   (e.g., TCP SYNs) are not affected by the previous rule.  So, user
+   agents follow standard rules (e.g., the SDP 'setup' attribute [7]) to
+   decide when to establish the connection, regardless of QoS
+   preconditions.
+
+</p><p class="rfcparagraph">   New precondition types MUST also describe the behaviour of UAs on
+   reception of a re-INVITE or an UPDATE with preconditions for an
+   ongoing session.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   Issues Related to Session Mobility</h2></a>
+
+   Section 5 of RFC 3312 describes how to use SIP [2] preconditions with
+   the offer/answer model [4].  RFC 3312 gives a set of rules that allow
+   a user agent to communicate changes in the current status of the
+   preconditions to the remote user agent.
+
+</p><p class="rfcparagraph">   The idea is that a given user agent knows about the current status of
+   some part of the preconditions (e.g., send direction of the QoS
+   precondition) through local information (e.g., an RSVP RESV is
+   received indicating that resource reservation was successful).  The
+   UAC (User Agent Client) informs the UAS (User Agent Server) about
+   changes in the current status by sending an offer to the UAS.  The
+   UAS, in turn, could (if needed) send an offer to the UAC informing it
+   about the status of the part of the preconditions the UAS has local
+   information about.
+
+</p><p class="rfcparagraph">      Note, however, that UASs do not usually send updates about the
+      current status to the UAC because UASs are the ones resuming
+      session establishment when all the preconditions are met.
+      Therefore, rather than performing an offer/answer exchange to
+      inform the UAC that all the preconditions are met, they simply
+      send a 180 (Ringing) response indicating that session
+      establishment has been resumed.
+   While RFC 3312 allows updating current status information using the
+   methods described above, it does not allow downgrading current status
+   values in answers, as shown in the third row of Table 3 of RFC 3312.
+   Figure 1 shows how performing such a downgrade in an answer would
+   sometimes be needed.
+
+</p><p class="rfcparagraph">                            3pcc
+                 A       Controller        B        C
+
+                 |            |            |        |
+                 |<-dialog 1->|<-dialog 2->|        |
+                 |            |            |        |
+                 | *********************** |        |
+                 |*         MEDIA         *|        |
+                 | *********************** |        |
+                 |            |            |        |
+                 |            |            |        |
+                 |<-dialog 1->|<------dialog 3----->|
+                 |            |            |        |
+                 | ******************************** |
+                 |*             MEDIA              *|
+                 | ******************************** |
+                 |            |            |        |
+                 |            |            |        |
+
+                 Figure 1: Session mobility using 3pcc
+
+   The 3pcc (Third Party Call Control) [6] controller in Figure 1 has
+   established a session between A and B using dialog 1 towards A and
+   dialog 2 towards B.  At that point, the controller wants A to have a
+   session with C instead of B.  To transfer A to C (configuration shown
+   at the bottom of Figure 1), the controller sends an empty (no offer)
+   re-INVITE to A.  Since A does not know that the session will be
+   moved, its offer in the 200 OK states that the current status of the
+   media stream in the send direction is "Yes".  After contacting C
+   establishing dialog 3, the controller sends back an answer to A.
+   This answer contains a new destination for the media (C) and should
+   have downgraded the current status of the media stream to "No", since
+   there is no reservation of resources between A and C.
+
+</p><p class="rfcparagraph">	<a name="section-4.1"><h3>4.1   Update to RFC 3312</h3></a>
+
+   Below is a set of new rules that update RFC 3312 to address the
+   issues above.
+   The rule below applies to offerers moving a media stream to a new
+   address:
+
+</p><p class="rfcparagraph">   When a stream is being moved to a new transport address, the offerer
+   MUST set all current status values about which it does not have local
+   information about to "No".
+
+</p><p class="rfcparagraph">   Note that for streams using segmented status (as opposed to end-to-
+   end status), the fact that the address for the media stream at the
+   local segment changes may or may not affect the status of
+   preconditions at the remote segment.  However, moving an existing
+   stream to a new location, from the preconditions point of view, is
+   like establishing a new stream.  Therefore, it is appropriate to set
+   all the current status values to "No" and start a new precondition
+   negotiation from scratch.
+
+</p><p class="rfcparagraph">   The updated table and rules below apply to an answerer that is moving
+   a media stream.  The offerer was not aware of the move when it
+   generated the offer.
+
+</p><p class="rfcparagraph">   Table 3 of RFC 3312 needs to be updated to allow answerers to
+   downgrade current status values.  The following table shows the
+   result.
+
+</p><p class="rfcparagraph">
+   Transac status table  Local status table  New values transac./local
+   ____________________________________________________________________
+            no                    no                    no/no
+           yes                   yes                   yes/yes
+           yes                    no            depends on local info
+            no                   yes            depends on local info
+
+   An answerer MUST downgrade the current status values received in the
+   offer if it has local information about them or if the media stream
+   is being moved to a new transport address.
+
+</p><p class="rfcparagraph">   Note that for streams using segmented status, the address change at
+   the answerer may or may not affect the status of the preconditions at
+   the offerer's segment.  However, as stated above, moving an existing
+   stream to a new location, from the preconditions point of view, is
+   like establishing a new stream.  Therefore, it is appropriate to set
+   all the current status values to "No" and start a new precondition
+   negotiation from scratch.
+
+</p><p class="rfcparagraph">   The new table below applies to an offerer that receives an answer
+   that updates or downgrades its local status tables.
+   Offerers should update their local status tables when they receive an
+   answer as shown in the following table.
+
+</p><p class="rfcparagraph">
+   Transac. status table  Local status table  New value Local Status
+   _________________________________________________________________
+            no                    no                    no
+           yes                   yes                   yes
+           yes                    no                   yes
+            no                   yes                    no
+
+	<a name="section-4.2"><h3>4.2   Desired Status</h3></a>
+
+   The desired status that a UA wants for a media stream after the
+   stream is moved to a new transport address may be different than the
+   desired status negotiated for the stream originally.  A UA, for
+   instance, may require mandatory QoS over a low bandwidth link but be
+   satisfied with optional QoS when the stream is moved to a high
+   bandwidth link.
+
+</p><p class="rfcparagraph">   If the new desired status is higher than the previous one (e.g.,
+   optional to mandatory), the UA, following RFC 3312 procedures, may
+   upgrade its desired status in an offer or in an answer.  If the new
+   desired status is lower that the previous one (i.e., mandatory to
+   optional), the UA, following RFC 3312 procedures as well, may
+   downgrade its desired status only in an offer (i.e., not in an
+   answer.)
+
+	<a name="section-5"><h2>5.   Security Considerations</h2></a>
+
+   An attacker adding preconditions to a session description or
+   modifying existing preconditions could prevent establishment of
+   sessions.  An attacker removing preconditions from a session
+   description could force sessions to be established without meeting
+   mandatory preconditions.
+
+</p><p class="rfcparagraph">   Thus, it is strongly RECOMMENDED that integrity protection be applied
+   to the SDP session descriptions.  S/MIME is the natural choice to
+   provide such end-to-end integrity protection, as described in RFC
+   3261 [2].
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.   IANA Considerations</h2></a>
+
+   The IANA registration requirements for the preconditions framework
+   are defined in RFC 3312.  Any new preconditions are governed by the
+   IANA Considerations there.
+	<a name="section-7"><h2>7.   Acknowledgement</h2></a>
+
+   Dave Oran and Allison Mankin provided useful comments on this
+   document.
+
+</p><p class="rfcparagraph">	<a name="section-8"><h2>8.   References</h2></a>
+
+	<a name="section-8.1"><h3>8.1   Normative References</h3></a>
+
+   [1]  Bradner, S., "Key words for use in RFCs to Indicate Requirement
+        Levels", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">   [2]  Rosenberg, J., Schulzrinne, H., Camarillo, G., Johnston, A.,
+        Peterson, J., Sparks, R., Handley, M., and E. Schooler, "SIP:
+        Session Initiation Protocol", RFC 3261, June 2002.
+
+</p><p class="rfcparagraph">   [3]  Camarillo, G., Marshall, W., and J. Rosenberg, "Integration of
+        Resource Management and Session Initiation Protocol (SIP)", RFC
+        3312, October 2002.
+
+</p><p class="rfcparagraph">	<a name="section-8.2"><h3>8.2   Informational References</h3></a>
+
+   [4]  Rosenberg, J. and H. Schulzrinne, "An Offer/Answer Model with
+        Session Description Protocol (SDP)", RFC 3264, June 2002.
+
+</p><p class="rfcparagraph">   [5]  Rosenberg, J., "The Session Initiation Protocol (SIP) UPDATE
+        Method", RFC 3311, October 2002.
+
+</p><p class="rfcparagraph">   [6]  Rosenberg, J., Peterson, J., Schulzrinne, H., and G. Camarillo,
+        "Best Current Practices for Third Party Call Control (3pcc) in
+        the Session Initiation Protocol (SIP)", BCP 85, RFC 3725, April
+        2004.
+
+</p><p class="rfcparagraph">   [7]  Yon, D. and Camarillo, G., "TCP-Based Media Transport in the
+        Session Description Protocol (SDP)", Work In Progress, November
+        2004.
+Authors' Addresses
+
+   Gonzalo Camarillo
+   Ericsson
+   Hirsalantie 11
+   Jorvas  02420
+   Finland
+
+   EMail: Gonzalo.Camarillo@ericsson.com
+
+
+   Paul Kyzivat
+   Cisco Systems
+   1414 Massachusetts Avenue, BXB500 C2-2
+   Boxborough, MA  01719
+   USA
+
+   EMail: pkyzivat@cisco.com
+Full Copyright Statement
+
+   Copyright (C) The Internet Society (2005).<br>
+
+</p><p class="rfcparagraph">   This document is subject to the rights, licenses and restrictions
+   contained in BCP 78, and except as set forth therein, the authors
+   retain all their rights.
+
+</p><p class="rfcparagraph">   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY AND THE INTERNET
+   ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED,
+   INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE
+   INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED
+   WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Intellectual Property
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the procedures with respect to rights in RFC documents can be
+   found in BCP 78 and BCP 79.
+
+</p><p class="rfcparagraph">   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+</p><p class="rfcparagraph">   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at ietf-
+   ipr@ietf.org.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is currently provided by the
+   Internet Society.
+
+</p>
+
+
+
+
+
+Camarillo & Kyzivat         Standards Track                    [Page 10]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

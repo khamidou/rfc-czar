@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph">Network Working Group                                   M. Rose, Editor
+Request for Comments: 1161      Performance Systems International, Inc.
+                                                              June 1990
+
+
+                             SNMP over OSI
+
+                           Table of Contents
+<a href="#section-1" class="">1. Status of this Memo ..................................</a><br>
+<a href="#section-2" class="">2. Background ...........................................</a><br>
+<a href="#section-2.1" class="indent-1">2.1 A Digression on User Interfaces .....................</a><br>
+<a href="#section-2.1.1" class="indent-2">2.1.1 Addressing Conventions for UDP-based service ......</a><br>
+<a href="#section-2.2" class="indent-1">2.2 A Digression of Layering ............................</a><br>
+<a href="#section-3" class="">3. Mapping onto CLTS ....................................</a><br>
+<a href="#section-3.1" class="indent-1">3.1 Addressing Conventions ..............................</a><br>
+<a href="#section-3.1.1" class="indent-2">3.1.1 Conventions for CLNP-based service ................</a><br>
+<a href="#section-4" class="">4. Mapping onto COTS ....................................</a><br>
+<a href="#section-4.1" class="indent-1">4.1 Addressing Conventions ..............................</a><br>
+<a href="#section-4.1.1" class="indent-2">4.1.1 Conventions for TP4/CLNP-based service ............</a><br>
+<a href="#section-4.1.2" class="indent-2">4.1.2 Conventions for TP0/X.25-based service ............</a><br>
+<a href="#section-5" class="">5. Acknowledgements .....................................</a><br>
+<a href="#section-6" class="">6. References ...........................................</a><br>
+<a href="#section-7" class="">7. Security Considerations...............................</a><br>
+<a href="#section-8" class="">8. Author's Address......................................</a><br>
+
+	<a name="section-1"><h2>1.   Status of this Memo</h2></a>
+
+   This memo defines an experimental means for running the Simple
+   Network Management Protocol (SNMP) over OSI transports.
+
+</p><p class="rfcparagraph">   This memo does not specify a standard for the Internet community,
+   However, after experimentation, if sufficient consensus is reached in
+   the Internet community, then a subsequent revision of this document
+   might be made an Internet standard for those systems choosing to
+   implement the SNMP over OSI transport services.
+
+</p><p class="rfcparagraph">   Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Background</h2></a>
+
+   The Simple Network Management Protocol (SNMP) as defined in [1] is
+   now used as an integral part of the network management framework for
+   TCP/IP-based internets.  Together, with its companions standards,
+   which define the Structure of Management Information (SMI) [2], and
+   the Management Information Base (MIB) [3], the SNMP has received
+   widespread deployment in many operational networks running the
+   Internet suite of protocols.
+   It should not be surprising that many of these sites might acquire
+   OSI capabilities and may wish to leverage their investment in SNMP
+   technology towards managing those OSI components.  This memo
+   addresses these concerns by defining a framework for running the SNMP
+   in an environment which supports the OSI transport services.
+
+</p><p class="rfcparagraph">   In OSI, there are two such services, a connection-oriented transport
+   services (COTS) as defined in [4], and a connectionless-mode
+   transport service (CLTS) as defined in [5].  Although the primary
+   deployment of the SNMP is over the connectionless-mode transport
+   service provided by the Internet suite of protocols (i.e., the User
+   Datagram Protocol or UDP [6]), a design goal of the SNMP was to be
+   able to use either a CO-mode or CL-mode transport service.  As such,
+   this memo describes mappings from the SNMP onto both the COTS and the
+   CLTS.
+
+</p><p class="rfcparagraph">	<a name="section-2.1"><h3>2.1   A Digression on User Interfaces</h3></a>
+
+   It is likely that user-interfaces to the SNMP will be developed that
+   support multiple transport backings.  In an environment such as this,
+   it is often important to maintain a consistent addressing scheme for
+   users.  Since the mappings described in this memo are onto the OSI
+   transport services, use of the textual scheme described in [7], which
+   describes a string encoding for OSI presentation addresses, is
+   recommended.  The syntax defined in [7] is equally applicable towards
+   transport addresses.
+
+</p><p class="rfcparagraph">   In this context, a string encoding usually appears as:
+
+</p><p class="rfcparagraph">      [<t-selector>/]<n-provider><n-address>[+<n-info>]
+
+      where:
+
+</p><p class="rfcparagraph">      (1)  <t-selector> is usually either an ASCII string enclosed<br>
+           in double-quotes (e.g., "snmp"), or a hexadecimal number
+           (e.g., '736e6d70'H);
+
+</p><p class="rfcparagraph">      (2)  <n-provider> is one of several well-known providers of a<br>
+           connectivity-service, one of: "Internet=" for a
+           transport-service from the Internet suite of protocols,
+           "Int-X25=" for the 1980 CCITT X.25 recommendation, or
+           "NS+" for the OSI network service;
+
+</p><p class="rfcparagraph">      (3)  <n-address> is an address in a format specific to the<br>
+           <n-provider>; and,
+
+      (4)  <n-info> is any additional addressing information in a<br>
+           format specific to the <n-provider>.
+   It is not the purpose of this memo to provide an exhaustive
+   description of string encodings such as these.  Readers should
+   consult [7] for detailed information on the syntax.  However, this
+   memo recommends that, as an implementation option, user-interfaces to
+   the SNMP that support multiple transport backings SHOULD implement
+   this syntax.
+
+</p><p class="rfcparagraph">	<a name="section-2.1.1"><h4>2.1.1   Addressing Conventions for UDP-based service</h4></a>
+
+   In the context of a UDP-based transport backing, addresses would be
+   encoded as:
+
+</p><p class="rfcparagraph">                           Internet=<host>+161+2
+
+   which says that the transport service is from the Internet suite of
+   protocols, residing at <host>, on port 161, using the UDP (2).  The<br>
+   token <host> may be either a domain name or a dotted-quad, e.g., both
+
+                     Internet=cheetah.nyser.net+161+2
+
+   and
+
+                        Internet=192.52.180.1+161+2
+
+   are both valid.  Note however that if domain name "cheetah.nyser.net"
+   maps to multiple IP addresses, then this implies multiple transport
+   addresses.  The number of addresses examined by the application (and
+   the order of examination) are specific to each application.
+
+</p><p class="rfcparagraph">   Of course, this memo does not require that other interface schemes
+   not be used.  Clearly, use of a simple hostname is preferable to the
+   string encoding above.  However, for the sake of uniformity, for
+   those user-interfaces to the SNMP that support multiple transport
+   backings, it is strongly RECOMMENDED that the syntax in [7] be
+   adopted and even the mapping for UDP-based transport be valid.
+
+</p><p class="rfcparagraph">	<a name="section-2.2"><h3>2.2   A Digression of Layering</h3></a>
+
+   Although other frameworks view network management as an application,
+   extensive experience with the SNMP suggests otherwise.  In essense,
+   network management is a function unlike any other user of a transport
+   service.  The citation [8] develops this argument in full.  As such,
+   it is inappropriate to map the SNMP onto the OSI application layer.
+   Rather, it is mapped to OSI transport services, in order to build on
+   the proven success of the Internet network management framework.
+	<a name="section-3"><h2>3.   Mapping onto CLTS</h2></a>
+
+   Mapping the SNMP onto the CLTS is straight-forward: the elements of
+   procedure are identical to that of using the UDP.  In particular,
+   note that the CLTS and the service offered by the UDP both transmit
+   packets of information which contain full addressing information.
+   Thus, mapping the SNMP onto the CLTS, a "transport address" in the
+   context of [1], is simply a transport-selector and network address.
+
+</p><p class="rfcparagraph">	<a name="section-3.1"><h3>3.1   Addressing Conventions</h3></a>
+
+   Unlike the Internet suite of protocols, OSI does not use well-known
+   ports.  Rather demultiplexing occurs on the basis of "selectors",
+   which are opaque strings of octets, which have meaning only at the
+   destination.  In order to foster interoperable implementations of the
+   SNMP over the CLTS, it is necessary define a selector for this
+   purpose.
+
+</p><p class="rfcparagraph">	<a name="section-3.1.1"><h4>3.1.1   Conventions for CLNP-based service</h4></a>
+
+   When the CLTS is used to provide the transport backing for the SNMP,
+   demultiplexing will occur on the basis of transport selector.  The
+   transport selector used shall be the four ASCII characters
+
+                                   snmp
+
+   Thus, using the string encoding of [7], such addresses may be
+   textual, described as:
+
+</p><p class="rfcparagraph">                             "snmp"/NS+<nsap>
+
+   where:
+
+</p><p class="rfcparagraph">   (1)  <nsap> is a hex string defining the nsap, e.g.,<br>
+
+                     "snmp"/NS+4900590800200038bafe00
+
+   Similarly, SNMP traps are, by convention, sent to a manager listening
+   on the transport selector
+
+                                 snmp-trap
+
+   which consists of nine ASCII characters.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   Mapping onto COTS</h2></a>
+
+   Mapping the SNMP onto the COTS is more difficult as the SNMP does not
+   specifically require an existing connection.  Thus, the mapping
+   consists of establishing a transport connection, sending one or more
+   SNMP messages on that connection, and then releasing the transport
+   connection.
+
+</p><p class="rfcparagraph">   Consistent with the SNMP model, the initiator of a connection should
+   not require that responses to a request be returned on that
+   connection.  However, if a responder to a connection sends SNMP
+   messages on a connection, then these MUST be in response to requests
+   received on that connection.
+
+</p><p class="rfcparagraph">   Ideally, the transport connection SHOULD be released by the
+   initiator, however, note that the responder may release the
+   connection due to resource limitations.  Further note, that the
+   amount of time a connection remains established is implementation-
+   specific.  Implementors should take care to choose an appropriate
+   dynamic algorithm.
+
+</p><p class="rfcparagraph">   Also consistent with the SNMP model, the initiator should not
+   associate any reliability characteristics with the use of a
+   connection.  Issues such as retransmission of SNMP messages, etc.,
+   always remain with the SNMP application, not with the transport
+   service.
+
+</p><p class="rfcparagraph">	<a name="section-4.1"><h3>4.1   Addressing Conventions</h3></a>
+
+   Unlike the Internet suite of protocols, OSI does not use well-known
+   ports.  Rather demultiplexing occurs on the basis of "selectors",
+   which are opaque strings of octets, which have meaning only at the
+   destination.  In order to foster interoperable implementations of the
+   SNMP over the COTS, it is necessary define a selector for this
+   purpose.  However, to be consistent with the various connectivity-
+   services, different conventions, based on the actual underlying
+   service, will be used.
+
+</p><p class="rfcparagraph">	<a name="section-4.1.1"><h4>4.1.1   Conventions for TP4/CLNP-based service</h4></a>
+
+   When a COTS based on the TP4/CLNP is used to provide the transport
+   backing for the SNMP, demultiplexing will occur on the basis of
+   transport selector.  The transport selector used shall be the four
+   ASCII characters
+
+                                   snmp
+
+   Thus, using the string encoding of [7], such addresses may be
+   textual, described as:
+
+</p><p class="rfcparagraph">                             "snmp"/NS+<nsap>
+   where:
+
+</p><p class="rfcparagraph">   (1)  <nsap> is a hex string defining the nsap, e.g.,<br>
+
+                     "snmp"/NS+4900590800200038bafe00
+
+   Similarly, SNMP traps are, by convention, sent to a manager listening
+   on the transport selector
+
+                                 snmp-trap
+
+   which consists of nine ASCII characters.
+
+</p><p class="rfcparagraph">	<a name="section-4.1.2"><h4>4.1.2   Conventions for TP0/X.25-based service</h4></a>
+
+   When a COTS based on the TP0/X.25 is used to provide the transport
+   backing for the SNMP, demultiplexing will occur on the basis of X.25
+   protocol-ID.  The protocol-ID used shall be the four octets
+
+                                 03018200
+
+   Thus, using the string encoding of [7], such addresses may be textual
+   described as:
+
+</p><p class="rfcparagraph">                        Int-X25=<dte>+PID+03018200
+
+   where:
+
+</p><p class="rfcparagraph">   (1)  <dte> is the X.121 DTE, e.g.,<br>
+
+                    Int-X25=23421920030013+PID+03018200
+
+   Similarly, SNMP traps are, by convention, sent to a manager listening
+   on the protocol-ID
+
+                                 03019000
+
+	<a name="section-5"><h2>5.   Acknowledgements</h2></a>
+
+   This document was produced by the SNMP Working Group:
+
+</p><p class="rfcparagraph">         Karl Auerbach, Epilogue Technology
+         David Bridgham, Epilogue Technology
+         Brian Brown, Synoptics
+         John Burress, Wellfleet
+         Jeffrey D. Case, University of Tennessee at Knoxville
+         James R. Davin, MIT-LCS
+         Mark S. Fedor, PSI, Inc.
+         Stan Froyd, ACC
+         Satish Joshi, Synoptics
+         Ken Key, University of Tennessee at Knoxville
+         Gary Malkin, FTP Software
+         Randy Mayhew, University of Tennessee at Knoxville
+         Keith McCloghrie, Hughes LAN Systems
+         Marshall T. Rose, PSI, Inc. (chair)
+         Greg Satz, cisco
+         Martin Lee Schoffstall, PSI, Inc.
+         Bob Stewart, Xyplex
+         Geoff Thompson, Synoptics
+         Bill Versteeg, Network Research Corporation
+         Wengyik Yeong, PSI, Inc.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.   References</h2></a>
+
+  [1]  Case, J., Fedor, M., Schoffstall, M., and J. Davin, "A Simple
+       Network Management Protocol (SNMP)", RFC 1157, SNMP Research,
+       Performance Systems International, Performance Systems
+       International, and MIT Laboratory for Computer Science, May 1990.
+
+</p><p class="rfcparagraph">  [2]  Rose M., and K. McCloghrie, "Structure and Identification of
+       Management Information for TCP/IP-based internets", RFC 1155,
+       Performance Systems International, Hughes LAN Systems, May 1990.
+
+</p><p class="rfcparagraph">  [3]  McCloghrie K., and M. Rose, "Management Information Base for
+       Network Management of TCP/IP-based internets", RFC 1156, Hughes
+       LAN Systems, Performance Systems International, May 1990.
+
+</p><p class="rfcparagraph">  [4]  Information Processing Systems - Open Systems Interconnection,
+       "Transport Service Definition", International Organization for
+       Standardization, International Standard 8072, June 1986.
+
+</p><p class="rfcparagraph">  [5]  Information Processing Systems - Open Systems Interconnection,
+       "Transport Service Definition - Addendum 1: Connectionless-mode
+       Transmission", International Organization for Standardization,
+       International Standard 8072/AD 1, December 1986.
+
+</p><p class="rfcparagraph">  [6]  Postel, J., "User Datagram Protocol", RFC 768, USC/Information
+       Sciences Institute, November 1980.
+
+</p><p class="rfcparagraph">  [7]  Kille, S., "A String Encoding of Presentation Address", Research
+       Note RN/89/14, Department of Computer Science, University College
+       London, February 1989.
+
+</p><p class="rfcparagraph">  [8]  Case, J., Davin, J., Fedor, M., and M. Schoffstall, "Network
+       Management and the Design of SNMP", ConneXions (ISSN 0894-5926),
+       Volume 3, Number 3, March 1989.
+	<a name="section-7"><h2>7.   Security Considerations</h2></a>
+
+   Security issues are not discussed in this memo.
+
+</p>	<a name="section-8"><h2>8.   Author's Address</h2></a>
+
+   Marshall T. Rose
+   PSI, Inc.
+   PSI California Office
+   P.O. Box 391776
+   Mountain View, CA 94039
+
+   Phone: (415) 961-3380<br>
+
+   Email: mrose@PSI.COM
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+IETF SNMP Working Group                                         [Page 8]
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

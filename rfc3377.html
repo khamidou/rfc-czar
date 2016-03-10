@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                          J. Hodges<br>Request for Comments: 3377                         Sun Microsystems Inc.<br>Category: Standards Track                                      R. Morgan<br>                                                University of Washington<br>                                                          September 2002<br><br></p>
+                  <h1>
+              Lightweight Directory Access Protocol (v3):
+                        Technical Specification</h1>
+                  <h2>Status of this Memo</h2>
+
+   This document specifies an Internet standards track protocol for the
+   Internet community, and requests discussion and suggestions for
+   improvements.  Please refer to the current edition of the "Internet
+   Official Protocol Standards" (STD 1) for the standardization state
+   and status of this protocol.  Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (2002).  All Rights Reserved.<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This document specifies the set of RFCs comprising the Lightweight
+   Directory Access Protocol Version 3 (LDAPv3), and addresses the "IESG
+   Note" attached to RFCs 2251 through 2256.
+
+</p><p class="rfcparagraph">	<a name="section-1"><h2>1.   Background and Motivation</h2></a>
+
+   The specification for the Lightweight Directory Access Protocol
+   version 3 (LDAPv3) nominally comprises eight RFCs which were issued
+   in two distinct subsets at separate times -- RFCs 2251 through 2256
+   first, then RFCs 2829 and 2830 following later.
+
+</p><p class="rfcparagraph">   RFC 2251 through 2256 do not mandate the implementation of any
+   satisfactory authentication mechanisms and hence were published with
+   an "IESG Note" discouraging implementation and deployment of LDAPv3
+   clients or servers implementing update functionality until a Proposed
+   Standard for mandatory authentication in LDAPv3 is published.
+
+</p><p class="rfcparagraph">   RFC 2829 was subsequently published in answer to the IESG Note.
+
+</p><p class="rfcparagraph">   The purpose of this document is to explicitly specify the set of RFCs
+   comprising LDAPv3, and formally address the IESG Note through
+   explicit inclusion of RFC 2829.
+	<a name="section-2"><h2>2.   Specification of LDAPv3</h2></a>
+
+   The Lightweight Directory Access Protocol version 3 (LDAPv3) is
+   specified by this set of nine RFCs:
+
+</p><p class="rfcparagraph">      [RFC2251]  Lightweight Directory Access Protocol (v3) [the
+                 specification of the LDAP on-the-wire protocol]
+
+      [RFC2252]  Lightweight Directory Access Protocol (v3):  Attribute
+                 Syntax Definitions
+
+      [RFC2253]  Lightweight Directory Access Protocol (v3):  UTF-8
+                 String Representation of Distinguished Names
+
+      [RFC2254]  The String Representation of LDAP Search Filters
+
+      [RFC2255]  The LDAP URL Format
+
+      [RFC2256]  A Summary of the X.500(96) User Schema for use with<br>
+                 LDAPv3
+
+      [RFC2829]  Authentication Methods for LDAP
+
+      [RFC2830]  Lightweight Directory Access Protocol (v3):  Extension
+                 for Transport Layer Security
+
+      And, this document (RFC3377).
+
+</p><p class="rfcparagraph">   The term "LDAPv3" is often used informally to refer to the protocol
+   specified by the above set of RFCs, or subsets thereof.  However, the
+   LDAPv3 protocol suite, as defined here, should be formally identified
+   in other documents by a normative reference to this document.
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   Addressing the "IESG Note" in RFCs 2251 through 2256</h2></a>
+
+   The IESG approved publishing RFCs 2251 through 2256 with an attendant
+   IESG Note included in each document.  The Note begins with:
+
+</p><p class="rfcparagraph">      This document describes a directory access protocol that provides
+      both read and update access.  Update access requires secure
+      authentication, but this document does not mandate implementation
+      of any satisfactory authentication mechanisms.
+   The Note ends with this statement:
+
+</p><p class="rfcparagraph">      Implementors are hereby discouraged from deploying LDAPv3 clients
+      or servers which implement the update functionality, until a
+      Proposed Standard for mandatory authentication in LDAPv3 has been
+      approved and published as an RFC.
+
+</p><p class="rfcparagraph">   [RFC2829] is expressly the "Proposed Standard for mandatory
+   authentication in LDAPv3" called for in the Note.  Thus, the IESG
+   Note in [RFC2251], [RFC2252], [RFC2253], [RFC2254], [RFC2255], and
+   [RFC2256] is addressed.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   Security Considerations</h2></a>
+
+   This document does not directly discuss security, although the
+   context of the aforementioned IESG Note is security related, as is
+   the manner in which it is addressed.
+
+</p><p class="rfcparagraph">   Please refer to the referenced documents, especially [RFC2829],
+   [RFC2251], and [RFC2830], for further information concerning LDAPv3
+   security.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   Acknowledgements</h2></a>
+
+   The authors thank Patrik Faltstrom, Leslie Daigle, Thomas Narten, and
+   Kurt Zeilenga for their contributions to this document.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.   References</h2></a>
+
+   [RFC2251]  Wahl, M., Kille, S. and T. Howes, "Lightweight Directory
+              Access Protocol (v3)", RFC 2251, December 1997.
+
+</p><p class="rfcparagraph">   [RFC2252]  Wahl, M., Coulbeck, A., Howes, T. and S. Kille,
+              "Lightweight Directory Access Protocol (v3): Attribute
+              Syntax Definitions", RFC 2252, December 1997.
+
+</p><p class="rfcparagraph">   [RFC2253]  Kille, S., Wahl, M. and T. Howes, "Lightweight Directory
+              Access Protocol (v3): UTF-8 String Representation of
+              Distinguished Names", RFC 2253, December 1997.
+
+</p><p class="rfcparagraph">   [RFC2254]  Howes, T., "The String Representation of LDAP Search
+              Filters", RFC 2254, December 1997.
+
+</p><p class="rfcparagraph">   [RFC2255]  Howes, T. and M. Smith, "The LDAP URL Format", RFC 2255,
+              December 1997.
+
+</p><p class="rfcparagraph">   [RFC2256]  Wahl, M., "A Summary of the X.500(96) User Schema for use<br>
+              with LDAPv3", RFC 2256, December 1997.
+   [RFC2829]  Wahl, M., Alvestrand, H., Hodges, J. and R. Morgan,
+              "Authentication Methods for LDAP", RFC 2829, May 2000.
+
+</p><p class="rfcparagraph">   [RFC2830]  Hodges, J., Morgan, R. and M. Wahl, "Lightweight Directory
+              Access Protocol (v3): Extension for Transport Layer
+              Security", RFC 2830, May 2000.
+
+</p><p class="rfcparagraph">	<a name="section-7"><h2>7.   Intellectual Property Rights Notices</h2></a>
+
+   The IETF takes no position regarding the validity or scope of any
+   intellectual property or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; neither does it represent that it
+   has made any effort to identify any such rights.  Information on the
+   IETF's procedures with respect to rights in standards-track and
+   standards-related documentation can be found in BCP-11.  Copies of
+   claims of rights made available for publication and any assurances of
+   licenses to be made available, or the result of an attempt made to
+   obtain a general license or permission for the use of such
+   proprietary rights by implementors or users of this specification can
+   be obtained from the IETF Secretariat.
+
+</p><p class="rfcparagraph">   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights which may cover technology that may be required to practice
+   this standard.  Please address the information to the IETF Executive
+   Director.
+	<a name="section-8"><h2>8.   Authors' Addresses</h2></a>
+
+   Jeff Hodges
+   Sun Microsystems, Inc.
+   901 San Antonio Road, USCA22-212
+   Palo Alto, CA 94303
+   USA
+
+   Phone: +1-408-276-5467
+   EMail: Jeff.Hodges@sun.com
+
+
+   RL "Bob" Morgan
+   Computing and Communications
+   University of Washington
+   Seattle, WA
+   USA
+
+   Phone: +1-206-221-3307
+   EMail: rlmorgan@washington.edu
+	<a name="section-9"><h2>9.   Full Copyright Statement</h2></a>
+
+   Copyright (C) The Internet Society (2002).  All Rights Reserved.<br>
+
+</p><p class="rfcparagraph">   This document and translations of it may be copied and furnished to
+   others, and derivative works that comment on or otherwise explain it
+   or assist in its implementation may be prepared, copied, published
+   and distributed, in whole or in part, without restriction of any
+   kind, provided that the above copyright notice and this paragraph are
+   included on all such copies and derivative works.  However, this
+   document itself may not be modified in any way, such as by removing
+   the copyright notice or references to the Internet Society or other
+   Internet organizations, except as needed for the purpose of
+   developing Internet standards in which case the procedures for
+   copyrights defined in the Internet Standards process must be
+   followed, or as required to translate it into languages other than
+   English.
+
+</p><p class="rfcparagraph">   The limited permissions granted above are perpetual and will not be
+   revoked by the Internet Society or its successors or assigns.
+
+</p><p class="rfcparagraph">   This document and the information contained herein is provided on an
+   "AS IS" basis and THE INTERNET SOCIETY AND THE INTERNET ENGINEERING
+   TASK FORCE DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING
+   BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION
+   HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED WARRANTIES OF
+   MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is currently provided by the
+   Internet Society.
+
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Hodges & Morgan             Standards Track                     [Page 6]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

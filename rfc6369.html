@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph">Internet Engineering Task Force (IETF)                     E. Haleplidis
+Request for Comments: 6369                                O. Koufopavlou
+Category: Informational                                       S. Denazis
+ISSN: 2070-1721                                     University of Patras
+                                                          September 2011
+
+
+           Forwarding and Control Element Separation (ForCES)
+                       Implementation Experience
+
+<h2>Abstract</h2>
+
+   The Forwarding and Control Element Separation (ForCES) protocol
+   defines a standard communication and control mechanism through which
+   a Control Element (CE) can control the behavior of a Forwarding
+   Element (FE).  This document captures the experience of implementing
+   the ForCES protocol and model.  Its aim is to help others by
+   providing examples and possible strategies for implementing the
+   ForCES protocol.
+
+</p><p class="rfcparagraph">Status of This Memo
+
+   This document is not an Internet Standards Track specification; it is
+   published for informational purposes.
+
+</p><p class="rfcparagraph">   This document is a product of the Internet Engineering Task Force
+   (IETF).  It represents the consensus of the IETF community.  It has
+   received public review and has been approved for publication by the
+   Internet Engineering Steering Group (IESG).  Not all documents
+   approved by the IESG are a candidate for any level of Internet
+   Standard; see Section 2 of RFC 5741.
+
+</p><p class="rfcparagraph">   Information about the current status of this document, any errata,
+   and how to provide feedback on it may be obtained at
+   http://www.rfc-editor.org/info/rfc6369.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (c) 2011 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+</p><p class="rfcparagraph">   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (http://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
+   the Trust Legal Provisions and are provided without warranty as
+   described in the Simplified BSD License.
+
+</p><p class="rfcparagraph">Table of Contents
+<a href="#section-1" class="">1. Introduction . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-1.1" class="indent-1">1.1. Document Goal  . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2" class="">2. Terminology and Conventions  . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3" class="">3. ForCES Architecture  . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.1" class="indent-1">3.1. Pre-Association Setup - Initial Configuration  . . . . . </a><br>
+<a href="#section-3.2" class="indent-1">3.2. TML  . . . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.3" class="indent-1">3.3. Model  . . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.3.1" class="indent-2">3.3.1. Components . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.3.2" class="indent-2">3.3.2. LFBs . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.4" class="indent-1">3.4. Protocol . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.4.1" class="indent-2">3.4.1. TLVs . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.4.2" class="indent-2">3.4.2. Message Deserialization  . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.4.3" class="indent-2">3.4.3. Message Serialization  . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4" class="">4. Development Platforms  . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-5" class="">5. Acknowledgements . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-6" class="">6. Security Considerations  . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-7" class="">7. References . . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-7.1" class="indent-1">7.1. Normative References . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-7.2" class="indent-1">7.2. Informative References . . . . . . . . . . . . . . . . . </a><br>
+
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   Forwarding and Control Element Separation (ForCES) defines an
+   architectural framework and associated protocols to standardize
+   information exchange between the control plane and the forwarding
+   plane in a ForCES Network Element (ForCES NE).  [RFC3654] defines the
+   ForCES requirements, and [RFC3746] defines the ForCES framework.
+
+</p><p class="rfcparagraph">   The ForCES protocol works in a master-slave mode in which Forwarding
+   Elements (FEs) are slaves and Control Elements (CEs) are masters.
+   The protocol includes commands for transport of Logical Functional
+   Block (LFB) configuration information, association setup, status, and
+   event notifications, etc.  The reader is encouraged to read the
+   Forwarding and Control Element Separation Protocol [RFC5810] for
+   further information.
+
+</p><p class="rfcparagraph">   [RFC5812] presents a formal way to define FE LFBs using XML.  LFB
+   configuration components, capabilities, and associated events are
+   defined when LFBs are formally created.  The LFBs within the
+   Forwarding Element (FE) are accordingly controlled in a standardized
+   way by the ForCES protocol.
+   The Transport Mapping Layer (TML) transports the protocol messages.
+   The TML is where the issues of how to achieve transport-level
+   reliability, congestion control, multicast, ordering, etc., are
+   handled.  It is expected that more than one TML will be standardized.
+   The various possible TMLs could vary their implementations based on
+   the capabilities of underlying media and transport.  However, since
+   each TML is standardized, interoperability is guaranteed as long as
+   both endpoints support the same TML.  All ForCES protocol layer
+   implementations must be portable across all TMLs.  Although more than
+   one TML may be standardized for the ForCES protocol, all ForCES
+   implementations must implement the Stream Control Transmission
+   Protocol (SCTP) TML [RFC5811].
+
+</p><p class="rfcparagraph">   The Forwarding and Control Element Separation Applicability Statement
+   [RFC6041] captures the applicable areas in which ForCES can be used.
+
+</p><p class="rfcparagraph">	<a name="section-1.1"><h3>1.1   Document Goal</h3></a>
+
+   This document captures the experience of implementing the ForCES
+   protocol and model, and its main goal is to provide alternatives,
+   ideas, and proposals as how it can be implemented, not to tell others
+   how to implement it.
+
+</p><p class="rfcparagraph">   Also, this document mentions possible problems and potential choices
+   that can be made, in an attempt to help implementors develop their
+   own products.
+
+</p><p class="rfcparagraph">   Additionally, this document assumes that the reader has become
+   familiar with the three main ForCES RFCs: the Forwarding and Control
+   Element Separation Protocol [RFC5810], the Forwarding and Control
+   Element Separation Forwarding Element Model [RFC5812], and the SCTP-
+   Based Transport Mapping Layer (TML) for the Forwarding and Control
+   Element Separation Protocol [RFC5811].
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Terminology and Conventions</h2></a>
+
+   The terminology used in this document is the same as in the
+   Forwarding and Control Element Separation Protocol [RFC5810]; some of
+   the definitions below are copied from that document.
+
+</p><p class="rfcparagraph">   Control Element (CE): A logical entity that implements the ForCES
+   protocol and uses it to instruct one or more FEs on how to process
+   packets.  CEs handle functionality such as the execution of control
+   and signaling protocols.
+   Forwarding Element (FE): A logical entity that implements the ForCES
+   protocol.  FEs use the underlying hardware to provide per-packet
+   processing and handling as directed/controlled by one or more CEs via
+   the ForCES protocol.
+
+</p><p class="rfcparagraph">   LFB (Logical Functional Block): The basic building block that is
+   operated on by the ForCES protocol.  The LFB is a well-defined,
+   logically separable functional block that resides in an FE and is
+   controlled by the CE via the ForCES protocol.  The LFB may reside at
+   the FE's data path and process packets or may be purely an FE control
+   or configuration entity that is operated on by the CE.  Note that the
+   LFB is a functionally accurate abstraction of the FE's processing
+   capabilities but not a hardware-accurate representation of the FE
+   implementation.
+
+</p><p class="rfcparagraph">   LFB Class and LFB Instance: LFBs are categorized by LFB classes.  An
+   LFB instance represents an LFB class (or type) existence.  There may
+   be multiple instances of the same LFB class (or type) in an FE.  An
+   LFB class is represented by an LFB class ID, and an LFB instance is
+   represented by an LFB instance ID.  As a result, an LFB class ID
+   associated with an LFB instance ID uniquely specifies an LFB
+   existence.
+
+</p><p class="rfcparagraph">   LFB Component: Operational parameters of the LFBs that must be
+   visible to the CEs are conceptualized in the FE model as the LFB
+   components.  The LFB components include, for example, flags, single
+   parameter arguments, complex arguments, and tables that the CE can
+   read and/or write via the ForCES protocol.
+
+</p><p class="rfcparagraph">   ForCES Protocol: While there may be multiple protocols used within
+   the overall ForCES architecture, the terms "ForCES protocol" and
+   "protocol" refer to the Fp reference points in the ForCES framework
+   [RFC3746].  This protocol does not apply to CE-to-CE communication,
+   FE-to-FE communication, or communication between FE and CE Managers.
+   Basically, the ForCES protocol works in a master-slave mode in which
+   FEs are slaves and CEs are masters.  This document defines the
+   specifications for this ForCES protocol.
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   ForCES Architecture</h2></a>
+
+   ForCES has undergone two successful interoperability tests, where
+   very few issues were caught and resolved.
+
+</p><p class="rfcparagraph">   This section discusses the ForCES architecture, implementation
+   challenges, and ways to overcome these challenges.
+	<a name="section-3.1"><h3>3.1   Pre-Association Setup - Initial Configuration</h3></a>
+
+   The initial configuration of the FE and the CE is done by the FE
+   Manager and the CE Manager, respectively.  These entities have not as
+   yet been standardized.
+
+</p><p class="rfcparagraph">   The simplest solution is static configuration files, which play the
+   role of the Managers and are read by FEs and CEs.
+
+</p><p class="rfcparagraph">   For more dynamic solutions, however, it is expected that the Managers
+   will be entities that will talk to each other and exchange details
+   regarding the associations.  Any developer can create any Manager,
+   but they should at least be able to exchange the details below.
+
+</p><p class="rfcparagraph">   From the FE Manager side:
+
+</p><p class="rfcparagraph">   1.  FE Identifiers (FEIDs).
+
+</p><p class="rfcparagraph">   2.  FE IP addresses, if the FEs and CEs will be communicating via
+       network.
+
+</p><p class="rfcparagraph">   3.  TML.  The TML that will be used.  If this is omitted, then SCTP
+       must be chosen as default.
+
+</p><p class="rfcparagraph">   4.  TML priority ports.  If this is omitted as well, then the CE must
+       use the default values from the respective TML RFC.
+
+</p><p class="rfcparagraph">   From the CE Manager side:
+
+</p><p class="rfcparagraph">   1.  CE Identifiers (CEIDs).
+
+</p><p class="rfcparagraph">   2.  CE IP addresses, if the FEs and CEs will be communicating via
+       network.
+
+</p><p class="rfcparagraph">   3.  TML.  The TML that will be used.  If this is omitted, then SCTP
+       must be chosen as default.
+
+</p><p class="rfcparagraph">   4.  TML priority ports.  If this is omitted as well, then the FE must
+       use the default values from the respective TML RFC.
+
+</p><p class="rfcparagraph">	<a name="section-3.2"><h3>3.2   TML</h3></a>
+
+   All ForCES implementations must support the SCTP TML.  Even if
+   another TML will be chosen by the developer, SCTP is mandatory and
+   must be supported.
+   There are several issues that should concern a developer for the TML:
+
+</p><p class="rfcparagraph">   1.  Security.  TML must be secure according to the respective RFC.
+       For SCTP, you have to use IPsec.
+
+</p><p class="rfcparagraph">   2.  Remote connection.  While ForCES is meant to be used locally,
+       both interoperability tests have proven that ForCES can be
+       deployed everywhere that SCTP/IP is available.  In both
+       interoperability tests, there were connections between Greece and
+       China, and the performance was very satisfactory.  However, in
+       order for the FE and CE to work in a non-local environment, an
+       implementor must ensure that the SCTP-TML ports are forwarded to
+       the CE and/or FE if they are behind NATs; if there is a firewall,
+       it will allow the SCTP ports through.  These were identified
+       during the first ForCES interoperability test and documented in
+       the Implementation Report for Forwarding and Control Element
+       Separation [RFC6053].
+
+</p><p class="rfcparagraph">	<a name="section-3.3"><h3>3.3   Model</h3></a>
+
+   The ForCES model is inherently very dynamic.  Using the basic atomic
+   data types that are specified in the model, new atomic (single
+   valued) and/or compound (structures and arrays) datatypes can be
+   built.  Thus, developers are free to create their own LFBs.  One
+   other advantage that the ForCES model provides is inheritance.  New
+   versions of existing LFBs can be created to suit any extra developer
+   requirements.
+
+</p><p class="rfcparagraph">   The difficulty for a developer is to create an architecture that is
+   completely scalable so there is no need to write the same code for
+   new LFBs, new components, etc.  Developers can just create code for
+   the defined atomic values, and new components can then be built based
+   on already written code, thus reusing it.
+
+</p><p class="rfcparagraph">   The model itself provides the key, which is inheritance.
+
+</p><p class="rfcparagraph">	<a name="section-3.3.1"><h4>3.3.1   Components</h4></a>
+
+   First, a basic component needs to be created as the mother of all the
+   components that has the basic parameters of all the components:
+
+</p><p class="rfcparagraph">   o  The ID of the component.
+
+</p><p class="rfcparagraph">   o  The access rights of the component.
+
+</p><p class="rfcparagraph">   o  If it is an optional component.
+
+</p><p class="rfcparagraph">   o  If it is of variable size.
+   o  Minimum data size.
+
+</p><p class="rfcparagraph">   o  Maximum data size.
+
+</p><p class="rfcparagraph">   If the data size of the component is not variable, then the size is
+   either the minimum or the maximum size, as both should have the same
+   value.
+
+</p><p class="rfcparagraph">   Next, some basic functions are in order:
+
+</p><p class="rfcparagraph">   o  A common constructor.
+
+</p><p class="rfcparagraph">   o  A common destructor.
+
+</p><p class="rfcparagraph">   o  Retrieve Component ID.
+
+</p><p class="rfcparagraph">   o  Retrieve access right property.
+
+</p><p class="rfcparagraph">   o  Query if it is an optional component.
+
+</p><p class="rfcparagraph">   o  Get Full Data.
+
+</p><p class="rfcparagraph">   o  Set Full Data.
+
+</p><p class="rfcparagraph">   o  Get Sparse Data.
+
+</p><p class="rfcparagraph">   o  Set Sparse Data.
+
+</p><p class="rfcparagraph">   o  Del Full Data.
+
+</p><p class="rfcparagraph">   o  Del Sparse Data.
+
+</p><p class="rfcparagraph">   o  Get Property.
+
+</p><p class="rfcparagraph">   o  Set Property.
+
+</p><p class="rfcparagraph">   o  Get Value.
+
+</p><p class="rfcparagraph">   o  Set Value.
+
+</p><p class="rfcparagraph">   o  Del Value.
+
+</p><p class="rfcparagraph">   o  Get Data.
+
+</p><p class="rfcparagraph">   o  Clone component.
+   The Get/Set/Del Full Data, Get/Set/Del Sparse Data, and Get/Set
+   Property functions handle the respective ForCES commands and return
+   the respective TLV, for example, Set Full Data should return a
+   RESULT-TLV.  The Get Value, Set Value, and Del Value functions are
+   called from Get Full/Sparse Data, Set Full/Sparse Data, and Del Full/
+   Sparse Data respectively and provide the interface to the actual
+   values in the hardware, separating the forces handling logic from the
+   interface to the actual values.
+
+</p><p class="rfcparagraph">   The Get Data function should return the value of the data only, not
+   in TLV format.
+
+</p><p class="rfcparagraph">   The Clone function seems out of place.  This function must return a
+   new component that has the exact same values and attributes.  This
+   function is useful in array components as described further below.
+
+</p><p class="rfcparagraph">   The only requirement is to implement the base atomic data types.  Any
+   new atomic datatype can be built as a child of a base data type,
+   which will inherit all the functions and, if necessary, override
+   them.
+
+</p><p class="rfcparagraph">   The struct component can then be built.  A struct component is a
+   component by itself but consists of a number of atomic components.
+   These atomic components create a static array within the struct.  The
+   ID of each atomic component is the array's index.  For a struct
+   component, the Clone function must create and return an exact copy of
+   the struct component with the same static array.
+
+</p><p class="rfcparagraph">   The most difficult component to be built is the array.  The
+   difficulty lies in the actual benefit of the model: you have absolute
+   freedom over what you build.  An array is an array of components.  In
+   all rows, you have the exact same type of component, either a single
+   component or a struct.  The struct can have multiple single
+   components or a combination of single components, structs, arrays,
+   and so on.  So, the difficulty lies in how to create a new row, a new
+   component by itself.  This is where the Clone function is very
+   useful.  For the array, a mother component that can spawn new
+   components exactly like itself is needed.  Once a Set command is
+   received, the mother component can spawn a new component if the
+   targeted row does not exist and add it into the array; with the Set
+   Full Data function, the value is set in the recently spawned
+   component, as the spawned component knows how the data is created.
+   In order to distinguish these spawned components from each other and
+   their functionality, some kind of index is required that will also
+   reflect how the actual data of the specific component is stored on
+   the hardware.
+   Once the basic constructors of all possible components are created,
+   then a developer only has to create LFB components or datatypes as a
+   child of one of the already-created components, and the only thing
+   the developer really needs to add is the three functions of Get
+   Value, Set Value, and Del Value of each component, which is platform
+   dependent.  The rest stays the same.
+
+</p><p class="rfcparagraph">	<a name="section-3.3.2"><h4>3.3.2   LFBs</h4></a>
+
+   The same architecture in the components can be used for the LFBs,
+   allowing a developer to write LFB handling code only once.  The
+   parent LFB has some basic attributes:
+
+</p><p class="rfcparagraph">   o  The LFB Class ID.
+
+</p><p class="rfcparagraph">   o  The LFB Instance ID.
+
+</p><p class="rfcparagraph">   o  An Array of Components.
+
+</p><p class="rfcparagraph">   o  An Array of Capabilities.
+
+</p><p class="rfcparagraph">   o  An Array of Events.
+
+</p><p class="rfcparagraph">   Following are some common functions:
+
+</p><p class="rfcparagraph">   o  Handle Configuration Command.
+
+</p><p class="rfcparagraph">   o  Handle Query Command.
+
+</p><p class="rfcparagraph">   o  Get Class ID.
+
+</p><p class="rfcparagraph">   o  Get Instance ID.
+
+</p><p class="rfcparagraph">   Once these are created, each LFB can inherit all these from the
+   parent, and the only thing it has to do is add the components that
+   have already been created.
+
+</p><p class="rfcparagraph">   An example can be seen in Figure 1.  The following code creates a
+   part of FEProtocolLFB:
+   //FEID
+   cui = new Component_uInt(FEPO_FEID, ACCESS_READ_ONLY, FE_id);
+   Components[cui->get_ComponentId()]=cui; //Add component to array list
+
+   //Current FEHB Policy Value
+   cub = new Component_uByte(FEPO_FEHBPolicy, ACCESS_READ_WRITE, 0);
+   Components[cub->get_ComponentId()]=cub; //Add component to array list
+
+   //FEIDs for BackupCEs Array
+   cui = new Component_uInt(0, ACCESS_READ_WRITE, 0);
+   ca = new Component_Array(FEPO_BackupCEs, ACCESS_READ_WRITE);
+   ca->AddRow(cui, 1);
+   ca->AddMotherComponent(cui);
+   Components[ca->get_ComponentId()]=ca; //Add component to array list
+
+         Figure 1: Example Code for Creating Part of FEProtocolLFB
+
+   The same concept can be applied to handling LFBs as one FE.  An FE is
+   a collection of LFBs.  Thus, all LFBs can be stored in an array based
+   on the LFB's class id, version, and instance.  Then, what is required
+   is an LFBHandler that will handle the array of LFBs.  A specific LFB,
+   for example, can be addressed using the following scheme:
+
+</p><p class="rfcparagraph">   LFBs[ClassID][Version][InstanceID]
+
+   Note: While an array can be used in components, capabilities, and
+   events, a hash table or a similar concept is better suited for
+   storing LFBs using the component ID as the hash key with linked lists
+   for collision handling, as the created array can have large gaps if
+   the values of LFB Class ID vary greatly.
+
+</p><p class="rfcparagraph">	<a name="section-3.4"><h3>3.4   Protocol</h3></a>
+
+	<a name="section-3.4.1"><h4>3.4.1   TLVs</h4></a>
+
+   The goal for protocol handling is to create a general and scalable
+   architecture that handles all protocol messages instead of something
+   implementation specific.  There are certain difficulties that have to
+   be overcome first.
+
+</p><p class="rfcparagraph">   Since the model allows a developer to define any LFB required, the
+   protocol has been thus created to give the user the freedom to
+   configure and query any component, whatever the underlying model.
+   While this is a strong point for the protocol itself, one difficulty
+   lies with the unknown underlying model and the unlimited number of
+   types of messages that can be created, making creating generic code a
+   daunting task.
+   Additionally, the protocol also allows two different path approaches
+   to LFB components, and the CE or FE must handle both or even a mix of
+   them, making a generic decoding of the protocol message difficult.
+
+</p><p class="rfcparagraph">   Another difficulty also arises from the batching capabilities of the
+   protocol.  You can have multiple Operations within a message; you can
+   select more than one LFB to command and more than one component to
+   manipulate.
+
+</p><p class="rfcparagraph">   A possible solution is again provided by inheritance.  There are two
+   basic components in a protocol message:
+
+</p><p class="rfcparagraph">   1.  The common header.
+
+</p><p class="rfcparagraph">   2.  The rest of the message.
+
+</p><p class="rfcparagraph">   The rest of the message is divided in Type-Length-Value (TLV) units
+   and, in one case, Index-Length-Value (ILV) units.
+
+</p><p class="rfcparagraph">   The TLV hierarchy can be seen in Figure 2:
+
+</p><p class="rfcparagraph">                      Common Header
+                            |<pre>
+            +---------------+---------------+---------------+
+            |               |               |               |
+         REDIRECT-TLV  LFBselect-TLV   ASResult-TLV   ASTreason-TLV
+                            |
+                            |
+                        OPER-TLV
+                            |
+                            |
+                      PATH-DATA-TLV  ---> Optional KEYINFO-TLV
+                            |
+              +-------------+-------------+-------------+
+              |             |             |             |
+          SPARSEDATA-TLV  RESULT-TLV  FULLDATA-TLV  PATH-DATA-TLV
+
+                      Figure 2: ForCES TLV Hierarchy
+
+   The above figure shows only the basic hierarchical level of TLVs and
+   does not show batching.  Also, this figure does not show the
+   recursion that can occur at the last level of the hierarchy.  The
+   figure shows one kind of recursion with a PATH-DATA-TLV within a
+   PATH-DATA-TLV.  A FULLDATA-TLV can be within a FULLDATA-TLV and a
+   SPARSEDATA-TLV.  The possible combination of TLVs are described in
+   detail in the Forwarding and Control Element Separation Protocol
+   [RFC5810] as well as the data-packing rules.
+   A TLV's main attributes are:
+
+</p><p class="rfcparagraph">   o  Type.
+
+</p><p class="rfcparagraph">   o  Length.
+
+</p><p class="rfcparagraph">   o  Data.
+
+</p><p class="rfcparagraph">   o  An array of TLVs.
+
+</p><p class="rfcparagraph">   The array of TLVs is the next hierarchical level of TLVs nested in
+   this TLV.
+
+</p><p class="rfcparagraph">   A TLV's common function could be:
+
+</p><p class="rfcparagraph">   o  A basic constructor.
+
+</p><p class="rfcparagraph">   o  A constructor using data from the wire.
+
+</p><p class="rfcparagraph">   o  Add a new TLV for next level.
+
+</p><p class="rfcparagraph">   o  Get the next TLV of next level.
+
+</p><p class="rfcparagraph">   o  Get a specific TLV of next level.
+
+</p><p class="rfcparagraph">   o  Replace a TLV of next level.
+
+</p><p class="rfcparagraph">   o  Get the Data.
+
+</p><p class="rfcparagraph">   o  Get the Length.
+
+</p><p class="rfcparagraph">   o  Set the Data.
+
+</p><p class="rfcparagraph">   o  Set the Length.
+
+</p><p class="rfcparagraph">   o  Set the Type.
+
+</p><p class="rfcparagraph">   o  Serialize the header.
+
+</p><p class="rfcparagraph">   o  Serialize the TLV to be written on the wire.
+
+</p><p class="rfcparagraph">   All TLVs inherit these functions and attributes and either override
+   them or create new where it is required.
+	<a name="section-3.4.2"><h4>3.4.2   Message Deserialization</h4></a>
+
+   Following is an algorithm for deserializing any protocol message:
+
+</p><p class="rfcparagraph">   1.  Get the message header.
+
+</p><p class="rfcparagraph">   2.  Read the length.
+
+</p><p class="rfcparagraph">   3.  Check the message type to understand what kind of message this
+       is.
+
+</p><p class="rfcparagraph">   4.  If the length is larger than the message header, then there is
+       data for this message.
+
+</p><p class="rfcparagraph">   5.  A check can be made here regarding the message type and the
+       length of the message.
+
+</p><p class="rfcparagraph">   If the message is a Query or Config type, then there are LFBselect-
+   TLVs for this level:
+
+</p><p class="rfcparagraph">   1.  Read the next 2 shorts(type-length).  If the type is an
+       LFBselect-TLV, then the message is valid.
+
+</p><p class="rfcparagraph">   2.  Read the necessary length for this LFBselect-TLV, and create the
+       LFBselect-TLV from the data of the wire.
+
+</p><p class="rfcparagraph">   3.  Add this LFBselect-TLV to the main header array of LFBselect-
+       TLVs.
+
+</p><p class="rfcparagraph">   4.  Repeat all above steps until the rest of the message has
+       finished.
+
+</p><p class="rfcparagraph">   The next level of TLVs is OPER-TLVs.
+
+</p><p class="rfcparagraph">   1.  Read the next 2 shorts(type-length).  If the type is an OPER-TLV,
+       then the message is valid.
+
+</p><p class="rfcparagraph">   2.  Read the necessary length for this OPER-TLV, and create the OPER-
+       TLV from the data of the wire.
+
+</p><p class="rfcparagraph">   3.  Add this OPER-TLV to the LFBselect-TLV array of TLVs.
+
+</p><p class="rfcparagraph">   4.  Do this until the rest of the LFBselect-TLV has finished.
+
+</p><p class="rfcparagraph">   The next level of TLVs is PATH-DATA-TLVs.
+
+</p><p class="rfcparagraph">   1.  Read the next 2 shorts(type-length).  If the type is a PATH-DATA-
+       TLV, then the message is valid.
+   2.  Read the necessary length for this PATH-DATA-TLV, and create the
+       PATH-DATA-TLV from the data of the wire.
+
+</p><p class="rfcparagraph">   3.  Add this PATH-DATA-TLV to the OPER-TLV's array of TLVs.
+
+</p><p class="rfcparagraph">   4.  Do this until the rest of the OPER-TLV is finished.
+
+</p><p class="rfcparagraph">   Here it gets interesting, as the next level of PATH-DATA-TLVs can be
+   one of the following:
+
+</p><p class="rfcparagraph">   o  PATH-DATA-TLVs.
+
+</p><p class="rfcparagraph">   o  FULLDATA-TLV.
+
+</p><p class="rfcparagraph">   o  SPARSEDATA-TLV.
+
+</p><p class="rfcparagraph">   o  RESULT-TLV.
+
+</p><p class="rfcparagraph">   The solution to this difficulty is recursion.  If the next TLV is a
+   PATH-DATA-TLV, then the PATH-DATA-TLV that is created uses the same
+   kind of deserialization until it reaches a FULLDATA-TLV or
+   SPARSEDATA-TLV.  There can be only one FULLDATA-TLV or SPARSEDATA-TLV
+   within a PATH-DATA-TLV.
+
+</p><p class="rfcparagraph">   1.  Read the next 2 shorts(type-length).
+
+</p><p class="rfcparagraph">   2.  If the Type is a PATH-DATA-TLV, then repeat the previous
+       algorithm but add the PATH-DATA-TLV to this PATH-DATA-TLV's array
+       of TLVs.
+
+</p><p class="rfcparagraph">   3.  Do this until the rest of the PATH-DATA-TLV is finished.
+
+</p><p class="rfcparagraph">   4.  If the Type is a FULLDATA-TLV, then create the FULLDATA-TLV from
+       the message and add this to the PATH-DATA-TLV's array of TLVs.
+
+</p><p class="rfcparagraph">   5.  If the Type is a SPARSEDATA-TLV, then create the SPARSEDATA-TLV
+       from the message and add this to the PATH-DATA-TLV's array of
+       TLVs.
+
+</p><p class="rfcparagraph">   6.  If the Type is a RESULT-TLV, then create the RESULT-TLV from the
+       message and add this to the PATH-DATA-TLV's array of TLVs.
+
+</p><p class="rfcparagraph">   If the message is a Query, it must not have any kind of data inside
+   the PATH-DATA-TLV.
+
+</p><p class="rfcparagraph">   If the message is a Query Response, then it must have either a
+   RESULT-TLV or a FULLDATA-TLV.
+   If the message is a Config, it must contain either a FULLDATA-TLV or
+   a SPARSEDATA-TLV.
+
+</p><p class="rfcparagraph">   If the message is a Config Response, it must contain a RESULT-TLV.
+
+</p><p class="rfcparagraph">   More details regarding message validation can be read in Section 7 of
+   the Forwarding and Control Element Separation Protocol [RFC5810].
+
+</p><p class="rfcparagraph">   Note: When deserializing, implementors must take care to ignore
+   padding of TLVs as all must be 32-bit aligned.  The length value in
+   TLVs includes the Type and Length (4 bytes) but does not include
+   padding.
+
+</p><p class="rfcparagraph">	<a name="section-3.4.3"><h4>3.4.3   Message Serialization</h4></a>
+
+   The same concept can be applied in the message creation process.
+   Having the TLVs ready, a developer can go bottom up.  All that is
+   required is the serialization function that will transform the TLV
+   into bytes ready to be transferred on the network.
+
+</p><p class="rfcparagraph">   For example, for the creation of a simple query from the CE to the
+   FE, all the PATH-DATA-TLVs are created.  Then they will be serialized
+   and inserted into an OPER-TLV, which in turn will be serialized and
+   inserted into an LFBselect-TLV.  The LFBselect-TLV will then be
+   serialized and entered into the Common Header, which will be passed
+   to the TML to be transported to the FE.
+
+</p><p class="rfcparagraph">   Having an array of TLVs inside a TLV that is next in the TLV
+   hierarchy allows the developer to insert any number of next-level
+   TLVs, thus creating any kind of message.
+
+</p><p class="rfcparagraph">   Note: When the TLV is serialized to be written on the wire,
+   implementors must take care to include padding to TLVs as all must be
+   32-bit aligned.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   Development Platforms</h2></a>
+
+   Any development platform that can support the SCTP TML and the TML of
+   the developer's choosing is available for use.
+
+</p><p class="rfcparagraph">   Figure 3 provides an initial survey of SCTP support for C/C++ and
+   Java at the present time.
+         /-------------+-------------+-------------+-------------\
+         |\ Platform   |             |             |             |
+         | ----------\ |   Windows   |    Linux    |   Solaris   |
+         |  Language  \|             |             |             |
+         +-------------+-------------+-------------+-------------+
+         |             |             |             |             |
+         |    C/C++    |  Supported  |  Supported  |  Supported  |
+         |             |             |             |             |
+         +-------------+-------------+-------------+-------------+
+         |             |   Limited   |             |             |
+         |    Java     | Third Party |  Supported  |  Supported  |
+         |             | Not from SUN|             |             |
+         \-------------+-------------+-------------+
+</pre>
+-------------/
+
+                Figure 3: SCTP Support on Operating Systems
+
+   A developer should be aware of some limitations regarding Java
+   implementations.
+
+</p><p class="rfcparagraph">   Java inherently does not support unsigned types.  A workaround can be
+   found in the creation of classes that do the translation of unsigned
+   types to Java types.  The problem is that the unsigned long cannot be
+   used as-is in the Java platform.  The proposed set of classes can be
+   found in [JavaUnsignedTypes].
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   Acknowledgements</h2></a>
+
+   The authors would like to thank Adrian Farrel for sponsoring this
+   document and Jamal Hadi Salim for discussions that made this document
+   better.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.   Security Considerations</h2></a>
+
+   Developers of ForCES FEs and CEs must take the Security
+   Considerations of the Forwarding and Control Element Separation
+   Framework [RFC3746] and the Forwarding and Control Element Separation
+   Protocol [RFC5810] into account.
+
+</p><p class="rfcparagraph">   Also, as specified in the Security Considerations section of the
+   SCTP-Based Transport Mapping Layer (TML) for the Forwarding and
+   Control Element Separation Protocol [RFC5811], transport-level
+   security has to be ensured by IPsec.
+	<a name="section-7"><h2>7.   References</h2></a>
+
+	<a name="section-7.1"><h3>7.1   Normative References</h3></a>
+
+   [RFC5810]  Doria, A., Hadi Salim, J., Haas, R., Khosravi, H., Wang,
+              W., Dong, L., Gopal, R., and J. Halpern, "Forwarding and
+              Control Element Separation (ForCES) Protocol
+              Specification", RFC 5810, March 2010.
+
+</p><p class="rfcparagraph">   [RFC5811]  Hadi Salim, J. and K. Ogawa, "SCTP-Based Transport Mapping
+              Layer (TML) for the Forwarding and Control Element
+              Separation (ForCES) Protocol", RFC 5811, March 2010.
+
+</p><p class="rfcparagraph">   [RFC5812]  Halpern, J. and J. Hadi Salim, "Forwarding and Control
+              Element Separation (ForCES) Forwarding Element Model",
+              RFC 5812, March 2010.
+
+</p><p class="rfcparagraph">   [RFC6041]  Crouch, A., Khosravi, H., Doria, A., Wang, X., and K.
+              Ogawa, "Forwarding and Control Element Separation (ForCES)
+              Applicability Statement", RFC 6041, October 2010.
+
+</p><p class="rfcparagraph">   [RFC6053]  Haleplidis, E., Ogawa, K., Wang, W., and J. Hadi Salim,
+              "Implementation Report for Forwarding and Control Element
+              Separation (ForCES)", RFC 6053, November 2010.
+
+</p><p class="rfcparagraph">	<a name="section-7.2"><h3>7.2   Informative References</h3></a>
+
+   [JavaUnsignedTypes]
+              "Java Unsigned Types",
+              <http://nam.ece.upatras.gr/index.php?q=node/44>.
+
+</p><p class="rfcparagraph">   [RFC3654]  Khosravi, H. and T. Anderson, "Requirements for Separation
+              of IP Control and Forwarding", RFC 3654, November 2003.
+
+</p>   [RFC3746]  Yang, L., Dantu, R., Anderson, T., and R. Gopal,
+              "Forwarding and Control Element Separation (ForCES)
+              Framework", RFC 3746, April 2004.
+Authors' Addresses
+
+   Evangelos Haleplidis
+   University of Patras
+   Department of Electrical & Computer Engineering
+   Patras  26500
+   Greece
+
+   EMail: ehalep@ece.upatras.gr
+
+
+   Odysseas Koufopavlou
+   University of Patras
+   Department of Electrical & Computer Engineering
+   Patras  26500
+   Greece
+
+   EMail: odysseas@ece.upatras.gr
+
+
+   Spyros Denazis
+   University of Patras
+   Department of Electrical & Computer Engineering
+   Patras  26500
+   Greece
+
+   EMail: sdena@upatras.gr
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Haleplidis, et al.            Informational                    [Page 18]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

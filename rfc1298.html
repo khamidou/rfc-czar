@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                         R. Wormley<br>Request for Comments: 1298                                    S. Bostock<br>                                                            Novell, Inc.<br>                                                           February 1992<br><br></p>
+                  <h1>
+                             SNMP over IPX</h1>
+                  <h2>Status of this Memo</h2>
+
+   This memo provides information for the Internet community.  It does
+   not specify an Internet standard.  Distribution of this memo is
+   unlimited.
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This memo defines a convention for encapsulating Simple Network
+   Management Protocol (SNMP) [1] packets over the transport mechanism
+   provided via the Internetwork Packet Exchange (IPX) protocol [2].
+
+</p><p class="rfcparagraph">Editor's Note
+
+   As stated below and in reference [5], it is strongly advised that for
+   interoperability, SNMP be implemented over UDP/IP and not directly on
+   media or other protocols (such as IPX).
+
+</p><p class="rfcparagraph">	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   The SNMP protocol has been specified as the official network
+   management protocol of the Internet.  Its widespread acceptance and
+   implementation by developers, both inside and outside the Internet
+   community, is fostering synergetic growth to a variety of protocols
+   and platforms.
+
+</p><p class="rfcparagraph">   This memo addresses the use of SNMP over the IPX protocol, which has
+   become quite widespread principally due to the popularity of Novell
+   NetWare.  Roughly equivalent to UDP in function, IPX provides
+   connectionless, unacknowledged datagram service over a variety of
+   physical media and protocols.
+
+</p><p class="rfcparagraph">   Although modifications have been made elsewhere in the NetWare
+   protocol suite, IPX is identical to the Xerox Internet Datagram
+   Protocol (IDP) [3].  The socket address space authority is
+   administered by Novell.
+
+</p><p class="rfcparagraph">   The use of SNMP over the UDP transport [4] is today the common mode
+   of operation in the Internet. This specification may be appropriate
+   for some environments in which UDP transport services are not
+   available.  SNMP implementors should be aware that the choice of
+   underlying transport may have a significant impact on the
+   interoperability and ubiquity of the management capability in the
+   Internet.  Considerations relevant to choosing a transport for use
+   with SNMP are described in [5].
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Specification</h2></a>
+
+   SNMP packets will always set the Packet Type field in the IPX header
+   to 4 (i.e., Packet Exchange Packet).
+
+</p><p class="rfcparagraph">	<a name="section-2.1"><h3>2.1   Socket Assignments</h3></a>
+
+   SNMP protocol entities will receive GetRequest-PDU, GetNextRequest-
+   PDU, and SetRequest-PDU messages on socket 36879 (Destination Socket
+   field set to hexadecimal 900F), and Trap-PDU messages on socket 36880
+   (Destination Socket field set to hexadecimal 9010).
+
+</p><p class="rfcparagraph">   GetResponse-PDU messages will be addressed to the IPX address and
+   socket from which the corresponding GetRequest-PDU, GetNextRequest-
+   PDU, or SetRequest-PDU originated.
+
+</p><p class="rfcparagraph">	<a name="section-2.2"><h3>2.2   Maximum Packet Length</h3></a>
+
+   Although SNMP does not require conformant implementations to accept
+   messages whose length exceed 484 bytes, it is recommended that
+   implementations support a maximum SNMP message size of 546 bytes (the
+   maximum size allowed under IPX).  Furthermore, this limit is the
+   maximum packet length guaranteed to traverse IPX routers which do not
+   provide fragmentation.  Implementors may choose to use longer packet
+   lengths if the maximum is known, which depends on the intermediate
+   routers and/or intermediate datalink layer protocols.
+
+</p><p class="rfcparagraph">	<a name="section-2.3"><h3>2.3   The agent-addr Field for the Trap-PDU</h3></a>
+
+   The agent-addr field in a Trap-PDU emitted by an SNMP agent should
+   contain the IpAddress 0.0.0.0.  An SNMP manager may ascertain the
+   source of the trap by querying the transport layer.
+
+</p><p class="rfcparagraph">	<a name="section-2.4"><h3>2.4   IPX Transport Address Representation</h3></a>
+
+   There are occasions when it is necessary to represent a transport
+   service address in a MIB.  For instance, the SNMP party MIB [6] uses
+   an OBJECT IDENTIFIER to define the transport domain (IP, IPX, etc.)
+   and an OCTET STRING to represent an address within that domain.  The
+   following definitions are provided for use in such a scheme.
+ RFC1298-MIB DEFINITIONS ::= BEGIN
+
+    IMPORTS
+      enterprises         FROM RFC1155-SMI;
+
+</p><p class="rfcparagraph">      novell              OBJECT IDENTIFIER ::= { enterprises 23 }
+      transportDomains    OBJECT IDENTIFIER ::= { novell 7 }
+
+      ipxTransportDomain  OBJECT IDENTIFIER ::= { transportDomains 1 }
+
+    -- Authoritatively names the IPX Transport Domain
+
+    IpxTransportAddress ::= OCTET STRING (SIZE (12))<br>
+
+    -- A textual convention denoting a transport service address in
+    -- the ipxTransportDomain.  An IpxTransportAddress is 12 octets
+    -- long and comprises 3 fields, each in network-byte (high-low)
+    -- order.
+
+</p><p class="rfcparagraph">    -- The first field is 4 octets long and contains the network
+    -- number.
+
+</p><p class="rfcparagraph">    -- The next field is 6 octets long and contains the physical
+    -- address of the node.  Since IPX can run over a variety of
+    -- subnet architectures, the physical node address may not
+    -- require all 6 octets.  As specified in [2], the physical
+    -- node address will occupy the least significant portion of
+    -- the field and the most significant octets should be set
+    -- to zero.
+
+</p><p class="rfcparagraph">    -- The last field is 2 octets long and contains the socket
+    -- number.
+
+</p><p class="rfcparagraph"> END
+
+	<a name="section-3"><h2>3.   Document Procurement</h2></a>
+
+   This section provides contact points for procurement of selected
+   documents.
+
+</p><p class="rfcparagraph">   A complete description of IPX may be secured at the following
+   address:
+
+</p><p class="rfcparagraph">       Novell, Inc.
+       122 East 1700 South
+       P. O. Box 5900
+       Provo, Utah 84601 USA
+       800 526 5463
+       Novell Part # 883-000780-001
+
+   The specification for IDP (part of XNS) may be ordered from:
+
+</p><p class="rfcparagraph">       Xerox System Institute
+       475 Oakmead Parkway
+       Sunnyvale, CA 94086
+       Attn: Fonda Pallone
+       (415) 813-7164<br>
+
+	<a name="section-4"><h2>4.   References</h2></a>
+
+   [1] Case J., Fedor M., Schoffstall M., and J. Davin, "A Simple
+       Network Management Protocol (SNMP)", RFC 1157, SNMP Research,
+       Performance Systems International, Performance Systems
+       International, and MIT Laboratory for Computer Science, May 1990.
+
+</p><p class="rfcparagraph">   [2] Novell, Inc., "NetWare System Technical Interface Overview", June
+       1989.
+
+</p><p class="rfcparagraph">   [3] Xerox System Integration Standard, "Internet Transport
+       Protocols", XSIS 028112, Xerox Corporation, December 1981.
+
+</p><p class="rfcparagraph">   [4] Postel, J., "User Datagram Protocol," RFC 768, USC/Information
+       Sciences Institute, 28 August 1980.
+
+</p><p class="rfcparagraph">   [5] Kastenholz, F., "SNMP Communications Services," RFC 1270,
+       Clearpoint Research Corporation, October 1991.
+
+</p><p class="rfcparagraph">   [6] McCloghrie, K., Davin, J., and J. Galvin, "Definitions of Managed
+       Objects for Administration of SNMP Parties", RFC in preparation.
+
+</p>	<a name="section-5"><h2>5.   Security Considerations</h2></a>
+
+   Security issues are not discussed in this memo.
+	<a name="section-6"><h2>6.   Authors' Addresses</h2></a>
+
+   Raymond Brett Wormley
+   Novell, Inc.
+   2180 Fortune Drive
+   Mail Stop F5-91-2
+   San Jose, CA 95131
+
+   Phone: 408 473 8208
+   EMail: bwormley@novell.com
+
+
+   Steve Bostock
+   Novell, Inc.
+   2180 Fortune Drive
+   Mail Stop F5-91-2
+   San Jose, CA 95131
+
+   Phone: 408 473 8203
+   EMail: steveb@novell.com
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wormley & Bostock                                               [Page 5]
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

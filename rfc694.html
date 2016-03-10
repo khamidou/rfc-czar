@@ -1,0 +1,1730 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph">Network Working Group                                          J. Postel
+NWG / Request for Comments: 694                                  SRI-ARC
+                                                           June 18, 1975
+
+
+                          Protocol Information
+
+Introduction
+
+   This file contains information on the various protocols in the ARPA
+   Network.  An effort will be made to keep the information current, but
+   his depends on the cooperation of the users of this file to convey
+   any information about protocol developments, or corrections to this
+   information to Jon Postel at SRI-ARC.
+
+</p><p class="rfcparagraph">      Online address is POSTEL@BBNB; Phone is (415) 326-6200 x 3718;<br>
+      U.S. Mail address is Stanford Research Institute, Augmentation
+      Research Center, 222 Ravenswood, Menlo park, California 94025.
+
+</p><p class="rfcparagraph">   This is a compendium of all the protocol related activity and most of
+   this activity and most of this activity is with experimental
+   protocols, for those protocols, which are official standards the
+   designation "[Official]" will be appended to the name.
+
+</p><p class="rfcparagraph">   This protocol information file is online as:
+
+</p><p class="rfcparagraph">      Pathname: [OFFICE-1] <NETINFO.PROTOCOL-INFORMATION.TXT
+
+      and also [BBNB] <POSTEL.PROTCOL-INFORMATION.NLS
+
+   Much of the documentation of protocols appears as Requests for
+   Comments (RFCs) and many of these are available online.  When a
+   document is accessible online a pointer to that source will be given.
+   Also note that recent RFCs are online at Office-1 in directory
+   <NETINFO> with names of the form RFCnnn.TXT where nnn is replaced by
+   the RFC number.  There is also an index of recent RFCs as an online
+   file:
+
+</p><p class="rfcparagraph">      [Office-1] <NETINFOR>RFC-INDEX.TXT
+
+   There are three other online files that are relevant to protocols:
+
+</p><p class="rfcparagraph">      There is a file that lists Official Host Names and associated
+      information as described in RFC 608, the pathname of this file is:
+
+</p><p class="rfcparagraph">         [Office-1] <NETOINFO>HOSTS.TXT
+      There are two files that list the addresses of the Network
+      Liaisons, one file lists the online message address, and the other
+      the US Mail address and phone number.  A network liaison is a
+      person designated by a host organization as the contact and
+      coordinator for network technical information fro that
+      organization.
+
+</p><p class="rfcparagraph">         [Office-1] <NETINFO>LIAISON-SNDMSG.TXT
+
+         [Office-1] <NETINFO>LIAISON.TXT
+
+      These files are prepared by Jake Feinler of the Network
+      Information Center (NIC).  Indeed the NIC has been very helpful in
+      providing the online file space for the recent Request for
+      Comments, and other protocol related files.  The NIC also
+      maintains the hardcopy reference library of all RFCs.
+
+</p><p class="rfcparagraph">   The NIC has assembled and filed with the National Technical
+   information Service the collection of documents known as "ARPA
+   Network Current Network Protocols".  This collection represents the
+   more or less "official" protocols as of 1-December-74.  The accession
+   number is ADA003890.
+
+</p><p class="rfcparagraph">   IMP-IMP
+
+      surface
+
+         Contact:
+
+</p><p class="rfcparagraph">            Alex McKenzie (MCKENZIE@BBN)
+
+         Documents:
+
+</p><p class="rfcparagraph">            Heart, F. et. al. "the Interface Message Processor for the
+            ARPA Computer Network," AFIPS Conference Proceedings,
+            36:551-567, SJCC 1970.
+
+</p><p class="rfcparagraph">            McQuillan, J.M. et. al. "Improvements in the Design and
+            Performance of the ARPA Network," AFIPs Conference
+            Proceedings, 41:741-754 RFCC, 1972.
+
+</p><p class="rfcparagraph">            McQuillan, J.M. "Throughput in the ARPA network - Analysis
+            and Measurement," BBN Report 2491, the text is also
+            contained in BBN Quarterly Technical Report 16, available
+            from the National Technical Information Service [NTIS]
+            accession number AD7544441.
+         People:
+
+</p><p class="rfcparagraph">            John McQuillan (MCQUILLAN@BBN)
+
+            Schedule:
+
+</p><p class="rfcparagraph">            Comments:
+
+</p><p class="rfcparagraph">            Recent developments:
+
+</p><p class="rfcparagraph">         Satellite
+
+            Contact:
+
+</p><p class="rfcparagraph">               Randy Rettberg (RETTBERG@BBN)
+
+            Documents:
+
+</p><p class="rfcparagraph">            People:
+
+</p><p class="rfcparagraph">               Robert Kahn (KAHN@ISI)
+
+            Schedule:
+
+</p><p class="rfcparagraph">            Comments:
+
+</p><p class="rfcparagraph">            Recent developments:
+
+</p><p class="rfcparagraph">   IMP-HOST
+
+      IMP-HOST [Official]
+
+         Contact:
+
+</p><p class="rfcparagraph">            Alex McKenzie (MCKENZIE@BBN)
+
+         Documents:
+
+</p><p class="rfcparagraph">               "Specification for the Interconnection of a HOST and an
+               IMP," BBN Report 1822, Revised December 1974.  NTIS:
+               ADA002751.
+
+</p><p class="rfcparagraph">            People:
+
+</p><p class="rfcparagraph">               Alex McKenzie (MCKENZIE@BBN)
+
+               Dave Walden (WALDEN@BBN)
+               Jon Postel (POSTEL@BBNB)
+
+               Jerry Burchfiel (BURCHFIEL@BBN)
+
+               John McQuillan (MCQUILLAN@BBN)
+
+            Schedule:
+
+</p><p class="rfcparagraph">            Comments:
+
+</p><p class="rfcparagraph">               The "link number" field has been extended from 8 to 12
+               bits and renamed the "message identification" field.
+               Message type 6 now is used to indicate a reason for at
+               type 7 (destination dead) message. (See BBN1822).
+
+</p><p class="rfcparagraph">               There has been some recent changes to the Ready line
+               interpretation by the IMP for deciding the alive/dead
+               status of a host.
+
+</p><p class="rfcparagraph">               Important changes to the IMP and IMP/HOST Interface
+               announced in RFC 660 23-Oct-74.
+
+</p><p class="rfcparagraph">               (31-DEC-74) The change to allow up to eight messages to
+               be in transit between a source host and destination host
+               should be made very soon.  This should not effect the
+               hosts at all except to provide better thruput and fewer
+               inter-message delays.
+
+</p><p class="rfcparagraph">               (6-JAN-75) BBN Report 1822 updated.
+
+</p><p class="rfcparagraph">                  Sections 1, 2, 4, and 5, and Appendix C now include
+                  data on the Pluribus IMP.  The Pluribus IMP is based
+                  on a modular mutliprocessor hardware design; it should
+                  be capable of much higher bandwidth and greater
+                  reliability than other IMP models.
+
+</p><p class="rfcparagraph">                  Section 3.1 contains additional information, which may
+                  be helpful to Host programmers.
+
+</p><p class="rfcparagraph">                  Section 3.3 and 3.4 add a new type of Host to Host
+                  data message, the uncontrolled packet.  Section 3.7
+                  has been added to describe the use of this new message
+                  type.
+
+</p><p class="rfcparagraph">                  Section 3.4 describes changes to the sub-types of IMP
+                  to host message types 6 and 7.
+
+</p><p class="rfcparagraph">                  Appendix A has been updated.
+                  Appendix B has been expanded to provide specific
+                  recommendations for Host implementation of the
+                  Host/IMP Interface.
+
+</p><p class="rfcparagraph">                  Minor clarifications have been made in Appendix F. (No
+                  changes have been made to Figure F - (or F-9.)
+
+            Recent developments:
+
+</p><p class="rfcparagraph">               (18-June-75) Very important changes to the Host to IMP
+               and IMP to Host interface protocol are proposed
+               (specified?) in a recent note.  The areas changed
+               include: expanded leader size, expanded address field,
+               new message length field, expanded handling type field,
+               source host control of packets per message, change in the
+               handling of unordered messages (current type 3 messages),
+               change in the addressing of fake hosts, including an
+               address field in the IMP/Host hop message, (best of all)
+               backward compatibility, and a possible change in the
+               maximum message length.
+
+</p><p class="rfcparagraph">                 Walden, D. "IMP/Host and Host/IMP Protocol Change,"
+                 RFC 687, NIC 32654, 2-Jun-75.
+
+</p><p class="rfcparagraph">                         [OPfficed-1] <NETINFOR>RFC687.TXT
+
+               (18-Jun-75) Comments on the changes proposed by Walden in
+               RFC 687:
+
+</p><p class="rfcparagraph">                 Postel, J. "Comments on the proposed Host/IMP Protocol
+                 Changes," RFC 690, NIC 32699, 6-Jun-75.
+
+</p><p class="rfcparagraph">   HOST-HOST
+
+      ncp - standard host-to-host [Official]
+
+         Contact:
+
+</p><p class="rfcparagraph">            Jon Postel (POSTEL@BBN)
+
+         Documents:
+
+</p><p class="rfcparagraph">            McKenzie, A. "Host/Host Protocol for the ARPA Network," NIC
+            8246, NTIS: AD757680, Jan 1972.
+
+</p><p class="rfcparagraph">            Postel, J. "Assigned Link Numbers," RFC 604, NIC 21186, 26-
+            Dec-73.
+         People:
+
+</p><p class="rfcparagraph">            Jon Postel (POSTEL@BBNB)
+
+            Alex McKenzie (MCKENZIE@BBN)
+
+         Schedule:
+
+</p><p class="rfcparagraph">         Comments:
+
+</p><p class="rfcparagraph">         Recent developments:
+
+</p><p class="rfcparagraph">   ncp - host-to-host [Experimental]
+
+      Contact:
+
+</p><p class="rfcparagraph">         Jon Postel (POSTEL@BBNB)
+
+      Documents:
+
+</p><p class="rfcparagraph">         McKenzie, A. "host/Host Protocol for the ARPA Network," NIC
+         8246, NTIS: AD757680, Jan 1972.
+
+</p><p class="rfcparagraph">         Postel, J. "Assigned link Numbers," RFC 604, NIC 21186,
+         26-Dec-73.
+
+</p><p class="rfcparagraph">         Burchfiel, et. al. "Tip-Tenex Reliability Improvements" RFC 636
+         NIC 30490 June 1974.
+
+</p><p class="rfcparagraph">      People:
+
+</p><p class="rfcparagraph">         Jon Postel (POSTEL@BBNB)
+
+         Alex McKenzie (MCKENZIE@BBN)
+
+         Jerry Burchfiel (BURCHFIEL@BBN)
+
+         Dave Walden (WALDEN@BBN)
+
+      Schedule:
+
+</p><p class="rfcparagraph">      Comments:
+
+</p><p class="rfcparagraph">         The BBN TIP and TENEX groups have specified and are
+         implementing additional protocol commands with the intention of
+         providing better reliability and survivability over system
+         malfunctions.  The additional protocol commands are for
+         cleaning up partly closed connections and resynchronizing the
+         allocation values on open connections (see RFC 636).
+
+</p><p class="rfcparagraph">         (31-DEC-74) Tenex 1.32 and the Tips are now running this
+         protocol.
+
+</p><p class="rfcparagraph">      Recent developments:
+
+</p><p class="rfcparagraph">   ncp - host-to-host [Experimental]
+
+      Contact:
+
+</p><p class="rfcparagraph">         Jon Postel (POSTEL@BBNB)
+
+      Documents:
+
+</p><p class="rfcparagraph">         McKenzie, A. "Host/Host Protocol for the ARPA Network," NIC
+         8246, [NTIS # AD-757 680], Jan 1972
+
+         Postel, J. "Assigned Link Numbers," RFC604, NIC211685, 26-Dec-
+         73.
+
+</p><p class="rfcparagraph">         Kanodia, R. "A Lost Message Detection and Recovery Protocol,"
+         RFC 663, NIC 31387, 29-Nov-74.
+
+</p><p class="rfcparagraph">                 [OFFICE-1] <NETINFO>RFC663.TXT
+
+      People:
+
+</p><p class="rfcparagraph">         Jon Postel (POSTEL@BBNB)
+
+         Alex McKenzie (MCKENZIE@BBN)
+
+         Raj Kanodia (Kanodia.CompNet@MIT-Multics)
+
+      Schedule:
+
+</p><p class="rfcparagraph">      Comments:
+
+</p><p class="rfcparagraph">         (31-DEC-74) This recent proposal is interesting in several
+         features, but some have suggested that is aimed at a non-
+         problem.
+
+</p><p class="rfcparagraph">      Recent developments:
+
+</p><p class="rfcparagraph">   msp - Message Switching Protocol
+      Contact:
+
+</p><p class="rfcparagraph">         Dave Walden (WALDEN@BBN)
+
+      Documents:
+
+</p><p class="rfcparagraph">         Walden, D. "A System for Interprocess Communication in a
+         Resource Sharing Computer Network, " RFC 62, NIC 4962, 3-Aug-
+         70. Also published in Communications of the ACM volume 15,
+         number 4, April 1972.
+
+</p><p class="rfcparagraph">         Bressler, B. "A Proposed Experiment with a Message Switching
+         Protocol, " RFC 333, NIC 9926, 15-May-72.
+
+</p><p class="rfcparagraph">      People:
+
+</p><p class="rfcparagraph">         Dave Walden (WALDEN@BBN)
+
+         Bob Bressler  (BRESSLER@BBN)
+
+      Schedule:
+
+</p><p class="rfcparagraph">      Comments:
+
+</p><p class="rfcparagraph">      Recent developments:
+
+</p><p class="rfcparagraph">   tcp - Transmission Control Protocol
+
+      Contact:
+
+</p><p class="rfcparagraph">         Vint Cert (CERF@ISI)
+
+      Documents:
+
+</p><p class="rfcparagraph">         Cert, V. and R,. Kahn. "A Protocol for Packet Network
+         Intercommunication," IEEE Transactions on Communication Vol
+         COM- 22 No 5, May 1974.
+
+</p><p class="rfcparagraph">         Mader, E. "A Protocol Experiment," RFC 700, NIC 31020.
+
+</p><p class="rfcparagraph">                 [OFFICE-1] <NETINFO> RFC700.TXT
+
+         Cerf, V. Y. Dalal, and C. Sunshine. "Specification of Internet
+         Transmission Control Program," RFC 675, INWG 72, NIC 31505,
+         December 1974 Revision.
+
+</p><p class="rfcparagraph">      People:
+         Vint Cerf (CERF@ISI)
+
+         Ray Tomilnson (TOMLINSON@BBN)
+
+         Peter Kirstein (KIRSTEIN@ISI)
+
+         Jon Postel (POSTEL@BBN)
+
+      Schedule:
+
+</p><p class="rfcparagraph">         Some experiments now running.  Implementation of full protocol
+         to begin by 1-Jan-75.
+
+</p><p class="rfcparagraph">      Comments:
+
+</p><p class="rfcparagraph">         Specification completed August 4th, but some work still in
+         progress on handling of single message conversations.  A new
+         sequencing scheme (proposed by Tomlinson) may be utilized.  The
+         addressing field is now used as 4 bit format, 4 bit network, 16
+         bit TCP, and 24 bit process&port.
+
+</p><p class="rfcparagraph">         Crocker has suggested a 64 bit path address to be parsed and
+         reformatted by the gateways along the route.  There is
+         reluctance to experiment with too many things at once though.
+
+</p><p class="rfcparagraph">         (28-Oct-74) A file indicating some of the changes in the
+         specifications since the 4-Aug-74 document is now available as
+         [ISI] <CRF> TCP- CHANGES.  The areas of change are "Initial
+         Sequence Number", "Socket definition", "Additional User System
+         Calls", "Packet Format", and "Discussion of opening and closing
+         (SYN, REL)".
+
+</p><p class="rfcparagraph">         (23-NOV-74) Specifications for test implementation are now said
+         to be ready on 1-DEC-74, and an implementation completed by 1-
+         FEB-74.
+
+</p><p class="rfcparagraph">         (31-DEC-74) New specification document available:
+
+</p><p class="rfcparagraph">            Cerf, V. Y. Dalal, and C. Sunshine. "Specification of
+            Internet Transmission Control Program," RFC 675, INWG 72,
+            NIC 31505, December 1974 Revision.
+      Recent developments:
+
+</p><p class="rfcparagraph">         (30-May-75)
+
+            Status of TCP development.  The BBN version is running at
+            BBN-TENEXA, but simulates a lot of JSYS calls which will be
+            cast into the tenex operating system during the summer.  The
+            SU-DSL version for the PDP-11/20 is in the debugging stage.
+            The UCL (London) version for a PDP-9 is in the coding stage.
+            We are continuing with the "three-way handshake" version
+            which is highly reliable in environments which permit
+            packets to be delivered on the order of hours later than
+            they were injected into the connected networks.  A simple
+            TCP is being designed for the packet radio network and does
+            not use three-way handshake since waiting a second or so to
+            clear out old packets in not serious.
+
+</p><p class="rfcparagraph">            A test plan for packet radio net, arpanet, and atlantic
+            satellite networks is in preparation (delivery date 1 August
+            1975).
+
+</p><p class="rfcparagraph">            Recent international agreements indicate that a form of TCP
+            with a simpler header (144 bits instead of 256 bits) and no
+            three-way handshake is the most likely international
+            standard.  An IFIP WG 6.1 Recommendation to CCITT stated
+            that the maximum packet delay through all concatenated
+            networks should not exceed 30 seconds.
+
+</p><p class="rfcparagraph">   nvp -  Network Voice Protocol
+
+      Contact:
+
+</p><p class="rfcparagraph">         Danny Cohen (COHEN@ISIB)
+
+      Documents:
+
+</p><p class="rfcparagraph">         "Specifications for the Network Voice Protocol (NVP)" NSC Note
+            43.
+
+</p><p class="rfcparagraph">      People:
+
+</p><p class="rfcparagraph">      Schedule:
+
+</p><p class="rfcparagraph">      Comments:
+
+</p><p class="rfcparagraph">         Specification document available (10-Oct-74).
+         (20-JAN-75) An initial version of NVP was implemented for
+         real-time voice experiments between ISI and Lincoln Laboratory
+         in August 1974.  An expanded version has been in operation
+         since December 1974 for real-time voice communication between
+         Lincoln and CHI.  NVP uses both type 0 and type 3 IMP-Host
+         messages, and allows increased bandwidth and decreased delays
+         at the cost of reliability.
+
+</p><p class="rfcparagraph">      Recent developments:
+
+</p><p class="rfcparagraph">   packet radio
+
+      Contact:
+
+</p><p class="rfcparagraph">         Robert Kahn (KAHN@ISI)
+
+      Documents:
+
+</p><p class="rfcparagraph">      People:
+
+</p><p class="rfcparagraph">      Schedule:
+
+</p><p class="rfcparagraph">      Comments:
+
+</p><p class="rfcparagraph">      Recent developments:
+
+</p><p class="rfcparagraph">   Network Debugging Protocol
+
+      Contact:
+
+</p><p class="rfcparagraph">         Eric Mader (MADER@BBN)
+
+      Documents:
+
+</p><p class="rfcparagraph">         Mader, E. "Network Debugging Protocol," RFC 643, NIC 30873,
+         July-74.
+
+</p><p class="rfcparagraph">         Beeler, M. "Response Time in Cross-network Debugging," RFC 685,
+         NIC 32298, 16-April-75.
+
+</p><p class="rfcparagraph">                 [Office-1] <NETINFO> RFC685.TXT
+
+      People:
+
+</p><p class="rfcparagraph">         Michael Beeler (BEELER@BBN)
+
+         Eric Mader (MADER@BBN)
+         Dave Retz (RETZ@ISI)
+
+         Ken Victor (VICTOR@BBNB)
+
+      Schedule:
+
+</p><p class="rfcparagraph">      Comments:
+
+</p><p class="rfcparagraph">         This is a protocol for a PDP-11 cross-network debugger.
+
+</p><p class="rfcparagraph">      Recent Developments:
+
+</p><p class="rfcparagraph">         (15-May-75) A measure of the responsiveness of cross-network
+         debugging has been reported in:
+
+</p><p class="rfcparagraph">            Beeler, M. "Response Time in Cross-network Debugging," RFC
+            685, NIC 32298, 16-April-75.
+
+</p><p class="rfcparagraph">         [Office-1] <NETINFO>RFC685.TXT
+
+   pup - PARC Universal Protocol
+
+      Contact:
+
+</p><p class="rfcparagraph">         Ed Taft (TAF@PARC)
+
+      Documents:
+
+</p><p class="rfcparagraph">      People:
+
+</p><p class="rfcparagraph">         Ed Taft (TAFT@PARC)
+
+         Bob Metcalfe (METCALFE@PARC)
+
+      Schedule:
+
+</p><p class="rfcparagraph">      Comments:
+
+</p><p class="rfcparagraph">      Recent developments
+
+         (15-May-75) Link 151 (decimal) assigned.
+
+</p><p class="rfcparagraph">HOST-FRONTED
+
+   Host-Front End
+
+      Contact:
+         Michael Padlipsky (Padlipsky@MIT-Multics)
+
+      Documents:
+
+</p><p class="rfcparagraph">         Padlipsky, M. "A Proposed Protocol for Connecting Host
+         Computers to ARPA-Like Networks via Front-End Processors," RFC
+         647, NIC 31117, 12-Nov-74.
+
+</p><p class="rfcparagraph">                 [Office-1] <NETINFO>RFC647.TXT
+
+      People:
+
+</p><p class="rfcparagraph">         Michael Padlipsky (Padlipsky@MIT-Multics)
+
+         Jon Postel (POSTEL@BBNB)
+
+      Schedule:
+
+</p><p class="rfcparagraph">      Comments:
+
+</p><p class="rfcparagraph">         This is a suggested simple protocol for connecting host to
+         front end computers, which are in turn connected to the
+         network.
+
+</p><p class="rfcparagraph">      Recent developments:
+
+</p><p class="rfcparagraph">PROCESS-PROCESS
+
+   ICP - Initial Connection Protocol [Official]
+
+      Contact:
+
+</p><p class="rfcparagraph">         Jon Postel (POSTEL@BBNB)
+
+      Documents:
+
+</p><p class="rfcparagraph">         Postel, J. "Official Initial Connection Protocol," NIC 7101,
+         11-June-71.
+
+</p><p class="rfcparagraph">         Wolfe, S. [no title] RFC 202, NIC 7155, 26-July-71.
+
+</p><p class="rfcparagraph">         Postel, J. "Official Telnet-Logger Initial Connection
+         Protocol," NIC 7103, 15-June-71.
+
+</p><p class="rfcparagraph">      People:
+
+</p><p class="rfcparagraph">         Jon Postel (POSTEL@BBNB)
+      Schedule:
+
+</p><p class="rfcparagraph">      Comments:
+
+</p><p class="rfcparagraph">      Recent developments:
+
+</p><p class="rfcparagraph">Telnet
+
+   Old Telnet
+
+      Contact:
+
+</p><p class="rfcparagraph">         Jon Postel: (POSTEL@BBNB)
+
+      Documents:
+
+</p><p class="rfcparagraph">         Postel, J. "Telnet Protocol," RFC 318 3-April-72.
+
+</p><p class="rfcparagraph">      People:
+
+</p><p class="rfcparagraph">      Schedule:
+
+</p><p class="rfcparagraph">      Comments:
+
+</p><p class="rfcparagraph">      Recent developments:
+
+</p><p class="rfcparagraph">   New Telnet [Official]
+
+      Contact:
+
+</p><p class="rfcparagraph">         Jon Postel (POSTEL@BBNB)
+
+      Documents:
+
+</p><p class="rfcparagraph">         NIC 18639 "TELNET Protocol Specifications" AUG 73
+
+         NIC 18640 "Telnet Option Specification" Aug 73
+
+            Telnet Options
+
+              0     Transmit Binary
+
+                    "Binary Transmission," NIC 15389
+
+              1     Echo
+
+                    "Echo," NIC 15390
+              2     Reconnection
+
+                    "Reconnection," NIC 15391
+
+              3     Suppress Go Ahead
+
+                    "Suppress Go Ahead Option," NIC 15392.
+
+</p><p class="rfcparagraph">              4     Negotiate Approximate Message Size
+
+                    "Approximate Message Size Negotiation," NIC
+
+              5     Status
+
+                    Crocker, D. "Status," RFC 651, NIC 31154, 25-Oct-74.
+
+</p><p class="rfcparagraph">                         [Office-1] <NETINFO>RFC651.TXT
+
+              6     Timing Mark
+
+                    "Timing Mark," NIC 16238.
+
+</p><p class="rfcparagraph">              7     Remote Controlled Transmission and Echoing
+
+                    Crocker, D. "Remote Controlled Transmission and
+                    Echoing," NIC 19859, 1-Nov-73.
+
+</p><p class="rfcparagraph">              8     Negotiate About Output Line Width
+
+                    Walden, D. "Output Line Width," NIC 20196,
+                    13-Nov-73.
+
+</p><p class="rfcparagraph">              9     Negotiate About Output Page Size
+
+                    Walden, D. "Output Page Size," NIC 20197, 13-Nov-73.
+
+</p><p class="rfcparagraph">              10    Output Carriage Return Disposition
+
+                    Crocker, D. "Output Carriage Return Disposition,"
+                    RFC 652, NIC 31155, 25-Oct-74.
+
+</p><p class="rfcparagraph">                         [Office-1] <NETINFO>RFC652.TXT
+
+              11    Output Horizontal Tab Stops
+
+                    Crocker, D. "Output Horizontal Tab Stops," RFC 653,
+                    NIC 31156, 25-Oct-74.
+                         [Office-1] <NETINFO>RFC653.TXT
+
+              12    Output Horizontal Tab Disposition
+
+                    Crocker, D. "Output Horizontal Tab Disposition,"
+                    RFC 654, NIC 31157, 25-Oct-74.
+
+</p><p class="rfcparagraph">              13    Output Formfeed Disposition
+
+                    Crocker, D. "Output Form Feed Disposition," RFC 655,
+                    NIC 31158, 25-Oct-74.
+
+</p><p class="rfcparagraph">                         [Office-1] <NETINFO>RFC655.TXT
+
+              14    Output Vertical Tab Stops
+
+                    Crocker, D. "Output Vertical Tab Stops," RFC 656,
+                    NIC 31159, 25-Oct-74.
+
+</p><p class="rfcparagraph">              15    Output Vertical Tab Disposition
+
+                    Crocker, D. "Output Vertical Tab Disposition," RFC
+                    657, NIC 31160, 25-Oct-74.
+
+</p><p class="rfcparagraph">                         [Office-1] <NETINFO>RFC657.TXT
+
+              16    Output Linefeed Disposition
+
+                    Crocker, D. "Output Line Feed Disposition," RFC 658,
+                    NIC 31161, 25-Oct-74.
+
+</p><p class="rfcparagraph">                         [Office -1] <NETINFO>RFC658.TXT
+
+              255  Extended Options List
+
+                   "Extended Options List," NIC 16239.
+
+</p><p class="rfcparagraph">      People:
+
+</p><p class="rfcparagraph">         Jon Postel (POSTEL@BBN)
+
+         Alex McKenzie (MCKENZIE@BBN)
+
+         Doug Dodds (DODDS@BBN)
+
+         Dave Crocker (DCROCKER@ISI)
+
+      Schedule:
+         All Hosts were to have been running the new Telnet (both user
+         and server) by 1 January 1974.
+
+</p><p class="rfcparagraph">      Comments:
+
+</p><p class="rfcparagraph">         Note: the server program is to be available on socket 23
+         decimal (27 octal).
+
+</p><p class="rfcparagraph">         The Status Option has been revised to take advantage of the
+         subcommand feature and to reduce the amount of data transmitted
+         to report the option status.
+
+</p><p class="rfcparagraph">         Seven new options have been defined to allow control of the
+         format effectors Carriage Return, Line Feed, Form Feed,
+         Horizontal Tab, and Vertical Tab.
+
+</p><p class="rfcparagraph">         (31-DEC-74) Rick Schantz has made some suggestions regarding
+         the Reconnection Option in:
+
+</p><p class="rfcparagraph">            Schantz, R. "A Note on Reconnection Protocol," RFC 671, NIC
+            31439, 6-Dec-74.
+
+</p><p class="rfcparagraph">                 [Office-1] <NETINFO>RFC671.TXT
+
+      Recent developments:
+
+</p><p class="rfcparagraph">         (15-May-75) The latest survey of Telnet Server status by Doug
+         Dodds is:
+
+</p><p class="rfcparagraph">            Dodds, D. "February, 1975, Survey of New-Protocol Telnet
+            Servers," RFC 679, NIC 31890, 21-Feb-75.
+
+</p><p class="rfcparagraph">                    [Office-1] <NETINFO>RFC669.TXT
+
+         (18-Jun-75) A schedule for implementation of New Telnet in the
+         TIP has been published:
+
+</p><p class="rfcparagraph">            Walden, D. "Tentative Schedule for the New Telnet
+            Implementation for the TIP," RFC 688, NIC 32655, 4-Jun-75.
+
+</p><p class="rfcparagraph">                    [Office-1] <NETINFO>RFC688.TXT
+
+FTP
+
+   Old File Transfer
+
+      Contact:
+                 Jon Postel (POSTEL@BBNB)
+
+      Documents:
+
+</p><p class="rfcparagraph">         McKenzie, A. "File Transfer Protocol," NIC 14333, RFC 454, 16-
+         Feb-73.
+
+</p><p class="rfcparagraph">         Clements, R. "FTPSRV - Extensions for Tenex Paged Files, "RFC
+         683, NIC 32251, 3-April-75.
+
+</p><p class="rfcparagraph">                 [Office-1] <NETINFO>RFC683.TXT
+
+         Harvey, B. "One More Try on the FTP," RFC 691, NIC 32700, 6-
+         Jun-75.
+
+</p><p class="rfcparagraph">                 [Office-1] <NETINFO>RFC691.TXT
+
+      People:
+
+</p><p class="rfcparagraph">         Nancy Neigus (NEIGUS@BBN)
+
+         Jon Postel (POSTEL@BBN)
+
+         Alex McKenzie (MCKENZIE@BBN)
+
+         Robert Clements (CLEMENTS@BBN)
+
+         Brian Harvey (BH@SU-AI)
+
+      Schedule:
+
+</p><p class="rfcparagraph">      Comments:
+
+</p><p class="rfcparagraph">         (31-DEC-74) Kanodia has published an RFC on performance
+         measurements of FTP at Multics, which shows the important
+         effect of Host buffering in constraining thruput.
+
+</p><p class="rfcparagraph">            Kanodia, R. "Performance Improvement in ARPANET File
+            Transfers From Multics," RFC662, NIC 31386, 26-Nov-74.
+
+</p><p class="rfcparagraph">                    [Office-1] <NETINFO>RFC662.TXT
+
+      Recent developments:
+
+</p><p class="rfcparagraph">         (15-May-75) The Tenex FTP implementation has been extended to
+         transfer paged files as described in:
+            Clements, R. "FTPSRV - Extensions for Tenex Pages Files,"
+            RFC 683, NIC 32251, 3-April-75.
+
+</p><p class="rfcparagraph">                    [Office-1] <NETINFO>RFC683.TXT
+
+         (18-Jun-75) Brian Harvey has suggested that old FTP is good
+         enough, that it is in wide use, so lets just fix the bugs
+         instead of implementing new FTP.  His suggested bug fixes are
+         also included in his RFC:
+
+</p><p class="rfcparagraph">            Harvey, B. "One More Try on the FTP," RFC 691, NIC 32700, 6-
+            Jun-75.
+
+</p><p class="rfcparagraph">                    [Office-1] <NETINFO>RFC691.TXT
+
+   New File Transfer
+
+      Contact:
+
+</p><p class="rfcparagraph">         Jon Postel (POSTEL@BBNB)
+
+      Documents:
+
+</p><p class="rfcparagraph">         Neigus, N. "File Transfer Protocol," NIC 17759 RFC 542 12-
+         July-73.
+
+</p><p class="rfcparagraph">         Postel, J. "Revised FTP Reply Codes," NIC 30843 RFC 640 5-
+         June-74.
+
+</p><p class="rfcparagraph">      People:
+
+</p><p class="rfcparagraph">         Jon Postel (POSTEL@BBNB)
+
+         Nancy Neigus (NEIGUS@BBN)
+
+         Ken Pogran (Pogran.CompNet@MIT-Multics)
+
+         Wayne Hathaway (Hathaway@AMES-67)
+
+      Schedule:
+
+</p><p class="rfcparagraph">      Comments:
+
+</p><p class="rfcparagraph">      Recent developments:
+
+</p><p class="rfcparagraph">   Pathnames
+
+      Contact:
+      Jon Postel (POSTEL@BBNB)
+
+      Documents:
+
+</p><p class="rfcparagraph">         Crocker, D. "Network Standard Data Specification Syntax," RFC
+         645, NIC 30899, Jul-74.
+
+</p><p class="rfcparagraph">      People:
+
+</p><p class="rfcparagraph">         Dave Crocker (DCROCKER@ISI)
+
+      Schedule:
+
+</p><p class="rfcparagraph">      Comments:
+
+</p><p class="rfcparagraph">      Recent developments:
+
+</p><p class="rfcparagraph">   File Access Protocol
+
+      Contact:
+
+</p><p class="rfcparagraph">         Jon Day (Day.CAC@MIT-Multics)
+
+      Documents:
+
+</p><p class="rfcparagraph">         Day, J. "Memo to FTP Group: File Access Protocol," RFC 520, NIC
+         16819, 25-Jun-73.
+
+</p><p class="rfcparagraph">      People:
+
+</p><p class="rfcparagraph">         Ken Pogran (Pogran.CompNet@MIT-Multics)
+
+      Schedule:
+
+</p><p class="rfcparagraph">      Comments:
+
+</p><p class="rfcparagraph">      Recent developments:
+
+</p><p class="rfcparagraph">   File formats
+
+      Contact:
+
+</p><p class="rfcparagraph">         Jon Postel (POSTEL@BBNB)
+
+      Documents:
+
+</p><p class="rfcparagraph">         Postel, J. "Standard File Formats," RFC 678, NIC 31524, 19-
+         Dec-74.
+                 [Office-1] <NETINFO>RFC678.TXT
+
+      People:
+
+</p><p class="rfcparagraph">         Jon Postel (POSTEL@BBNB)
+
+      Schedule:
+
+</p><p class="rfcparagraph">      Comments:
+
+</p><p class="rfcparagraph">         (31-DEC-74) This new format standard for document file was
+         published:
+
+</p><p class="rfcparagraph">            Postel, J. "Standard File Formats," RFC678, NIC 31524, 19-
+            Dec-74.
+
+</p><p class="rfcparagraph">                    [Office-1] <NETINFO>RFC678.TXT
+
+      Recent developments:
+
+</p><p class="rfcparagraph">Mail
+
+   Current Mail
+
+      Contact:
+
+</p><p class="rfcparagraph">                 Jon Postel (POSTEL@BBNB)
+
+      Documents:
+
+</p><p class="rfcparagraph">         Page 26 of RFC 454 (see old file transfer).
+
+</p><p class="rfcparagraph">         Myer, T. "Message Transmission Protocol," RFC 680, NIC 32116,
+         30-April-75.
+
+</p><p class="rfcparagraph">                 [Office-1] <NETINFO>RFC680.TXT
+
+         Sussman, J. "FTP Error Code Usage for More Reliable Mail
+         Service," RFC 630, NIC 30237, 10-Apr-74.
+
+</p><p class="rfcparagraph">         Thomas, B. "On the problem of Signature Authentication for
+         Network Mail," RFC 644, NIC 30874, 22-July-74.
+
+</p><p class="rfcparagraph">      People:
+
+</p><p class="rfcparagraph">         Ted Meyer (MYER@BBN)
+
+         Austin Henderson (HENDERSON@BBN)
+         Julie Sussman (SUSSMAN@BBN)
+
+         Bob Thomas (THOMAS@BBN)
+
+         Jon Postel (POSTEL@BBNB)
+
+      Schedule:
+
+</p><p class="rfcparagraph">      Comments:
+
+</p><p class="rfcparagraph">         Concern over the authentication of the author of network
+         messages has lead to the concept of an authorized mail sending
+         process (see RFC 644).
+
+</p><p class="rfcparagraph">      Recent developments:
+
+</p><p class="rfcparagraph">         (15-May-75) The standard formats for mail header information
+         fields have been extended as documented in:
+
+</p><p class="rfcparagraph">            Myer, T. "Message Transmission Protocol," RFC 680, NIC
+            32116, 30-April-75.
+
+</p><p class="rfcparagraph">   Proposed Mail
+
+      Contact:
+
+</p><p class="rfcparagraph">         Jon Postel (POSTEL@BBNB)
+
+      Documents:
+
+</p><p class="rfcparagraph">         White, J. "A Proposed Mail Protocol," RFC 524, NIC 17140, 13-
+         Jun-73.
+
+</p><p class="rfcparagraph">         Crocker, D. "Thoughts on the Mail Protocol Proposed in RFC
+         524," RFC 539, NIC 17644, 7-JULY-73.
+
+</p><p class="rfcparagraph">         White, J. "Response to Critiques of the Proposed Mail
+         Protocol," RFC 555, NIC 17993, 27-July-73.
+
+</p><p class="rfcparagraph">         Crocker, D. "Mail Priority," RFC 577, NIC 19356, 18-Oct-73.
+
+</p><p class="rfcparagraph">      People:
+
+</p><p class="rfcparagraph">         Jim White (JWHITE@BBNB)
+
+         Postel (POSTEL@BBNB)
+
+         Dave Crocker at UCLA-NMC (DCROCKER@ISI)
+      Schedule:
+
+</p><p class="rfcparagraph">      Comments:
+
+</p><p class="rfcparagraph">      Recent developments:
+
+</p><p class="rfcparagraph">   RJE - Remote Job Entry
+
+      Contact:
+
+</p><p class="rfcparagraph">                 Jon Postel (POSTEL@BBNB)
+
+      Documents:
+
+</p><p class="rfcparagraph">         Bressler, B. "Remote Job Entry Protocol," RFC 407, NIC 12112,
+         16-Oct- 72.
+
+</p><p class="rfcparagraph">         Krilanovich, M. "Announcement of RJS at UCSB," RFC 436, NIC
+         13700, 10-Jan-73.
+
+</p><p class="rfcparagraph">      People:
+
+</p><p class="rfcparagraph">      Schedule:
+
+</p><p class="rfcparagraph">      Comments:
+
+</p><p class="rfcparagraph">      Recent developments:
+
+</p><p class="rfcparagraph">   RJS - CCNs Remote Job Service
+
+      Contact:
+
+</p><p class="rfcparagraph">         Robert Braden (BRADEN@UCLA-CCN)
+
+      Documents:
+
+</p><p class="rfcparagraph">         Braden, R. "Interim NETRJS Specification," RFC 189, NIC 7133,
+         15- July-71.
+
+</p><p class="rfcparagraph">         Harslem, E. "Using Network Remote Job Entry," RFC 307, NIC
+         9258, 24- Feb-72.
+
+</p><p class="rfcparagraph">         Braden, R. "Update on NETRJS," RFC 599, NIC 20854, 13-Dec-73.
+
+</p><p class="rfcparagraph">         Crocker, D. "CCNRJS: Remote Job Entry between Tenex and UCLA-
+         CCN," NUTS Note 22, 5-Mar-75.
+
+</p><p class="rfcparagraph">                 [ISI] <DOCUMENTATION>CCNRJS.DOC
+      People:
+
+</p><p class="rfcparagraph">         Robert Braden (BRADEN@UCLA-CCN)
+
+         Steve Wolfe (WOLFE@UCLA-CCN)
+
+         Dave Crocker (DCROCKER@ISI)
+
+      Schedule:
+
+</p><p class="rfcparagraph">      Comments:
+
+</p><p class="rfcparagraph">      Recent developments:
+
+</p><p class="rfcparagraph">   Graphics
+
+      Contact:
+
+</p><p class="rfcparagraph">         Robert Spoull (SPROULL@PARC-MAXC)
+
+      Documents:
+
+</p><p class="rfcparagraph">         Sproull, R. and E. Thomas. "A Networks Graphics Protocol," NIC
+         24308, 16-Aug-74.
+
+</p><p class="rfcparagraph">      People:
+
+</p><p class="rfcparagraph">         Robert Sproull (SPROULL@PARC-MAXC)
+
+         Elaine Thomas (Thomas@MIT-Multics)
+
+         James Michener (JCM@MIT-DMS)
+
+      Schedule:
+
+</p><p class="rfcparagraph">      Comments:
+
+</p><p class="rfcparagraph">         Document available from Robert Sproull.
+
+</p><p class="rfcparagraph">      Recent developments:
+
+</p><p class="rfcparagraph">   Data Reconfiguration Service
+
+      Contact:
+
+</p><p class="rfcparagraph">         Jon Postel (POSTEL@BBNB)
+
+      Documents:
+         Anderson, B. "Status Report on Proposed Data Reconfiguration
+         Service," RFC 138, NIC 6715, 28-April-71.
+
+</p><p class="rfcparagraph">         Feah, "Data Reconfiguration Service at UCSB," RFC 437, NIC
+         13701, 30- June-74.
+
+</p><p class="rfcparagraph">      People:
+
+</p><p class="rfcparagraph">      Schedule:
+
+</p><p class="rfcparagraph">      Comments:
+
+</p><p class="rfcparagraph">      Recent developments:
+
+</p><p class="rfcparagraph">   RSEXEC - The Resource Sharing Executive
+
+      Contact:
+
+</p><p class="rfcparagraph">         Robert Thomas (THOMAS@BBN)
+
+      Documents:
+
+</p><p class="rfcparagraph">         Thomas, R. "A Resource Sharing Executive For the ARPANET,"
+         AFIPS Conference Proceedings, 42;155-163, NCC, 1973.
+
+</p><p class="rfcparagraph">      People:
+
+</p><p class="rfcparagraph">         Robert Thomas (THOMAS@BBN)
+
+      Schedule:
+
+</p><p class="rfcparagraph">      Comments:
+
+</p><p class="rfcparagraph">         The TIPs and some RSEXEC servers now are cooperating to perform
+         TIP user authentication and accounting functions.
+
+</p><p class="rfcparagraph">      Recent developments:
+
+</p><p class="rfcparagraph">   Line Processor Protocol
+
+      Contact:
+
+</p><p class="rfcparagraph">         Don Andrews (ANDREWS@BBNB)
+
+      Documents:
+
+</p><p class="rfcparagraph">         [BBNB] <LP>MCS4.NLS
+         Andrews, D. "Line Processor - A Device for Amplification of
+         Display Terminal Capabilities for Text Manipulation," AFIPS
+         Conference Proceedings, 43:257-265, NCC, 1974.
+
+</p><p class="rfcparagraph">      People:
+
+</p><p class="rfcparagraph">         Martin Hardy (HARDY@BBNB)
+
+         Don Andrews (ANDREWS@BBNB)
+
+      Schedule:
+
+</p><p class="rfcparagraph">      Comments:
+
+</p><p class="rfcparagraph">      Recent developments:
+
+</p><p class="rfcparagraph">PROGRAMS
+
+   Neted - Network Standard Editor [Official]
+
+      Contact:
+
+</p><p class="rfcparagraph">         Michael Padlipsky (Padlipsky@MIT-Mulitics)
+
+      Documents:
+
+</p><p class="rfcparagraph">         Padlipsky, M. "NETED: A Common Editor for the ARPA Network,"
+         RFC 569, NIC 18972, 15-Oct-73.
+
+</p><p class="rfcparagraph">      People:
+
+</p><p class="rfcparagraph">         Michale Padlipsky (Padlipsky@MIT-Multics)
+
+         Jon Postel (POSTEL@BBNB)
+
+         Wayne Hathaway (HATHAWAY@AMES-67)
+
+      Schedule:
+
+</p><p class="rfcparagraph">      Comments:
+
+</p><p class="rfcparagraph">      Recent developments:
+
+</p><p class="rfcparagraph">   UULP - Unified User-Level Protocol
+
+      Contact:
+
+</p><p class="rfcparagraph">                 Michael Padlipsky (Padlipsky@MIT-Multics)
+      Documents:
+
+</p><p class="rfcparagraph">         Padlipsky, M. "Specification of a Unified User-Level Protocol,"
+         RFC 666, NIC 31396, 26-Nov-73.
+
+</p><p class="rfcparagraph">                 [Office-1] <NETINFO>RFC666.TXT
+
+      People:
+
+</p><p class="rfcparagraph">         Michael Padlipsky (Padlispksy@MIT-Multics)
+
+         Jon Postel (POSTEL@BBNB)
+
+      Schedule:
+
+</p><p class="rfcparagraph">      Comments:
+
+</p><p class="rfcparagraph">         Also know as Common Command Language (CCL).
+
+</p><p class="rfcparagraph">      Recent developments:
+
+</p><p class="rfcparagraph">NATIONAL SOFTWARE WORKS
+
+   The national Software Works (NSW) is developing a set of protocols
+   for its use of the ARPA Network, other uses of these protocols is
+   encouraged.
+
+</p><p class="rfcparagraph">   The Distributed Programming System (DPS) is intended to facilitate
+   the sharing of resources in the network at the subroutine level.  The
+   Distributed Programming System will be used to split NLS into a front
+   end and back end components.  Distributed Programming system is also
+   to be used in the NSW and the basis for communication between the
+   Works Manager, the Tool Bearing Hosts, and Front End procedure
+   packages.
+
+</p><p class="rfcparagraph">   The documents cited below give a view of the Distributed Programming
+   System and its use.
+
+</p><p class="rfcparagraph">   Contact:
+
+</p><p class="rfcparagraph">      Jim White (JWHITE@BBNB)
+
+      Jon Postel (POSTEL@BBNB)
+   Documents:
+
+</p><p class="rfcparagraph">      The documents cited here represent the state of the protocol in
+      January-75, much as changed since that time that has not been
+      adequately documented, therefore, these documents should be viewed
+      as generally descriptive not specifically definitive.
+
+</p><p class="rfcparagraph">      Each is available online in two forms: as an NLS file and as a
+      formatted text file.  The Journal number (e.g., 24459) refers to
+      the former, of course and the pathname (e.g., [BBNB] <NLS>PCP.TXT)
+      to the latter, accessible via FTP using username=ANONYMOUS and
+      password=GUEST (no account required).
+
+</p><p class="rfcparagraph">      In addition, these documents are available from Jon Postel in
+      hardcopy.
+
+</p><p class="rfcparagraph">                 PCP (24459,) "The Procedure Call Protocol"
+
+            This document describes the virtual programming environment
+            provided by PCP, and the inter-process exchanges that
+            implement it.
+
+</p><p class="rfcparagraph">                    Pathname: [BBNB] <NLS>PCP.TXT
+
+         PIP (24460,) "The Procedure Interface Package"
+
+            This document describes a package that runs in the setting
+            provided by PCP and that serves as procedure-call-level
+            interface to PCP proper.  It includes procedures for
+            calling, resuming, interrupting, and aborting remote
+            procedures.
+
+</p><p class="rfcparagraph">                    Pathname: [BBNB] <NLS>PIP.TXT
+
+         PSP (24461,) "The PCP Support Package"
+
+            This document describes a package that runs in the setting
+            provided by PCP and that augments PCP proper, largely in the
+            area of data store manipulation.  It includes procedures for
+            obtaining access to groups of remote procedures and data
+            stores, manipulating remote data stores, and creating
+            temporary ones.
+
+</p><p class="rfcparagraph">                    Pathname: [BBNB] <NLS>PSP.TXT
+         PMP (24462,) "The Process Management Package"
+
+            This document describes a package that runs in the setting
+            provided by PCP and that provides the necessary tools for
+            interconnecting two or more processes to form a multi-
+            process system (e.g., NSW).  It includes procedures for
+            creating, deleting, logically and physically interconnecting
+            processes, and for allocating and releasing processors.
+
+</p><p class="rfcparagraph">                    Pathname: [BBNB] <NLS>PMP.TXT
+
+         PCPFMT (24576,) "PCP Data Structure Formats"
+
+            This document defines formats for PCP data structures, each
+            of which is appropriate for one or more physical channel
+            types.
+
+</p><p class="rfcparagraph">                    Pathname: [BBNB] <NLS>PCPFMT.TXT
+
+         PCPHST (24577,) "PCP ARPANET Inter-Host IPC Implementation"
+
+            This document defines an implementation, appropriate for
+            mediating communication between Tenex forks, of the IPC
+            primitives required by PCP.
+
+</p><p class="rfcparagraph">                    Pathname: [BBNB] <NLS>PCPHST.TXT
+
+         PCPFRK (24578,) "PCP Tenex Inter-Fork IPC Implementation"
+
+            This document defines an implementation, appropriate for
+            mediating communication between processes on different hosts
+            within the ARPANET, of the IPC primitives required by PCP.
+
+</p><p class="rfcparagraph">                    Pathname: [BBNB] <NLS>PCPFRK.TXT
+
+         PCPTNXINT (24792,) "Tenex PCP Process internal Structure"
+
+            This document defines the internal structure of a PCP
+            process implemented to run on Tenex, and as such serves as a
+            process implementer's guide.  It describes the process' fork
+            structure, the role and composition of each fork, and the
+            manner in which the various forks interact with one another;
+            indicates which components are supplied with PCP and which
+            are the responsibility of the process implementer; and
+            describes the manner in which the components are assembled
+            at load time.
+
+</p><p class="rfcparagraph">                    Pathname: [BBNB] <NLS>PCPTNXINT.TXT
+         HOST (24581,) "NSW Host Protocol"
+
+            This document describes the host level protocol used in the
+            NSW.  The protocol is a slightly constrained version of the
+            standard ARPANET host to host protocol.  The constraints
+            affect the allocation, RFNM wait, and retransmission
+            policies.
+
+</p><p class="rfcparagraph">                    Pathname: [BBNB] <NLS>HOST.TXT
+
+         EXEC (24580,) "The Executive Package"
+
+            This document describes a package that runs in the setting
+            provided by PCP.  It includes procedures and data stores for
+            user identification, accounting, and usage information.
+
+</p><p class="rfcparagraph">                    Pathname: [BBNB] <NLS>EXEC.TXT
+
+         FILE (24582,) "The File Package"
+
+            This document describes a package that runs in the setting
+            provided by PCP.  It includes procedures and data stores for
+            opening, closing, and listing directories, for creating,
+            deleting, and renaming files, and for transferring the files
+            and file elements between processes.
+
+</p><p class="rfcparagraph">                    Pathname: [BBNB] <NLS>FILE.TXT
+
+         FILE-APP (24813,) "The File Package Appendix"
+
+            This appendix contains some comments on implementation
+            strategy.  The thrust is to argue that the file package as
+            specified is near minimal and that the conversion between
+            the PCP format and the internal storage format can be
+            encapsulated into a few subroutines.
+
+</p><p class="rfcparagraph">                    Pathname: [BBNB] <NLS>FILE-APP.TXT
+
+         BATCH (24583,) "The Batch Job Package"
+
+            This document describes a package that urns in the setting
+            provided by PCP.  It includes procedures for creating and
+            deleting batch jobs, obtaining the status of a batch job,
+            and communicating with the operator of a batch processing
+            host.  This package is implemented at the host that provides
+            the batch processing facility.
+
+</p><p class="rfcparagraph">                    Pathname: [BBNB] <NLS>BATCH.TXT
+         LLDBUG (24579,) "The Low-Level Debug Package"
+
+            This document describes a package that runs in the setting
+            provided by PCP.  It includes procedures for a remote
+            process to debug at the assembly-language level, any
+            processes known to the local process.  The package contains
+            procedures for manipulating and searching the process'
+            address space, for manipulating and searching its symbol
+            tables, and for setting and removing breakpoints from its
+            address space.  Its data stores hold process characteristics
+            and state information, and the contents of program symbol
+            tables.
+
+</p><p class="rfcparagraph">                    Pathname: [BBNB] <NLS.LLDBUG.TXT
+
+         RJE-MODEL (24655,) "The NSW Remote Job Entry Model"
+
+            This document discusses the process of utilizing a batch
+            processing facility to complete a programming task in the
+            NSW environment.  This same activity in another environment
+            might utilize a remote job entry system.
+
+</p><p class="rfcparagraph">                    Pathname: [BBNB] <NLS>RJE-MODEL.TXT
+
+         TBH (24656,) "NSW Requirements on Tool Rearing Hosts"
+
+            This document discusses the environment needed in the tool
+            bearing host and the interfaces to the operating system
+            components by various PCP packages.
+
+</p><p class="rfcparagraph">                    Pathname: [BBNB] <NLS>TBH.TXT
+
+         NVTP (24827,) "The Network Virtual Terminal Package"
+
+            The Network Virtual Terminal Package (package name = NVTP)
+            contains the procedures interfacing PCP procedure calls to
+            terminal oriented input and output character streams as
+            defined by the ARPANET Telnet protocol.
+
+</p><p class="rfcparagraph">                    Pathname: [BBNB] <NLS>NVTP.TXT
+
+         NTP (25008,) "The NSW Tool Package"
+
+            This document describes the procedures and data stores
+            required of a process for use as a tool within the NSW.
+
+</p><p class="rfcparagraph">                    Pathname: [BBNB] <NLS>NTP.TXT
+         NSWSTRUC (25009,) "NSW Process Structure"
+
+            This document describes the structure of the PCP process
+            tree used in the NSW.
+
+</p><p class="rfcparagraph">                    Pathname: [BBNB] <NLS>NSWSTRUC.TXT
+
+         PCPV2CHANGES (25062,) "PCP Inter-Version (2-3) Documentation"
+
+            This document describes the divergence from the Version 2
+            documentation in the implementation and current thinking.
+
+</p><p class="rfcparagraph">                    Pathname: [BBNB] <NLS>PCPV2CHANGES.TXT
+
+      People:
+
+</p><p class="rfcparagraph">         Jim White (JWHITE@BBNB)
+
+         Jon Postel (POSTEL@BBNB)
+
+         Steve Warshall (WARSHALL@BBNB)
+
+         Robert Millstein (MILLSTEIN@BBNB)
+
+         Dick Mandell (MANDELL@ISIB)
+
+         Elizabeth Michael (MICHAEL@BBNB)
+
+         Dave Maynard (MAYNARD@BBNB)
+
+         Charles Irby (IRBY@BBNB)
+
+         Ken Victor (VICTOR@BBNB)
+
+      Schedule:
+
+</p><p class="rfcparagraph">         A demonstration of the National Software Works is to be
+         performed in summer 1975.
+
+</p><p class="rfcparagraph">      Comments:
+
+</p><p class="rfcparagraph">         (31-DEC-74) The following are the latest documents:
+
+</p><p class="rfcparagraph">            PCPFRK (24578,) "PCP Tenex Inter-Fork IPC Implementation"
+
+            FILE-APP (24813,) "The File Package Appendix"
+
+            RJE-MODEL (24655,) "The NSW Remote Job Entry Model"
+            TBH (24656,) "NSW Requirements on Tool Bearing Hosts"
+
+            NVTP (24827,) "The Network Virtual Terminal Package"
+
+         (21-JAN-75) The following are the latest documents:
+
+</p><p class="rfcparagraph">            NTP (25008,) "The NSW Tool Package"
+
+            NSWSTRUC (25009,) "NSW Process Structure"
+
+            PCPV2CHANGES (25062,) "PCP Inter-Version (2-3)
+            Documentation"
+
+      Recent developments:
+
+</p><p class="rfcparagraph">         (15-May-75) Significant changes in design and initial scope
+         have altered the implementation of the Distributed Programming
+         System from the design presented in these documents, the
+         documents still serve to give the flavor of the intended
+         system, but no longer are a reliable guide to the details of
+         the actual implementation.
+
+</p><p class="rfcparagraph">         (18-Jun-75) The L10 source code of the Tenex implementation is
+         available online as:
+
+</p><p class="rfcparagraph">                 [BBNB] <NLS>C2DPS.TXT
+
+         (18-Jun-75) A description of the user interface to DPS in Tenex
+         is available online as:
+
+</p><p class="rfcparagraph">                 [BBNB] <JWHITE>DPSJSYS.TXT
+
+         (18-Jun-75) A description of the Works Manager procedures is
+         available online as:
+
+</p><p class="rfcparagraph">                 [BBNB] <MILLSTEIN>WM-PROCEDURES.TXT
+
+         (18-Jun-75) A set of memos describing the interface to the
+         B4700 batch system is available online as:
+
+</p><p class="rfcparagraph">                 [BBNB] <MUNTZ>BMEMO.n
+
+                         where n is in the range 1 thru 12.
+
+</p><p class="rfcparagraph">         (18-Jun-75) A description of the file package is available
+         online as:
+
+</p><p class="rfcparagraph">                 [BBNB] <NLS>25850.TXT
+         (18-Jun-75) A description of the 8 bit binary communication
+         format is available online as:
+
+</p><p class="rfcparagraph">                 [BBNB]25966.TXT
+
+ADDRESS ASSIGNMENTS
+
+   Assigned Links
+
+      Contact:
+
+</p><p class="rfcparagraph">         Jon Postel (POSTEL@BBNB)
+
+      Documents:
+
+</p><p class="rfcparagraph">         Link Assignments:
+
+</p><p class="rfcparagraph">            Decimal         Octal           Use
+            0               0               Control Messages
+            1               1               Reserved
+            2-71            2-107           Regular Messages
+            72-151          110-227         Reserved
+            152             230             PARC Universal Protocol
+            153             231             TIP Status Reporting
+            154             232             TIP Accounting
+            155-158         233-236         Internet Protocol
+            159-191         237-277         Measurements
+            192-195         300-303         Message Switching Protocol
+            196-255         304-255         Experimental Protocols
+
+
+      People:
+
+</p><p class="rfcparagraph">         Jon Postel (POSTEL@BBNB)
+
+      Schedule:
+
+</p><p class="rfcparagraph">      Comments:
+
+</p><p class="rfcparagraph">         Numbers issued by Jon Postel (POSTEL@BBNB).
+
+</p><p class="rfcparagraph">      Recent developments:
+
+</p><p class="rfcparagraph">         (15-May-75) Link 151 (decimal) assigned for the PARC Universal
+         Protocol.
+
+</p><p class="rfcparagraph">   Assigned Sockets:
+      Contact:
+
+</p><p class="rfcparagraph">         Jon Postel (POSTEL@BBNB)
+
+      Documents:
+
+</p><p class="rfcparagraph">         Socket Assignments:
+
+</p><p class="rfcparagraph">            General Assignments:
+
+</p><p class="rfcparagraph">               Decimal         Octal     Use
+               0-63            0-77      Network Wide Standard Function
+               64-127          100-177   Hosts Specific Functions
+               128-223         200-337   Reserved for Future Use
+               224-255         340-377   Any Experimental Function
+
+            Specific Assignments:
+
+</p><p class="rfcparagraph">               Decimal        Octal    Use
+               1               1       Old Telnet
+               3               3       Old File Transfer
+               5               5       Remote Job Entry
+               7               7       Echo
+               9               11      Discard
+               11              13      Who is on or SYSTAT
+               13              15      Date and Time
+               15              17      Who is up or NETSTAT
+               17              21      Short Text Message
+               19              23      Character generator TTYTST
+               21              25      New File Transfer
+               23              27      New Telnet
+               25              31      Distributed Programming System
+               65              101     Speech Data Base at LL-TX-2
+               67              103     Datacomputer at CCA
+               69              105     CPYTNET
+               71              107     NETRJS (EBCDIC) at UCLA-CCN
+               73              111     NETRJS (ASCII) at UCLA-CCN
+               75              113     NETRJS (TTY) at UCLA-CCN
+               77              115     any private RJE server
+               232-237       350-355   Authorized Mailer at BBN
+               239             357     Graphics
+               241             361     NCP Measurement
+               243             363     Survey Measurement
+               245             365     LINK
+               247             367     TIPSRV
+               249-255       371-377   RSEXEC
+
+      People:
+         Jon Postel (POSTEL@BBNB)
+
+         Nancy Neigus (NEIGUS@BBN)
+
+      Schedule:
+
+</p><p class="rfcparagraph">      Comments:
+
+</p><p class="rfcparagraph">         Numbers issued by Jon Postel (POSTEL@BBNB)
+
+         (31-DEC-74) Socket 25 (31 octal) assigned to Distributed
+         Programming System.
+
+</p><p class="rfcparagraph">      Recent developments:
+
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Postel                                                         [Page 36]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

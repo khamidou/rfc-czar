@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                         E. Guttman<br>Request for Comments: 3059                              Sun Microsystems<br>Category: Standards Track                                  February 2001<br><br></p>
+                  <h1>
+       Attribute List Extension for the Service Location Protocol</h1>
+                  <h2>Status of this Memo</h2>
+
+   This document specifies an Internet standards track protocol for the
+   Internet community, and requests discussion and suggestions for
+   improvements.  Please refer to the current edition of the "Internet
+   Official Protocol Standards" (STD 1) for the standardization state
+   and status of this protocol.  Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (2001).  All Rights Reserved.<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   The Service Location Protocol, Version 2 (SLPv2) provides a mechanism
+   for a service to be discovered in a single exchange of messages.
+   This exchange of messages does not presently include any of the
+   service's attributes.  This document specifies a SLPv2 extension
+   which allows a User Agent (UA) to request a service's attributes be
+   included as an extension to Service Reply messages.  This will
+   eliminate the need for multiple round trip messages for a UA to
+   acquire all service information.
+
+</p><p class="rfcparagraph">Table of Contents
+<a href="#section-1" class="">1. Introduction  . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-1.1" class="indent-1">1.1. Terminology . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-1.2" class="indent-1">1.2. Notation Conventions  . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2" class="">2. Attribute List Extension  . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3" class="">3. IANA Considerations . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4" class="">4. Internationalization Considerations . . . . . . . . . . . . . </a><br>
+<a href="#section-5" class="">5. Security Considerations . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-6" class="">6. Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+   References . . . . . . . . . . . . . . . . . . . . . . . . . . . . 5
+   Author's Address . . . . . . . . . . . . . . . . . . . . . . . . . 5
+   Full Copyright Statement . . . . . . . . . . . . . . . . . . . . . 6
+	<a name="section-1"><h2>1.  Introduction</h2></a>
+
+   The Service Location Protocol, Version 2 [3] provides a mechanism for
+   a service to be discovered in a single exchange of messages.  The UA
+   sends a Service Request message and the DA or SA (as appropriate)
+   sends a Service Reply message.
+
+</p><p class="rfcparagraph">   It is clearly advantageous to be able to obtain all service
+   information at once.  The Service Location Protocol separates
+   messages which obtain different classes of information.  This
+   extension enables an optimization to the basic exchange of messages,
+   which currently does not include service attributes in Service Reply
+   messages.
+
+</p><p class="rfcparagraph">   This document specifies a SLPv2 extension which allows a UA to
+   request that a service's attributes be included in Service Reply
+   messages.  This will eliminate the need for multiple round trip
+   messages for a UA to acquire all service information.
+
+</p><p class="rfcparagraph">   If the DA or SA does not support the Attrlist extension, it will
+   simply return a Service Reply (without the extension).  Support of
+   this extension is OPTIONAL.  Existing implementations will ignore the
+   Attrlist extension since it has been assigned a identifying number
+   from the range which indicates that the receiver MUST ignore the
+   extension if it is not recognized.  See RFC 2608 [3].
+
+</p><p class="rfcparagraph">   If the UA receives a Service Reply message without an Attrlist
+   Extension it must assume the SA or DA does not support the extension.
+   In this case, the UA must send an Attribute Request for each URL it
+   obtains in the Service Reply message in order to obtain the
+   attributes for these services.
+
+</p><p class="rfcparagraph">	<a name="section-1.1"><h3>1.1  Terminology</h3></a>
+
+   User Agent (UA)
+         A process working on the user's behalf to establish contact
+         with some service.  The UA retrieves service information from
+         the Service Agents or Directory Agents.
+
+</p><p class="rfcparagraph">   Service Agent (SA)
+         A process working on the behalf of one or more services to
+         advertise the services.
+
+</p><p class="rfcparagraph">   Directory Agent (DA)
+         A process which collects service advertisements.  There can
+         only be one DA present per given host.
+	<a name="section-1.2"><h3>1.2  Notation Conventions</h3></a>
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in RFC 2119 [2].
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.  Attribute List Extension</h2></a>
+
+   The format of the Attribute List Extension is as follows:
+
+</p><p class="rfcparagraph">       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |      Extension ID = 0x0002    |     Next Extension Offset     |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      | Offset, contd.|      Service URL Length       |  Service URL  /
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |     Attribute List Length     |         Attribute List        /
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |# of AttrAuths |(if present) Attribute Authentication Blocks.../
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+   The Extension ID is 0x0002.
+
+</p><p class="rfcparagraph">   The Next Extension Offset value indicates the position of the next
+   extension as offset from the beginning of the SLP message.  If the
+   next extension offset value is 0, there are no more extensions in the
+   message.
+
+</p><p class="rfcparagraph">   A UA sends an Attribute List Extension with a Service Request.  The
+   Service URL Length and Attribute List Length are set to 0 and the
+   Service URL and Attribute List fields omitted in this case.  The UA
+   thereby requests that the SA or DA include an Attribute List
+   Extension in its Service Reply by including such an 'empty' Attribute
+   List Extension in the Service Request.
+
+</p><p class="rfcparagraph">   A SA or DA which supports the Attribute List Extension returns one
+   Attribute List extension for every URL Entry in the Service Reply
+   message.  The order of the Attribute List Extensions SHOULD be the
+   same as the URL Entries in the Service Reply.
+
+</p><p class="rfcparagraph">   The Service URL [4] identifies the corresponding URL Entry.
+
+</p><p class="rfcparagraph">   The Attribute List field is the entire attribute list of the service.
+   These attributes must be in the same language as that indicated in
+   the Service Request message.
+   If the Service Request message includes a SLP SPI string, then the
+   attribute list extension MUST include an authentication block.  If
+   the SA or DA does not support or is unable to return an
+   authentication block for the SLP SPI included in the Service Request,
+   then the SA or DA MUST NOT return an Attribute List Extension.  The
+   format of the authentication block(s) is exactly the same as would be
+   included in an Attribute Reply or Service Registration message.
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.  IANA Considerations</h2></a>
+
+   IANA has assigned an extension ID number of 0x0002 for the Attribute
+   List Extension.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.  Internationalization Considerations</h2></a>
+
+   The Service Location Protocol, version 2 has mechanisms for allowing
+   attributes to be transmitted with explicit language tagging [6].  The
+   same mechanisms are used for this protocol extension.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.  Security Considerations</h2></a>
+
+   The Service Location Protocol, version 2 has mechanisms for allowing
+   authenticators to be returned with attribute lists so that UAs are
+   able to verify a digital signature over the attributes they obtain.
+   This same mechanism is used for this protocol extension.  The
+   Attribute List Extension used in conjunction with SLPv2 is no less
+   secure than SLPv2 without the extension.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.  Acknowledgments</h2></a>
+
+   The author benefited from preliminary conversations about this
+   extension with Charlie Perkins.
+References
+
+   [1] Bradner, S., "The Internet Standards Process -- Revision 3", BCP
+       9, RFC 2026, October 1996.
+
+</p><p class="rfcparagraph">   [2] Bradner, S., "Key Words for Use in RFCs to Indicate Requirement
+       Levels", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">   [3] Guttman, E., Perkins, C., Veizades, J. and M. Day, "Service
+       Location Protocol, Version 2", RFC 2608, June 1999.
+
+</p><p class="rfcparagraph">   [4] Guttman, E., Perkins, C. and J. Kempf, "Service Templates and
+       service: Schemes", RFC 2609, June 1999.
+
+</p><p class="rfcparagraph">   [5] Narten, T and H. Alvestrand, "Guidelines for Writing an IANA
+       Considerations Section in RFCs", BCP 26, RFC 2434, October 1998.
+
+</p><p class="rfcparagraph">   [6] Alvestrand, H., "Tags for the Identification of Languages", BCP
+       47, RFC 3066, January 2001.
+
+</p><p class="rfcparagraph">Author's Address
+
+   Erik Guttman
+   Sun Microsystems
+   Eichhoelzelstr. 7
+   74915 Waibstadt
+   Germany
+
+   Phone:    +49 6227 356 202
+   EMail:    Erik.Guttman@sun.com
+Full Copyright Statement
+
+   Copyright (C) The Internet Society (2001).  All Rights Reserved.<br>
+
+</p><p class="rfcparagraph">   This document and translations of it may be copied and furnished to
+   others, and derivative works that comment on or otherwise explain it
+   or assist in its implementation may be prepared, copied, published
+   and distributed, in whole or in part, without restriction of any
+   kind, provided that the above copyright notice and this paragraph are
+   included on all such copies and derivative works.  However, this
+   document itself may not be modified in any way, such as by removing
+   the copyright notice or references to the Internet Society or other
+   Internet organizations, except as needed for the purpose of
+   developing Internet standards in which case the procedures for
+   copyrights defined in the Internet Standards process must be
+   followed, or as required to translate it into languages other than
+   English.
+
+</p><p class="rfcparagraph">   The limited permissions granted above are perpetual and will not be
+   revoked by the Internet Society or its successors or assigns.
+
+</p><p class="rfcparagraph">   This document and the information contained herein is provided on an
+   "AS IS" basis and THE INTERNET SOCIETY AND THE INTERNET ENGINEERING
+   TASK FORCE DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING
+   BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION
+   HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED WARRANTIES OF
+   MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is currently provided by the
+   Internet Society.
+
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Guttman                     Standards Track                     [Page 6]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

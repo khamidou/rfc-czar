@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                   J. Schoenwaelder<br>Request for Comments: 5343                      Jacobs University Bremen<br>Updates: 3411                                             September 2008<br>Category: Standards Track<br><br></p>
+                  <h1>
+  Simple Network Management Protocol (SNMP) Context EngineID Discovery</h1>
+                  <h2>Status of This Memo</h2>
+
+   This document specifies an Internet standards track protocol for the
+   Internet community, and requests discussion and suggestions for
+   improvements.  Please refer to the current edition of the "Internet
+   Official Protocol Standards" (STD 1) for the standardization state
+   and status of this protocol.  Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   The Simple Network Management Protocol (SNMP) version three (SNMPv3)
+   requires that an application know the identifier (snmpEngineID) of
+   the remote SNMP protocol engine in order to retrieve or manipulate
+   objects maintained on the remote SNMP entity.
+
+</p><p class="rfcparagraph">   This document introduces a well-known localEngineID and a discovery
+   mechanism that can be used to learn the snmpEngineID of a remote SNMP
+   protocol engine.  The proposed mechanism is independent of the
+   features provided by SNMP security models and may also be used by
+   other protocol interfaces providing access to managed objects.
+
+</p><p class="rfcparagraph">   This document updates RFC 3411.
+
+</p><p class="rfcparagraph">Table of Contents
+<a href="#section-1" class="">1. Introduction  . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2" class="">2. Background  . . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3" class="">3. Procedure . . . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.1" class="indent-1">3.1. Local EngineID  . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.2" class="indent-1">3.2. EngineID Discovery  . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4" class="">4. IANA Considerations . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-5" class="">5. Security Considerations . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-6" class="">6. Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-7" class="">7. References  . . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-7.1" class="indent-1">7.1. Normative References  . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-7.2" class="indent-1">7.2. Informative References  . . . . . . . . . . . . . . . . . </a><br>
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   To retrieve or manipulate management information using the third
+   version of the Simple Network Management Protocol (SNMPv3) [RFC3410],
+   it is necessary to know the identifier of the remote SNMP protocol
+   engine, the so-called snmpEngineID [RFC3411].  While an appropriate
+   snmpEngineID can in principle be configured on each management
+   application for each SNMP agent, it is often desirable to discover
+   the snmpEngineID automatically.
+
+</p><p class="rfcparagraph">   This document introduces a discovery mechanism that can be used to
+   learn the snmpEngineID of a remote SNMP protocol engine.  The
+   proposed mechanism is independent of the features provided by SNMP
+   security models.  The mechanism has been designed to coexist with
+   discovery mechanisms that may exist in SNMP security models, such as
+   the authoritative engine identifier discovery of the User-based
+   Security Model (USM) of SNMP [RFC3414].
+
+</p><p class="rfcparagraph">   This document updates RFC 3411 [RFC3411] by clarifying the IANA rules
+   for the maintenance of the SnmpEngineID format registry.
+
+</p><p class="rfcparagraph">   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in RFC 2119 [RFC2119].
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Background</h2></a>
+
+   Within an administrative domain, an SNMP engine is uniquely
+   identified by an snmpEngineID value [RFC3411].  An SNMP entity, which
+   consists of an SNMP engine and several SNMP applications, may provide
+   access to multiple contexts.
+
+</p><p class="rfcparagraph">   An SNMP context is a collection of management information accessible
+   by an SNMP entity.  An item of management information may exist in
+   more than one context and an SNMP entity potentially has access to
+   many contexts [RFC3411].  A context is identified by the snmpEngineID
+   value of the entity hosting the management information (also called a
+   contextEngineID) and a context name that identifies the specific
+   context (also called a contextName).
+
+</p><p class="rfcparagraph">   To identify an individual item of management information within an
+   administrative domain, a four tuple is used consisting of
+
+   1.  a contextEngineID,
+
+   2.  a contextName,
+   3.  an object type, and
+
+   4.  its instance identification.
+
+</p><p class="rfcparagraph">   The last two elements are encoded in an object identifier (OID)
+   value.  The contextName is a character string (following the
+   SnmpAdminString textual convention of the SNMP-FRAMEWORK-MIB
+   [RFC3411]) while the contextEngineID is an octet string constructed
+   according to the rules defined as part of the SnmpEngineID textual
+   convention of the SNMP-FRAMEWORK-MIB [RFC3411].
+
+</p><p class="rfcparagraph">   The SNMP protocol operations and the protocol data units (PDUs)
+   operate on OIDs and thus deal with object types and instances
+   [RFC3416].  The SNMP architecture [RFC3411] introduces the concept of
+   a scopedPDU as a data structure containing a contextEngineID, a
+   contextName, and a PDU.  The SNMP version 3 (SNMPv3) message format
+   uses ScopedPDUs to exchange management information [RFC3412].
+
+</p><p class="rfcparagraph">   Within the SNMP framework, contextEngineIDs serve as end-to-end
+   identifiers.  This becomes important in situations where SNMP proxies
+   are deployed to translate between protocol versions or to cross
+   middleboxes such as network address translators.  In addition,
+   snmpEngineIDs separate the identification of an SNMP engine from the
+   transport addresses used to communicate with an SNMP engine.  This
+   property can be used to correlate management information easily, even
+   in situations where multiple different transports were used to
+   retrieve the information or where transport addresses can change
+   dynamically.
+
+</p><p class="rfcparagraph">   To retrieve data from an SNMPv3 agent, it is necessary to know the
+   appropriate contextEngineID.  The User-based Security Model (USM) of
+   SNMPv3 provides a mechanism to discover the snmpEngineID of the
+   remote SNMP engine, since this is needed for security processing
+   reasons.  The discovered snmpEngineID can subsequently be used as a
+   contextEngineID in a ScopedPDU to access management information local
+   to the remote SNMP engine.  Other security models, such as the
+   Transport Security Model (TSM) [TSM], lack such a procedure and may
+   use the discovery mechanism defined in this memo.
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   Procedure</h2></a>
+
+   The proposed discovery mechanism consists of two parts, namely (i)
+   the definition of a special well-known snmpEngineID value, called the
+   localEngineID, which always refers to a local default context, and
+   (ii) the definition of a procedure to acquire the snmpEngineID scalar
+   of the SNMP-FRAMEWORK-MIB [RFC3411] using the special well-known
+   local localEngineID value.
+	<a name="section-3.1"><h3>3.1   Local EngineID</h3></a>
+
+   An SNMP command responder implementing this specification MUST
+   register their pduTypes using the localEngineID snmpEngineID value
+   (defined below) by invoking the registerContextEngineID() Abstract
+   Service Interface (ASI) defined in RFC 3412 [RFC3412].  This
+   registration is done in addition to the normal registration under the
+   SNMP engine's snmpEngineID.  This is consistent with the SNMPv3
+   specifications since they explicitly allow registration of multiple
+   engineIDs and multiple pduTypes [RFC3412].
+
+</p><p class="rfcparagraph">   The SnmpEngineID textual convention [RFC3411] defines that an
+   snmpEngineID value MUST be between 5 and 32 octets long.  This
+   specification proposes to use the variable length format 3) of the
+   SnmpEngineID textual convention and to allocate the reserved, unused
+   format value 6, using the enterprise ID 0 for the localEngineID.  An
+   ASN.1 definition for localEngineID would look like this:
+
+</p><p class="rfcparagraph">               localEngineID OCTET STRING ::= '8000000006'H
+
+   The localEngineID value always provides access to the default context
+   of an SNMP engine.  Note that the localEngineID value is intended to
+   be used as a special value for the contextEngineID field in the
+   ScopedPDU.  It MUST NOT be used as a value to identify an SNMP
+   engine; that is, this value MUST NOT be used in the snmpEngineID.0
+   scalar [RFC3418] or in the msgAuthoritativeEngineID field in the
+   securityParameters of the User-based Security Model (USM) [RFC3414].
+
+</p><p class="rfcparagraph">	<a name="section-3.2"><h3>3.2   EngineID Discovery</h3></a>
+
+   Discovery of the snmpEngineID is done by sending a Read Class
+   protocol operation (see Section 2.8 of [RFC3411]) to retrieve the
+   snmpEngineID scalar using the localEngineID defined above as a
+   contextEngineID value.  Implementations SHOULD only perform this
+   discovery step when it is needed.  In particular, if security models
+   are used that already discover the remote snmpEngineID (such as USM),
+   then no further discovery is necessary.  The same is true in
+   situations where the application already knows a suitable
+   snmpEngineID value.
+
+</p><p class="rfcparagraph">   The procedure to discover the snmpEngineID of a remote SNMP engine
+   can be described as follows:
+
+</p><p class="rfcparagraph">   1.  Check whether a suitable contextEngineID value is already known.
+       If yes, use the provided contextEngineID value and stop the
+       discovery procedure.
+   2.  Check whether the selected security model supports discovery of
+       the remote snmpEngineID (e.g., USM with its discovery mechanism).
+       If yes, let the security model perform the discovery.  If the
+       remote snmpEngineID value has been successfully determined,
+       assign it to the contextEngineID and stop the discovery
+       procedure.
+
+</p><p class="rfcparagraph">   3.  Send a Read Class operation to the remote SNMP engine using the
+       localEngineID value as the contextEngineID in order to retrieve
+       the scalar snmpEngineID.0 of the SNMP-FRAMEWORK-MIB [RFC3411].
+       If successful, set the contextEngineID to the retrieved value and
+       stop the discovery procedure.
+
+</p><p class="rfcparagraph">   4.  Return an error indication that a suitable contextEngineID could
+       not be discovered.
+
+</p><p class="rfcparagraph">   The procedure outlined above is an example and can be modified to
+   retrieve more variables in step 3, such as the sysObjectID.0 scalar
+   or the snmpSetSerialNo.0 scalar of the SNMPv2-MIB [RFC3418].
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   IANA Considerations</h2></a>
+
+   RFC 3411 requested that IANA create a registry for SnmpEngineID
+   formats.  However, RFC 3411 did not ask IANA to record the initial
+   assignments made by RFC 3411 nor did RFC 3411 spell out the precise
+   allocation rules.  To address this issue, the following rules are
+   hereby established.
+
+</p><p class="rfcparagraph">   IANA maintains a registry for SnmpEngineID formats.  The first four
+   octets of an SnmpEngineID carry an enterprise number, while the fifth
+   octet in a variable length SnmpEngineID value, called the format
+   octet, indicates how the following octets are formed.  The following
+   format values were allocated in [RFC3411]:
+
+</p><p class="rfcparagraph">     Format    Description                     References
+     -------   -----------                     ----------
+          0    reserved, unused                 [RFC3411]
+          1    IPv4 address                     [RFC3411]
+          2    IPv6 address                     [RFC3411]
+          3    MAC address                      [RFC3411]
+          4    administratively assigned text   [RFC3411]
+          5    administratively assigned octets [RFC3411]
+       6-127   reserved, unused                 [RFC3411]
+     128-255   enterprise specific              [RFC3411]
+
+   IANA can assign new format values out of the originally assigned and
+   reserved number space 1-127.  For new assignments in this number
+   space, a specification is required as per [RFC5226].  The number
+   space 128-255 is enterprise specific and is not controlled by IANA.
+
+</p><p class="rfcparagraph">   Per this document, IANA has made the following assignment:
+
+</p><p class="rfcparagraph">     Format    Description                     References
+     -------   -----------                     ----------
+          6    local engine                     [RFC5343]
+
+	<a name="section-5"><h2>5.   Security Considerations</h2></a>
+
+   SNMP version 3 (SNMPv3) provides cryptographic security to protect
+   devices from unauthorized access.  This specification recommends use
+   of the security services provided by SNMPv3.  In particular, it is
+   RECOMMENDED to protect the discovery exchange.
+
+</p><p class="rfcparagraph">   An snmpEngineID can contain information such as a device's MAC
+   address, IPv4 address, IPv6 address, or administratively assigned
+   text.  An attacker located behind a router / firewall / network
+   address translator may not be able to obtain this information
+   directly, and he therefore might discover snmpEngineID values in
+   order to obtain this kind of device information.
+
+</p><p class="rfcparagraph">   In many environments, making snmpEngineID values accessible via a
+   security level of noAuthNoPriv will benefit legitimate tools that try
+   to algorithmically determine some basic information about a device.
+   For this reason, the default View-based Access Control Model (VACM)
+   configuration in Appendix A of RFC 3415 [RFC3415] gives noAuthNoPriv
+   read access to the snmpEngineID.  Furthermore, the USM discovery
+   mechanism defined in RFC 3414 [RFC3414] uses unprotected messages and
+   reveals snmpEngineID values.
+
+</p><p class="rfcparagraph">   In highly secure environments, snmpEngineID values can be protected
+   by using the discovery mechanism described in this document together
+   with a security model that does not exchange cleartext SNMP messages,
+   such as the Transport Security Model (TSM) [TSM].
+
+</p><p class="rfcparagraph">   The isAccessAllowed() abstract service primitive of the SNMP access
+   control subsystem does not take the contextEngineID into account when
+   checking access rights [RFC3411].  As a consequence, it is not
+   possible to define a special view for context engineID discovery.  A
+   request with a localEngineID is thus treated like a request with the
+   correct snmpEngineID by the access control subsystem.  This is inline
+   with the SNMPv3 design where the authenticated identity is the
+   securityName (together with the securityModel and securityLevel
+   information), and transport addresses or knowledge of contextEngineID
+   values do not impact the access-control decision.
+	<a name="section-6"><h2>6.   Acknowledgments</h2></a>
+
+   Dave Perkins suggested the introduction of a "local" contextEngineID
+   during the interim meeting of the ISMS (Integrated Security Model for
+   SNMP) working group in Boston, 2006.  Joe Fernandez, David
+   Harrington, Dan Romascanu, and Bert Wijnen provided helpful review
+   and feedback, which helped to improve this document.
+
+</p><p class="rfcparagraph">	<a name="section-7"><h2>7.   References</h2></a>
+
+	<a name="section-7.1"><h3>7.1   Normative References</h3></a>
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">   [RFC3411]  Harrington, D., Presuhn, R., and B. Wijnen, "An
+              Architecture for Describing Simple Network Management
+              Protocol (SNMP) Management Frameworks", STD 62, RFC 3411,
+              December 2002.
+
+</p><p class="rfcparagraph">   [RFC3412]  Case, J., Harrington, D., Presuhn, R., and B. Wijnen,
+              "Message Processing and Dispatching for the Simple Network
+              Management Protocol (SNMP)", STD 62, RFC 3412,
+              December 2002.
+
+</p><p class="rfcparagraph">   [RFC3414]  Blumenthal, U. and B. Wijnen, "User-based Security Model
+              (USM) for version 3 of the Simple Network Management
+              Protocol (SNMPv3)", STD 62, RFC 3414, December 2002.
+
+</p><p class="rfcparagraph">   [RFC3416]  Presuhn, R., "Version 2 of the Protocol Operations for the
+              Simple Network Management Protocol (SNMP)", STD 62,
+              RFC 3416, December 2002.
+
+</p><p class="rfcparagraph">   [RFC3418]  Presuhn, R., "Management Information Base (MIB) for the
+              Simple Network Management Protocol (SNMP)", STD 62,
+              RFC 3418, December 2002.
+
+</p><p class="rfcparagraph">   [RFC5226]  Narten, T. and H. Alvestrand, "Guidelines for Writing an
+              IANA Considerations Section in RFCs", BCP 26, RFC 5226,
+              May 2008.
+
+</p><p class="rfcparagraph">	<a name="section-7.2"><h3>7.2   Informative References</h3></a>
+
+   [RFC3410]  Case, J., Mundy, R., Partain, D., and B. Stewart,
+              "Introduction and Applicability Statements for Internet-
+              Standard Management Framework", RFC 3410, December 2002.
+   [RFC3415]  Wijnen, B., Presuhn, R., and K. McCloghrie, "View-based
+              Access Control Model (VACM) for the Simple Network
+              Management Protocol (SNMP)", STD 62, RFC 3415,
+              December 2002.
+
+</p><p class="rfcparagraph">   [TSM]      Harrington, D., "Transport Security Model for SNMP", Work
+              in Progress, July 2008.
+
+</p><p class="rfcparagraph">Author's Address
+
+   Juergen Schoenwaelder
+   Jacobs University Bremen
+   Campus Ring 1
+   28725 Bremen
+   Germany
+
+   Phone: +49 421 200-3587
+   EMail: j.schoenwaelder@jacobs-university.de
+Full Copyright Statement
+
+   Copyright (C) The IETF Trust (2008).<br>
+
+</p><p class="rfcparagraph">   This document is subject to the rights, licenses and restrictions
+   contained in BCP 78, and except as set forth therein, the authors
+   retain all their rights.
+
+</p><p class="rfcparagraph">   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY, THE IETF TRUST AND
+   THE INTERNET ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS
+   OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF
+   THE INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED
+   WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Intellectual Property
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the procedures with respect to rights in RFC documents can be
+   found in BCP 78 and BCP 79.
+
+</p><p class="rfcparagraph">   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+</p><p class="rfcparagraph">   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at
+   ietf-ipr@ietf.org.
+
+</p>
+
+
+
+
+
+
+
+
+
+
+Schoenwaelder               Standards Track                     [Page 9]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

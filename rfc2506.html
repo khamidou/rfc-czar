@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                           K. Holtman<br>Request for Comments: 2506                                             TUE<br>BCP: 31                                                            A. Mutz<br>Category: Best Current Practice                            Hewlett-Packard<br>                                                                 T. Hardie<br>                                                                   Equinix<br>                                                                March 1999<br><br></p>
+                  <h1>
+                Media Feature Tag Registration Procedure</h1>
+                  <h2>Status of this Memo</h2>
+
+   This document specifies an Internet Best Current Practices for the
+   Internet Community, and requests discussion and suggestions for
+   improvements.  Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (1999).  All Rights Reserved.<br>
+
+</p><p class="rfcparagraph"><h2>ABSTRACT</h2>
+
+   Recent Internet applications, such as the World Wide Web, tie
+   together a great diversity in data formats, client and server
+   platforms, and communities.  This has created a need for media
+   feature descriptions and negotiation mechanisms in order to identify
+   and reconcile the form of information to the capabilities and
+   preferences of the parties involved.
+
+</p><p class="rfcparagraph">   Extensible media feature identification and negotiation mechanisms
+   require a common vocabulary in order to positively identify media
+   features.  A registration process and authority for media features is
+   defined with the intent of sharing this vocabulary between
+   communicating parties. In addition, a URI tree is defined to enable
+   sharing of media feature definitions without registration.
+
+</p><p class="rfcparagraph">   This document defines a registration procedure which uses the
+   Internet Assigned Numbers Authority (IANA) as a central registry for
+   the media feature vocabulary.
+
+</p><p class="rfcparagraph">   Please send comments to the CONNEG working group at <ietf-
+   medfree@imc.org>.  Discussions of the working group are archived at
+   <URL: http://www.imc.org/ietf-medfree/>.
+<h2>TABLE OF CONTENTS</h2>
+<a href="#section-1" class="">1 Introduction ................................................</a><br>
+<a href="#section-2" class="">2 Media feature tag definitions ...............................</a><br>
+<a href="#section-2.1" class="indent-1">2.1 Media feature tag purpose ................................</a><br>
+<a href="#section-2.2" class="indent-1">2.2 Media feature tag syntax .................................</a><br>
+<a href="#section-2.3" class="indent-1">2.3 Media feature tag values .................................</a><br>
+<a href="#section-2.4" class="indent-1">2.4 ASN.1 identifiers for media feature tags ................</a><br>
+<a href="#section-3" class="">3 Media feature tag registration ..............................</a><br>
+<a href="#section-3.1" class="indent-1">3.1 Registration trees .......................................</a><br>
+<a href="#section-3.1.1" class="indent-2">3.1.1 IETF tree ..............................................</a><br>
+<a href="#section-3.1.2" class="indent-2">3.1.2 Global tree ............................................</a><br>
+<a href="#section-3.1.3" class="indent-2">3.1.3 URL tree ...............................................</a><br>
+<a href="#section-3.1.4" class="indent-2">3.1.4 Additional registration trees ..........................</a><br>
+<a href="#section-3.2" class="indent-1">3.2 Location of registered media feature tag list ............</a><br>
+<a href="#section-3.3" class="indent-1">3.3 IANA procedures for registering media feature tags .......</a><br>
+<a href="#section-3.4" class="indent-1">3.4 Registration template ....................................</a><br>
+<a href="#section-4" class="">4 Security Considerations .....................................</a><br>
+<a href="#section-5" class="">5 Acknowledgments .............................................</a><br>
+<a href="#section-6" class="">6 References ..................................................</a><br>
+<a href="#section-7" class="">7 Authors' Addresses ..........................................</a><br>
+<a href="#section-8" class="">8 Full Copyright Statement ....................................</a><br>
+
+	<a name="section-1"><h2>1.  Introduction</h2></a>
+
+   Recent Internet applications, such as the World Wide Web, tie
+   together a great diversity in data formats, client and server
+   platforms, and communities.  This has created a need for media
+   feature descriptions and negotiation mechanisms in order to identify
+   and reconcile the form of information to the capabilities and
+   preferences of the parties involved.
+
+</p><p class="rfcparagraph">   Extensible media feature identification and negotiation mechanisms
+   require a common vocabulary in order to positively identify media
+   features.  A registration process and authority for media features is
+   defined with the intent of sharing this vocabulary between
+   communicating parties. In addition, a URI tree is defined to enable
+   sharing of media feature definitions without registration.
+
+</p><p class="rfcparagraph">   This document defines a registration procedure which uses the
+   Internet Assigned Numbers Authority (IANA) as a central registry for
+   the media feature vocabulary.
+
+</p><p class="rfcparagraph">   This document uses the terms MUST, MUST NOT, SHOULD, SHOULD NOT and
+   MAY according to usage described in [8].
+	<a name="section-2"><h2>2.  Media feature tag definitions</h2></a>
+
+	<a name="section-2.1"><h3>2.1  Media feature tag purpose</h3></a>
+
+   Media feature tags represent individual and simple characteristics
+   related to media capabilities or properties associated with the
+   resource to which they are applied.  Examples of such features are:
+
+</p><p class="rfcparagraph">   * the color depth of the screen on which something is to be displayed
+   * the type of paper available in a printer
+   * the support of the `floating 5 dimensional tables' feature
+   * the fonts which are available to the recipient
+   * the capability to display graphical content
+
+   Each media feature tag identifies a single characteristic. Values
+   associated with a specific tag must use the data type defined for
+   that tag.  The list of allowed data types is presented below, in
+   section 2.3.
+
+</p><p class="rfcparagraph">   Examples of media feature tags with values are:
+
+</p><p class="rfcparagraph">   * the width of a display in pixels per centimeter represented as an
+   integer value.
+   * a font available to a recipient, selected from an enumerated list.
+   * the version of a protocol composed of integers "i.j.k", defined as
+   either a value in an enumerated list or with a defined mapping to
+   make the value isomorphic to a subset of integers (e.g. i*100 + j*10
+   +k, assuming j<=9 and k<=9).
+
+</p><p class="rfcparagraph">   Further examples of media feature tags are defined in detail
+   elsewhere [4].
+
+</p><p class="rfcparagraph">   Feature collections may be composed using a number of individual
+   feature tags [2]. Composition of feature collections is described
+   elsewhere [2].  Examples of feature collections requiring multiple
+   media feature tags are:
+
+</p><p class="rfcparagraph">   * the set of all fonts used by a document
+   * the width and height of a display
+   * the combination of color depth and resolution a display can support
+
+   This registry presumes the availability of the MIME media type
+   registry, and MIME media types MUST NOT be re-registered as media
+   feature tags.  Media feature tags which are currently in use by
+   individual protocols or applications MAY be registered with this
+   registry if they might be applied outside of their current domain.
+   The media feature tag namespace is not bound to a particular
+   transport protocol or capability exchange mechanism.  The registry is
+   limited, however, to feature tags which express a capability or
+   preference related to how content is presented.  Feature tags related
+   to other axes of negotiation are not appropriate for this registry.
+   Capability exchange mechanisms may, of course, be used to express a
+   variety of capabilities or preferences.
+
+</p><p class="rfcparagraph">	<a name="section-2.2"><h3>2.2  Media feature tag syntax</h3></a>
+
+   A media feature tag is a string consisting of one or more of the
+   following US-ASCII characters: uppercase letters, lowercase letters,
+   digits, colon (":"), slash ("/"), dot (".") percent ("%"), and dash
+   ("-"). Feature tags are case-insensitive.  Dots are understood to
+   potentially imply hierarchy; a feature can be subtyped by describing
+   it as tree.feature.subfeature and by indicating this in the
+   registration.  Tags should begin with an alphabetic character.
+
+</p><p class="rfcparagraph">   In ABNF [6], this may be represented as:
+
+</p><p class="rfcparagraph">   Feature-tag = ALPHA *( ALPHA / DIGIT / ":" / "/" / "." / "-" /"%" )
+
+   Registrants should take care to avoid creating tags which might
+   conflict with the creation of new registration trees; in general this
+   means avoiding tags which begin with an alphabetic character followed
+   by a dot.  The current registration trees are described in section 3
+   below.
+
+</p><p class="rfcparagraph">	<a name="section-2.3"><h3>2.3  Media feature tag values</h3></a>
+
+   The registry will initially support the use of the following data
+   types as tag values:
+
+</p><p class="rfcparagraph">      - signed integers
+      - rational numbers
+      - tokens, with equality relationship
+      - tokens, with defined ordering relationship
+      - strings, with standard (octet-by-octet) equality relationship
+      - strings, with defined equality and/or comparison relationship
+
+   "Token" here means the token data type as defined by [7], which may
+   be summarized as:
+      token          = 1*<any CHAR except CTLs or tspecials>
+
+      tspecials      = "(" / ")" / "<" / ">" / "@"
+                     / "," / ";" / ":" / "\" / <">
+                     / "/" / "[" / "]" / "?" / "="
+                     / "{" / "}" / SP / HT
+
+   At the time of registration, each tag must be associated with a
+   single data type.  If that data type implies a defined comparison or
+   an ordering, the registrant must define the ordering or comparison.
+   For ordered tokens, this may be by full enumeration of the tokens and
+   their order or by reference to an ordering mechanism.  For defined
+   comparisons, a full description of the rules for comparison must be
+   provided or included by reference.
+
+</p><p class="rfcparagraph">   Media feature tags related to spatial or temporal characteristics
+   must be registered with a single canonical unit.  It is strongly
+   preferred that units be in the SI system; where current practice has
+   defined units in other systems (such as pixels per inch), a
+   conversion method to SI units must be provided.  Conversion methods
+   should include a defined rounding practice.
+
+</p><p class="rfcparagraph">	<a name="section-2.4"><h3>2.4   ASN.1 identifiers for media feature tags</h3></a>
+
+   Certain protocols use ASN.1 identifiers rather than human-readable
+   representations for capability exchange.  In order to allow both
+   systems to interoperate, registrants may provide an ASN.1 identifier
+   or ask that IANA assign an ASN.1 identifier during registration.
+   These identifiers are not required for registration, but may provide
+   assistance to those building gateways or other cross-protocol
+   systems.  Note that ASN.1 identifiers assigned by IANA will be
+   treated as tokens, not as elements from which sub-delegated
+   identifiers may be created or derived.
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.  Media feature tag registration</h2></a>
+
+   Media feature tags can be registered in several different
+   registration trees, with different requirements as discussed below.
+   The vocabulary for these requirements is taken from [5]. In general,
+   a feature tag registration proposal is circulated and reviewed in a
+   fashion appropriate to the tree involved.  The feature tag is then
+   registered if the proposal is accepted.
+
+</p><p class="rfcparagraph">   Review of a feature tag in the URI tree is not required.
+	<a name="section-3.1"><h3>3.1  Registration trees</h3></a>
+
+   The following subsections define registration "trees", distinguished
+   by the use of faceted names (e.g., names of the form "tree.feature-
+   name").
+
+</p><p class="rfcparagraph">	<a name="section-3.1.1"><h4>3.1.1  IETF tree</h4></a>
+
+   The IETF tree is intended for media feature tags of general interest
+   to the Internet Community, and proposals for these tags must meet the
+   "IETF Consensus" policies described in [5].
+
+</p><p class="rfcparagraph">   Registration in the IETF tree requires approval by the IESG and
+   publication of the feature tag specification as an RFC.  Submissions
+   for feature tag registration in the IETF tree can originate in any WG
+   of the IETF or as an individual submission to the IESG.
+
+</p><p class="rfcparagraph">   Feature tags in the IETF tree normally have names that are not
+   explicitly faceted, i.e., do not contain period (".", full stop)
+   characters.
+
+</p><p class="rfcparagraph">	<a name="section-3.1.2"><h4>3.1.2  Global tree</h4></a>
+
+   Tags in the global tree will be distinguished by the leading facet
+   "g.".  An organization may propose either a designation indicative of
+   the feature, (e.g., "g.blinktags") or a faceted designation including
+   the organization name (e.g., "g.organization.blinktags").
+   Organizations which have registered media types under the MIME vendor
+   tree should use the same organizational name for media feature tags
+   if they propose a faceted designation. The acceptance of the proposed
+   designation is at the discretion of the IANA. If the IANA believes
+   that a designation needs clarification it may request a new proposal
+   from the proposing organization or otherwise coordinate the
+   development of an appropriate designation.
+
+</p><p class="rfcparagraph">   Registrations of feature tags in the global tree must meet the
+   "Expert Review" policies described in [5].  In this case, a
+   designated area expert will review the proposed tag, consulting with
+   the members of a related mailing list.  A registration may be
+   proposed for the global tree by anyone who has the need to allow for
+   communication on a particular capability or preference.
+
+</p><p class="rfcparagraph">	<a name="section-3.1.3"><h4>3.1.3  URI tree</h4></a>
+
+   A feature tag may be defined as a URI using the restricted character
+   set defined above. Feature tags in the URI tree are identified by the
+   leading facet "u.". The leading facet u. is followed by a URI [9]
+   which conforms to the character limitations specified in this
+   document.  The author of the URI is assumed to be registration
+   authority regarding features defined and described by the content of
+   the URI.  These tags are considered unregistered for the purpose of
+   this document.
+
+</p><p class="rfcparagraph">	<a name="section-3.1.4"><h4>3.1.4  Additional registration trees</h4></a>
+
+   From time to time and as required by the community, the IANA may,
+   with the advice and consent of the IESG, create new top-level
+   registration trees. These trees may be created for external
+   registration and management by (for example) well-known permanent
+   bodies, such as scientific societies for media feature types specific
+   to the sciences they cover.  Establishment of these new trees will be
+   announced through RFC publication approved by the IESG.
+
+</p><p class="rfcparagraph">	<a name="section-3.2"><h3>3.2  Location of registered feature tag list</h3></a>
+
+   Feature tag registrations will be posted in the anonymous FTP
+   directory:  "ftp://ftp.isi.edu/in-notes/iana/assignments/media-
+   feature-tags/" and all registered feature tags will be listed in the
+   periodically issued "Assigned Numbers" RFC [currently STD 2, RFC-
+   1700].  The feature tag description and other supporting material may
+   also be published as an Informational RFC by sending it to "rfc-
+   editor@rfc-editor.org".
+
+</p><p class="rfcparagraph">	<a name="section-3.3"><h3>3.3  IANA procedures for registering feature tags</h3></a>
+
+   The IANA will only register feature tags in the IETF tree in response
+   to a communication from the IESG stating that a given registration
+   has been approved.
+
+</p><p class="rfcparagraph">   Global tags will be registered by the IANA after review by a
+   designated expert.  That review will serve to ensure that the tag
+   meets the technical requirements of this specification.
+
+</p><p class="rfcparagraph">	<a name="section-3.4"><h3>3.4  Registration template</h3></a>
+
+   To: media-feature-tags@apps.ietf.org (Media feature tags mailing list)
+   Subject: Registration of media feature tag XXXX
+
+    | Instructions are preceded by `|'.  Some fields are optional.
+
+</p><p class="rfcparagraph">   Media feature tag name:
+
+</p><p class="rfcparagraph">   ASN.1 identifier associated with feature tag:       [optional]
+
+    | To have IANA assign an ASN.1 identifier,
+    | use the value "New assignment by IANA" here.
+   Summary of the media feature indicated by this feature tag:
+
+</p><p class="rfcparagraph">    | Include a short (no longer than 4 lines) description or summary
+    | Examples:
+    |   `Use of the xyzzy feature is indicated by ...'
+    |   `Support of color display is indicated by ...'
+    |   `Number of colors in a palette which can be defined ...'
+
+   Values appropriate for use with this feature tag:
+
+</p><p class="rfcparagraph">     [ ] 1. The feature tag is Boolean and may have values of
+          TRUE or FALSE.   A value of TRUE indicates an available
+          capability.  A value of FALSE indicates the capability
+          is not available.
+
+</p><p class="rfcparagraph">    | If you wish to indicate two mutually exclusive possibilities
+    | that cannot be expressed as the availability or lack of a
+    | capability, use a two-token list, rather than a Boolean value.
+
+</p><p class="rfcparagraph">
+     [ ] 2. The feature has an associated numeric or enumerated value.
+
+</p><p class="rfcparagraph">   For case 2: Indicate the data type of the value:
+
+</p><p class="rfcparagraph">      [ ] 2a. Signed Integer
+      [ ] 2b. Rational number
+      [ ] 2c. Token (equality relationship)
+      [ ] 2d. Token (ordered)
+      [ ] 2e. String (equality relationship)
+      [ ] 2f. String (defined comparison)
+
+    |IMPORTANT: You may only chose one of the above data types.
+
+</p><p class="rfcparagraph">   (Only for case 2) Detailed description of the feature value meaning,
+   and of the format and meaning of the feature tag values for the
+   alternative results.
+
+</p><p class="rfcparagraph">    | If you have selected 2d you must provide the ordering mechanism
+    | or a full and ordered enumeration of possible values.  If you
+    | have selected 2f, you must provide a definition of the comparison.
+    | Definitions by included reference must be to stable and readily
+    | available specifications:
+    |
+    | If the number of alternative results is small, you may
+    | enumerate the identifiers of the different results and describe
+    | their meaning.
+    |
+    | If there is a limited useful numeric range of result (2b, 2c),
+    | indicate the range.
+    |
+    | The identifiers of the alternative results could also be
+    | described by referring to another IANA registry, for example
+    | the paper sizes enumerated by the Printer MIB.
+
+</p><p class="rfcparagraph">   The feature tag is intended primarily for use in the following
+   applications, protocols, services, or negotiation mechanisms:
+                                                   [optional]
+
+    | For applications, also specify the number of the first version
+    | which will use the tag, if applicable.
+
+</p><p class="rfcparagraph">   Examples of typical use:                               [optional]
+
+   Related standards or documents:                        [optional]
+
+   Considerations particular to use in individual applications,
+   protocols, services, or negotiation mechanisms:        [optional]
+
+   Interoperability considerations:                       [optional]
+
+   Security considerations:
+
+</p><p class="rfcparagraph">     Privacy concerns, related to exposure of personal information:
+
+</p><p class="rfcparagraph">     Denial of service concerns related to consequences of specifying
+     incorrect values:
+
+</p><p class="rfcparagraph">     Other:
+
+</p><p class="rfcparagraph">   Additional information:                                [optional]
+
+     Keywords:                                            [optional]
+
+     Related feature tags:                                [optional]
+
+     Related media types or data formats:                 [optional]
+
+     Related markup tags:                                 [optional]
+
+   Name(s) & email address(es) of person(s) to contact for
+   further information:
+
+</p><p class="rfcparagraph">   Intended usage:
+
+</p><p class="rfcparagraph">    | one of COMMON, LIMITED USE or OBSOLETE
+   Author/Change controller:
+
+</p><p class="rfcparagraph">   Requested IANA publication delay:                      [optional]
+
+    | A delay may only be requested for final placement in the global
+    | or IETF trees, with a maximum of two months.  Organizations
+    | requesting a registration with a publication delay should note
+    | that this delays only the official publication of the tag
+    | and does not prevent information on it from being disseminated
+    | by the members of the relevant mailing list.
+
+</p><p class="rfcparagraph">   Other information:                                     [optional]
+
+    |  Any other information that the author deems interesting may be
+    |  added here.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.  Security Considerations</h2></a>
+
+   Negotiation mechanisms reveal information about one party to other
+   parties.  This may raise privacy concerns, and may allow a malicious
+   party to make better guesses about the presence of specific security
+   holes.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.  Acknowledgments</h2></a>
+
+   The details of the registration procedure in this document were
+   directly adapted from [1].  Much of the text in section 3 was
+   directly copied from this source.
+
+</p><p class="rfcparagraph">   The idea of creating a vocabulary of areas of media features,
+   maintained in a central open registry, is due to discussions on
+   extensible negotiation mechanisms [3] in the IETF HTTP working group.
+
+</p><p class="rfcparagraph">   The authors wish to thank Larry Masinter, Graham  Klyne, Al Gilman,
+   Dan Wing, Jacob Palme, and Martin Duerst for their contributions to
+   discussions about media feature tag registration.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.  References</h2></a>
+
+   [1] Freed, N., Klensin, J. and J. Postel, "Multipurpose Internet Mail
+       Extensions (MIME) Part Four: Registration Procedures", BCP 13,
+       RFC 2048, November 1996.
+
+</p><p class="rfcparagraph">   [2] Klyne, G., "An algebra for describing media feature sets", Work
+       in Progress.
+
+</p><p class="rfcparagraph">   [3] Holtman, K. and  A. Mutz, "Transparent Content Negotiation in
+       HTTP.  RFC 2295, March 1998.
+   [4] Masinter, L., Holtman, K., Mutz, A. and D. Wing, "Media Features
+       for Display, Print, and Fax", RFC 2534, March 1999.
+
+</p><p class="rfcparagraph">   [5] Narten, T. and H. Alvestrand, "Guidelines for Writing an IANA
+       Considerations Section in RFCs", BCP 26, RFC 2434, October 1998.
+
+</p><p class="rfcparagraph">   [6] Crocker, D., Ed., "Augmented BNF for Syntax Specifications:
+       ABNF", RFC 2234, November 1997.
+
+</p><p class="rfcparagraph">   [7] Fielding, R., Gettys, J., Mogul, J. Frystyk, H. and T. Berners-
+       Lee, "Hypertext Transfer Protocol -- HTTP/1.1", RFC 2068, January
+       1997.
+
+</p><p class="rfcparagraph">   [8] Bradner, S., "Key words for use in RFCs to Indicate Requirement
+       Levels", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">   [9] Berners-Lee, T., "Universal Resource Identifiers in WWW," RFC
+       1630, June 1994.
+
+</p><p class="rfcparagraph">	<a name="section-7"><h2>7.  Authors' Addresses</h2></a>
+
+   Koen Holtman
+   Technische Universiteit Eindhoven
+   Postbus 513
+   Kamer HG 6.57
+   5600 MB Eindhoven
+   The Netherlands
+
+   EMail: koen@win.tue.nl
+
+
+   Andrew H. Mutz
+   Hewlett-Packard Company
+   11000 Wolfe Rd. 42UO
+   Cupertino CA 95014 USA
+
+   Fax +1 408 447 4439
+   EMail: andy_mutz@hp.com
+
+
+   Ted Hardie
+   Equinix
+   901 Marshall Street
+   Redwood City, CA 94063 USA
+
+   EMail: hardie@equinix.com
+	<a name="section-8"><h2>8.  Full Copyright Statement</h2></a>
+
+   Copyright (C) The Internet Society (1999).  All Rights Reserved.<br>
+
+</p><p class="rfcparagraph">   This document and translations of it may be copied and furnished to
+   others, and derivative works that comment on or otherwise explain it
+   or assist in its implementation may be prepared, copied, published
+   and distributed, in whole or in part, without restriction of any
+   kind, provided that the above copyright notice and this paragraph are
+   included on all such copies and derivative works.  However, this
+   document itself may not be modified in any way, such as by removing
+   the copyright notice or references to the Internet Society or other
+   Internet organizations, except as needed for the purpose of
+   developing Internet standards in which case the procedures for
+   copyrights defined in the Internet Standards process must be
+   followed, or as required to translate it into languages other than
+   English.
+
+</p><p class="rfcparagraph">   The limited permissions granted above are perpetual and will not be
+   revoked by the Internet Society or its successors or assigns.
+
+</p><p class="rfcparagraph">   This document and the information contained herein is provided on an
+   "AS IS" basis and THE INTERNET SOCIETY AND THE INTERNET ENGINEERING
+   TASK FORCE DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING
+   BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION
+   HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED WARRANTIES OF
+   MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Holtman, et. al.         Best Current Practice                 [Page 12]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

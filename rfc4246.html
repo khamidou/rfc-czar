@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                           M. Dolan<br>Request for Comments: 4246                                           TBT<br>Category: Informational                                    February 2006<br><br></p>
+                  <h1>
+    International Standard Audiovisual Number (ISAN) URN Definition</h1>
+                  <h2>Status of This Memo</h2>
+
+   This memo provides information for the Internet community.  It does
+   not specify an Internet standard of any kind.  Distribution of this
+   memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (2006).<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   The International Standard Audiovisual Number (ISAN) is a standard
+   numbering system for the unique and international identification of
+   audiovisual works.  This document is the definition of the formal
+   Uniform Resource Name (URN) Namespace Identifier (NID) for ISAN.
+
+</p><p class="rfcparagraph">Table of Contents
+<a href="#section-1" class="">1. Introduction ...................................................</a><br>
+<a href="#section-2" class="">2. URN Namespace Definition Template ..............................</a><br>
+<a href="#section-3" class="">3. Formal Syntax ..................................................</a><br>
+<a href="#section-4" class="">4. Security Considerations ........................................</a><br>
+<a href="#section-5" class="">5. Namespace Considerations .......................................</a><br>
+<a href="#section-6" class="">6. Community Considerations .......................................</a><br>
+<a href="#section-7" class="">7. IANA Considerations ............................................</a><br>
+<a href="#section-8" class="">8. References .....................................................</a><br>
+<a href="#section-8.1" class="indent-1">8.1. Normative References ......................................</a><br>
+<a href="#section-8.2" class="indent-1">8.2. Informative References ....................................</a><br>
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   This document is the definition of the formal Uniform Resource Name
+   (URN) Namespace Identifier (NID) for ISAN.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   URN Namespace Definition Template</h2></a>
+
+   The following template is provided in accordance with [RFC3406].
+
+</p><p class="rfcparagraph">   Namespace ID:
+
+</p><p class="rfcparagraph">      ISAN
+
+   Registration Information:
+
+</p><p class="rfcparagraph">      Version: 1
+
+      Date: 2004 11 22
+
+   Declared registrant of the namespace:
+
+</p><p class="rfcparagraph">      Name:    ISAN International Agency
+      Address: 26 rue de St Jean, CH-1203 Geneva, Switzerland
+
+      Contact: Mr. Patrick Attallah, Managing Director
+
+   Declaration of structure:
+
+</p><p class="rfcparagraph">      The identifier structure is as follows:
+
+</p><p class="rfcparagraph">         URN:ISAN:<ISAN-NSS>
+
+      Where ISAN-NSS is conformant to URN syntax requirements defined in
+      [RFC2141] and is further constrained by [ISO15706] and in this
+      document.  There are two forms, one with the version extension and
+      one without.  The formal BNF is defined in section 2 below.
+      Examples of the two forms are:
+
+</p><p class="rfcparagraph">         URN:ISAN:0123-1230-3210-2310-1
+
+         URN:ISAN:1881-66C7-3420-6541-9-9F3A-0245-U
+
+   Relevant ancillary documentation:
+
+</p><p class="rfcparagraph">      ISAN, its syntax, uses and its processes are defined in
+      [ISO15706].
+   Identifier uniqueness considerations:
+
+</p><p class="rfcparagraph">      Uniqueness is guaranteed by the ISAN International Agency that
+      issues the numbers.  Numbers are not re-assigned.
+
+</p><p class="rfcparagraph">   Identifier persistence considerations:
+
+</p><p class="rfcparagraph">      Persistence is guaranteed by ISO Registration Authority
+      processes and contracts with the ISAN International Agency.
+
+</p><p class="rfcparagraph">   Process of identifier assignment:
+
+</p><p class="rfcparagraph">      The details of the assignment process are defined from time to
+      time by the ISAN International Agency.  However, in general, any
+      approved entity can request an ISAN number by providing the
+      required metadata information and paying the registration fee.
+      The ISAN International Agency may delegate to regional or market-
+      based Registration Agencies for portions of the registration
+      process.
+
+</p><p class="rfcparagraph">   Process for identifier resolution:
+
+</p><p class="rfcparagraph">      ISAN numbers are resolved by a direct or indirect lookup with the
+      ISAN International Agency.  At this writing, a non-commercial,
+      manual system is available online at http://www.isan.org.  The
+      resolution procedures may be modified from time to time by the
+      ISAN International Agency.
+
+</p><p class="rfcparagraph">   Rules for Lexical Equivalence:
+
+</p><p class="rfcparagraph">      The ISAN-NSS is unique by the nature of the ISAN International
+      Agency's number management.  The ISAN-NSS is case-insensitive.
+      Upper and lower case characters are treated as identical.
+
+</p><p class="rfcparagraph">   Conformance with URN Syntax:
+
+</p><p class="rfcparagraph">      No special considerations.  The syntax is fully conformant with
+      [RFC2141].
+
+</p><p class="rfcparagraph">   Validation mechanism:
+
+</p><p class="rfcparagraph">      The check digits provide syntax integrity.  Lookup is via online
+      and offline services provided by the ISAN International Agency.
+
+</p><p class="rfcparagraph">   Scope: Global.
+	<a name="section-3"><h2>3.   Formal Syntax</h2></a>
+
+   The following syntax specification uses an augmented Backus-Naur Form
+   (BNF) and elements defined in the URN Syntax [RFC2141].  This syntax
+   here is derived from the syntax definition in [ISO15706], constrained
+   to prohibit the space character as a separator.
+
+</p><p class="rfcparagraph">      <ISAN-NSS>     ::= <root> <episode> [version]
+
+      <root>         ::= 3*(<hexnum> "-")
+
+      <episode>      ::= <hexnum> "-" <check>
+
+      <version>      ::= 2*("-" <hexnum>) "-" <check>
+
+      <hexnum>       ::= 4*(<hex>)
+
+      <check>        ::= <upper> | <lower> | <number>
+
+   Note that <hex>, <upper>, <lower>, and <number> are defined in
+   [RFC2141].
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   Security Considerations</h2></a>
+
+   This document only defines the syntax and resolution authority for
+   the ISAN numbers.  Details of the resolution process and the security
+   of the assignment and resolution system processes are defined
+   external to this document by the ISAN International Agency and thus
+   outside the scope of this document.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   Namespace Considerations</h2></a>
+
+   ISAN is an external numbering system managed by an external agency
+   established by ISO.  While URN namespaces may exist for which any
+   generic numbering system can be encoded, there is currently no direct
+   encoding for ISAN.  An example of such a namespace is the MPEG-21
+   system.
+
+</p><p class="rfcparagraph">   ISAN numbers are reserved for use in identifying audiovisual works
+   for which there is a moving visual component, or components related
+   to such a work (e.g. subtitling track).
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.  Community Considerations</h2></a>
+
+   The primary registrants for ISAN numbers are the producers and
+   studios of audiovisual works (movies and television shows).  While
+   the system is not constrained to "major" works (any bona fide entity
+   can register any work), the primary benefits of its use come from
+   works that are widely distributed.  The users of the ISAN system
+   range from the studios themselves to film and video archives and
+   libraries, rights administrators, program guide services, and
+   audience measurement services.  Its potential for use in the Internet
+   community is as an identifier for streaming media.
+
+</p><p class="rfcparagraph">	<a name="section-7"><h2>7.   IANA Considerations</h2></a>
+
+   This document defines a URN NID registration that is to be entered
+   into the IANA registry of URN NIDs.  It specifically requests the
+   NID, "ISAN".
+
+</p><p class="rfcparagraph">	<a name="section-8"><h2>8.   References</h2></a>
+
+	<a name="section-8.1"><h3>8.1   Normative References</h3></a>
+
+   [RFC2141]  Moats, R., "URN Syntax", RFC 2141, May 1997.
+
+</p><p class="rfcparagraph">   [ISO15706] ISO 15706, Information and documentation - International
+              Standard Audiovisual Number (ISAN)
+
+	<a name="section-8.2"><h3>8.2   Informative References</h3></a>
+
+   [RFC3406]  Daigle, L., van Gulik, D., Iannella, R., and P.
+              Faltstrom, "Uniform Resource Names (URN) Namespace
+              Definition Mechanisms", BCP 66, RFC 3406, October 2002.
+
+</p><p class="rfcparagraph">Author's Address
+
+   Michael Dolan
+   TBT
+   PO Box 190
+   Del Mar, CA 92014 USA
+
+   EMail: md.1@newtbt.com
+Full Copyright Statement
+
+   Copyright (C) The Internet Society (2006).<br>
+
+</p><p class="rfcparagraph">   This document is subject to the rights, licenses and restrictions
+   contained in BCP 78, and except as set forth therein, the authors
+   retain all their rights.
+
+</p><p class="rfcparagraph">   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY AND THE INTERNET
+   ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED,
+   INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE
+   INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED
+   WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Intellectual Property
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the procedures with respect to rights in RFC documents can be
+   found in BCP 78 and BCP 79.
+
+</p><p class="rfcparagraph">   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+</p><p class="rfcparagraph">   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at
+   ietf-ipr@ietf.org.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is provided by the IETF
+   Administrative Support Activity (IASA).
+
+</p>
+
+
+
+
+
+Dolan                        Informational                      [Page 6]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

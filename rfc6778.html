@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph">Internet Engineering Task Force (IETF)                         R. Sparks
+Request for Comments: 6778                                       Tekelec
+Category: Informational                                     October 2012
+ISSN: 2070-1721
+
+
+              Requirements for Archiving IETF Email Lists
+           and for Providing Web-Based Browsing and Searching
+
+<h2>Abstract</h2>
+
+   The IETF makes heavy use of email lists to conduct its work.
+   Participants frequently need to search and browse the archives of
+   these lists and have asked for improved search capabilities.  The
+   current archive mechanism could also be made more efficient.  This
+   memo captures the requirements for improved email list archiving and
+   searching systems.
+
+</p><p class="rfcparagraph">Status of This Memo
+
+   This document is not an Internet Standards Track specification; it is
+   published for informational purposes.
+
+</p><p class="rfcparagraph">   This document is a product of the Internet Engineering Task Force
+   (IETF).  It represents the consensus of the IETF community.  It has
+   received public review and has been approved for publication by the
+   Internet Engineering Steering Group (IESG).  Not all documents
+   approved by the IESG are a candidate for any level of Internet
+   Standard; see Section 2 of RFC 5741.
+
+</p><p class="rfcparagraph">   Information about the current status of this document, any errata,
+   and how to provide feedback on it may be obtained at
+   http://www.rfc-editor.org/info/rfc6778.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (c) 2012 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+</p><p class="rfcparagraph">   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (http://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
+   the Trust Legal Provisions and are provided without warranty as
+   described in the Simplified BSD License.
+<h2>Table of Contents</h2>
+<a href="#section-1" class="">1. Introduction ...................................................</a><br>
+<a href="#section-2" class="">2. List Search and Archive Requirements ...........................</a><br>
+<a href="#section-2.1" class="indent-1">2.1. Search and Browsing .......................................</a><br>
+<a href="#section-2.2" class="indent-1">2.2. Archiving Active Lists ....................................</a><br>
+<a href="#section-2.3" class="indent-1">2.3. Importing Messages from Other Archives ....................</a><br>
+<a href="#section-2.4" class="indent-1">2.4. Exporting Messages from the Archives ......................</a><br>
+<a href="#section-2.5" class="indent-1">2.5. Redundancy ................................................</a><br>
+<a href="#section-2.6" class="indent-1">2.6. Archive Administration ....................................</a><br>
+<a href="#section-2.7" class="indent-1">2.7. Transition Requirements ...................................</a><br>
+<a href="#section-3" class="">3. Internationalized Address Considerations .......................</a><br>
+<a href="#section-4" class="">4. IMAP Access ....................................................</a><br>
+<a href="#section-5" class="">5. Security Considerations ........................................</a><br>
+<a href="#section-6" class="">6. Acknowledgements ...............................................</a><br>
+<a href="#section-7" class="">7. Informative References .........................................</a><br>
+
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   The IETF makes heavy use of email lists to conduct its work.
+   Participants frequently need to search the archives of these lists
+   and have asked for improved search capabilities, particularly when
+   the search needs to cover a large period of time or cross several
+   lists.  For instance, document editors, shepherds, working group
+   chairs, and area directors may need to review all discussion of a
+   particular draft.  That discussion may be spread across the working
+   group list, one or more directorate lists, and the IETF general list.
+   Occasionally, work impacts multiple groups, possibly in different
+   areas, and the search must cover additional working group lists.
+
+</p><p class="rfcparagraph">   The current tools for performing these searches require several
+   manually coordinated steps, which are error prone.  Without a local
+   copy of the archive (which may not be complete), searching most
+   working group lists requires brute force effort, aided possibly by
+   web search engines.
+
+</p><p class="rfcparagraph">   More advanced search capabilities have been constructed for a limited
+   subset of the available lists and are exposed in the "Email Archives
+   Quick Search" section of the main IETF website.  While these tools
+   are of great assistance, there is still significant need for
+   improvement.
+
+</p><p class="rfcparagraph">   The current archive mechanism could also be made more efficient.  The
+   current practices involve duplicate stores (for the web and ftp
+   interfaces), which impact storage and replication and are subject to
+   inconsistency.
+   This memo captures the requirements for improved email list archiving
+   and searching systems.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   List Search and Archive Requirements</h2></a>
+
+	<a name="section-2.1"><h3>2.1   Search and Browsing</h3></a>
+
+   o  The system must provide a web interface for searching and browsing
+      archived messages.
+
+</p><p class="rfcparagraph">   o  The system must allow browsing the entire archive of a given list
+      by thread or by date.
+
+</p><p class="rfcparagraph">   o  The system must allow browsing the results of a search by thread
+      or by date.
+
+</p><p class="rfcparagraph">         Both threading based on Message-Id/References/In-Reply-To and
+         threading based on same subject line (modulo short prefixes
+         like re: and fwd:) should be taken into account.
+
+</p><p class="rfcparagraph">   o  The system must allow searching across any subset of the archived
+      lists (one list, a selection of lists, or all lists).
+
+</p><p class="rfcparagraph">   o  The system must allow searching of any combination (using AND, OR,
+      and NOT operators) of the following attributes.  Richer search
+      capabilities are highly desirable.
+
+</p><p class="rfcparagraph">      -  string occurring in sender name or email address
+
+      -  date range
+
+      -  string occurring in Subject
+
+      -  string occurring in message body
+
+      -  string occurring in message header (in particular, exact match
+         of Message-Id)
+
+            For instance, it would be nice to search the entire archive
+            for instances of a message with a given Message-ID with a
+            URL like <http://datatracker.ietf.org/mlarchive/
+            msg?id=4EA6E023.6010603@example.com>
+   o  Individual messages must be representable by a long-term stable
+      URI that can be shared between users.  That is, the URI must be
+      suitable for reference in an email message.
+
+</p><p class="rfcparagraph">      -  It would be preferable for that URI to appear in an Archived-At
+         header field in the message [RFC5064].
+
+</p><p class="rfcparagraph">   o  Searches should be representable by a URI that can be shared
+      between users.
+
+</p><p class="rfcparagraph">      -  Such URIs should be long-term stable.
+
+</p><p class="rfcparagraph">      -  The search may be re-executed when the URI is referenced.  It
+         is acceptable for the same URI to produce different results if
+         accessed at different times or by different people (for
+         example, by reflecting additional messages that may match the
+         search criteria or reflecting changes in access authorization
+         to lists with restricted archives).
+
+</p><p class="rfcparagraph">   o  When the system requires credentials, it must use the
+      datatracker's authentication system.
+
+</p><p class="rfcparagraph">      -  While the vast majority of archived lists have an open access
+         policy, some archived lists have restricted archives.
+
+</p><p class="rfcparagraph">      -  The system must not require credentials for browsing or
+         searching lists with open archives.  (But it is acceptable for
+         a user to browse or search such lists while logged in.)
+
+      -  The system must make it possible to limit access to a
+         restricted archive based on login credentials.
+
+</p><p class="rfcparagraph">      -  Messages from restricted archives must be distinguishable from
+         messages from unrestricted archives in any search results.
+	<a name="section-2.2"><h3>2.2   Archiving Active Lists</h3></a>
+
+   o  The archive system must accept messages handled by various mail
+      list manager packages.
+
+</p><p class="rfcparagraph">      -  Lists hosted on the IETF systems are served by Mailman
+         [Mailman].
+
+</p><p class="rfcparagraph">      -  Lists hosted at other organizations may use other packages.
+
+</p><p class="rfcparagraph">         *  The archive system must accept messages through subscribing
+            to such an external list.
+
+</p><p class="rfcparagraph">         *  The archive system may support other mechanisms for
+            accepting messages into the archive.
+
+</p><p class="rfcparagraph">	<a name="section-2.3"><h3>2.3   Importing Messages from Other Archives</h3></a>
+
+   Lists hosted at other systems are sometimes moved to the IETF
+   servers, and their archive is moved with them.  The archiving system
+   must be able to import these archives.
+
+</p><p class="rfcparagraph">   o  At a minimum, the archive system must be able to import mbox
+      formatted archives [RFC4155] [Mbox].
+
+</p><p class="rfcparagraph">   o  The archive system should be able to import Maildir and Maildir-
+      like (the key characteristic being one-message-per-file) formatted
+      archives [Maildir].
+
+</p><p class="rfcparagraph">   o  It is acceptable to use a separate utility to convert between
+      these formats before import, as long as the conversion is
+      lossless.
+
+</p><p class="rfcparagraph">	<a name="section-2.4"><h3>2.4   Exporting Messages from the Archives</h3></a>
+
+   The archive system must allow both users and administrators to export
+   messages.
+
+</p><p class="rfcparagraph">   o  The archive system must support exporting messages in the mbox
+      format.
+
+</p><p class="rfcparagraph">   o  The archive system should support exporting messages in the
+      Maildir format.
+
+</p><p class="rfcparagraph">   o  The archive system must support exporting the entire archive of a
+      given list.
+   o  The archive system must support exporting all messages from a
+      given list within a given date range.
+
+</p><p class="rfcparagraph">   o  The archive system should allow exporting the results of any
+      supported search query.
+
+</p><p class="rfcparagraph">	<a name="section-2.5"><h3>2.5   Redundancy</h3></a>
+
+   o  The systems must facilitate providing archive, search, and browse
+      functions through geographically distributed servers.
+
+</p><p class="rfcparagraph">      -  The systems must support a single active and single standby
+         server.  This reflects the current operating configuration and
+         is expected to be the initial deployment model.
+
+</p><p class="rfcparagraph">      -  The systems should support a single active and multiple standby
+         servers.
+
+</p><p class="rfcparagraph">      -  The systems should support multiple active servers for the
+         search and browse functions.  Support for multiple active
+         archive servers is not a requirement.
+
+</p><p class="rfcparagraph">      -  The amount of traffic generated to ensure data replication
+         between servers should be on the order of the size of any new/
+         changed messages in the archives.
+
+</p><p class="rfcparagraph">         *  It is acceptable for replication to be part of the archival
+            system itself (such as using the replication mechanisms from
+            an underlying database).
+
+</p><p class="rfcparagraph">         *  It is acceptable to rely on replication of the underlying
+            filesystem objects (using rsync of one or more directory
+            trees, for example), but only if the objects in the
+            underlying filesystem are formatted such that the size of
+            the replication data is on the order of the size of any new/
+            changed messages in the archives.
+
+</p><p class="rfcparagraph">	<a name="section-2.6"><h3>2.6   Archive Administration</h3></a>
+
+   o  The archive system must support adding and removing lists to be
+      archived.
+
+</p><p class="rfcparagraph">   o  The system must allow the administrator to add messages to and
+      delete messages from an archived list.  The system should log such
+      actions.
+	<a name="section-2.7"><h3>2.7   Transition Requirements</h3></a>
+
+   There are many existing archived messages containing embedded links
+   into the existing MHonArc [MHonArc] mail archive.  These links must
+   continue to work, but they should reach the message as archived in
+   the new system.
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   Internationalized Address Considerations</h2></a>
+
+   The archive and search functions should anticipate internationalized
+   email addresses as discussed in the following three documents --
+   [RFC6531], [RFC6532], and [IMAP-UTF8].  There is no firm requirement
+   at this time.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   IMAP Access</h2></a>
+
+   Requirements for allowing access to the archives using IMAP are
+   captured in [IMAP-ARCH].  The archive system must anticipate
+   integrating with a system that provides IMAP access.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   Security Considerations</h2></a>
+
+   Creating a new tool for searching and archiving IETF email lists does
+   not affect the security of the Internet in any significant fashion.
+
+</p><p class="rfcparagraph">   Searching can be I/O and CPU intensive.  The implementors of this
+   tool should consider the potential for maliciously crafted searches
+   attempting to consume all available resources.  Similarly, the
+   implementors should consider the potential for denial-of-service
+   attacks through making many connections to the browsing system or
+   rapid navigating within it.
+
+</p><p class="rfcparagraph">   Preserving the integrity of the archives is important.  The
+   implementors should ensure that administrative access is
+   appropriately authenticated, and that message paths into the archive
+   are appropriately configured to avoid unauthorized message insertion.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.   Acknowledgements</h2></a>
+
+   The Tools Development team provided input into the initial
+   brainstorm.  Text suggestions from Alexey Melnikov, Pete Resnick, S.
+   Moonesamy, Francis Dupont, and Murray Kucherawy have been
+   incorporated.
+	<a name="section-7"><h2>7.   Informative References</h2></a>
+
+   [IMAP-ARCH]  Sparks, R., "IMAP Access to IETF Email List Archives",
+                Work in Progress, August 2012.
+
+</p><p class="rfcparagraph">   [IMAP-UTF8]  Resnick, P., Ed., Newman, C., Ed., and S. Shen, Ed.,
+                "IMAP Support for UTF-8", Work in Progress,
+                October 2012.
+
+</p><p class="rfcparagraph">   [Maildir]    "Maildir", <http://en.wikipedia.org/w/
+                index.php?title=Maildir&oldid=503288041>.
+
+</p><p class="rfcparagraph">   [Mailman]    "Mailman", <http://www.list.org/>.
+
+</p><p class="rfcparagraph">   [Mbox]       "mbox", <http://en.wikipedia.org/w/
+                index.php?title=Mbox&oldid=515402275>.
+
+</p><p class="rfcparagraph">   [MHonArc]    "MHonArc", <http://www.mhonarc.org/>.
+
+</p><p class="rfcparagraph">   [RFC4155]    Hall, E., "The application/mbox Media Type", RFC 4155,
+                September 2005.
+
+</p><p class="rfcparagraph">   [RFC5064]    Duerst, M., "The Archived-At Message Header Field",
+                RFC 5064, December 2007.
+
+</p><p class="rfcparagraph">   [RFC6531]    Yao, J. and W. Mao, "SMTP Extension for
+                Internationalized Email", RFC 6531, February 2012.
+
+</p><p class="rfcparagraph">   [RFC6532]    Yang, A., Steele, S., and N. Freed, "Internationalized
+                Email Headers", RFC 6532, February 2012.
+
+</p>Author's Address
+
+   Robert Sparks
+   Tekelec
+   17210 Campbell Road
+   Suite 250
+   Dallas, Texas  75254-4203
+   USA
+
+   EMail: RjS@nostrum.com
+
+
+
+
+
+
+
+
+
+
+Sparks                        Informational                     [Page 8]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

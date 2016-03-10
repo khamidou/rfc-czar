@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                         G. Parsons<br>Request for Comments: 3302                               Nortel Networks<br>Obsoletes: 2302                                              J. Rafferty<br>Category: Standards Track                          Brooktrout Technology<br>                                                          September 2002<br><br></p>
+                  <h1>
+               Tag Image File Format (TIFF) - image/tiff
+                      MIME Sub-type Registration</h1>
+                  <h2>Status of this Memo</h2>
+
+   This document specifies an Internet standards track protocol for the
+   Internet community, and requests discussion and suggestions for
+   improvements.  Please refer to the current edition of the "Internet
+   Official Protocol Standards" (STD 1) for the standardization state
+   and status of this protocol.  Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (2002).  All Rights Reserved.<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This document describes the registration of the MIME sub-type
+   image/tiff.  This document refines an earlier sub-type registration
+   in RFC 1528.
+
+</p><p class="rfcparagraph">   This document obsoletes RFC 2302.
+
+</p><p class="rfcparagraph">	<a name="section-1"><h2>1.   Conventions used in this document</h2></a>
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in RFC 2119 [REQ].
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Overview</h2></a>
+
+   This document describes the registration of the MIME sub-type
+   image/tiff.  The baseline encoding of TIFF (Tag Image File Format) is
+   defined by [TIFF].
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   Internet Fax Working Group</h2></a>
+
+   This document is a product of the IETF Internet Fax Working Group.
+   All comments on this document should be forwarded to the email
+   distribution list at <ietf-fax@imc.org>.
+	<a name="section-4"><h2>4.   TIFF Definition</h2></a>
+
+   TIFF (Tag Image File Format) Revision 6.0 is defined in detail by
+   Adobe in [TIFF].  The documentation can be obtained from Adobe at:
+
+</p><p class="rfcparagraph">      Adobe Developers Association
+      Adobe Systems Incorporated
+      345 Park Avenue
+      San Jose, CA 95110-2704
+
+      Phone: +1-408-536-6000
+      Fax:   +1-408-537-6000
+
+   A copy of this specification can also be found in:
+   http://partners.adobe.com/asn/developer/PDFS/TN/TIFF6.pdf
+
+   While a brief scope and feature description is provided in this
+   section as background information, the reader is directed to the
+   original TIFF specification [TIFF] to obtain complete feature and
+   technical details.
+
+</p><p class="rfcparagraph">	<a name="section-4.1"><h3>4.1   TIFF Scope</h3></a>
+
+   TIFF describes image data that typically comes from scanners, frame
+   grabbers, and paint- and photo-retouching programs.  TIFF is not a
+   printer language or page description language.  The purpose of TIFF
+   is to describe and store raster image data.  A primary goal of TIFF
+   is to provide a rich environment within which applications can
+   exchange image data.  This richness is required to take advantage of
+   the varying capabilities of scanners and other imaging devices.
+   Though TIFF is a rich format, it can easily be used for simple
+   scanners and applications as well because the number of required
+   fields is small.
+
+</p><p class="rfcparagraph">	<a name="section-4.2"><h3>4.2   TIFF Features</h3></a>
+
+   Some of the features of TIFF (from [TIFF]) are:
+
+</p><p class="rfcparagraph">      -  TIFF is capable of describing bilevel, grayscale, palette-
+         color, and full-color image data in several color spaces.
+
+</p><p class="rfcparagraph">      -  TIFF includes a number of compression schemes that allow
+         developers to choose the best space or time tradeoff for their
+         applications.
+
+</p><p class="rfcparagraph">      -  TIFF is designed to be extensible and to evolve gracefully as
+         new needs arise.
+      -  TIFF allows the inclusion of an unlimited amount of private or
+         special-purpose information.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   MIME Definition</h2></a>
+
+	<a name="section-5.1"><h3>5.1   image/tiff</h3></a>
+
+   The image/tiff content-type was previously defined in RFC 1528 as
+   containing TIFF 6.0 encoded image data, with specific reference made
+   to a subset known as TIFF Class F.  This document redefines the
+   original image/tiff definition to refer to TIFF 6.0 [TIFF] encoded
+   image data, consistent with existing practice for TIFF aware Internet
+   applications.  This definition is further enhanced by introducing the
+   new "application parameter" (section 6.2) to enable identification of
+   a specific subset of TIFF and TIFF extensions for the encoded image
+   data.
+
+</p><p class="rfcparagraph">	<a name="section-5.2"><h3>5.2   Application parameter</h3></a>
+
+   There are cases where it may be useful to identify the application
+   applicable to the content of an image/tiff body.  Typically, this
+   would be used to assist the recipient in dispatching a suitable
+   rendering package to handle the display or processing of the image
+   file.  As a result, an optional "application" parameter is defined
+   for image/tiff to identify a particular application's subset of TIFF
+   and TIFF extensions for the encoded image data, if it is known.  No
+   values are defined in this document.
+
+</p><p class="rfcparagraph">      Example:
+
+</p><p class="rfcparagraph">               Content-type: image/tiff; application=foo
+
+   There is no default value for application, as the absence of the
+   application parameter indicates that the encoded TIFF image is
+   Baseline TIFF or that it is not necessary to identify the
+   application.  It is up to the recipient's implementation to determine
+   the application (if necessary) and render the image to the user.
+
+</p><p class="rfcparagraph">   New values for the image/tiff application parameter must be approved
+   by the IESG prior to registration.  As a result, the publication of a
+   description of parameter values in an RFC is required.
+
+</p><p class="rfcparagraph">   Guidelines on writing IANA considerations for RFCs can be found in
+   RFC 2434.
+
+</p><p class="rfcparagraph">   An application parameter is a hint to the receiver.  It MUST NOT be
+   used as a blind request to execute some arbitrary program.
+   Instead, it should be viewed rather as an indication of what sort of
+   application would be able to handle the content most appropriately.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.   IANA Registration</h2></a>
+
+      To: ietf-types@iana.org
+      Subject: Registration of Standard MIME media type image/tiff
+
+      MIME media type name: image
+
+      MIME subtype name: tiff
+
+      Required parameters: none
+
+      Optional parameters: application
+
+         There is no format specified for the value of this parameter
+         in addition to that specified by [MIME1].  Various
+         applications of TIFF may define values as required as hints
+         to the receiver.  There is no default value for application,
+         as the absence of the application parameter indicates that
+         the encoded TIFF image is Baseline TIFF or that it is not
+         necessary to identify the application.  It is up to the
+         implementation to determine the application (if necessary)
+         and render the image to the user.
+
+</p><p class="rfcparagraph">      Encoding considerations:
+
+</p><p class="rfcparagraph">         This media type consists of binary data.  The base64 encoding
+         should be used on transports that cannot accommodate binary
+         data directly.
+
+</p><p class="rfcparagraph">      Security considerations:
+
+</p><p class="rfcparagraph">         TIFF utilizes a structure which can store image data and
+         attributes of this image data.  The fields defined in the TIFF
+         specification are of a descriptive nature and provide
+         information that is useful to facilitate the viewing and
+         rendering of images by a recipient.  As such, the fields
+         currently defined in the TIFF specification do not in
+         themselves create additional security risks, since the fields
+         are not used to induce any particular behavior by the
+         recipient application.
+
+</p><p class="rfcparagraph">         TIFF has an extensible structure, so that it is theoretically
+         possible that fields could be defined in the future which
+         could be used to induce particular actions on the part of the
+         recipient, thus presenting additional security risks, but
+         this type of capability is not supported in the referenced
+         TIFF specification.  Indeed, the definition of fields which
+         would include such processing instructions is inconsistent
+         with the goals and spirit of the TIFF specification as
+         defined to date.
+
+</p><p class="rfcparagraph">      Interoperability considerations:
+
+</p><p class="rfcparagraph">         The ability of implementations to handle all the defined
+         applications (or profiles within applications) of TIFF may
+         not be ubiquitous.  As a result, implementations may decode
+         and attempt to display the encoded TIFF image data only to
+         determine that the image cannot be rendered.  The presence of
+         the application parameter may aid in allowing this
+         determination before dispatching for rendering.  However, it
+         should be noted that the parameter value is not intended to
+         convey levels of capabilities for a particular application.
+
+</p><p class="rfcparagraph">      Published specification:
+
+</p><p class="rfcparagraph">         TIFF (Tag Image File Format) is defined in:
+             TIFF (TM) Revision 6.0 - Final  June 3, 1992
+
+         Adobe Developers Association
+         Adobe Systems Incorporated
+         345 Park Avenue
+         San Jose, CA 95110-2704
+
+         Phone: +1-408-536-6000
+         Fax:   +1-408-537-6000
+
+         A copy of this specification can be found in:
+         http://partners.adobe.com/asn/developer/pdfs/tn/TIFF6.pdf
+
+      Applications which use this media type:
+
+</p><p class="rfcparagraph">         Imaging, fax, messaging and multi-media
+
+      Additional information:
+
+</p><p class="rfcparagraph">         Magic number(s):
+              II (little-endian):  49 49 2A 00 hex
+              MM (big-endian):     4D 4D 00 2A hex
+         File extension(s): .TIF
+         Macintosh File Type Code(s): TIFF
+      Person & email address to contact for further information:
+
+</p><p class="rfcparagraph">         Glenn W. Parsons
+         gparsons@nortelnetworks.com
+
+         James Rafferty
+         jraff@brooktrout.com
+
+      Intended usage: COMMON
+
+      Change controller: James Rafferty
+
+	<a name="section-6"><h2>6.  Security Considerations</h2></a>
+
+   TIFF utilizes a structure which can store image data and attributes
+   of this image data.  The fields defined in the TIFF specification are
+   of a descriptive nature and provide information that is useful to
+   facilitate the viewing and rendering of images by a recipient.  As
+   such, the fields currently defined in the TIFF specification do not
+   in themselves create additional security risks, since the fields are
+   not used to induce any particular behavior by the recipient
+   application.
+
+</p><p class="rfcparagraph">   TIFF has an extensible structure, so that it is theoretically
+   possible that fields could be defined in the future which could be
+   used to induce particular actions on the part of the recipient, thus
+   presenting additional security risks, but this type of capability is
+   not supported in the referenced TIFF specification.  Indeed, the
+   definition of fields which would include such processing instructions
+   is inconsistent with the goals and spirit of the TIFF specification
+   as defined to date.
+
+</p><p class="rfcparagraph">	<a name="section-7"><h2>7.  Changes from RFC 2302</h2></a>
+
+   * Correction of magic number
+   * Improvements of the security considerations
+   * Change of change controller
+   * Various editorials to improve clarity
+
+	<a name="section-8"><h2>8.  References</h2></a>
+
+	<a name="section-8.1"><h3>8.1  Normative References</h3></a>
+
+   [REQ]     Bradner, S., "Key words for use in RFCs to Indicate
+             Requirement Levels", BCP 14, RFC 2119, March 1997.
+   [MIME1]   Freed, N. and N. Borenstein, "Multipurpose Internet Mail
+             Extensions (MIME) Part One: Format of Internet Message
+             Bodies", RFC 2045, November 1996.
+
+</p><p class="rfcparagraph">   [MIME4]   Freed, N. and N. Borenstein, "Multipurpose Internet Mail
+             Extensions (MIME) Part Four: Registration Procedures", BCP
+             13, RFC 2048, November 1996.
+
+</p><p class="rfcparagraph">   [TIFF]    Adobe Developers Association, TIFF (TM) Revision 6.0 -
+             Final, June 3, 1992.
+
+</p><p class="rfcparagraph">	<a name="section-8.2"><h3>8.2  Non-Normative References</h3></a>
+
+   [TIFFREG] Parsons, G., Rafferty, J. and S. Zilles, "Tag Image File
+             Format (TIFF) -image/tiff MIME Sub-type Registration", RFC
+             2302, March 1998.
+
+</p><p class="rfcparagraph">   [TPC.INT] Malamud, C. and M. Rose, "Principles of Operation for the
+             TPC.INT Subdomain: Remote Printing -- Technical
+             Procedures", RFC 1528, October 1993.
+
+</p><p class="rfcparagraph">	<a name="section-9"><h2>9.  Authors' Addresses</h2></a>
+
+   Glenn W. Parsons
+   Nortel Networks
+   P.O. Box 3511, Station C
+   Ottawa, ON  K1Y 4H7
+   Canada
+
+   Phone: +1-613-763-7582
+   Fax:   +1-613-763-2697
+   EMail: gparsons@nortelnetworks.com
+
+
+   James Rafferty
+   Brooktrout Technology
+   410 First Avenue
+   Needham, MA  02494
+   USA
+
+   Phone: +1-781-433-9462
+   Fax:   +1-781-433-9268
+   EMail: jraff@brooktrout.com
+	<a name="section-10"><h2>10.   Full Copyright Statement</h2></a>
+
+   Copyright (C) The Internet Society (2002).  All Rights Reserved.<br>
+
+</p><p class="rfcparagraph">   This document and translations of it may be copied and furnished to
+   others, and derivative works that comment on or otherwise explain it
+   or assist in its implementation may be prepared, copied, published
+   and distributed, in whole or in part, without restriction of any
+   kind, provided that the above copyright notice and this paragraph are
+   included on all such copies and derivative works.  However, this
+   document itself may not be modified in any way, such as by removing
+   the copyright notice or references to the Internet Society or other
+   Internet organizations, except as needed for the purpose of
+   developing Internet standards in which case the procedures for
+   copyrights defined in the Internet Standards process must be
+   followed, or as required to translate it into languages other than
+   English.
+
+</p><p class="rfcparagraph">   The limited permissions granted above are perpetual and will not be
+   revoked by the Internet Society or its successors or assigns.
+
+</p><p class="rfcparagraph">   This document and the information contained herein is provided on an
+   "AS IS" basis and THE INTERNET SOCIETY AND THE INTERNET ENGINEERING
+   TASK FORCE DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING
+   BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION
+   HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED WARRANTIES OF
+   MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is currently provided by the
+   Internet Society.
+
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Parsons & Rafferty          Standards Track                     [Page 8]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

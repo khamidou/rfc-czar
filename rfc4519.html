@@ -1,0 +1,1576 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                  A. Sciberras, Ed.<br>Request for Comments: 4519                                       eB2Bcom<br>Obsoletes: 2256                                                June 2006<br>Updates: 2247, 2798, 2377<br>Category: Standards Track<br><br></p>
+                  <h1>
+             Lightweight Directory Access Protocol (LDAP):
+                      Schema for User Applications</h1>
+                  <h2>Status of This Memo</h2>
+
+   This document specifies an Internet standards track protocol for the
+   Internet community, and requests discussion and suggestions for
+   improvements.  Please refer to the current edition of the "Internet
+   Official Protocol Standards" (STD 1) for the standardization state
+   and status of this protocol.  Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (2006).<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This document is an integral part of the Lightweight Directory Access
+   Protocol (LDAP) technical specification.  It provides a technical
+   specification of attribute types and object classes intended for use
+   by LDAP directory clients for many directory services, such as White
+   Pages.  These objects are widely used as a basis for the schema in
+   many LDAP directories.  This document does not cover attributes used
+   for the administration of directory servers, nor does it include
+   directory objects defined for specific uses in other documents.
+<h2>Table of Contents</h2>
+<a href="#section-1" class="">1. Introduction ...................................................</a><br>
+<a href="#section-1.1" class="indent-1">1.1. Relationship with Other Specifications ....................</a><br>
+<a href="#section-1.2" class="indent-1">1.2. Conventions ...............................................</a><br>
+<a href="#section-1.3" class="indent-1">1.3. General Issues ............................................</a><br>
+<a href="#section-2" class="">2. Attribute Types ................................................</a><br>
+<a href="#section-2.1" class="indent-1">2.1. 'businessCategory' ........................................</a><br>
+<a href="#section-2.2" class="indent-1">2.2. 'c' .......................................................</a><br>
+<a href="#section-2.3" class="indent-1">2.3. 'cn' ......................................................</a><br>
+<a href="#section-2.4" class="indent-1">2.4. 'dc' ......................................................</a><br>
+<a href="#section-2.5" class="indent-1">2.5. 'description' .............................................</a><br>
+<a href="#section-2.6" class="indent-1">2.6. 'destinationIndicator' ....................................</a><br>
+<a href="#section-2.7" class="indent-1">2.7. 'distinguishedName' .......................................</a><br>
+<a href="#section-2.8" class="indent-1">2.8. 'dnQualifier' .............................................</a><br>
+<a href="#section-2.9" class="indent-1">2.9. 'enhancedSearchGuide' .....................................</a><br>
+<a href="#section-2.10" class="indent-1">2.10. 'facsimileTelephoneNumber' ...............................</a><br>
+<a href="#section-2.11" class="indent-1">2.11. 'generationQualifier' ....................................</a><br>
+<a href="#section-2.12" class="indent-1">2.12. 'givenName' ..............................................</a><br>
+<a href="#section-2.13" class="indent-1">2.13. 'houseIdentifier' ........................................</a><br>
+<a href="#section-2.14" class="indent-1">2.14. 'initials' ..............................................</a><br>
+<a href="#section-2.15" class="indent-1">2.15. 'internationalISDNNumber' ...............................</a><br>
+<a href="#section-2.16" class="indent-1">2.16. 'l' .....................................................</a><br>
+<a href="#section-2.17" class="indent-1">2.17. 'member' ................................................</a><br>
+<a href="#section-2.18" class="indent-1">2.18. 'name' ..................................................</a><br>
+<a href="#section-2.19" class="indent-1">2.19. 'o' .....................................................</a><br>
+<a href="#section-2.20" class="indent-1">2.20. 'ou' ....................................................</a><br>
+<a href="#section-2.21" class="indent-1">2.21. 'owner' .................................................</a><br>
+<a href="#section-2.22" class="indent-1">2.22. 'physicalDeliveryOfficeName' ............................</a><br>
+<a href="#section-2.23" class="indent-1">2.23. 'postalAddress' .........................................</a><br>
+<a href="#section-2.24" class="indent-1">2.24. 'postalCode' ............................................</a><br>
+<a href="#section-2.25" class="indent-1">2.25. 'postOfficeBox' .........................................</a><br>
+<a href="#section-2.26" class="indent-1">2.26. 'preferredDeliveryMethod' ...............................</a><br>
+<a href="#section-2.27" class="indent-1">2.27. 'registeredAddress' .....................................</a><br>
+<a href="#section-2.28" class="indent-1">2.28. 'roleOccupant' ..........................................</a><br>
+<a href="#section-2.29" class="indent-1">2.29. 'searchGuide' ...........................................</a><br>
+<a href="#section-2.30" class="indent-1">2.30. 'seeAlso' ...............................................</a><br>
+<a href="#section-2.31" class="indent-1">2.31. 'serialNumber' ..........................................</a><br>
+<a href="#section-2.32" class="indent-1">2.32. 'sn' ....................................................</a><br>
+<a href="#section-2.33" class="indent-1">2.33. 'st' ....................................................</a><br>
+<a href="#section-2.34" class="indent-1">2.34. 'street' ................................................</a><br>
+<a href="#section-2.35" class="indent-1">2.35. 'telephoneNumber' .......................................</a><br>
+<a href="#section-2.36" class="indent-1">2.36. 'teletexTerminalIdentifier' .............................</a><br>
+<a href="#section-2.37" class="indent-1">2.37. 'telexNumber' ...........................................</a><br>
+<a href="#section-2.38" class="indent-1">2.38. 'title' .................................................</a><br>
+<a href="#section-2.39" class="indent-1">2.39. 'uid' ...................................................</a><br>
+<a href="#section-2.40" class="indent-1">2.40. 'uniqueMember' ..........................................</a><br>
+<a href="#section-2.41" class="indent-1">2.41. 'userPassword' ..........................................</a><br>
+<a href="#section-2.42" class="indent-1">2.42. 'x121Address' ...........................................</a><br>
+<a href="#section-2.43" class="indent-1">2.43. 'x500UniqueIdentifier' ..................................</a><br>
+<a href="#section-3" class="">3. Object Classes ................................................</a><br>
+<a href="#section-3.1" class="indent-1">3.1. 'applicationProcess' .....................................</a><br>
+<a href="#section-3.2" class="indent-1">3.2. 'country' ................................................</a><br>
+<a href="#section-3.3" class="indent-1">3.3. 'dcObject' ...............................................</a><br>
+<a href="#section-3.4" class="indent-1">3.4. 'device' .................................................</a><br>
+<a href="#section-3.5" class="indent-1">3.5. 'groupOfNames' ...........................................</a><br>
+<a href="#section-3.6" class="indent-1">3.6. 'groupOfUniqueNames' .....................................</a><br>
+<a href="#section-3.7" class="indent-1">3.7. 'locality' ...............................................</a><br>
+<a href="#section-3.8" class="indent-1">3.8. 'organization' ...........................................</a><br>
+<a href="#section-3.9" class="indent-1">3.9. 'organizationalPerson' ...................................</a><br>
+<a href="#section-3.10" class="indent-1">3.10. 'organizationalRole' ....................................</a><br>
+<a href="#section-3.11" class="indent-1">3.11. 'organizationalUnit' ....................................</a><br>
+<a href="#section-3.12" class="indent-1">3.12. 'person' ................................................</a><br>
+<a href="#section-3.13" class="indent-1">3.13. 'residentialPerson' .....................................</a><br>
+<a href="#section-3.14" class="indent-1">3.14. 'uidObject' .............................................</a><br>
+<a href="#section-4" class="">4. IANA Considerations ...........................................</a><br>
+<a href="#section-5" class="">5. Security Considerations .......................................</a><br>
+<a href="#section-6" class="">6. Acknowledgements ..............................................</a><br>
+<a href="#section-7" class="">7. References ....................................................</a><br>
+<a href="#section-7.1" class="indent-1">7.1. Normative References .....................................</a><br>
+<a href="#section-7.2" class="indent-1">7.2. Informative References ...................................</a><br>
+   Appendix A  Changes Made Since RFC 2256 ...........................32
+
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   This document provides an overview of attribute types and object
+   classes intended for use by Lightweight Directory Access Protocol
+   (LDAP) directory clients for many directory services, such as White
+   Pages.  Originally specified in the X.500 [X.500] documents, these
+   objects are widely used as a basis for the schema in many LDAP
+   directories.  This document does not cover attributes used for the
+   administration of directory servers, nor does it include directory
+   objects defined for specific uses in other documents.
+
+</p><p class="rfcparagraph">	<a name="section-1.1"><h3>1.1   Relationship with Other Specifications</h3></a>
+
+   This document is an integral part of the LDAP technical specification
+   [RFC4510], which obsoletes the previously defined LDAP technical
+   specification, RFC 3377, in its entirety.  In terms of RFC 2256,
+   Sections 6 and 8 of RFC 2256 are obsoleted by [RFC4517].  Sections
+   5.1, 5.2, 7.1, and 7.2 of RFC 2256 are obsoleted by [RFC4512].  The
+   remainder of RFC 2256 is obsoleted by this document.  The technical
+   specification for the 'dc' attribute type and 'dcObject' object class
+   found in RFC 2247 are superseded by sections 2.4 and 3.3 of this
+   document.  The remainder of RFC 2247 remains in force.
+   This document updates RFC 2798 by replacing the informative
+   description of the 'uid' attribute type with the definitive
+   description provided in Section 2.39 of this document.
+
+</p><p class="rfcparagraph">   This document updates RFC 2377 by replacing the informative
+   description of the 'uidObject' object class with the definitive
+   description provided in Section 3.14 of this document.
+
+</p><p class="rfcparagraph">   A number of schema elements that were included in the previous
+   revision of the LDAP Technical Specification are not included in this
+   revision of LDAP.  PKI-related schema elements are now specified in
+   [RFC4523].  Unless reintroduced in future technical specifications,
+   the remainder are to be considered Historic.
+
+</p><p class="rfcparagraph">   The descriptions in this document SHALL be considered definitive for
+   use in LDAP.
+
+</p><p class="rfcparagraph">	<a name="section-1.2"><h3>1.2   Conventions</h3></a>
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in RFC 2119 [RFC2119].
+
+</p><p class="rfcparagraph">	<a name="section-1.3"><h3>1.3   General Issues</h3></a>
+
+   This document references Syntaxes defined in Section 3 of [RFC4517]
+   and Matching Rules defined in Section 4 of [RFC4517].
+
+</p><p class="rfcparagraph">   The definitions of Attribute Types and Object Classes are written
+   using the Augmented Backus-Naur Form (ABNF) [RFC4234] of
+   AttributeTypeDescription and ObjectClassDescription given in
+   [RFC4512].  Lines have been folded for readability.  When such values
+   are transferred as attribute values in the LDAP Protocol, the values
+   will not contain line breaks.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Attribute Types</h2></a>
+
+   The attribute types contained in this section hold user information.
+
+</p><p class="rfcparagraph">   There is no requirement that servers implement the 'searchGuide' and
+   'teletexTerminalIdentifier' attribute types.  In fact, their use is
+   greatly discouraged.
+
+</p><p class="rfcparagraph">   An LDAP server implementation SHOULD recognize the rest of the
+   attribute types described in this section.
+	<a name="section-2.1"><h3>2.1   'businessCategory'</h3></a>
+
+   The 'businessCategory' attribute type describes the kinds of business
+   performed by an organization.  Each kind is one value of this
+   multi-valued attribute.
+   (Source: X.520 [X.520])
+
+      ( 2.5.4.15 NAME 'businessCategory'
+         EQUALITY caseIgnoreMatch
+         SUBSTR caseIgnoreSubstringsMatch
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+   1.3.6.1.4.1.1466.115.121.1.15 refers to the Directory String syntax
+   [RFC4517].
+
+</p><p class="rfcparagraph">   Examples: "banking", "transportation", and "real estate".
+
+</p><p class="rfcparagraph">	<a name="section-2.2"><h3>2.2   'c'</h3></a>
+
+   The 'c' ('countryName' in X.500) attribute type contains a two-letter
+   ISO 3166 [ISO3166] country code.
+   (Source: X.520 [X.520])
+
+      ( 2.5.4.6 NAME 'c'
+         SUP name
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.11
+         SINGLE-VALUE )
+
+   1.3.6.1.4.1.1466.115.121.1.11 refers to the Country String syntax
+   [RFC4517].
+
+</p><p class="rfcparagraph">   Examples: "DE", "AU" and "FR".
+
+</p><p class="rfcparagraph">	<a name="section-2.3"><h3>2.3   'cn'</h3></a>
+
+   The 'cn' ('commonName' in X.500) attribute type contains names of an
+   object.  Each name is one value of this multi-valued attribute.  If
+   the object corresponds to a person, it is typically the person's full
+   name.
+   (Source: X.520 [X.520])
+
+      ( 2.5.4.3 NAME 'cn'
+         SUP name )
+
+   Examples: "Martin K Smith", "Marty Smith" and "printer12".
+	<a name="section-2.4"><h3>2.4   'dc'</h3></a>
+
+   The 'dc' ('domainComponent' in RFC 1274) attribute type is a string
+   holding one component, a label, of a DNS domain name
+   [RFC1034][RFC2181] naming a host [RFC1123].  That is, a value of this
+   attribute is a string of ASCII characters adhering to the following
+   ABNF [RFC4234]:
+
+</p><p class="rfcparagraph">   label = (ALPHA / DIGIT) [*61(ALPHA / DIGIT / HYPHEN) (ALPHA / DIGIT)]
+   ALPHA   = %x41-5A / %x61-7A     ; "A"-"Z" / "a"-"z"
+   DIGIT   = %x30-39               ; "0"-"9"
+   HYPHEN  = %x2D                  ; hyphen ("-")
+
+   The encoding of IA5String for use in LDAP is simply the characters of
+   the ASCII label.  The equality matching rule is case insensitive, as
+   is today's DNS.  (Source: RFC 2247 [RFC2247] and RFC 1274 [RFC 1274])
+
+      ( 0.9.2342.19200300.100.1.25 NAME 'dc'
+         EQUALITY caseIgnoreIA5Match
+         SUBSTR caseIgnoreIA5SubstringsMatch
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
+         SINGLE-VALUE )
+
+   1.3.6.1.4.1.1466.115.121.1.26 refers to the IA5 String syntax
+   [RFC4517].
+
+</p><p class="rfcparagraph">   Examples: Valid values include "example" and "com" but not
+   "example.com".  The latter is invalid as it contains multiple domain
+   components.
+
+</p><p class="rfcparagraph">   It is noted that the directory service will not ensure that values of
+   this attribute conform to the host label restrictions [RFC1123]
+   illustrated by the <label> production provided above.  It is the
+   directory client's responsibility to ensure that the labels it stores
+   in this attribute are appropriately restricted.
+
+</p><p class="rfcparagraph">   Directory applications supporting International Domain Names SHALL
+   use the ToASCII method [RFC3490] to produce the domain component
+   label.  The special considerations discussed in Section 4 of RFC 3490
+   [RFC3490] should be taken, depending on whether the domain component
+   is used for "stored" or "query" purposes.
+
+</p><p class="rfcparagraph">	<a name="section-2.5"><h3>2.5   'description'</h3></a>
+
+   The 'description' attribute type contains human-readable descriptive
+   phrases about the object.  Each description is one value of this
+   multi-valued attribute.
+   (Source: X.520 [X.520])
+      ( 2.5.4.13 NAME 'description'
+         EQUALITY caseIgnoreMatch
+         SUBSTR caseIgnoreSubstringsMatch
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+   1.3.6.1.4.1.1466.115.121.1.15 refers to the Directory String syntax
+   [RFC4517].
+
+</p><p class="rfcparagraph">   Examples: "a color printer", "Maintenance is done every Monday, at
+             1pm.", and "distribution list for all technical staff".
+
+</p><p class="rfcparagraph">	<a name="section-2.6"><h3>2.6   'destinationIndicator'</h3></a>
+
+   The 'destinationIndicator' attribute type contains country and city
+   strings associated with the object (the addressee) needed to provide
+   the Public Telegram Service.  The strings are composed in accordance
+   with CCITT Recommendations F.1 [F.1] and F.31 [F.31].  Each string is
+   one value of this multi-valued attribute.
+   (Source: X.520 [X.520])
+
+      ( 2.5.4.27 NAME 'destinationIndicator'
+         EQUALITY caseIgnoreMatch
+         SUBSTR caseIgnoreSubstringsMatch
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.44 )
+
+   1.3.6.1.4.1.1466.115.121.1.44 refers to the Printable String syntax
+   [RFC4517].
+
+</p><p class="rfcparagraph">   Examples: "AASD" as a destination indicator for Sydney, Australia.
+             "GBLD" as a destination indicator for London, United
+             Kingdom.
+
+</p><p class="rfcparagraph">   It is noted that the directory will not ensure that values of this
+   attribute conform to the F.1 and F.31 CCITT Recommendations.  It is
+   the application's responsibility to ensure destination indicators
+   that it stores in this attribute are appropriately constructed.
+
+</p><p class="rfcparagraph">	<a name="section-2.7"><h3>2.7   'distinguishedName'</h3></a>
+
+   The 'distinguishedName' attribute type is not used as the name of the
+   object itself, but it is instead a base type from which some user
+   attribute types with a DN syntax can inherit.
+
+</p><p class="rfcparagraph">   It is unlikely that values of this type itself will occur in an
+   entry.  LDAP server implementations that do not support attribute
+   subtyping need not recognize this attribute in requests.  Client
+   implementations MUST NOT assume that LDAP servers are capable of
+   performing attribute subtyping.
+   (Source: X.520 [X.520])
+
+      ( 2.5.4.49 NAME 'distinguishedName'
+         EQUALITY distinguishedNameMatch
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.12 )
+
+   1.3.6.1.4.1.1466.115.121.1.12 refers to the DN syntax [RFC4517].
+
+</p><p class="rfcparagraph">	<a name="section-2.8"><h3>2.8   'dnQualifier'</h3></a>
+
+   The 'dnQualifier' attribute type contains disambiguating information
+   strings to add to the relative distinguished name of an entry.  The
+   information is intended for use when merging data from multiple
+   sources in order to prevent conflicts between entries that would
+   otherwise have the same name.  Each string is one value of this
+   multi-valued attribute.  It is recommended that a value of the
+   'dnQualifier' attribute be the same for all entries from a particular
+   source.
+   (Source: X.520 [X.520])
+
+      ( 2.5.4.46 NAME 'dnQualifier'
+         EQUALITY caseIgnoreMatch
+         ORDERING caseIgnoreOrderingMatch
+         SUBSTR caseIgnoreSubstringsMatch
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.44 )
+
+   1.3.6.1.4.1.1466.115.121.1.44 refers to the Printable String syntax
+   [RFC4517].
+
+</p><p class="rfcparagraph">   Examples: "20050322123345Z" - timestamps can be used to disambiguate
+             information.
+             "123456A" - serial numbers can be used to disambiguate
+             information.
+
+</p><p class="rfcparagraph">	<a name="section-2.9"><h3>2.9   'enhancedSearchGuide'</h3></a>
+
+   The 'enhancedSearchGuide' attribute type contains sets of information
+   for use by directory clients in constructing search filters.  Each
+   set is one value of this multi-valued attribute.
+   (Source: X.520 [X.520])
+
+      ( 2.5.4.47 NAME 'enhancedSearchGuide'
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.21 )
+
+   1.3.6.1.4.1.1466.115.121.1.21 refers to the Enhanced Guide syntax
+   [RFC4517].
+   Examples: "person#(sn$APPROX)#wholeSubtree" and
+             "organizationalUnit#(ou$SUBSTR)#oneLevel".
+
+</p><p class="rfcparagraph">	<a name="section-2.10"><h3>2.10   'facsimileTelephoneNumber'</h3></a>
+
+   The 'facsimileTelephoneNumber' attribute type contains telephone
+   numbers (and, optionally, the parameters) for facsimile terminals.
+   Each telephone number is one value of this multi-valued attribute.
+   (Source: X.520 [X.520])
+
+      ( 2.5.4.23 NAME 'facsimileTelephoneNumber'
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.22 )
+
+   1.3.6.1.4.1.1466.115.121.1.22 refers to the Facsimile Telephone
+   Number syntax [RFC4517].
+
+</p><p class="rfcparagraph">   Examples: "+61 3 9896 7801" and "+81 3 347 7418$fineResolution".
+
+</p><p class="rfcparagraph">	<a name="section-2.11"><h3>2.11   'generationQualifier'</h3></a>
+
+   The 'generationQualifier' attribute type contains name strings that
+   are typically the suffix part of a person's name.  Each string is one
+   value of this multi-valued attribute.
+   (Source: X.520 [X.520])
+
+      ( 2.5.4.44 NAME 'generationQualifier'
+         SUP name )
+
+   Examples: "III", "3rd", and "Jr.".
+
+</p><p class="rfcparagraph">	<a name="section-2.12"><h3>2.12   'givenName'</h3></a>
+
+   The 'givenName' attribute type contains name strings that are the
+   part of a person's name that is not their surname.  Each string is
+   one value of this multi-valued attribute.
+   (Source: X.520 [X.520])
+
+      ( 2.5.4.42 NAME 'givenName'
+         SUP name )
+
+   Examples: "Andrew", "Charles", and "Joanne".
+
+</p><p class="rfcparagraph">	<a name="section-2.13"><h3>2.13   'houseIdentifier'</h3></a>
+
+   The 'houseIdentifier' attribute type contains identifiers for a
+   building within a location.  Each identifier is one value of this
+   multi-valued attribute.
+   (Source: X.520 [X.520])
+      ( 2.5.4.51 NAME 'houseIdentifier'
+         EQUALITY caseIgnoreMatch
+         SUBSTR caseIgnoreSubstringsMatch
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+   1.3.6.1.4.1.1466.115.121.1.15 refers to the Directory String syntax
+   [RFC4517].
+
+</p><p class="rfcparagraph">   Example: "20" to represent the house number 20.
+
+</p><p class="rfcparagraph">	<a name="section-2.14"><h3>2.14   'initials'</h3></a>
+
+   The 'initials' attribute type contains strings of initials of some or
+   all of an individual's names, except the surname(s).  Each string is
+   one value of this multi-valued attribute.
+   (Source: X.520 [X.520])
+
+      ( 2.5.4.43 NAME 'initials'
+         SUP name )
+
+   Examples: "K. A." and "K".
+
+</p><p class="rfcparagraph">	<a name="section-2.15"><h3>2.15   'internationalISDNNumber'</h3></a>
+
+   The 'internationalISDNNumber' attribute type contains Integrated
+   Services Digital Network (ISDN) addresses, as defined in the
+   International Telecommunication Union (ITU) Recommendation E.164
+   [E.164].  Each address is one value of this multi-valued attribute.
+   (Source: X.520 [X.520])
+
+      ( 2.5.4.25 NAME 'internationalISDNNumber'
+         EQUALITY numericStringMatch
+         SUBSTR numericStringSubstringsMatch
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.36 )
+
+   1.3.6.1.4.1.1466.115.121.1.36 refers to the Numeric String syntax
+   [RFC4517].
+
+</p><p class="rfcparagraph">   Example: "0198 333 333".
+
+</p><p class="rfcparagraph">	<a name="section-2.16"><h3>2.16   'l'</h3></a>
+
+   The 'l' ('localityName' in X.500) attribute type contains names of a
+   locality or place, such as a city, county, or other geographic
+   region.  Each name is one value of this multi-valued attribute.
+   (Source: X.520 [X.520])
+      ( 2.5.4.7 NAME 'l'
+         SUP name )
+
+   Examples: "Geneva", "Paris", and "Edinburgh".
+
+</p><p class="rfcparagraph">	<a name="section-2.17"><h3>2.17   'member'</h3></a>
+
+   The 'member' attribute type contains the distinguished names of
+   objects that are on a list or in a group.  Each name is one value of
+   this multi-valued attribute.
+   (Source: X.520 [X.520])
+
+      ( 2.5.4.31 NAME 'member'
+         SUP distinguishedName )
+
+   Examples: "cn=James Clarke,ou=Finance,o=Widget\, Inc." and
+             "cn=John Xerri,ou=Finance,o=Widget\, Inc." may
+             be two members of the financial team (group) at Widget,
+             Inc., in which case, both of these distinguished names
+             would be present as individual values of the member
+             attribute.
+
+</p><p class="rfcparagraph">	<a name="section-2.18"><h3>2.18   'name'</h3></a>
+
+   The 'name' attribute type is the attribute supertype from which user
+   attribute types with the name syntax inherit.  Such attribute types
+   are typically used for naming.  The attribute type is multi-valued.
+
+</p><p class="rfcparagraph">   It is unlikely that values of this type itself will occur in an
+   entry.  LDAP server implementations that do not support attribute
+   subtyping need not recognize this attribute in requests.  Client
+   implementations MUST NOT assume that LDAP servers are capable of
+   performing attribute subtyping.
+   (Source: X.520 [X.520])
+
+      ( 2.5.4.41 NAME 'name'
+         EQUALITY caseIgnoreMatch
+         SUBSTR caseIgnoreSubstringsMatch
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+   1.3.6.1.4.1.1466.115.121.1.15 refers to the Directory String syntax
+   [RFC4517].
+
+</p><p class="rfcparagraph">	<a name="section-2.19"><h3>2.19   'o'</h3></a>
+
+   The 'o' ('organizationName' in X.500) attribute type contains the
+   names of an organization.  Each name is one value of this
+   multi-valued attribute.
+   (Source: X.520 [X.520])
+
+      ( 2.5.4.10 NAME 'o'
+         SUP name )
+
+   Examples: "Widget", "Widget, Inc.", and "Widget, Incorporated.".
+
+</p><p class="rfcparagraph">	<a name="section-2.20"><h3>2.20   'ou'</h3></a>
+
+   The 'ou' ('organizationalUnitName' in X.500) attribute type contains
+   the names of an organizational unit.  Each name is one value of this
+   multi-valued attribute.
+   (Source: X.520 [X.520])
+
+      ( 2.5.4.11 NAME 'ou'
+         SUP name )
+
+   Examples: "Finance", "Human Resources", and "Research and
+             Development".
+
+</p><p class="rfcparagraph">	<a name="section-2.21"><h3>2.21   'owner'</h3></a>
+
+   The 'owner' attribute type contains the distinguished names of
+   objects that have an ownership responsibility for the object that is
+   owned.  Each owner's name is one value of this multi-valued
+   attribute.
+   (Source: X.520 [X.520])
+
+      ( 2.5.4.32 NAME 'owner'
+         SUP distinguishedName )
+
+   Example: The mailing list object, whose DN is "cn=All Employees,
+            ou=Mailing List,o=Widget\, Inc.", is owned by the Human
+            Resources Director.
+
+</p><p class="rfcparagraph">            Therefore, the value of the 'owner' attribute within the
+            mailing list object, would be the DN of the director (role):
+            "cn=Human Resources Director,ou=employee,o=Widget\, Inc.".
+
+</p><p class="rfcparagraph">	<a name="section-2.22"><h3>2.22   'physicalDeliveryOfficeName'</h3></a>
+
+   The 'physicalDeliveryOfficeName' attribute type contains names that a
+   Postal Service uses to identify a post office.
+   (Source: X.520 [X.520])
+      ( 2.5.4.19 NAME 'physicalDeliveryOfficeName'
+         EQUALITY caseIgnoreMatch
+         SUBSTR caseIgnoreSubstringsMatch
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+   1.3.6.1.4.1.1466.115.121.1.15 refers to the Directory String syntax
+   [RFC4517].
+
+</p><p class="rfcparagraph">   Examples: "Bremerhaven, Main" and "Bremerhaven, Bonnstrasse".
+
+</p><p class="rfcparagraph">	<a name="section-2.23"><h3>2.23   'postalAddress'</h3></a>
+
+   The 'postalAddress' attribute type contains addresses used by a
+   Postal Service to perform services for the object.  Each address is
+   one value of this multi-valued attribute.
+   (Source: X.520 [X.520])
+
+      ( 2.5.4.16 NAME 'postalAddress'
+         EQUALITY caseIgnoreListMatch
+         SUBSTR caseIgnoreListSubstringsMatch
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.41 )
+
+   1.3.6.1.4.1.1466.115.121.1.41 refers to the Postal Address syntax
+   [RFC4517].
+
+</p><p class="rfcparagraph">   Example: "15 Main St.$Ottawa$Canada".
+
+</p><p class="rfcparagraph">	<a name="section-2.24"><h3>2.24   'postalCode'</h3></a>
+
+   The 'postalCode' attribute type contains codes used by a Postal
+   Service to identify postal service zones.  Each code is one value of
+   this multi-valued attribute.
+   (Source: X.520 [X.520])
+
+      ( 2.5.4.17 NAME 'postalCode'
+         EQUALITY caseIgnoreMatch
+         SUBSTR caseIgnoreSubstringsMatch
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+   1.3.6.1.4.1.1466.115.121.1.15 refers to the Directory String syntax
+   [RFC4517].
+
+</p><p class="rfcparagraph">   Example: "22180", to identify Vienna, VA, in the USA.
+	<a name="section-2.25"><h3>2.25   'postOfficeBox'</h3></a>
+
+   The 'postOfficeBox' attribute type contains postal box identifiers
+   that a Postal Service uses when a customer arranges to receive mail
+   at a box on the premises of the Postal Service.  Each postal box
+   identifier is a single value of this multi-valued attribute.
+   (Source: X.520 [X.520])
+
+      ( 2.5.4.18 NAME 'postOfficeBox'
+         EQUALITY caseIgnoreMatch
+         SUBSTR caseIgnoreSubstringsMatch
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+   1.3.6.1.4.1.1466.115.121.1.15 refers to the Directory String syntax
+   [RFC4517].
+
+</p><p class="rfcparagraph">   Example: "Box 45".
+
+</p><p class="rfcparagraph">	<a name="section-2.26"><h3>2.26   'preferredDeliveryMethod'</h3></a>
+
+   The 'preferredDeliveryMethod' attribute type contains an indication
+   of the preferred method of getting a message to the object.
+   (Source: X.520 [X.520])
+
+      ( 2.5.4.28 NAME 'preferredDeliveryMethod'
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.14
+         SINGLE-VALUE )
+
+   1.3.6.1.4.1.1466.115.121.1.14 refers to the Delivery Method syntax
+   [RFC4517].
+
+</p><p class="rfcparagraph">   Example: If the mhs-delivery Delivery Method is preferred over
+            telephone-delivery, which is preferred over all other
+            methods, the value would be: "mhs $ telephone".
+
+</p><p class="rfcparagraph">	<a name="section-2.27"><h3>2.27   'registeredAddress'</h3></a>
+
+   The 'registeredAddress' attribute type contains postal addresses
+   suitable for reception of telegrams or expedited documents, where it
+   is necessary to have the recipient accept delivery.  Each address is
+   one value of this multi-valued attribute.
+   (Source: X.520 [X.520])
+
+      ( 2.5.4.26 NAME 'registeredAddress'
+         SUP postalAddress
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.41 )
+   1.3.6.1.4.1.1466.115.121.1.41 refers to the Postal Address syntax
+   [RFC4517].
+
+</p><p class="rfcparagraph">   Example: "Receptionist$Widget, Inc.$15 Main St.$Ottawa$Canada".
+
+</p><p class="rfcparagraph">	<a name="section-2.28"><h3>2.28   'roleOccupant'</h3></a>
+
+   The 'roleOccupant' attribute type contains the distinguished names of
+   objects (normally people) that fulfill the responsibilities of a role
+   object.  Each distinguished name is one value of this multi-valued
+   attribute.
+   (Source: X.520 [X.520])
+
+      ( 2.5.4.33 NAME 'roleOccupant'
+         SUP distinguishedName )
+
+   Example: The role object, "cn=Human Resources
+            Director,ou=Position,o=Widget\, Inc.", is fulfilled by two
+            people whose object names are "cn=Mary
+            Smith,ou=employee,o=Widget\, Inc." and "cn=James
+            Brown,ou=employee,o=Widget\, Inc.".  The 'roleOccupant'
+            attribute will contain both of these distinguished names,
+            since they are the occupants of this role.
+
+</p><p class="rfcparagraph">	<a name="section-2.29"><h3>2.29   'searchGuide'</h3></a>
+
+   The 'searchGuide' attribute type contains sets of information for use
+   by clients in constructing search filters.  It is superseded by
+   'enhancedSearchGuide', described above in Section 2.9.  Each set is
+   one value of this multi-valued attribute.
+   (Source: X.520 [X.520])
+
+      ( 2.5.4.14 NAME 'searchGuide'
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.25 )
+
+   1.3.6.1.4.1.1466.115.121.1.25 refers to the Guide syntax [RFC4517].
+
+</p><p class="rfcparagraph">   Example: "person#sn$EQ".
+
+</p><p class="rfcparagraph">	<a name="section-2.30"><h3>2.30   'seeAlso'</h3></a>
+
+   The 'seeAlso' attribute type contains the distinguished names of
+   objects that are related to the subject object.  Each related object
+   name is one value of this multi-valued attribute.
+   (Source: X.520 [X.520])
+
+      ( 2.5.4.34 NAME 'seeAlso'
+         SUP distinguishedName )
+   Example: The person object "cn=James Brown,ou=employee,o=Widget\,
+            Inc." is related to the role objects "cn=Football Team
+            Captain,ou=sponsored activities,o=Widget\, Inc." and
+            "cn=Chess Team,ou=sponsored activities,o=Widget\, Inc.".
+            Since the role objects are related to the person object, the
+            'seeAlso' attribute will contain the distinguished name of
+            each role object as separate values.
+
+</p><p class="rfcparagraph">	<a name="section-2.31"><h3>2.31   'serialNumber'</h3></a>
+
+   The 'serialNumber' attribute type contains the serial numbers of
+   devices.  Each serial number is one value of this multi-valued
+   attribute.
+   (Source: X.520 [X.520])
+
+      ( 2.5.4.5 NAME 'serialNumber'
+         EQUALITY caseIgnoreMatch
+         SUBSTR caseIgnoreSubstringsMatch
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.44 )
+
+   1.3.6.1.4.1.1466.115.121.1.44 refers to the Printable String syntax
+   [RFC4517].
+
+</p><p class="rfcparagraph">   Examples: "WI-3005" and "XF551426".
+
+</p><p class="rfcparagraph">	<a name="section-2.32"><h3>2.32   'sn'</h3></a>
+
+   The 'sn' ('surname' in X.500) attribute type contains name strings
+   for the family names of a person.  Each string is one value of this
+   multi-valued attribute.
+   (Source: X.520 [X.520])
+
+      ( 2.5.4.4 NAME 'sn'
+         SUP name )
+
+   Example: "Smith".
+
+</p><p class="rfcparagraph">	<a name="section-2.33"><h3>2.33   'st'</h3></a>
+
+   The 'st' ('stateOrProvinceName' in X.500) attribute type contains the
+   full names of states or provinces.  Each name is one value of this
+   multi-valued attribute.
+   (Source: X.520 [X.520])
+
+      ( 2.5.4.8 NAME 'st'
+         SUP name )
+
+   Example: "California".
+	<a name="section-2.34"><h3>2.34   'street'</h3></a>
+
+   The 'street' ('streetAddress' in X.500) attribute type contains site
+   information from a postal address (i.e., the street name, place,
+   avenue, and the house number).  Each street is one value of this
+   multi-valued attribute.
+   (Source: X.520 [X.520])
+
+      ( 2.5.4.9 NAME 'street'
+         EQUALITY caseIgnoreMatch
+         SUBSTR caseIgnoreSubstringsMatch
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+   1.3.6.1.4.1.1466.115.121.1.15 refers to the Directory String syntax
+   [RFC4517].
+
+</p><p class="rfcparagraph">   Example: "15 Main St.".
+
+</p><p class="rfcparagraph">	<a name="section-2.35"><h3>2.35   'telephoneNumber'</h3></a>
+
+   The 'telephoneNumber' attribute type contains telephone numbers that
+   comply with the ITU Recommendation E.123 [E.123].  Each number is one
+   value of this multi-valued attribute.
+   (Source: X.520 [X.520])
+
+      ( 2.5.4.20 NAME 'telephoneNumber'
+         EQUALITY telephoneNumberMatch
+         SUBSTR telephoneNumberSubstringsMatch
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.50 )
+
+   1.3.6.1.4.1.1466.115.121.1.50 refers to the Telephone Number syntax
+   [RFC4517].
+
+</p><p class="rfcparagraph">   Example: "+1 234 567 8901".
+
+</p><p class="rfcparagraph">	<a name="section-2.36"><h3>2.36   'teletexTerminalIdentifier'</h3></a>
+
+   The withdrawal of Recommendation F.200 has resulted in the withdrawal
+   of this attribute.
+   (Source: X.520 [X.520])
+
+      ( 2.5.4.22 NAME 'teletexTerminalIdentifier'
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.51 )
+
+   1.3.6.1.4.1.1466.115.121.1.51 refers to the Teletex Terminal
+   Identifier syntax [RFC4517].
+	<a name="section-2.37"><h3>2.37   'telexNumber'</h3></a>
+
+   The 'telexNumber' attribute type contains sets of strings that are a
+   telex number, country code, and answerback code of a telex terminal.
+   Each set is one value of this multi-valued attribute.
+   (Source: X.520 [X.520])
+
+      ( 2.5.4.21 NAME 'telexNumber'
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.52 )
+
+   1.3.6.1.4.1.1466.115.121.1.52 refers to the Telex Number syntax
+   [RFC4517].
+
+</p><p class="rfcparagraph">   Example: "12345$023$ABCDE".
+
+</p><p class="rfcparagraph">	<a name="section-2.38"><h3>2.38   'title'</h3></a>
+
+   The 'title' attribute type contains the title of a person in their
+   organizational context.  Each title is one value of this multi-valued
+   attribute.
+   (Source: X.520 [X.520])
+
+      ( 2.5.4.12 NAME 'title'
+         SUP name )
+   Examples: "Vice President", "Software Engineer", and "CEO".
+
+</p><p class="rfcparagraph">	<a name="section-2.39"><h3>2.39   'uid'</h3></a>
+
+   The 'uid' ('userid' in RFC 1274) attribute type contains computer
+   system login names associated with the object.  Each name is one
+   value of this multi-valued attribute.
+   (Source: RFC 2798 [RFC2798] and RFC 1274 [RFC1274])
+
+      ( 0.9.2342.19200300.100.1.1 NAME 'uid'
+         EQUALITY caseIgnoreMatch
+         SUBSTR caseIgnoreSubstringsMatch
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+   1.3.6.1.4.1.1466.115.121.1.15 refers to the Directory String syntax
+   [RFC4517].
+
+</p><p class="rfcparagraph">   Examples: "s9709015", "admin", and "Administrator".
+	<a name="section-2.40"><h3>2.40   'uniqueMember'</h3></a>
+
+   The 'uniqueMember' attribute type contains the distinguished names of
+   an object that is on a list or in a group, where the relative
+   distinguished names of the object include a value that distinguishes
+   between objects when a distinguished name has been reused.  Each
+   distinguished name is one value of this multi-valued attribute.
+   (Source: X.520 [X.520])
+
+      ( 2.5.4.50 NAME 'uniqueMember'
+         EQUALITY uniqueMemberMatch
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.34 )
+
+   1.3.6.1.4.1.1466.115.121.1.34 refers to the Name and Optional UID
+   syntax [RFC4517].
+
+</p><p class="rfcparagraph">   Example: If "ou=1st Battalion,o=Defense,c=US" is a battalion that was
+            disbanded, establishing a new battalion with the "same" name
+            would have a unique identifier value added, resulting in
+            "ou=1st Battalion, o=Defense,c=US#'010101'B".
+
+</p><p class="rfcparagraph">	<a name="section-2.41"><h3>2.41   'userPassword'</h3></a>
+
+   The 'userPassword' attribute contains octet strings that are known
+   only to the user and the system to which the user has access.  Each
+   string is one value of this multi-valued attribute.
+
+</p><p class="rfcparagraph">   The application SHOULD prepare textual strings used as passwords by
+   transcoding them to Unicode, applying SASLprep [RFC4013], and
+   encoding as UTF-8.  The determination of whether a password is
+   textual is a local client matter.
+   (Source: X.509 [X.509])
+
+      ( 2.5.4.35 NAME 'userPassword'
+         EQUALITY octetStringMatch
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.40 )
+
+   1.3.6.1.4.1.1466.115.121.1.40 refers to the Octet String syntax
+   [RFC4517].
+
+</p><p class="rfcparagraph">   Passwords are stored using an Octet String syntax and are not
+   encrypted.  Transfer of cleartext passwords is strongly discouraged
+   where the underlying transport service cannot guarantee
+   confidentiality and may result in disclosure of the password to
+   unauthorized parties.
+
+</p><p class="rfcparagraph">   An example of a need for multiple values in the 'userPassword'
+   attribute is an environment where every month the user is expected to
+   use a different password generated by some automated system.  During
+   transitional periods, like the last and first day of the periods, it
+   may be necessary to allow two passwords for the two consecutive
+   periods to be valid in the system.
+
+</p><p class="rfcparagraph">	<a name="section-2.42"><h3>2.42   'x121Address'</h3></a>
+
+   The 'x121Address' attribute type contains data network addresses as
+   defined by ITU Recommendation X.121 [X.121].  Each address is one
+   value of this multi-valued attribute.
+   (Source: X.520 [X.520])
+
+      ( 2.5.4.24 NAME 'x121Address'
+         EQUALITY numericStringMatch
+         SUBSTR numericStringSubstringsMatch
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.36 )
+
+   1.3.6.1.4.1.1466.115.121.1.36 refers to the Numeric String syntax
+   [RFC4517].
+
+</p><p class="rfcparagraph">   Example: "36111222333444555".
+
+</p><p class="rfcparagraph">	<a name="section-2.43"><h3>2.43   'x500UniqueIdentifier'</h3></a>
+
+   The 'x500UniqueIdentifier' attribute type contains binary strings
+   that are used to distinguish between objects when a distinguished
+   name has been reused.  Each string is one value of this multi-valued
+   attribute.
+
+</p><p class="rfcparagraph">   In X.520 [X.520], this attribute type is called 'uniqueIdentifier'.
+   This is a different attribute type from both the 'uid' and
+   'uniqueIdentifier' LDAP attribute types.  The 'uniqueIdentifier'
+   attribute type is defined in [RFC4524].
+   (Source: X.520 [X.520])
+
+      ( 2.5.4.45 NAME 'x500UniqueIdentifier'
+         EQUALITY bitStringMatch
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.6 )
+
+   1.3.6.1.4.1.1466.115.121.1.6 refers to the Bit String syntax
+   [RFC4517].
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   Object Classes</h2></a>
+
+   LDAP servers SHOULD recognize all the Object Classes listed here as
+   values of the 'objectClass' attribute (see [RFC4512]).
+	<a name="section-3.1"><h3>3.1   'applicationProcess'</h3></a>
+
+   The 'applicationProcess' object class definition is the basis of an
+   entry that represents an application executing in a computer system.
+   (Source: X.521 [X.521])
+
+      ( 2.5.6.11 NAME 'applicationProcess'
+         SUP top
+         STRUCTURAL
+         MUST cn
+         MAY ( seeAlso $
+               ou $
+               l $
+               description ) )
+
+	<a name="section-3.2"><h3>3.2   'country'</h3></a>
+
+   The 'country' object class definition is the basis of an entry that
+   represents a country.
+   (Source: X.521 [X.521])
+
+      ( 2.5.6.2 NAME 'country'
+         SUP top
+         STRUCTURAL
+         MUST c
+         MAY ( searchGuide $
+               description ) )
+
+	<a name="section-3.3"><h3>3.3   'dcObject'</h3></a>
+
+   The 'dcObject' object class permits an entry to contains domain
+   component information.  This object class is defined as auxiliary,
+   because it will be used in conjunction with an existing structural
+   object class.
+   (Source: RFC 2247 [RFC2247])
+
+      ( 1.3.6.1.4.1.1466.344 NAME 'dcObject'
+         SUP top
+         AUXILIARY
+         MUST dc )
+
+	<a name="section-3.4"><h3>3.4   'device'</h3></a>
+
+   The 'device' object class is the basis of an entry that represents an
+   appliance, computer, or network element.
+   (Source: X.521 [X.521])
+      ( 2.5.6.14 NAME 'device'
+         SUP top
+         STRUCTURAL
+         MUST cn
+         MAY ( serialNumber $
+               seeAlso $
+               owner $
+               ou $
+               o $
+               l $
+               description ) )
+
+	<a name="section-3.5"><h3>3.5   'groupOfNames'</h3></a>
+
+   The 'groupOfNames' object class is the basis of an entry that
+   represents a set of named objects including information related to
+   the purpose or maintenance of the set.
+   (Source: X.521 [X.521])
+
+      ( 2.5.6.9 NAME 'groupOfNames'
+         SUP top
+         STRUCTURAL
+         MUST ( member $
+               cn )
+         MAY ( businessCategory $
+               seeAlso $
+               owner $
+               ou $
+               o $
+               description ) )
+
+	<a name="section-3.6"><h3>3.6   'groupOfUniqueNames'</h3></a>
+
+   The 'groupOfUniqueNames' object class is the same as the
+   'groupOfNames' object class except that the object names are not
+   repeated or reassigned within a set scope.
+   (Source: X.521 [X.521])
+      ( 2.5.6.17 NAME 'groupOfUniqueNames'
+         SUP top
+         STRUCTURAL
+         MUST ( uniqueMember $
+               cn )
+         MAY ( businessCategory $
+               seeAlso $
+               owner $
+               ou $
+               o $
+               description ) )
+
+	<a name="section-3.7"><h3>3.7   'locality'</h3></a>
+
+   The 'locality' object class is the basis of an entry that represents
+   a place in the physical world.
+   (Source: X.521 [X.521])
+
+      ( 2.5.6.3 NAME 'locality'
+         SUP top
+         STRUCTURAL
+         MAY ( street $
+               seeAlso $
+               searchGuide $
+               st $
+               l $
+               description ) )
+
+	<a name="section-3.8"><h3>3.8   'organization'</h3></a>
+
+   The 'organization' object class is the basis of an entry that
+   represents a structured group of people.
+   (Source: X.521 [X.521])
+
+      ( 2.5.6.4 NAME 'organization'
+         SUP top
+         STRUCTURAL
+         MUST o
+         MAY ( userPassword $ searchGuide $ seeAlso $
+               businessCategory $ x121Address $ registeredAddress $
+               destinationIndicator $ preferredDeliveryMethod $
+               telexNumber $ teletexTerminalIdentifier $
+               telephoneNumber $ internationalISDNNumber $
+               facsimileTelephoneNumber $ street $ postOfficeBox $
+               postalCode $ postalAddress $ physicalDeliveryOfficeName $
+               st $ l $ description ) )
+	<a name="section-3.9"><h3>3.9   'organizationalPerson'</h3></a>
+
+   The 'organizationalPerson' object class is the basis of an entry that
+   represents a person in relation to an organization.
+   (Source: X.521 [X.521])
+
+      ( 2.5.6.7 NAME 'organizationalPerson'
+         SUP person
+         STRUCTURAL
+         MAY ( title $ x121Address $ registeredAddress $
+               destinationIndicator $ preferredDeliveryMethod $
+               telexNumber $ teletexTerminalIdentifier $
+               telephoneNumber $ internationalISDNNumber $
+               facsimileTelephoneNumber $ street $ postOfficeBox $
+               postalCode $ postalAddress $ physicalDeliveryOfficeName $
+               ou $ st $ l ) )
+
+	<a name="section-3.10"><h3>3.10   'organizationalRole'</h3></a>
+
+   The 'organizationalRole' object class is the basis of an entry that
+   represents a job, function, or position in an organization.
+   (Source: X.521 [X.521])
+
+      ( 2.5.6.8 NAME 'organizationalRole'
+         SUP top
+         STRUCTURAL
+         MUST cn
+         MAY ( x121Address $ registeredAddress $ destinationIndicator $
+               preferredDeliveryMethod $ telexNumber $
+               teletexTerminalIdentifier $ telephoneNumber $
+               internationalISDNNumber $ facsimileTelephoneNumber $
+               seeAlso $ roleOccupant $ preferredDeliveryMethod $
+               street $ postOfficeBox $ postalCode $ postalAddress $
+               physicalDeliveryOfficeName $ ou $ st $ l $
+               description ) )
+
+	<a name="section-3.11"><h3>3.11   'organizationalUnit'</h3></a>
+
+   The 'organizationalUnit' object class is the basis of an entry that
+   represents a piece of an organization.
+   (Source: X.521 [X.521])
+      ( 2.5.6.5 NAME 'organizationalUnit'
+         SUP top
+         STRUCTURAL
+         MUST ou
+         MAY ( businessCategory $ description $ destinationIndicator $
+               facsimileTelephoneNumber $ internationalISDNNumber $ l $
+               physicalDeliveryOfficeName $ postalAddress $ postalCode $
+               postOfficeBox $ preferredDeliveryMethod $
+               registeredAddress $ searchGuide $ seeAlso $ st $ street $
+               telephoneNumber $ teletexTerminalIdentifier $
+               telexNumber $ userPassword $ x121Address ) )
+
+	<a name="section-3.12"><h3>3.12   'person'</h3></a>
+
+   The 'person' object class is the basis of an entry that represents a
+   human being.
+   (Source: X.521 [X.521])
+
+      ( 2.5.6.6 NAME 'person'
+         SUP top
+         STRUCTURAL
+         MUST ( sn $
+               cn )
+         MAY ( userPassword $
+               telephoneNumber $
+               seeAlso $ description ) )
+
+	<a name="section-3.13"><h3>3.13   'residentialPerson'</h3></a>
+
+   The 'residentialPerson' object class is the basis of an entry that
+   includes a person's residence in the representation of the person.
+   (Source: X.521 [X.521])
+
+      ( 2.5.6.10 NAME 'residentialPerson'
+         SUP person
+         STRUCTURAL
+         MUST l
+         MAY ( businessCategory $ x121Address $ registeredAddress $
+               destinationIndicator $ preferredDeliveryMethod $
+               telexNumber $ teletexTerminalIdentifier $
+               telephoneNumber $ internationalISDNNumber $
+               facsimileTelephoneNumber $ preferredDeliveryMethod $
+               street $ postOfficeBox $ postalCode $ postalAddress $
+               physicalDeliveryOfficeName $ st $ l ) )
+	<a name="section-3.14"><h3>3.14   'uidObject'</h3></a>
+
+   The 'uidObject' object class permits an entry to contains user
+   identification information.  This object class is defined as
+   auxiliary, because it will be used in conjunction with an existing
+   structural object class.
+   (Source: RFC 2377 [RFC2377])
+
+      ( 1.3.6.1.1.3.1 NAME 'uidObject'
+         SUP top
+         AUXILIARY
+         MUST uid )
+
+	<a name="section-4"><h2>4.   IANA Considerations</h2></a>
+
+   The Internet Assigned Numbers Authority (IANA) has updated the LDAP
+   descriptors registry as indicated in the following template:
+
+</p><p class="rfcparagraph">      Subject: Request for LDAP Descriptor Registration Update
+      Descriptor (short name): see comments
+      Object Identifier: see comments
+      Person & email address to contact for further information:
+         Andrew Sciberras <andrew.sciberras@eb2bcom.com>
+      Usage: (A = attribute type, O = Object Class) see comment
+      Specification: RFC 4519
+      Author/Change Controller: IESG
+
+   Comments
+
+      In the LDAP descriptors registry, the following descriptors (short
+      names) have been updated to refer to RFC 4519.  Names that need to
+      be reserved, rather than assigned to an Object Identifier, will
+      contain an Object Identifier value of RESERVED.
+
+</p><p class="rfcparagraph">      NAME                         Type OID
+      ------------------------     ---- ----------------------------
+      applicationProcess           O    2.5.6.11
+      businessCategory             A    2.5.4.15
+      c                            A    2.5.4.6
+      cn                           A    2.5.4.3
+      commonName                   A    2.5.4.3
+      country                      O    2.5.6.2
+      countryName                  A    2.5.4.6
+      dc                           A    0.9.2342.19200300.100.1.25
+      dcObject                     O    1.3.6.1.4.1.1466.344
+      description                  A    2.5.4.13
+      destinationIndicator         A    2.5.4.27
+      device                       O    2.5.6.14
+      NAME                         Type OID
+      ------------------------     ---- ----------------------------
+      distinguishedName            A    2.5.4.49
+      dnQualifier                  A    2.5.4.46
+      domainComponent              A    0.9.2342.19200300.100.1.25
+      enhancedSearchGuide          A    2.5.4.47
+      facsimileTelephoneNumber     A    2.5.4.23
+      generationQualifier          A    2.5.4.44
+      givenName                    A    2.5.4.42
+      gn                           A    RESERVED
+      groupOfNames                 O    2.5.6.9
+      groupOfUniqueNames           O    2.5.6.17
+      houseIdentifier              A    2.5.4.51
+      initials                     A    2.5.4.43
+      internationalISDNNumber      A    2.5.4.25
+      l                            A    2.5.4.7
+      locality                     O    2.5.6.3
+      localityName                 A    2.5.4.7
+      member                       A    2.5.4.31
+      name                         A    2.5.4.41
+      o                            A    2.5.4.10
+      organization                 O    2.5.6.4
+      organizationName             A    2.5.4.10
+      organizationalPerson         O    2.5.6.7
+      organizationalRole           O    2.5.6.8
+      organizationalUnit           O    2.5.6.5
+      organizationalUnitName       A    2.5.4.11
+      ou                           A    2.5.4.11
+      owner                        A    2.5.4.32
+      person                       O    2.5.6.6
+      physicalDeliveryOfficeName   A    2.5.4.19
+      postalAddress                A    2.5.4.16
+      postalCode                   A    2.5.4.17
+      postOfficeBox                A    2.5.4.18
+      preferredDeliveryMethod      A    2.5.4.28
+      registeredAddress            A    2.5.4.26
+      residentialPerson            O    2.5.6.10
+      roleOccupant                 A    2.5.4.33
+      searchGuide                  A    2.5.4.14
+      seeAlso                      A    2.5.4.34
+      serialNumber                 A    2.5.4.5
+      sn                           A    2.5.4.4
+      st                           A    2.5.4.8
+      street                       A    2.5.4.9
+      surname                      A    2.5.4.4
+      telephoneNumber              A    2.5.4.20
+      teletexTerminalIdentifier    A    2.5.4.22
+      telexNumber                  A    2.5.4.21
+      NAME                         Type OID
+      ------------------------     ---- ----------------------------
+      title                        A    2.5.4.12
+      uid                          A    0.9.2342.19200300.100.1.1
+      uidObject                    O    1.3.6.1.1.3.1
+      uniqueMember                 A    2.5.4.50
+      userid                       A    0.9.2342.19200300.100.1.1
+      userPassword                 A    2.5.4.35
+      x121Address                  A    2.5.4.24
+      x500UniqueIdentifier         A    2.5.4.45
+
+	<a name="section-5"><h2>5.   Security Considerations</h2></a>
+
+   Attributes of directory entries are used to provide descriptive
+   information about the real-world objects they represent, which can be
+   people, organizations, or devices.  Most countries have privacy laws
+   regarding the publication of information about people.
+
+</p><p class="rfcparagraph">   Transfer of cleartext passwords is strongly discouraged where the
+   underlying transport service cannot guarantee confidentiality and
+   integrity, since this may result in disclosure of the password to
+   unauthorized parties.
+
+</p><p class="rfcparagraph">   Multiple attribute values for the 'userPassword' attribute need to be
+   used with care.  Especially reset/deletion of a password by an
+   administrator without knowing the old user password gets tricky or
+   impossible if multiple values for different applications are present.
+
+</p><p class="rfcparagraph">   Certainly, applications that intend to replace the 'userPassword'
+   value(s) with new value(s) should use modify/replaceValues (or
+   modify/deleteAttribute+addAttribute).  In addition, server
+   implementations are encouraged to provide administrative controls
+   that, if enabled, restrict the 'userPassword' attribute to one value.
+
+</p><p class="rfcparagraph">   Note that when used for authentication purposes [RFC4513], the user
+   need only prove knowledge of one of the values, not all of the
+   values.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.   Acknowledgements</h2></a>
+
+   The definitions, on which this document is based, have been developed
+   by committees for telecommunications and international standards.
+
+</p><p class="rfcparagraph">   This document is an update of RFC 2256 by Mark Wahl.  RFC 2256 was a
+   product of the IETF ASID Working Group.
+   The 'dc' attribute type definition and the 'dcObject' object class
+   definition in this document supersede the specification in RFC 2247
+   by S. Kille, M. Wahl, A. Grimstad, R. Huber, and S. Sataluri.
+
+</p><p class="rfcparagraph">   The 'uid' attribute type definition in this document supersedes the
+   specification of the 'userid' in RFC 1274 by P. Barker and S. Kille
+   and of the uid in RFC 2798 by M. Smith.
+
+</p><p class="rfcparagraph">   The 'uidObject' object class definition in this document supersedes
+   the specification of the 'uidObject' in RFC 2377 by A. Grimstad, R.
+   Huber, S. Sataluri, and M. Wahl.
+
+</p><p class="rfcparagraph">   This document is based upon input of the IETF LDAPBIS working group.
+   The author wishes to thank S. Legg and K. Zeilenga for their
+   significant contribution to this update.  The author would also like
+   to thank Kathy Dally, who edited early versions of this document.
+
+</p><p class="rfcparagraph">	<a name="section-7"><h2>7.   References</h2></a>
+
+	<a name="section-7.1"><h3>7.1   Normative References</h3></a>
+
+   [E.123]    Notation for national and international telephone numbers,
+              ITU-T Recommendation E.123, 1988
+
+   [E.164]    The international public telecommunication numbering plan,
+              ITU-T Recommendation E.164, 1997
+
+   [F.1]      Operational Provisions For The International Public
+              Telegram Service Transmission System, CCITT Recommendation
+              F.1, 1992
+
+   [F.31]     Telegram Retransmission System, CCITT Recommendation F.31,
+              1988
+
+   [ISO3166]  ISO 3166, "Codes for the representation of names of
+              countries".
+
+</p><p class="rfcparagraph">   [RFC1034]  Mockapetris, P., "Domain names - concepts and facilities",
+              STD 13, RFC 1034, November 1987.
+
+</p><p class="rfcparagraph">   [RFC1123]  Braden, R., "Requirements for Internet Hosts - Application
+              and Support", STD 3, RFC 1123, October 1989.
+
+</p><p class="rfcparagraph">   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">   [RFC2181]  Elz, R. and R. Bush, "Clarifications to the DNS
+              Specification", RFC 2181, July 1997.
+   [RFC3490]  Faltstrom, P., Hoffman, P., and A. Costello,
+              "Internationalizing Domain Names in Applications (IDNA)",
+              RFC 3490, March 2003.
+
+</p><p class="rfcparagraph">   [RFC4013]  Zeilenga, K., "SASLprep: Stringprep Profile for User Names
+              and Passwords", RFC 4013, February 2005.
+
+</p><p class="rfcparagraph">   [RFC4234]  Crocker, D. and P. Overell, "Augmented BNF for Syntax
+              Specifications: ABNF", RFC 4234, October 2005.
+
+</p><p class="rfcparagraph">   [RFC4510]  Zeilenga, K., Ed., "Lightweight Directory Access Protocol
+              (LDAP): Technical Specification Road Map", RFC 4510, June
+              2006.
+
+</p><p class="rfcparagraph">   [RFC4512]  Zeilenga, K., "Lightweight Directory Access Protocol
+              (LDAP): Directory Information Models", RFC 4512, June
+              2006.
+
+</p><p class="rfcparagraph">   [RFC4517]  Legg, S., Ed., "Lightweight Directory Access Protocol
+              (LDAP): Syntaxes and Matching Rules", RFC 4517, June 2006.
+
+</p><p class="rfcparagraph">   [X.121]    International numbering plan for public data networks,
+              ITU-T Recommendation X.121, 1996
+
+   [X.509]    The Directory:  Authentication Framework, ITU-T
+              Recommendation X.509, 1993
+
+   [X.520]    The Directory: Selected Attribute Types, ITU-T
+              Recommendation X.520, 1993
+
+   [X.521]    The Directory: Selected Object Classes.  ITU-T
+              Recommendation X.521, 1993
+
+	<a name="section-7.2"><h3>7.2   Informative References</h3></a>
+
+   [RFC1274]  Barker, P. and S. Kille, "The COSINE and Internet X.500
+              Schema", RFC 1274, November 1991.
+
+</p><p class="rfcparagraph">   [RFC2247]  Kille, S., Wahl, M., Grimstad, A., Huber, R., and S.
+              Sataluri, "Using Domains in LDAP/X.500 Distinguished
+              Names", RFC 2247, January 1998.
+
+</p><p class="rfcparagraph">   [RFC2377]  Grimstad, A., Huber, R., Sataluri, S., and M. Wahl,
+              "Naming Plan for Internet Directory-Enabled Applications",
+              RFC 2377, September 1998.
+
+</p><p class="rfcparagraph">   [RFC2798]  Smith, M., "Definition of the inetOrgPerson LDAP Object
+              Class", RFC 2798, April 2000.
+   [RFC4513]  Harrison R., Ed., "Lightweight Directory Access Protocol
+              (LDAP): Authentication Methods and Security Mechanisms",
+              RFC 4513, June 2006.
+
+</p><p class="rfcparagraph">   [RFC4523]  Zeilenga, K., "Lightweight Directory Access Protocol
+              (LDAP) Schema Definitions for X.509 Certificates", RFC
+              4523, June 2006.
+
+</p><p class="rfcparagraph">   [RFC4524]  Zeilenga, E., Ed., "COSINE LDAP/X.500 Schema", RFC 4524,
+              June 2006.
+
+</p><p class="rfcparagraph">   [X.500]    ITU-T Recommendations X.500 (1993) | ISO/IEC 9594-1:1994,<br>
+              Information Technology - Open Systems Interconnection -
+              The Directory: Overview of concepts, models and services.
+Appendix A.  Changes Made Since RFC 2256
+
+   This appendix lists the changes that have been made from RFC 2256 to
+   RFC 4519.
+
+</p><p class="rfcparagraph">   This appendix is not a normative part of this specification, which
+   has been provided for informational purposes only.
+
+</p><p class="rfcparagraph">      1.  Replaced the document title.
+
+</p><p class="rfcparagraph">      2.  Removed the IESG Note.
+
+</p><p class="rfcparagraph">      3.  Dependencies on RFC 1274 have been eliminated.
+
+</p><p class="rfcparagraph">      4.  Added a Security Considerations section and an IANA
+          Considerations section.
+
+</p><p class="rfcparagraph">      5.  Deleted the conformance requirement for subschema object
+          classes in favor of a statement in [RFC4517].
+
+</p><p class="rfcparagraph">      6.  Added explanation to attribute types and to each object class.
+
+</p><p class="rfcparagraph">      7.  Removed Section 4, Syntaxes, and Section 6, Matching Rules,
+          (moved to [RFC4517]).
+
+</p><p class="rfcparagraph">      8.  Removed the certificate-related attribute types:
+          authorityRevocationList, cACertificate,
+          certificateRevocationList, crossCertificatePair,
+          deltaRevocationList, supportedAlgorithms, and userCertificate.
+
+</p><p class="rfcparagraph">          Removed the certificate-related Object Classes:
+          certificationAuthority, certificationAuthority-V2,
+          cRLDistributionPoint, strongAuthenticationUser, and
+          userSecurityInformation
+
+          LDAP PKI is now discussed in [RFC4523].
+
+</p><p class="rfcparagraph">      9.  Removed the dmdName, knowledgeInformation,
+          presentationAddress, protocolInformation, and
+          supportedApplicationContext attribute types and the dmd,
+          applicationEntity, and dSA object classes.
+
+</p><p class="rfcparagraph">      10. Deleted the aliasedObjectName and objectClass attribute type
+          definitions.  Deleted the alias and top object class
+          definitions.  They are included in [RFC4512].
+      11. Added the 'dc' attribute type from RFC 2247, making the
+          distinction between 'stored' and 'query' values when preparing
+          IDN strings.
+
+</p><p class="rfcparagraph">      12. Numerous editorial changes.
+
+</p><p class="rfcparagraph">      13. Removed upper bound after the SYNTAX oid in all attribute
+          definitions where it appeared.
+
+</p><p class="rfcparagraph">      14. Added text about Unicode, SASLprep [RFC4013], and UTF-8 for
+          userPassword.
+
+</p><p class="rfcparagraph">      15. Included definitions, comments and references for 'dcObject'
+          and 'uidObject'.
+
+</p><p class="rfcparagraph">      16. Replaced PKI schema references to use RFC 4523.
+
+</p><p class="rfcparagraph">      17. Spelt out and referenced ABNF on first usage.
+
+</p><p class="rfcparagraph">      18. Removed Section 2.4 (Source).  Replaced the source table with
+          explicit references for each definition.
+
+</p><p class="rfcparagraph">      19. All references to an attribute type or object class are
+          enclosed in single quotes.
+
+</p><p class="rfcparagraph">      20. The layout of attribute type definitions has been changed to
+          provide consistency throughout the document:
+          > Section Heading
+          > Description of Attribute type
+          > Multivalued description
+          > Source Information
+          > Definition
+          > Example
+          > Additional Comments
+
+          Adding this consistent output included the addition of
+          examples to some definitions.
+
+</p><p class="rfcparagraph">      21. References to alternate names for attributes types are
+          provided with a reference to where they were originally
+          specified.
+
+</p><p class="rfcparagraph">      22. Clarification of the description of 'distinguishedName' and
+          'name', in regards to these attribute types being supertypes.
+
+</p><p class="rfcparagraph">      23. Spelt out ISDN on first usage.
+      24. Inserted a reference to [RFC4517] for the
+          'teletexTerminalIdentifier' definition's SYNTAX OID.
+
+</p><p class="rfcparagraph">      25. Additional names were added to the IANA Considerations.  Names
+          include 'commonName', 'dcObject', 'domainComponent', 'GN',
+          'localityName', 'organizationName', 'organizationUnitName',
+          'surname', 'uidObject' and 'userid'.
+
+</p><p class="rfcparagraph">      26. Renamed all instances of supercede to supersede.
+
+</p><p class="rfcparagraph">      27. Moved [F.1], [F.31] and [RFC4013] from informative to
+          normative references.
+
+</p><p class="rfcparagraph">      28. Changed the 'c' definition to be consistent with X.500.
+
+</p><p class="rfcparagraph">Author's Address
+
+   Andrew Sciberras
+   eB2Bcom
+   Suite 3, Woodhouse Corporate Centre,
+   935 Station Street,
+   Box Hill North, Victoria 3129
+   AUSTRALIA
+
+   Phone: +61 3 9896 7833
+   EMail: andrew.sciberras@eb2bcom.com
+Full Copyright Statement
+
+   Copyright (C) The Internet Society (2006).<br>
+
+</p><p class="rfcparagraph">   This document is subject to the rights, licenses and restrictions
+   contained in BCP 78, and except as set forth therein, the authors
+   retain all their rights.
+
+</p><p class="rfcparagraph">   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY AND THE INTERNET
+   ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED,
+   INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE
+   INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED
+   WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Intellectual Property
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the procedures with respect to rights in RFC documents can be
+   found in BCP 78 and BCP 79.
+
+</p><p class="rfcparagraph">   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+</p><p class="rfcparagraph">   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at
+   ietf-ipr@ietf.org.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is provided by the IETF
+   Administrative Support Activity (IASA).
+
+</p>
+
+
+
+
+
+Sciberras                   Standards Track                    [Page 35]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

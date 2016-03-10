@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                           D. Meyer<br>Request for Comments: 4384                                 February 2006<br>BCP: 114<br>Category:  Best Current Practice<br><br></p>
+                  <h1>
+                  BGP Communities for Data Collection</h1>
+                  <h2>Status of This Memo</h2>
+
+   This document specifies an Internet Best Current Practices for the
+   Internet Community, and requests discussion and suggestions for
+   improvements.  Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (2006).<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   BGP communities (RFC 1997) are used by service providers for many
+   purposes, including tagging of customer, peer, and geographically
+   originated routes.  Such tagging is typically used to control the
+   scope of redistribution of routes within a provider's network and to
+   its peers and customers.  With the advent of large-scale BGP data
+   collection (and associated research), it has become clear that the
+   information carried in such communities is essential for a deeper
+   understanding of the global routing system.  This memo defines
+   standard (outbound) communities and their encodings for export to BGP
+   route collectors.
+<h2>Table of Contents</h2>
+<a href="#section-1" class="">1. Introduction ...................................................</a><br>
+<a href="#section-2" class="">2. Definitions ....................................................</a><br>
+<a href="#section-2.1" class="indent-1">2.1. Peers and Peering .........................................</a><br>
+<a href="#section-2.2" class="indent-1">2.2. Customer Routes ...........................................</a><br>
+<a href="#section-2.3" class="indent-1">2.3. Peer Routes ...............................................</a><br>
+<a href="#section-2.4" class="indent-1">2.4. Internal Routes ...........................................</a><br>
+<a href="#section-2.5" class="indent-1">2.5. Internal More Specific Routes .............................</a><br>
+<a href="#section-2.6" class="indent-1">2.6. Special Purpose Routes ....................................</a><br>
+<a href="#section-2.7" class="indent-1">2.7. Upstream Routes ...........................................</a><br>
+<a href="#section-2.8" class="indent-1">2.8. National Routes ...........................................</a><br>
+<a href="#section-2.9" class="indent-1">2.9. Regional Routes ...........................................</a><br>
+<a href="#section-3" class="">3. RFC 1997 Community Encoding and Values .........................</a><br>
+<a href="#section-4" class="">4. Community Values for BGP Data Collection .......................</a><br>
+<a href="#section-4.1" class="indent-1">4.1. Extended Communities ......................................</a><br>
+<a href="#section-4.2" class="indent-1">4.2. Four-Octet AS Specific Extended Communities ...............</a><br>
+<a href="#section-5" class="">5. Note on BGP UPDATE Packing .....................................</a><br>
+<a href="#section-6" class="">6. Acknowledgements ...............................................</a><br>
+<a href="#section-7" class="">7. Security Considerations .......................................</a><br>
+<a href="#section-7.1" class="indent-1">7.1. Total Path Attribute Length ..............................</a><br>
+<a href="#section-8" class="">8. IANA Considerations ...........................................</a><br>
+<a href="#section-9" class="">9. References ....................................................</a><br>
+<a href="#section-9.1" class="indent-1">9.1. Normative References .....................................</a><br>
+<a href="#section-9.2" class="indent-1">9.2. Informative References ...................................</a><br>
+
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   BGP communities [RFC1997] are used by service providers for many
+   purposes, including tagging of customer, peer, and geographically
+   originated routes.  Such tagging is typically used to control the
+   scope of redistribution of routes within a provider's network and to
+   its customers and peers.  Communities are also used for a wide
+   variety of other applications, such as allowing customers to set
+   attributes such as LOCAL_PREF [RFC1771] by sending appropriate
+   communities to their service provider.  Other applications include
+   signaling various types of Virtual Private Networks (VPNs) (e.g.,
+   Virtual Private LAN Service (VPLS) [VPLS]), and carrying link
+   bandwidth for traffic engineering applications [RFC4360].
+
+</p><p class="rfcparagraph">   With the advent of large-scale BGP data collection [RV] [RIS] (and
+   associated research), it has become clear that the geographical and
+   topological information, as well as the relationship the provider has
+   to the source of a route (e.g., transit, peer, or customer), carried
+   in such communities is essential for a deeper understanding of the
+   global routing system.  This memo defines standard communities for
+   export to BGP route collectors.  These communities represent a
+   significant part of information carried by service providers as of
+   this writing, and as such could be useful for internal use by service
+   providers.  However, such use is beyond the scope of this memo.
+   Finally, those involved in BGP data analysis are encouraged to verify
+   with their data sources as to which peers implement this scheme (as
+   there is a large amount of existing data as well as many legacy
+   peerings).
+
+</p><p class="rfcparagraph">   The remainder of this memo is organized as follows.  Section 2
+   provides the definition of terms used as well as the semantics of the
+   communities used for BGP data collection, and Section 3 defines the
+   corresponding encodings for RFC 1997 [RFC1997] communities.  Finally,
+   Section 4 defines the encodings for use with extended communities
+   [RFC4360].
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Definitions</h2></a>
+
+   In this section, we define the terms used and the categories of
+   routes that may be tagged with communities.  This tagging is often
+   referred to as coloring, and we refer to a route's "color" as its
+   community value.  The categories defined here are loosely modeled on
+   those described in [WANG] and [HUSTON].
+
+</p><p class="rfcparagraph">	<a name="section-2.1"><h3>2.1   Peers and Peering</h3></a>
+
+   Consider two network service providers, A and B.  Service providers A
+   and B are defined to be peers when (i) A and B exchange routes via
+   BGP, and (ii) traffic exchange between A and B is settlement-free.
+   This arrangement is also typically known as "peering".  Peers
+   typically exchange only their respective customer routes (see
+   "Customer Routes" below), and hence exchange only their respective
+   customer traffic.  See [HUSTON] for a more in-depth discussion of the
+   business models surrounding peers and peering.
+
+</p><p class="rfcparagraph">	<a name="section-2.2"><h3>2.2   Customer Routes</h3></a>
+
+   Customer routes are those routes that are heard from a customer via
+   BGP and are propagated to peers and other customers.  Note that a
+   customer can be an enterprise or another network service provider.
+   These routes are sometimes called client routes [HUSTON].
+
+</p><p class="rfcparagraph">	<a name="section-2.3"><h3>2.3   Peer Routes</h3></a>
+
+   Peer routes are those routes heard from peers via BGP, and not
+   propagated to other peers.  In particular, these routes are only
+   propagated to the service provider's customers.
+	<a name="section-2.4"><h3>2.4   Internal Routes</h3></a>
+
+   Internal routes are those routes that a service provider originates
+   and passes to its peers and customers.  These routes are frequently
+   taken out of the address space allocated to a provider.
+
+</p><p class="rfcparagraph">	<a name="section-2.5"><h3>2.5   Internal More Specific Routes</h3></a>
+
+   Internal more specific routes are those routes that are frequently
+   used for circuit load balancing purposes and Interior Gateway
+   Protocol (IGP) route reduction.  They also may correspond to customer
+   services that are not visible outside the service provider's network.
+   Internal more specific routes are not exported to any external peer.
+
+</p><p class="rfcparagraph">	<a name="section-2.6"><h3>2.6   Special Purpose Routes</h3></a>
+
+   Special purpose routes are those routes that do not fall into any of
+   the other classes described here.  In those cases in which such
+   routes need to be distinguished, a service provider may color such
+   routes with a unique value.  Examples of special purpose routes
+   include anycast routes and routes for overlay networks.
+
+</p><p class="rfcparagraph">	<a name="section-2.7"><h3>2.7   Upstream Routes</h3></a>
+
+   Upstream routes are typically learned from an upstream service
+   provider as part of a transit service contract executed with the
+   upstream provider.
+
+</p><p class="rfcparagraph">	<a name="section-2.8"><h3>2.8   National Routes</h3></a>
+
+   These are route sets that are sourced from and/or received within a
+   particular country.
+
+</p><p class="rfcparagraph">	<a name="section-2.9"><h3>2.9   Regional Routes</h3></a>
+
+   Several global backbones implement regional policy based on their
+   deployed footprint and on strategic and business imperatives.
+   Service providers often have settlement-free interconnections with an
+   Autonomous System (AS) in one region, and that same AS is a customer
+   in another region.  This mandates use of regional routing, including
+   community attributes set by the network in question to allow easy
+   discrimination among regional routes.  For example, service providers
+   may treat a route set received from another service provider in
+   Europe differently than the same route set received in North America,
+   as it is common practice to sell transit in one region while peering
+   in the other.
+	<a name="section-3"><h2>3.   RFC 1997 Community Encoding and Values</h2></a>
+
+   In this section, we provide RFC 1997 [RFC1997] community values for
+   the categories described above.  RFC 1997 communities are encoded as
+   BGP Type Code 8, and are treated as 32-bit values ranging from
+   0x0000000 through 0xFFFFFFF.  The values 0x0000000 through 0x0000FFFF
+   and 0xFFFF0000 through 0xFFFFFFFF are reserved.
+
+</p><p class="rfcparagraph">   The best current practice among service providers is to use the
+   high-order two octets to represent the provider's AS number, and the
+   low-order two octets to represent the classification of the route, as
+   depicted below:
+
+</p><p class="rfcparagraph">      0                   1                   2                   3
+      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     |            <AS>               |         <Value>               |
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+   where <AS> is the 16-bit AS number.  For example, the encoding
+   0x2A7C029A would represent the AS 10876 with value 666.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   Community Values for BGP Data Collection</h2></a>
+
+   In this section, we define the RFC 1997 community encoding for the
+   route types described above for use in BGP data collection.  It is
+   anticipated that a service provider's internal community values will
+   be converted to these standard values for output to a route
+   collector.
+
+</p><p class="rfcparagraph">   This memo follows the best current practice of using the basic format
+   <AS>:<Value>.  The values for the route categories are described in
+   the following table:
+       Category                                 Value
+     ===============================================================
+     Reserved                                 <AS>:0000000000000000
+     Customer Routes                          <AS>:0000000000000001
+     Peer Routes                              <AS>:0000000000000010
+     Internal Routes                          <AS>:0000000000000011
+     Internal More Specific Routes            <AS>:0000000000000100
+     Special Purpose Routes                   <AS>:0000000000000101
+     Upstream Routes                          <AS>:0000000000000110
+     Reserved                                 <AS>:0000000000000111-
+                                              <AS>:0000011111111111
+     National and Regional Routes             <AS>:0000100000000000-
+                                              <AS>:1111111111111111
+      Encoded as                               <AS>:<R><X><CC>
+      Reserved National and Regional values    <AS>:0100000000000000-
+                                               <AS>:1111111111111111
+
+   Where
+
+    <AS> is the 16-bit AS
+    <R>  is the 5-bit Region Identifier
+    <X>  is the 1-bit satellite link indication
+         X = 1 for satellite links, 0 otherwise
+    <CC> is the 10-bit ISO-3166-2 country code [ISO3166]
+
+   and <R> takes the values:
+
+</p><p class="rfcparagraph">    Africa (AF)                            00001
+    Oceania (OC)                           00010
+    Asia (AS)                              00011
+    Antarctica (AQ)                        00100
+    Europe (EU)                            00101
+    Latin America/Caribbean Islands (LAC)  00110
+    North America (NA)                     00111
+    Reserved                               01000-11111
+   That is:
+
+</p><p class="rfcparagraph">      0                   1                   2                   3
+      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     |            <AS>               |   <R>   |X|        <CC>       |
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+   For example, the encoding for a national route over a terrestrial
+   link in AS 10876 from the Fiji Islands would be:
+
+</p><p class="rfcparagraph">    <AS>  = 10876 = 0x2A7C
+    <R>   = 00010
+    <X>   = 0
+    <CC>  = Fiji Islands Country Code = 242 = 0011110010
+
+   In this case, the low-order 16 bits are 0001000011110010 = 0x10F2.
+
+</p><p class="rfcparagraph">      0                   1                   2                   3
+      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     |           0x2A7C              |           0x10F2              |
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+   Note that a configuration language might allow the specification of
+   this community as 10876:4338 (0x10F2 == 4338 decimal).
+
+</p><p class="rfcparagraph">   Finally, note that these categories are not intended to be mutually
+   exclusive, and multiple communities can be attached where
+   appropriate.
+
+</p><p class="rfcparagraph">	<a name="section-4.1"><h3>4.1   Extended Communities</h3></a>
+
+   In some cases, the values and their encoding described in Section 4
+   may clash with a service provider's existing community assignments.
+   Extended communities [RFC4360] provide a convenient mechanism that
+   can be used to avoid such clashes.
+
+</p><p class="rfcparagraph">   The Extended Communities attribute is a transitive optional BGP
+   attribute with the Type Code 16 and consists of a set of extended
+   communities of the following format:
+      0                   1                   2                   3
+      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     |  Type high    |  Type low(*)  |                               |
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+          Value                |
+     |                                                               |
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+   For purposes of BGP data collection, we encode the communities
+   described in Section 4 using the two-octet AS specific extended
+   community type, which has the following format:
+
+</p><p class="rfcparagraph">      0                   1                   2                   3
+      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     |      0x00     |   Sub-Type    |    Global Administrator       |
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     |                     Local Administrator                       |
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+   The two-octet AS specific extended community attribute encodes the
+   service provider's two-octet Autonomous System number (as assigned by
+   a Regional Internet Registry, or RIR) in the Global Administrator
+   field, and the Local Administrator field may encode any information.
+
+</p><p class="rfcparagraph">   This memo assigns Sub-Type 0x0008 for BGP data collection, and
+   specifies that the <Value> field, as defined in Section 3.1, is
+   carried in the low-order octets of the Local Administrator field.
+   The two high-order octets of the Local Administrator field are
+   reserved, and are set to 0x00 when sending and ignored upon receipt.
+
+</p><p class="rfcparagraph">   For example, the extended community encoding for 10876:4338
+   (representing a terrestrial national route in AS 10876 from the Fiji
+   Islands) would be:
+
+</p><p class="rfcparagraph">      0                   1                   2                   3
+      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     |      0x00     |      0x0008   |           0x2A7C              |
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     |      0x00     |      0x00     |           0x10F2              |
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+	<a name="section-4.2"><h3>4.2   Four-Octet AS Specific Extended Communities</h3></a>
+
+   The four-octet AS specific extended community is encoded as follows:
+
+</p><p class="rfcparagraph">      0                   1                   2                   3
+      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     |      0x02     |    0x0008     |    Global Administrator       |
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     | Global Administrator (cont.)  |           0x10F2              |
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+   In this case, the four-octet Global Administrator sub-field contains
+   a four-octet Autonomous System number assigned by the IANA.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   Note on BGP UPDATE Packing</h2></a>
+
+   Note that data collection communities have the potential of making
+   the attribute set of a specific route more unique than it would be
+   otherwise (since each route collects data that is specific to its
+   path inside one or more ASes).  This, in turn, can affect whether
+   multiple routes can be grouped in the same BGP update message, and it
+   may lead to increased use of bandwidth, router CPU cycles, and
+   memory.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.   Acknowledgements</h2></a>
+
+   The community encoding described in this memo germinated from an
+   interesting suggestion from Akira Kato at WIDE.  In particular, the
+   idea would be to use the collection community values to select paths
+   that would result in (hopefully) more efficient access to various
+   services.  For example, in the case of RFC 3258 [RFC3258] based DNS
+   anycast service, BGP routers may see multiple paths to the same
+   prefix, and others might be coming from the same origin with
+   different paths, but others might be from different region/country
+   (with the same origin AS).
+
+</p><p class="rfcparagraph">   Joe Abley, Randy Bush, Sean Donelan, Xenofontas Dimitropoulos, Vijay
+   Gill, John Heasley, Geoff Huston, Steve Huter, Michael Patton,
+   Olivier Marce, Ryan McDowell, Rob Rockell, Rob Thomas, Pekka Savola,
+   Patrick Verkaik, and Alex Zinin all made many insightful comments on
+   early versions of this document.  Henk Uijterwaal suggested the use
+   of the ISO-3166-2 country codes.
+	<a name="section-7"><h2>7.   Security Considerations</h2></a>
+
+   While this memo introduces no additional security considerations into
+   the BGP protocol, the information contained in the communities
+   defined in this memo may in some cases reveal network structure that
+   was not previously visible outside the provider's network.  As a
+   result, care should be taken when exporting such communities to route
+   collectors.  Finally, routes exported to a route collector should
+   also be tagged with the NO_EXPORT community (0xFFFFFF01).
+
+</p><p class="rfcparagraph">	<a name="section-7.1"><h3>7.1   Total Path Attribute Length</h3></a>
+
+   The communities described in this memo are intended for use on egress
+   to a route collector.  Hence an operator may choose to overwrite its
+   internal communities with the values specified in this memo when
+   exporting routes to a route collector.  However, operators should in
+   general ensure that the behavior of their BGP implementation is
+   well-defined when the addition of an attribute causes a PDU to exceed
+   4096 octets.  For example, since it is common practice to use
+   community attributes to implement policy (among other functionality
+   such as allowing customers to set attributes such as LOCAL_PREF), the
+   behavior of an implementation when the attribute space overflows is
+   crucial.  Among other behaviors, an implementation might usurp the
+   intended attribute data or otherwise cause indeterminate failures.
+   These behaviors can result in unanticipated community attribute sets,
+   and hence result in unintended policy implications.
+
+</p><p class="rfcparagraph">	<a name="section-8"><h2>8.   IANA Considerations</h2></a>
+
+   This memo assigns a new Sub-Type for the AS specific extended
+   community type in the First Come First Served extended transitive
+   category.  The IANA has assigned Sub-Type 0x0008 as defined in
+   Section 4.1.
+
+</p><p class="rfcparagraph">   In addition, the IANA has created two registries for BGP Data
+   Collection Communities, one for standard communities and one for
+   extended communities.  Both of these registries will initially be
+   populated by the values described in Section 4.  IETF Consensus, as
+   described in [RFC2434], usually through the Global Routing Operations
+   Working Group (grow), is required for the assignment of new values in
+   these registries (in particular, for <Value> or <R> in the table of
+   values for the route categories in Section 4).
+	<a name="section-9"><h2>9.   References</h2></a>
+
+	<a name="section-9.1"><h3>9.1   Normative References</h3></a>
+
+   [ISO3166]       "ISO 3166 Maintenance agency (ISO 3166/MA)", Web
+                   Page:  http://www.iso.org/iso/en/prods-services/
+                   iso3166ma/index.html, 2004.
+
+</p><p class="rfcparagraph">   [RFC1771]       Rekhter, Y. and T. Li (Editors), "A Border Gateway
+                   Protocol (BGP-4)", RFC 1771, March 1995.
+
+</p><p class="rfcparagraph">   [RFC1997]       Chandra, R. and P. Traina, "BGP Communities
+                   Attribute", RFC 1997, August 1996.
+
+</p><p class="rfcparagraph">   [RFC4360]       Sangli, S., Tappan, D., and Y. Rekhter, "BGP Extended
+                   Communities Attribute", RFC 4360, January 2006.
+
+</p><p class="rfcparagraph">	<a name="section-9.2"><h3>9.2   Informative References</h3></a>
+
+   [HUSTON]        Huston, G., "Interconnection, Peering, and
+                   Settlements",
+                   http://www.isoc.org/inet99/proceedings/1e/1e_1.htm
+
+   [RFC2434]       Narten, T., and H. Alvestrand, "Guidelines for
+                   Writing an IANA Considerations Section in RFCs", BCP
+                   26, RFC 2434, October 1998.
+
+</p><p class="rfcparagraph">   [RFC3258]       Hardie, T., "Distributing Authoritative Name Servers
+                   via Shared Unicast Addresses", RFC 3258, April 2002.
+
+</p><p class="rfcparagraph">   [RIS]           "The RIPE Routing Information Service", Web Page:
+                   http://www.ripe.net/ris, 2004.
+
+</p><p class="rfcparagraph">   [RV]            Meyer, D., "The Routeviews Project", Web Page:
+                   http://www.routeviews.org, 2002.
+
+</p><p class="rfcparagraph">   [VPLS]          Kompella, K., et al., "Virtual Private LAN Service",
+                   Work in Progress, April 2005.
+
+</p><p class="rfcparagraph">   [WANG]          Wang, F. and L. Gao, "Inferring and Characterizing
+                   Internet Routing Policies", ACM SIGCOMM Internet
+                   Measurement Conference 2003.
+
+</p><p class="rfcparagraph">Author's Address
+
+   David Meyer
+
+   EMail: dmm@1-4-5.net
+Full Copyright Statement
+
+   Copyright (C) The Internet Society (2006).<br>
+
+</p><p class="rfcparagraph">   This document is subject to the rights, licenses and restrictions
+   contained in BCP 78, and except as set forth therein, the authors
+   retain all their rights.
+
+</p><p class="rfcparagraph">   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY AND THE INTERNET
+   ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED,
+   INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE
+   INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED
+   WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Intellectual Property
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the procedures with respect to rights in RFC documents can be
+   found in BCP 78 and BCP 79.
+
+</p><p class="rfcparagraph">   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+</p><p class="rfcparagraph">   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at
+   ietf-ipr@ietf.org.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is provided by the IETF
+   Administrative Support Activity (IASA).
+
+</p>
+
+
+
+
+
+Meyer                    Best Current Practice                 [Page 12]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

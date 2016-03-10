@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph">Network Working Group                                 Jim Hansen
+Request for Comment #401                              Center for Advanced
+NIC #11923                                              Computation
+Category:  D.6                                        University of Illinois
+Updates:  RFC #387                                    October 23, 1972
+Obsoletes: None
+
+
+               Conversion of NGP-0 Coordinates to Device
+               -----------------------------------------
+                          Specific Coordinates
+                          --------------------
+
+Conversion of NGP-0 coordinates to floating point PDP-10 coordinates
+was discussed in RFC #387.  In general, however, it is undesirable to
+convert NGP coordinates to floating point coordinates because real
+devices require integer addressing.  To this end, a means is described
+to convert NGP coordi- nates to integer coordinates in the range zero
+to M, where M is the maximum address of the device screen on a machine
+using 2's complement arithmetic.  It would not, however, be difficult
+to modify this algorithm to operate on machines using one's complement
+or sign-magnitude arithmetic.
+
+</p><p class="rfcparagraph">First consider the NGP coordinate format:
+
+</p><p class="rfcparagraph"><pre>                   +--+-----------+
+                   |  |   n       |
+                   +--+-----------+
+</pre>
+
+                    s ^  FRACTION
+                    i
+                    g
+                    n
+
+Where the sign occupies the most significant bit of the coordinate
+followed by bits of numerical information (initial implementation of
+NGP requires N=15).  Negative numbers are represented by 2's
+complement.  Conversion to device coordinates is accomplished by:
+
+</p><p class="rfcparagraph">                    D = S * f + S
+
+Where D =>integer device coordinate
+      S =>scaling factor (typically M/2)
+      f =>NGP fractional coordinate
+
+Let us rewrite this as:
+
+</p><p class="rfcparagraph">                            n     n
+                    D = S*(2 *f)/2 +S
+
+
+
+                                                                [Page 1]
+
+Now factor S into two terms:
+
+</p><p class="rfcparagraph">                            I
+                    S= Q * 2
+
+Where Q is an odd integer and I is an integer.
+
+</p><p class="rfcparagraph">When:                        I   n     n
+                    D = Q * 2 *(2 *f)/2  +S
+
+                             I-n   n
+                      = Q * 2   *(2 *f)  +S
+             n
+The factor (2 *f) is represented in 2's complement form simply by
+extending the sign bit of f into the upper portion of the computer
+word, If Q = 1 (as it would be with many devices), it can be ignored.
+If Q >< 1, we may console ourselves that an integer multiply is faster
+on most machines than a floating point multiply.  In fact, on a
+PDP-10, this multiply can usually be performed with no access to
+memory since Q is usually small.
+
+</p><p class="rfcparagraph">                          I-n
+We are now left with the 2    factor.  This can be accomplished with an
+arithmetic shift left by (I-n) or an arithmetic shift right by (n-I)
+as is appropriate.  The offset factor, S, may now be added using an
+integer add.
+
+</p><p class="rfcparagraph">The procedure for converting NGP coordinates to integer device
+coordinates is then:
+
+</p><p class="rfcparagraph">               1.   move coordinate to a register and extend sign
+               2.   integer multiply by Q (if necessary)
+               3.   arithmetic shift left by (I-n)
+               4.   integer add S
+
+
+This procedure would generally be much faster than:
+
+</p>               1.   move coordinate to register and extend sign
+               2.   float fractional coordinate
+               3.   floating point multiply
+               4.   floating point add
+               5.   conversion to fixed point
+
+       [ This RFC was put into machine readable form for entry ]
+       [ into the online RFC archives by BBN Corp. under the   ]
+       [ direction of Alex McKenzie.                      1/97 ]
+
+
+
+
+                                                                [Page 2]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

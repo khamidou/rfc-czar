@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph">Network Working Group                           Jon Postel
+Request for Comments : 348                      Computer Science
+                                                UCLA-NMC
+NIC : 10427                                     30 May 72
+
+Categories : Standard Processes
+
+
+
+                            Discard Process
+
+
+
+I suggest that for debugging and measurement purposes those hosts which
+are willing implement a "Discard" process.
+
+</p><p class="rfcparagraph">This discard process would listen for a request for connection and
+execute the Initial Connection Protocol (ICP) as specified in NIC 7104
+the "Current Network Protocols" notebook.  Upon completion of the ICP
+the discard process would wait for data from the network.  When data is
+received from the network it is discarded at once, (and the buffer space
+is re-allocated).  The discard process is terminated by closing the
+network connections.
+
+</p>
+
+
+
+
+
+
+
+
+
+
+
+       [ This RFC was put into machine readable form for entry ]
+       [ into the online RFC archives by BBN Corp. under the   ]
+       [ direction of Alex McKenzie.                   12/96   ]
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                [Page 1]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

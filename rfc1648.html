@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                        A. Cargille<br>Request for Comments: 1648                       University of Wisconsin<br>Category: Standards Track                                      July 1994<br><br></p>
+                  <h1>
+               Postmaster Convention for X.400 Operations</h1>
+                  <h2>Status of this Memo</h2>
+
+   This document specifies an Internet standards track protocol for the
+   Internet community, and requests discussion and suggestions for
+   improvements.  Please refer to the current edition of the "Internet
+   Official Protocol Standards" (STD 1) for the standardization state
+   and status of this protocol.  Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   Both STD 11, RFC 822 [1] and STD 3, RFC 1123 [2] (Host Requirements)
+   require that the email address "postmaster" be supported at all
+   hosts.  This paper extends this concept to X.400 mail domains which
+   have registered RFC 1327 mapping rules, and which therefore appear to
+   have normal RFC822-style addresses.
+
+</p><p class="rfcparagraph">	<a name="section-1"><h2>1.   Postmaster Convention in RFC822</h2></a>
+
+   Operating a reliable, large-scale electronic mail (email) network
+   requires cooperation between many mail managers and system
+   administrators.  As noted in RFC 822 [1], often mail or system
+   managers need to be able to contact a responsible person at a remote
+   host without knowing any specific user name or address at that host.
+   For that reason, both RFC 822 and the Internet Host Requirements [2]
+   require that the address "postmaster" be supported at every Internet
+   host.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Postmaster Convention and X.400</h2></a>
+
+   However, RFC 822 is not the only email protocol being used in the
+   Internet.  Some Internet sites are also running the X.400 (1984) [3]<br>
+   and X.400 (1988) [4] email protocols.  RFC 1327 specifies how to map<br>
+   between X.400 and RFC 822 addresses [5].  When mapping rules are
+   used, addresses map cleanly between X.400 and RFC 822.  In fact, it
+   is impossible to determine by inspecting the address whether the
+   recipient is an RFC 822 mail user or an X.400 mail user.
+
+</p><p class="rfcparagraph">   A paper by Rob Hagens and Alf Hansen describes an X.400 community
+   known as the "Global Open MHS Community" (GO-MHS) [6].  Many mail
+   domains in the GO-MHS Community have registered RFC 1327 mapping
+   rules.  Therefore, users in those domains have RFC 822-style email
+   addresses, and these email domains are a logical extension of the RFC
+   822 Internet.  It is impossible to tell by inspecting a user's
+   address whether the user receives RFC 822 mail or X.400 mail.
+
+</p><p class="rfcparagraph">   Since these addresses appear to be standard RFC 822 addresses, mail
+   managers, mailing list managers, host administrators, and users
+   expect to be able to simply send mail to "postmaster@domain" and
+   having the message be delivered to a responsible party.  When an RFC
+   1327 mapping rule exists, the X.400 address element corresponding to
+   the left-hand-side "postmaster" is "Surname=Postmaster" (both 1984
+   and 1988).  However, neither the X.400 protocols, North America X.400
+   Implementor's Agreements [7], nor the other regional X.400
+   implementor's agreements require that "Surname=Postmaster" and
+   "CommonName=Postmaster" be supported.  (Supporting these addresses is
+   recommended in X.400 (1988)).<br>
+
+</p><p class="rfcparagraph">   For mapped X.400 domains which do not support the postmaster
+   address(es), this means that an address such as "user@some.place.zz"
+   might be valid, yet mail to the corresponding address
+   "postmaster@some.place.zz" fails.  This is frustrating for remote
+   administrators and users, and can prevent operational problems from
+   being communicated and resolved.  In this case, the desired seamless
+   integration of the Internet RFC 822 mail world and the mapped X.400
+   domain has not been achieved.
+
+</p><p class="rfcparagraph">   The X.400 mail managers participating in the Cosine MHS Project
+   discussed this problem in a meeting in June 1992 [8].  The discussion
+   recognized the need for supporting the postmaster address at any
+   level of the address hierarchy where these are user addresses.
+   However, the group only required supporting the postmaster address
+   down to certain levels of the O/R Address tree.  This approach solved
+   part of the problem, but not all of it.  A more complete solution is
+   required.
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   Proposed Solution</h2></a>
+
+   To fully achieve the desired seamless integration of email domains
+   for which RFC 1327 mapping rules have been defined, the following
+   convention must be followed,
+
+      If there are any valid addresses of the form "user@domain", then
+      the address "postmaster@domain" must also be valid.
+
+</p><p class="rfcparagraph">   To express this in terms of X.400:  For every X.400 domain for which
+   an RFC 1327 mapping rule exists, if any address of the form
+
+      Surname=User; <Other X.400 Address Elements>
+   is a valid address, then the address
+
+      Surname=Postmaster; <Same X.400 Address Elements>
+
+   must also be a valid address.  If the X.400 system is running
+   X.400(1988), then the address<br>
+
+      CommonName=Postmaster; <Same X.400 Address Elements>
+
+   must also be supported.  (Note that CommonName=Postmaster will not be
+   generated by RFC 1327 mappings, but it is recommended in the 1988
+   X.400 standard).
+
+</p><p class="rfcparagraph">   To remain consistent with RFC 822, "Mail sent to that address is to
+   be routed to a person responsible for the site's mail system or to a
+   person with responsibility for general site operation." [9].
+
+</p><p class="rfcparagraph">	<a name="section-3.1"><h3>3.1   Software Limitations</h3></a>
+
+   If software is unable to support this requirement, it should be
+   upgraded.  X.400 software developers are strongly encouraged and
+   requested to support forwarding mail to a centralized postmaster
+   mailbox in products.
+
+</p><p class="rfcparagraph">   It may be possible to support forwarding postmaster mail to a central
+   mailbox in software packages which do not explicitly support it by
+   applying work-around solutions.  For example, some packages support
+   creating a mailing list for "postmaster" which has one entry that
+   points to the desired centralized postmaster mailbox.  Alternatively,
+   it may be possible to support a postmaster address using the X.400
+   Autoforwarding feature.  The software package may also support
+   rewriting the address in some other way.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   Acknowledgements</h2></a>
+
+   This document is a product of discussion and comments from the IETF
+   OSI X.400 Operations Working Group.  Helpful input was also received
+   from the European MHS Managers.  Special thanks to Marko Kaittola and
+   Erik Lawaetz for good criticism and helpful discussion.
+
+</p><p class="rfcparagraph">Security Considerations
+
+   Security issues are not discussed in this memo.
+	<a name="section-5"><h2>5.   Author's Address</h2></a>
+
+   Allan Cargille
+   Associate Researcher
+   Computer Sciences Department
+   University of Wisconsin-Madison
+   1210 West Dayton Street
+   Madison, WI   53706   USA
+
+   Internet: cargille@cs.wisc.edu
+   X.400: S=Cargille; O=UW-Madison; OU1=cs; PRMD=xnren; ADMD= ; C=us;
+
+</p><p class="rfcparagraph">   Phone: +1 (608) 262-5084<br>
+   Fax:   +1 (608) 262-9777<br>
+
+	<a name="section-6"><h2>6.   References</h2></a>
+
+   [1] Crocker, D., "Standard of the Format of ARPA Internet Text
+       Messages", STD 11, RFC 822, UDEL, August 1982.
+
+</p><p class="rfcparagraph">   [2] Braden, R., "Requirements for Internet Hosts -- Application and
+       Support", STD 3, RFC 1123, USC/Information Sciences Institute,
+       October 1989.
+
+</p><p class="rfcparagraph">   [3] CCITT, "CCITT Recommendations X.400", Message Handling Systems:
+       System Model--Service Elements, 1984.
+
+</p><p class="rfcparagraph">   [4] CCITT/ISO, "CCITT Recommendations X.400/ ISO IS 10021-1", Message
+       Handling: System and Service Overview, December 1988.
+
+</p><p class="rfcparagraph">   [5] Kille, S., "Mapping between X.400(1988) / ISO 10021 and RFC 822",<br>
+       RFC 1327, University College London, May 1992.
+
+</p><p class="rfcparagraph">   [6] Hagens, R. and A. Hansen, "Operational Requirements for X.400
+       Management Domains in the GO-MHS Community," ANS, UNINETT, RFC
+       1649, July 1994.
+
+</p><p class="rfcparagraph">   [7] U.S. Department of Commerce, National Institute of Standards and
+       Technology, Stable Implementation Agreements for Open Systems
+       Interconnection Protocols, Version 7, Edition 1, Special
+       Publication 500-214, December 1993.
+
+</p><p class="rfcparagraph">   [8] Minutes, Cosine MHS Managers Meeting, June 1992, (unpublished).
+
+</p><p class="rfcparagraph">   [9] Crocker, D., "Standard of the Format of ARPA Internet Text
+       Messages", STD 11, RFC 822, UDEL, Pg. 33, August 1982.
+
+</p>
+
+
+
+Cargille                                                        [Page 4]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

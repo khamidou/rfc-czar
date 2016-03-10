@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph">Internet Engineering Task Force (IETF)                     M. Nottingham
+Request for Comments: 7320
+BCP: 190                                                       July 2014
+Updates: 3986
+Category: Best Current Practice
+ISSN: 2070-1721
+
+
+                        URI Design and Ownership
+
+<h2>Abstract</h2>
+
+   Section 1.1.1 of RFC 3986 defines URI syntax as "a federated and
+   extensible naming system wherein each scheme's specification may
+   further restrict the syntax and semantics of identifiers using that
+   scheme."  In other words, the structure of a URI is defined by its
+   scheme.  While it is common for schemes to further delegate their
+   substructure to the URI's owner, publishing independent standards
+   that mandate particular forms of URI substructure is inappropriate,
+   because that essentially usurps ownership.  This document further
+   describes this problematic practice and provides some acceptable
+   alternatives for use in standards.
+
+</p><p class="rfcparagraph">Status of This Memo
+
+   This memo documents an Internet Best Current Practice.
+
+</p><p class="rfcparagraph">   This document is a product of the Internet Engineering Task Force
+   (IETF).  It represents the consensus of the IETF community.  It has
+   received public review and has been approved for publication by the
+   Internet Engineering Steering Group (IESG).  Further information on
+   BCPs is available in Section 2 of RFC 5741.
+
+</p><p class="rfcparagraph">   Information about the current status of this document, any errata,
+   and how to provide feedback on it may be obtained at
+   http://www.rfc-editor.org/info/rfc7320.
+<h2>Copyright Notice</h2>
+
+   Copyright (c) 2014 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+</p><p class="rfcparagraph">   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (http://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
+   the Trust Legal Provisions and are provided without warranty as
+   described in the Simplified BSD License.
+
+</p><p class="rfcparagraph">Table of Contents
+<a href="#section-1" class="">1. Introduction  . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-1.1" class="indent-1">1.1. Intended Audience . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-1.2" class="indent-1">1.2. Notational Conventions  . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2" class="">2. Best Current Practices for Standardizing Structured URIs  . </a><br>
+<a href="#section-2.1" class="indent-1">2.1. URI Schemes . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2.2" class="indent-1">2.2. URI Authorities . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2.3" class="indent-1">2.3. URI Paths . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2.4" class="indent-1">2.4. URI Queries . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2.5" class="indent-1">2.5. URI Fragment Identifiers  . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3" class="">3. Alternatives to Specifying Structure in URIs  . . . . . . . </a><br>
+<a href="#section-4" class="">4. Security Considerations . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-5" class="">5. References  . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-5.1" class="indent-1">5.1. Normative References  . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-5.2" class="indent-1">5.2. Informative References  . . . . . . . . . . . . . . . . </a><br>
+   Appendix A.  Acknowledgments  . . . . . . . . . . . . . . . . . .   9
+
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   URIs [RFC3986] very often include structured application data.  This
+   might include artifacts from filesystems (often occurring in the path
+   component) and user information (often in the query component).  In
+   some cases, there can even be application-specific data in the
+   authority component (e.g., some applications are spread across
+   several hostnames to enable a form of partitioning or dispatch).
+
+</p><p class="rfcparagraph">   Furthermore, constraints upon the structure of URIs can be imposed by
+   an implementation; for example, many Web servers use the filename
+   extension of the last path segment to determine the media type of the
+   response.  Likewise, prepackaged applications often have highly
+   structured URIs that can only be changed in limited ways (often, just
+   the hostname and port on which they are deployed).
+   Because the owner of the URI (as defined in [webarch]
+   Section 2.2.2.1) is choosing to use the server or the application,
+   this can be seen as reasonable delegation of authority.  However,
+   when such conventions are mandated by a party other than the owner,
+   it can have several potentially detrimental effects:
+
+</p><p class="rfcparagraph">   o  Collisions - As more ad hoc conventions for URI structure become
+      standardized, it becomes more likely that there will be collisions
+      between them (especially considering that servers, applications,
+      and individual deployments will have their own conventions).
+
+</p><p class="rfcparagraph">   o  Dilution - When the information added to a URI is ephemeral, this
+      dilutes its utility by reducing its stability (see [webarch]
+      Section 3.5.1), and can cause several alternate forms of the URI
+      to exist (see [webarch] Section 2.3.1).
+
+</p><p class="rfcparagraph">   o  Rigidity - Fixed URI syntax often interferes with desired
+      deployment patterns.  For example, if an authority wishes to offer
+      several applications on a single hostname, it becomes difficult to
+      impossible to do if their URIs do not allow the required
+      flexibility.
+
+</p><p class="rfcparagraph">   o  Operational Difficulty - Supporting some URI conventions can be
+      difficult in some implementations.  For example, specifying that a
+      particular query parameter be used with "HTTP" URIs precludes the
+      use of Web servers that serve the response from a filesystem.
+      Likewise, an application that fixes a base path for its operation
+      (e.g., "/v1") makes it impossible to deploy other applications
+      with the same prefix on the same host.
+
+</p><p class="rfcparagraph">   o  Client Assumptions - When conventions are standardized, some
+      clients will inevitably assume that the standards are in use when
+      those conventions are seen.  This can lead to interoperability
+      problems; for example, if a specification documents that the "sig"
+      URI query parameter indicates that its payload is a cryptographic
+      signature for the URI, it can lead to undesirable behavior.
+
+</p><p class="rfcparagraph">   Publishing a standard that constrains an existing URI structure in
+   ways that aren't explicitly allowed by [RFC3986] (usually, by
+   updating the URI scheme definition) is inappropriate, because the
+   structure of a URI needs to be firmly under the control of its owner,
+   and the IETF (as well as other organizations) should not usurp it.
+
+</p><p class="rfcparagraph">   This document explains some best current practices for establishing
+   URI structures, conventions, and formats in standards.  It also
+   offers strategies for specifications to avoid violating these
+   guidelines in Section 3.
+	<a name="section-1.1"><h3>1.1   Intended Audience</h3></a>
+
+   This document's requirements target the authors of specifications
+   that constrain the syntax or structure of URIs or parts of them.  Two
+   classes of such specifications are called out specifically:
+
+</p><p class="rfcparagraph">   o  Protocol Extensions ("extensions") - specifications that offer new
+      capabilities that could apply to any identifier, or to a large
+      subset of possible identifiers; e.g., a new signature mechanism
+      for 'http' URIs, or metadata for any URI.
+
+</p><p class="rfcparagraph">   o  Applications Using URIs ("applications") - specifications that use
+      URIs to meet specific needs; e.g., an HTTP interface to particular
+      information on a host.
+
+</p><p class="rfcparagraph">   Requirements that target the generic class "Specifications" apply to
+   all specifications, including both those enumerated above and others.
+
+</p><p class="rfcparagraph">   Note that this specification ought not be interpreted as preventing
+   the allocation of control of URIs by parties that legitimately own
+   them, or have delegated that ownership; for example, a specification
+   might legitimately define the semantics of a URI on IANA's Web site
+   as part of the establishment of a registry.
+
+</p><p class="rfcparagraph">   There may be existing IETF specifications that already deviate from
+   the guidance in this document.  In these cases, it is up to the
+   relevant communities (i.e., those of the URI scheme as well as that
+   which produced the specification in question) to determine an
+   appropriate outcome; e.g., updating the scheme definition, or
+   changing the specification.
+
+</p><p class="rfcparagraph">	<a name="section-1.2"><h3>1.2   Notational Conventions</h3></a>
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in [RFC2119].
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Best Current Practices for Standardizing Structured URIs</h2></a>
+
+   This section updates [RFC3986] by setting limitations on how other
+   specifications may define structure and semantics within URIs.  Best
+   practices differ depending on the URI component, as described below.
+	<a name="section-2.1"><h3>2.1   URI Schemes</h3></a>
+
+   Applications and extensions MAY require use of specific URI
+   scheme(s); for example, it is perfectly acceptable to require that an
+   application support 'http' and 'https' URIs.  However, applications
+   SHOULD NOT preclude the use of other URI schemes in the future,
+   unless they are clearly only usable with the nominated schemes.
+
+</p><p class="rfcparagraph">   A specification that defines substructure within a specific URI
+   scheme MUST do so in the defining document for that URI scheme.  A
+   specification that defines substructure for URI schemes overall MUST
+   do so by modifying [BCP115] (an exceptional circumstance).
+
+</p><p class="rfcparagraph">	<a name="section-2.2"><h3>2.2   URI Authorities</h3></a>
+
+   Scheme definitions define the presence, format and semantics of an
+   authority component in URIs; all other specifications MUST NOT
+   constrain, or define the structure or the semantics for URI
+   authorities, unless they update the scheme registration itself.
+
+</p><p class="rfcparagraph">   For example, an extension or application ought not say that the "foo"
+   prefix in "foo_app.example.com" is meaningful or triggers special
+   handling in URIs.
+
+</p><p class="rfcparagraph">   However, applications MAY nominate or constrain the port they use,
+   when applicable.  For example, BarApp could run over port nnnn
+   (provided that it is properly registered).
+
+</p><p class="rfcparagraph">	<a name="section-2.3"><h3>2.3   URI Paths</h3></a>
+
+   Scheme definitions define the presence, format, and semantics of a
+   path component in URIs; all other specifications MUST NOT constrain,
+   or define the structure or the semantics for any path component.
+
+</p><p class="rfcparagraph">   The only exception to this requirement is registered "well-known"
+   URIs, as specified by [RFC5785].  See that document for a description
+   of the applicability of that mechanism.
+
+</p><p class="rfcparagraph">   For example, an application ought not specify a fixed URI path
+   "/myapp", since this usurps the host's control of that space.
+
+</p><p class="rfcparagraph">   Specifying a fixed path relative to another (e.g., {whatever}/myapp)
+   is also bad practice (even if "whatever" is discovered as suggested
+   in Section 3); while doing so might prevent collisions, it does not
+   avoid the potential for operational difficulties (for example, an
+   implementation that prefers to use query processing instead, because
+   of implementation constraints).
+	<a name="section-2.4"><h3>2.4   URI Queries</h3></a>
+
+   The presence, format and semantics of the query component of URIs is
+   dependent upon many factors, and MAY be constrained by a scheme
+   definition.  Often, they are determined by the implementation of a
+   resource itself.
+
+</p><p class="rfcparagraph">   Applications MUST NOT directly specify the syntax of queries, as this
+   can cause operational difficulties for deployments that do not
+   support a particular form of a query.  For example, a site may wish
+   to support an application using "static" files that do not support
+   query parameters.
+
+</p><p class="rfcparagraph">   Extensions MUST NOT constrain the format or semantics of queries.
+
+</p><p class="rfcparagraph">   For example, an extension that indicates that all query parameters
+   with the name "sig" indicate a cryptographic signature would collide
+   with potentially preexisting query parameters on sites and lead
+   clients to assume that any matching query parameter is a signature.
+
+</p><p class="rfcparagraph">   HTML [W3C.REC-html401-19991224] constrains the syntax of query
+   strings used in form submission.  New form languages SHOULD NOT
+   emulate it, but instead allow creation of a broader variety of URIs
+   (e.g., by allowing the form to create new path components, and so
+   forth).
+
+</p><p class="rfcparagraph">   Note that "well-known" URIs (see [RFC5785]) MAY constrain their own
+   query syntax, since these name spaces are effectively delegated to
+   the registering party.
+
+</p><p class="rfcparagraph">	<a name="section-2.5"><h3>2.5   URI Fragment Identifiers</h3></a>
+
+   Media type definitions (as per [RFC6838]) SHOULD specify the fragment
+   identifier syntax(es) to be used with them; other specifications MUST
+   NOT define structure within the fragment identifier, unless they are
+   explicitly defining one for reuse by media type definitions.
+
+</p><p class="rfcparagraph">   For example, an application that defines common fragment identifiers
+   across media types not controlled by it would engender
+   interoperability problems with handlers for those media types
+   (because the new, non-standard syntax is not expected).
+	<a name="section-3"><h2>3.   Alternatives to Specifying Structure in URIs</h2></a>
+
+   Given the issues described in Section 1, the most successful strategy
+   for applications and extensions that wish to use URIs is to use them
+   in the fashion they were designed: as links that are exchanged as
+   part of the protocol, rather than statically specified syntax.
+   Several existing specifications can aid in this.
+
+</p><p class="rfcparagraph">   [RFC5988] specifies relation types for Web links.  By providing a
+   framework for linking on the Web, where every link has a relation
+   type, context and target, it allows applications to define a link's
+   semantics and connectivity.
+
+</p><p class="rfcparagraph">   [RFC6570] provides a standard syntax for URI Templates that can be
+   used to dynamically insert application-specific variables into a URI
+   to enable such applications while avoiding impinging upon URI owners'
+   control of them.
+
+</p><p class="rfcparagraph">   [RFC5785] allows specific paths to be 'reserved' for standard use on
+   URI schemes that opt into that mechanism ('http' and 'https' by
+   default).  Note, however, that this is not a general "escape valve"
+   for applications that need structured URIs; see that specification
+   for more information.
+
+</p><p class="rfcparagraph">   Specifying more elaborate structures in an attempt to avoid
+   collisions is not an acceptable solution, and does not address the
+   issues in Section 1.  For example, prefixing query parameters with
+   "myapp_" does not help, because the prefix itself is subject to the
+   risk of collision (since it is not "reserved").
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   Security Considerations</h2></a>
+
+   This document does not introduce new protocol artifacts with security
+   considerations.  It prohibits some practices that might lead to
+   vulnerabilities; for example, if a security-sensitive mechanism is
+   introduced by assuming that a URI path component or query string has
+   a particular meaning, false positives might be encountered (due to
+   sites that already use the chosen string).  See also [RFC6943].
+	<a name="section-5"><h2>5.   References</h2></a>
+
+	<a name="section-5.1"><h3>5.1   Normative References</h3></a>
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">   [RFC3986]  Berners-Lee, T., Fielding, R., and L. Masinter, "Uniform
+              Resource Identifier (URI): Generic Syntax", STD 66, RFC
+              3986, January 2005.
+
+</p><p class="rfcparagraph">   [RFC6838]  Freed, N., Klensin, J., and T. Hansen, "Media Type
+              Specifications and Registration Procedures", BCP 13, RFC
+              6838, January 2013.
+
+</p><p class="rfcparagraph">   [webarch]  Jacobs, I. and N. Walsh, "Architecture of the World Wide
+              Web, Volume One", December 2004,
+              <http://www.w3.org/TR/2004/REC-webarch-20041215>.
+
+</p><p class="rfcparagraph">	<a name="section-5.2"><h3>5.2   Informative References</h3></a>
+
+   [BCP115]   Hansen, T., Hardie, T., and L. Masinter, "Guidelines and
+              Registration Procedures for New URI Schemes", RFC 4395,
+              BCP 115, February 2006.
+
+</p><p class="rfcparagraph">   [RFC5785]  Nottingham, M. and E. Hammer-Lahav, "Defining Well-Known
+              Uniform Resource Identifiers (URIs)", RFC 5785, April
+              2010.
+
+</p><p class="rfcparagraph">   [RFC5988]  Nottingham, M., "Web Linking", RFC 5988, October 2010.
+
+</p><p class="rfcparagraph">   [RFC6570]  Gregorio, J., Fielding, R., Hadley, M., Nottingham, M.,
+              and D. Orchard, "URI Template", RFC 6570, March 2012.
+
+</p><p class="rfcparagraph">   [RFC6943]  Thaler, D., "Issues in Identifier Comparison for Security
+              Purposes", RFC 6943, May 2013.
+
+</p><p class="rfcparagraph">   [W3C.REC-html401-19991224]
+              Raggett, D., Hors, A., and I. Jacobs, "HTML 4.01
+              Specification", World Wide Web Consortium Recommendation
+              REC-html401-19991224, December 1999,
+              <http://www.w3.org/TR/1999/REC-html401-19991224>.
+Appendix A.  Acknowledgments
+
+   Thanks to David Booth, Dave Crocker, Tim Bray, Anne van Kesteren,
+   Martin Thomson, Erik Wilde, Dave Thaler, and Barry Leiba for their
+   suggestions and feedback.
+
+</p>Author's Address
+
+   Mark Nottingham
+
+   EMail: mnot@mnot.net
+   URI:   http://www.mnot.net/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Nottingham                Best Current Practice                 [Page 9]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

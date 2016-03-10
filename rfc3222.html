@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                         G. Trotter<br>Request for Comments: 3222                          Agilent Technologies<br>Category: Informational                                    December 2001<br><br></p>
+                  <h1>
+    Terminology for Forwarding Information Base (FIB) based Router
+                              Performance</h1>
+                  <h2>Status of this Memo</h2>
+
+   This memo provides information for the Internet community.  It does
+   not specify an Internet standard of any kind.  Distribution of this
+   memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (2001).  All Rights Reserved.<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This document describes the terms to be used in a methodology that
+   determines the IP packet forwarding performance of IP routers as a
+   function of the forwarding information base installed within a
+   router.  The forwarding performance of an IP router may be dependent
+   upon or may be linked to the composition and size of the forwarding
+   information base installed within a router.
+<h2>Table of Contents</h2>
+<a href="#section-1" class="">1. Introduction...................................................</a><br>
+<a href="#section-2" class="">2. Overview.......................................................</a><br>
+<a href="#section-3" class="">3. Existing Definitions...........................................</a><br>
+<a href="#section-4" class="">4. Definition Format..............................................</a><br>
+<a href="#section-5" class="">5. Definitions - parameters.......................................</a><br>
+<a href="#section-5.1" class="indent-1">5.1 Network Prefix................................................</a><br>
+<a href="#section-5.2" class="indent-1">5.2 Network Prefix Length.........................................</a><br>
+<a href="#section-5.3" class="indent-1">5.3 Forwarding Information Base (FIB).............................</a><br>
+<a href="#section-5.4" class="indent-1">5.4 Forwarding Information Base Entry.............................</a><br>
+<a href="#section-5.5" class="indent-1">5.5 Forwarding Information Base Size..............................</a><br>
+<a href="#section-5.6" class="indent-1">5.6 Longest Length Prefix Match Algorithm.........................</a><br>
+<a href="#section-5.7" class="indent-1">5.7 Forwarding Information Base Prefix Distribution...............</a><br>
+<a href="#section-5.8" class="indent-1">5.8 Per-Interface or Per-Card Forwarding Information Base.........</a><br>
+<a href="#section-5.9" class="indent-1">5.9 Per-Interface Forwarding Information Base Cache...............</a><br>
+<a href="#section-5.10" class="indent-1">5.10 Route Aggregation...........................................</a><br>
+<a href="#section-6" class="">6. Definitions - metrics.........................................</a><br>
+<a href="#section-6.1" class="indent-1">6.1 Maximum Forwarding Information Base Size.....................</a><br>
+<a href="#section-6.2" class="indent-1">6.2 Forwarding Information Base Learning Time....................</a><br>
+<a href="#section-6.3" class="indent-1">6.3 Forwarding Information Base-dependent Throughput.............</a><br>
+<a href="#section-6.4" class="indent-1">6.4 Forwarding Information Base-dependent Latency................</a><br>
+<a href="#section-6.5" class="indent-1">6.5 Forwarding Information Base-dependent Frame Loss Rate........</a><br>
+<a href="#section-7" class="">7. Security Considerations.......................................</a><br>
+<a href="#section-8" class="">8. References....................................................</a><br>
+<a href="#section-9" class="">9. Author's Address..............................................</a><br>
+<a href="#section-10" class="">10. Full Copyright Statement.....................................</a><br>
+
+	<a name="section-1"><h2>1.  Introduction</h2></a>
+
+   This document defines terms that are to be used in a methodology that
+   determines the IP packet forwarding performance of IP routers as a
+   function of the forwarding information base installed within the
+   router.
+
+</p><p class="rfcparagraph">   The objective of this methodology is to evaluate the performance
+   levels of IP routers as forwarding information bases continue to grow
+   in size and complexity of structure.
+
+</p><p class="rfcparagraph">   This methodology utilizes the packet forwarding performance
+   measurements described in [2]; reference will also be made to the
+   associated terminology document [3] for these terms.
+	<a name="section-2"><h2>2.  Overview</h2></a>
+
+   In order to measure the forwarding information base-based router
+   performance, different forwarding information bases (5.3) are
+   installed in the router.  The two key elements describing the FIB are
+   the FIB size (5.5) and FIB prefix distribution (5.7).  The forwarding
+   performance of a router may be dependent upon these two primary
+   factors, particularly if FIB prefix distributions tend towards longer
+   network prefixes (5.1).  The FIB-dependent throughput, latency and
+   frame loss rate (6.3, 6.4, 6.5), measured with fully meshed traffic
+   flows [2], will reflect the change in performance of the router.
+   Tests may need to be performed up to the maximum FIB size (6.1).
+
+</p><p class="rfcparagraph">   When configuring the router for these measurements, the routes need
+   to be manually entered into the router, or advertised via a routing
+   protocol.  It may take some period of time (the FIB learning time
+   (6.2)) before the router learns all the routes.
+
+</p><p class="rfcparagraph">   When routes are advertised into the router, the routes should be
+   advertised in such a way so that route aggregation (5.10) does not
+   occur.  Also, the effect of a per-interface FIB cache (5.9) needs to
+   be taken into account.
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.  Existing Definitions</h2></a>
+
+   [3] should be consulted before attempting to make use of this
+   document.  [2] contains discussions of a number of terms relevant to
+   the benchmarking of network interconnect devices and should also be
+   consulted.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.  Definition Format</h2></a>
+
+   The definition format is the equivalent to that defined in [3], and
+   is repeated here for convenience:
+
+</p><p class="rfcparagraph">   X.x Term to be defined. (e.g., Latency)
+
+   Definition:
+      The specific definition for the term.
+
+</p><p class="rfcparagraph">   Discussion:
+      A brief discussion about the term, it's application and any
+      restrictions on measurement procedures.
+
+</p><p class="rfcparagraph">   Measurement units:
+      The units used to report measurements of this term, if applicable.
+   Issues:
+      List of issues or conditions that effect this term.
+
+</p><p class="rfcparagraph">   See Also:
+      List of other terms that are relevant to the discussion of this
+      term.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.  Definitions - parameters</h2></a>
+
+   This section defines parameters that would dictate the execution of
+   methodology to determine the FIB based forwarding performance of a
+   router.
+
+</p><p class="rfcparagraph">	<a name="section-5.1"><h3>5.1  Network Prefix</h3></a>
+
+   Definition:
+      "A network prefix is . . . a contiguous set of bits at the more
+      significant end of the address that defines a set of systems; host
+      numbers select among those systems."
+
+      (This definition is taken directly from section 2.2.5.2,
+      "Classless Inter Domain Routing (CIDR)", in [4].)
+
+   Discussion:
+      In the CIDR context, the network prefix is the network component
+      of an IP address.  A common alternative to using a bitwise mask to
+      communicate this component is the use of "slash (/) notation."
+      Slash notation binds the notion of network prefix length (see 5.2)
+      in bits to an IP address. E.g., 141.184.128.0/17 indicates the
+      network component of this IPv4 address is 17 bits wide.
+
+</p><p class="rfcparagraph">   Measurement units:
+      <n/a>
+
+   Issues:
+
+</p><p class="rfcparagraph">   See Also:
+      Network Prefix Length (5.2)
+
+	<a name="section-5.2"><h3>5.2  Network Prefix Length</h3></a>
+
+   Definition:
+      The number of bits used to define the network prefix. Network
+      prefixes, using CIDR terminology, are typically referred to as
+      15.35.128.0 /17, indicating that the network prefix is 17 bits
+      long.
+   Discussion:
+      When referring to groups of addresses, the network prefix length
+      is often used as a means of describing groups of addresses as an
+      equivalence class.  For example, 100 /16 addresses refers to 100
+      addresses whose network prefix length is 16 bits.
+
+</p><p class="rfcparagraph">   Measurement units:
+      bits
+
+   Issues:
+
+</p><p class="rfcparagraph">   See Also:
+      network prefix (5.1)
+      forwarding information base prefix distribution (5.7)
+
+	<a name="section-5.3"><h3>5.3  Forwarding Information Base (FIB)</h3></a>
+
+   Definition:
+      As according to the definition in Appendix B of [4]:
+
+</p><p class="rfcparagraph">      "The table containing the information necessary to forward IP
+      Datagrams, in this document, is called the Forwarding Information
+      Base.  At minimum, this contains the interface identifier and next
+      hop information for each reachable destination network prefix."
+
+   Discussion:
+      The forwarding information base describes a database indexing
+      network prefixes versus router port identifiers.
+
+</p><p class="rfcparagraph">      A forwarding information base consists of [FIB size (5.5)] FIB
+      entries (5.4).
+
+</p><p class="rfcparagraph">      The forwarding information base is distinct from the "routing
+      table" (or, the Routing Information Base), which holds all routing
+      information received from routing peers.
+
+</p><p class="rfcparagraph">      The forwarding information base contains unique paths only (i.e.
+      does not contain secondary paths).
+
+</p><p class="rfcparagraph">   Measurement units:
+      <none>
+
+   Issues:
+   See Also:
+      forwarding information base entry (5.4)
+      forwarding information base size (5.5)
+      forwarding information base prefix distribution (5.7)
+      maximum forwarding information base size (6.1)
+
+	<a name="section-5.4"><h3>5.4  Forwarding Information Base Entry</h3></a>
+
+   Definition:
+      A single entry within a forwarding information base.  This entry
+      consists of the minimum amount of information necessary to make a
+      forwarding decision on a particular packet.  The typical
+      components within a forwarding information base entry are a
+      network prefix, a router port identifier and next hop information.
+      This is an entry that the router can and does use to forward
+      packets.
+
+</p><p class="rfcparagraph">   Discussion:
+      See (5.3).
+
+</p><p class="rfcparagraph">   Measurement units:
+      <n/a>
+
+   Issues:
+
+</p><p class="rfcparagraph">   See Also:
+      forwarding information base (5.3)
+      forwarding information base size (5.5)
+      forwarding information base prefix distribution (5.7)
+      maximum forwarding information base size (6.1)
+
+	<a name="section-5.5"><h3>5.5  Forwarding Information Base Size</h3></a>
+
+   Definition:
+      Refers to the number of forwarding information base entries within
+      a forwarding information base.
+
+</p><p class="rfcparagraph">   Discussion:
+      The number of entries within a forwarding information base is one
+      of the key elements that may influence the forwarding performance
+      of a router.  Generally, the more entries within the forwarding
+      information base, the longer it could take to find the longest
+      matching network prefix within the forwarding information base.
+
+</p><p class="rfcparagraph">   Measurement units:
+      Number of routes
+   Issues:
+
+</p><p class="rfcparagraph">   See Also:
+      forwarding information base (5.3)
+      forwarding information base entry (5.4)
+      forwarding information base prefix distribution (5.7)
+      maximum forwarding information base size (6.1)
+
+	<a name="section-5.6"><h3>5.6  Longest Length Prefix Match Algorithm</h3></a>
+
+   Definition:
+      An algorithm that a router uses to quickly match destination
+      addresses within received IP packets to exit interfaces on the
+      router.
+
+</p><p class="rfcparagraph">   Discussion:
+
+</p><p class="rfcparagraph">   Measurement Units:
+      <none>
+
+   Issues:
+
+</p><p class="rfcparagraph">   See Also:
+
+</p><p class="rfcparagraph">	<a name="section-5.7"><h3>5.7  Forwarding Information Base Prefix Distribution</h3></a>
+
+   Definition:
+      The distribution of network prefix lengths within the forwarding
+      information base.
+
+</p><p class="rfcparagraph">   Discussion:
+      Network prefixes within the forwarding information base could be
+      all of a single network prefix length, but, more realistically,
+      the network prefix lengths will be distributed across some range.
+
+</p><p class="rfcparagraph">      Individual performance measurements will be made against FIBs
+      populated with the same network prefix length, as well as against
+      FIBs with some distribution of network prefix lengths.
+
+</p><p class="rfcparagraph">      The distribution of network prefix lengths may have an impact on
+      the forwarding performance of a router.  The longer the network
+      prefix length, the longer it will take for a router to perform the
+      longest length prefix match algorithm, and potentially the lower
+      the performance of the router.
+   Measurement units:
+      The forwarding information base prefix distribution is expressed
+      by a list of network prefix lengths and the percentage of entries
+      within the forwarding information base with a particular network
+      prefix length.  For example, a forwarding information base prefix
+      distribution is represented as:
+
+</p><p class="rfcparagraph">         {[/16, 100], [/20, 360], [/24, 540]}
+
+      This indicates that 100 of the entries within the forwarding
+      information base have a 16 bit network prefix length, 360 have a
+      20 bit network prefix length, and 540 have a 24 bit network prefix
+      length.
+
+</p><p class="rfcparagraph">   Issues:
+
+</p><p class="rfcparagraph">   See Also:
+      forwarding information base (5.3)
+      forwarding information base entry (5.4)
+      forwarding information base size (5.5)
+      maximum forwarding information base size (6.1)
+
+	<a name="section-5.8"><h3>5.8  Per-Interface or Per-Card Forwarding Information Base</h3></a>
+
+   Definition:
+      A complete copy of the forwarding information base, installed on a
+      router's card or individual physical interface to speed the
+      destination address to network prefix lookup process.
+
+</p><p class="rfcparagraph">   Discussion:
+      Router manufacturers have developed many optimizations for
+      routers, of which one optimization is to copy the forwarding
+      information base to every interface or interface card on the
+      router.  By doing this, destination address / network prefix
+      lookups can be performed on the interface or card, unloading a
+      router's CPU.
+
+</p><p class="rfcparagraph">   Measurement units:
+      <n/a>
+
+   Issues:
+
+</p><p class="rfcparagraph">   See Also:
+      forwarding information base (5.3)
+      per-interface forwarding information base cache (5.9)
+	<a name="section-5.9"><h3>5.9  Per-Interface Forwarding Information Base Cache</h3></a>
+
+   Definition:
+      A subset of a forwarding information base, installed on a router's
+      interface card to speed the destination address / network prefix
+      lookup process.
+
+</p><p class="rfcparagraph">   Discussion:
+      Prior to installing a complete copy of the forwarding information
+      base on each interface of a router, a popular technique for
+      speeding destination address lookups is to install a cache of
+      frequently used routes on a router's interface.
+
+</p><p class="rfcparagraph">      The most frequently used routes are placed in the forwarding
+      information base cache.  IP packets whose destination address does
+      not match a network prefix within the per-interface forwarding
+      information base cache are forwarded to a router's central
+      processor for lookup in the complete forwarding information base.
+
+</p><p class="rfcparagraph">      The implication for benchmarking the performance of a router as a
+      function of the forwarding information base is significant.  IP
+      packets whose destination address matches an entry within the
+      per-interface forwarding information base cache could be forwarded
+      more quickly than packets whose destination address does not match
+      an entry within the per-interface forwarding information base
+      cache.
+
+</p><p class="rfcparagraph">      To create useful benchmarks, the role of a per-interface
+      forwarding cache needs to be considered.  The nature of
+      benchmarking tests to measure the impact of the forwarding
+      performance of a router requires that the destination addresses
+      within IP packets transmitted into the router be distributed
+      amongst the total set of network prefixes advertised into the
+      router.  This negates the role of a per-interface forwarding
+      information base cache, but serves to stress the forwarding
+      information base-based packet forwarding performance of the
+      router.
+
+</p><p class="rfcparagraph">   Measurement units:
+      <n/a>
+
+   Issues:
+
+</p><p class="rfcparagraph">   See Also:
+      forwarding information base (5.3)
+      per-interface forwarding information base (5.8)
+	<a name="section-5.10"><h3>5.10  Route Aggregation</h3></a>
+
+   Definition:
+      The ability of a router to collapse many forwarding information
+      base entries into a single entry.
+
+</p><p class="rfcparagraph">   Discussion:
+      A router may aggregate routes in a forwarding information base
+      into a single entry to conserve space.
+
+</p><p class="rfcparagraph">      When advertising routes into a router to perform benchmarking
+      tests as a function of the forwarding information base installed
+      within the router, it is necessary to ensure that a router does
+      not aggregate routes.
+
+</p><p class="rfcparagraph">      Thus, when routes are advertised to the router or installed
+      statically, care must be taken to ensure that the router does not
+      aggregate routes.
+
+</p><p class="rfcparagraph">      For example, if advertising a set of /24 network prefixes into a
+      particular port on the router, 256 consecutive /24 routes, sharing
+      a common leading 16 bits, should not be advertised on a single
+      port.  If this is done, then the router will install a single
+      entry within the forwarding information base indicating that all
+      networks matching a particular /16 network prefix are accessible
+      through one particular entry.
+
+</p><p class="rfcparagraph">      Route aggregation on a router can be turned off, but routes should
+      still be advertised into the router in such a manner as to avoid
+      route aggregation.
+
+</p><p class="rfcparagraph">   Measurement units:
+      <none>
+
+   Issues:
+
+</p><p class="rfcparagraph">   See Also:
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.  Definitions - metrics</h2></a>
+
+   This section defines the metrics, or results, that would
+   characterized the FIB based forwarding performance of a router.
+	<a name="section-6.1"><h3>6.1  Maximum Forwarding Information Base Size</h3></a>
+
+   Definition:
+      The maximum number of forwarding information base entries that can
+      be supported within the forwarding information base. The Maximum
+      Forwarding Information Base Size is the size over which all
+      entries can and are used to forward traffic.
+
+</p><p class="rfcparagraph">   Discussion:
+      It is useful to know the maximum forwarding information base size
+      for a router as it will be an indicator of the ability of the
+      router to function within the given application space, and whether
+      the router will be able to handle projected network growth.
+
+</p><p class="rfcparagraph">      As a benchmarking value, it is necessary to discover this value so
+      that performance measurements can be made up to the maximum
+      possible forwarding information base size.
+
+</p><p class="rfcparagraph">   Measurement units:
+      Number of routes
+
+   Issues:
+      Could this value vary with the forwarding information base prefix
+      distribution?
+
+   See Also:
+      forwarding information base (5.3)
+      forwarding information base entry (5.4)
+      forwarding information base size (5.5)
+      forwarding information base prefix distribution (5.7)
+
+	<a name="section-6.2"><h3>6.2  Forwarding Information Base Learning Time</h3></a>
+
+   Definition:
+      The time a router takes to process received routing messages, and
+      to construct (and, possibly to distribute amongst the interface
+      cards in the router) the forwarding information base.  This is
+      measured from the time at which a router is presented with the
+      first routing message, through to when it can forward packets
+      using any entry in the forwarding information base.
+
+</p><p class="rfcparagraph">   Discussion:
+      It takes time for a router to construct its forwarding information
+      base.  A router needs to process received routing packets, build
+      the routing information database, select the best paths, build the
+      forwarding information base and then possibly distribute the
+      forwarding information base or a subset thereof to the interface
+      cards.  This entire process can take several minutes with very
+      large forwarding information bases.
+
+</p><p class="rfcparagraph">      When performing benchmarking tests that take the forwarding
+      information base into account, time must be allocated for the
+      router to process the routing information and to install the
+      complete forwarding information base within itself, before
+      performance measurements are made.
+
+</p><p class="rfcparagraph">   Measurement units:
+      Prefixes per second.
+
+</p><p class="rfcparagraph">   Issues:
+
+</p><p class="rfcparagraph">   See Also:
+      forwarding information base (5.3)
+
+	<a name="section-6.3"><h3>6.3  Forwarding Information Base-dependent Throughput</h3></a>
+
+   Definition:
+      Throughput, as defined in [3], used in a context where the
+      forwarding information base influences the throughput.
+
+</p><p class="rfcparagraph">   Discussion:
+      This definition for FIB-dependent throughput is added to
+      distinguish the context of this measurement from that defined in
+      [3].
+
+</p><p class="rfcparagraph">   Measurement units:
+      See [3].
+
+</p><p class="rfcparagraph">   Issues:
+
+</p><p class="rfcparagraph">   See Also:
+      forwarding information base-dependent latency (6.4)
+      forwarding information base-dependent frame loss rate (6.5)
+
+	<a name="section-6.4"><h3>6.4  Forwarding Information Base-dependent Latency</h3></a>
+
+   Definition:
+      Latency, as defined in [3], used in a context where the forwarding
+      information base influences the throughput.
+
+</p><p class="rfcparagraph">   Discussion:
+      This definition for FIB-dependent latency is added to distinguish
+      the context of this measurement from that defined in [3].
+   Measurement units:
+      See [3].
+
+</p><p class="rfcparagraph">   Issues:
+
+</p><p class="rfcparagraph">   See Also:
+      forwarding information base-dependent throughput (6.3)
+      forwarding information base-dependent frame loss rate (6.5)
+
+	<a name="section-6.5"><h3>6.5  Forwarding Information Base-dependent Frame Loss Rate</h3></a>
+
+   Definition:
+      Frame Loss Rate, as defined in [3], used in a context where the
+      forwarding information base influences the throughput.
+
+</p><p class="rfcparagraph">   Discussion:
+      This definition for FIB-dependent frame loss rate is added to
+      distinguish the context of this measurement from that defined in
+      [3].
+
+</p><p class="rfcparagraph">   Measurement units:
+      See [3].
+
+</p><p class="rfcparagraph">   Issues:
+
+</p><p class="rfcparagraph">   See Also:
+      forwarding information base-dependent throughput (6.3)
+      forwarding information base-dependent latency (6.4)
+
+	<a name="section-7"><h2>7.  Security Considerations</h2></a>
+
+   As this document is solely for the purpose of providing metric
+   methodology and describes neither a protocol nor a protocols
+   implementation, there are no security considerations associated with
+   this document.
+
+</p><p class="rfcparagraph">	<a name="section-8"><h2>8.  References</h2></a>
+
+   [1] Bradner, S., "The Internet Standards Process -- Revision 3", BCP
+       9, RFC 2026, October 1996.
+
+</p><p class="rfcparagraph">   [2] Bradner, S. and J. McQuaid, "Benchmarking Methodology for Network
+       Interconnect Devices", RFC 2544, March 1999.
+
+</p><p class="rfcparagraph">   [3] Bradner, S., "Benchmarking Terminology for Network
+       Interconnection Devices", RFC 1242, July 1991.
+   [4] Baker, F., "Requirements for IP Version 4 Routers", RFC 1812,
+       June 1995.
+
+</p><p class="rfcparagraph">	<a name="section-9"><h2>9.  Author's Address</h2></a>
+
+   Guy Trotter
+   Agilent Technologies (Canada) Inc.
+   #2500 4710 Kingsway
+   Burnaby, British Columbia
+   Canada
+   V5H 4M2
+
+   Phone: +1 604 454 3516
+   EMail: Guy_Trotter@agilent.com
+	<a name="section-10"><h2>10.  Full Copyright Statement</h2></a>
+
+   Copyright (C) The Internet Society (2001).  All Rights Reserved.<br>
+
+</p><p class="rfcparagraph">   This document and translations of it may be copied and furnished to
+   others, and derivative works that comment on or otherwise explain it
+   or assist in its implementation may be prepared, copied, published
+   and distributed, in whole or in part, without restriction of any
+   kind, provided that the above copyright notice and this paragraph are
+   included on all such copies and derivative works.  However, this
+   document itself may not be modified in any way, such as by removing
+   the copyright notice or references to the Internet Society or other
+   Internet organizations, except as needed for the purpose of
+   developing Internet standards in which case the procedures for
+   copyrights defined in the Internet Standards process must be
+   followed, or as required to translate it into languages other than
+   English.
+
+</p><p class="rfcparagraph">   The limited permissions granted above are perpetual and will not be
+   revoked by the Internet Society or its successors or assigns.
+
+</p><p class="rfcparagraph">   This document and the information contained herein is provided on an
+   "AS IS" basis and THE INTERNET SOCIETY AND THE INTERNET ENGINEERING
+   TASK FORCE DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING
+   BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION
+   HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED WARRANTIES OF
+   MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is currently provided by the
+   Internet Society.
+
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Trotter                      Informational                     [Page 15]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

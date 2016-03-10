@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                          Internet Architecture Board<br>Request for Comments: 1370                             Lyman Chapin, Chair<br>                                                              October 1992<br><br></p>
+                  <h1>
+                    Applicability Statement for OSPF</h1>
+                  <h2>Status of this Memo</h2>
+
+   This memo is an IAB standards track Applicability Statement for the
+   Internet community, and requests discussion and suggestions for
+   improvements.  Please refer to the current edition of the "IAB
+   Official Protocol Standards" for the standardization state and status
+   of this specification.  Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph">	<a name="section-1"><h2>1.  INTRODUCTION</h2></a>
+
+   Users and vendors have expressed a strong need for IP routers from
+   different vendors that can interoperate using a common Interior
+   Gateway Protocol (IGP).  There is therefore an urgent requirement for
+   a high-functionality non-proprietary 'open' IGP that will be
+   ubiquitously available from all IP router vendors.
+
+</p><p class="rfcparagraph">   The Open Shortest Path First (OSPF) routing protocol [1] was
+   developed by the IETF to fill this need.  This Applicability
+   Statement specifies the circumstances under which OSPF must be
+   implemented by router vendors.  The history of OSPF development and
+   the reasoning behind this Applicability Statement will be found in
+   [5].
+
+</p><p class="rfcparagraph">   This Applicability Statement places a requirement on vendors claiming
+   conformance to this standard, in order to assure that users will have
+   the option of deploying OSPF when they need a multivendor,
+   interoperable IGP in their environment.  Users are of course free to
+   use whatever routing protocol best meets their requirements.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   APPLICABILITY OF OSPF</h2></a>
+
+   An IP router that implements any routing protocol (other than static
+   routes) is required to implement OSPF [1] and the OSPF MIB [2].
+   Within OSPF, implementation of all features except TOS (Type-of-
+   Service) routing is required; implementation of TOS routing is
+   recommended.
+
+</p><p class="rfcparagraph">   This requirement does not prevent a router from implementing other
+   routing protocols in addition to OSPF.  Complete and definitive
+   requirements on all aspects of an IP router will be found in a
+   forthcoming Applicability Statement: "Requirements for IP Routers"
+   [4], currently in preparation in the IETF.  "Requirements for IP
+   Routers", when it becomes a Standard, will take precedence if its
+   requirements for OSPF should conflict with this present RFC.
+
+</p><p class="rfcparagraph">   It should be noted that OSPF is intended for use by routers for
+   exchanging dynamic routing information, and not for use by hosts.  As
+   discussed in Section 3.3.1.4 of STD-2, "Requirements for Internet
+   Hosts -- Communication Layers" [3], 'wiretapping' of routing
+   protocols by hosts is not recommended.  Recommended mechanisms for a
+   host to use for discovering local routers and detecting dead routers
+   will be found in [3].  In particular, the ICMP Router Discovery
+   messages, under development, will provide a standard way for a host
+   to learn the addresses of local routers [6].
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   REFERENCES</h2></a>
+
+   [1] Moy, J., "OSPF Version 2", RFC 1247, Proteon, Inc., July 1991.
+
+</p><p class="rfcparagraph">   [2] Baker, F., and R. Coltun, "OSPF Version 2 Management Information
+       Base", RFC 1253, ACC, Computer Science Center, August 1991.
+
+</p><p class="rfcparagraph">   [3] Braden, R., Editor, "Requirements for Internet Hosts --
+       Communication Layers", IETF, STD 3, RFC 1122, October 1989.
+
+</p><p class="rfcparagraph">   [4] Almquist, P., Editor, "Requirements for IP Routers", Work in
+       Preparation, IETF.
+
+</p><p class="rfcparagraph">   [5] Gross, P., Editor, "Choosing a "Common IGP" for the IP Internet
+       (The IESG's Recommendation to the IAB)", RFC 1371, IESG, October
+       1992.
+
+</p><p class="rfcparagraph">   [6] Deering, S., Editor, "ICMP Router Discovery Messages", RFC 1256,
+       Xerox PARC, September 1991.
+
+</p><p class="rfcparagraph">Security Considerations
+
+   Security issues are not discussed in this memo.
+
+</p>Author's Address
+
+   A. Lyman Chapin
+   BBN Communications Corporation
+   150 Cambridge Park Drive
+   Cambridge, MA  02140
+
+   Phone: 617-873-3133
+   Fax:   617-873-4086
+   Email: Lyman@BBN.COM
+
+
+
+IAB                                                             [Page 2]
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

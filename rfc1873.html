@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                        E. Levinson<br>Request for Comments: 1873            Accurate Information Systems, Inc.<br>Category: Experimental                                          J. Clark<br>                                                           December 1995<br><br></p>
+                  <h1>
+              Message/External-Body Content-ID Access Type</h1>
+                  <h2>Status of this Memo</h2>
+
+   This memo defines an Experimental Protocol for the Internet
+   community.  This memo does not specify an Internet standard of any
+   kind.  Discussion and suggestions for improvement are requested.
+   Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   When using MIME [MIME] to encapsulate a structured object that
+   consist of many elements, for example an SGML [SGML] document, a
+   single element may occur several times.  An encapsulation normally
+   maps each of the structured objects elements to a MIME entity.  It is
+   useful to include elements that occur multiple time exactly once.  To
+   accomplish that and to preserve the object structure it is desirable
+   to unambiguously refer to another body part of the same message.
+
+</p><p class="rfcparagraph">   The existing MIME Content-Type Message/External-Body access-types
+   allow a MIME entity (body-part) to refer to an object that is not in
+   the message by specifying how to access that object.  The Content-ID
+   access method described in this document provides the capability to
+   refer to an object within the message.
+
+</p><p class="rfcparagraph">	<a name="section-1"><h2>1.  Introduction</h2></a>
+
+   Consider a MIME multipart entity several of whose body parts contain
+   the same data (body) but different parameters or Content-* headers.
+   Representing those body parts without duplicating the data in each
+   one promotes efficient use of resources (bandwidth and storage
+   space).  To achieve these benefits an access-type is defined that
+   permits one message part to refer to another one in the same message.
+	<a name="section-2"><h2>2.  The Content-ID Access Type</h2></a>
+
+	<a name="section-2.1"><h3>2.1  Registration Information</h3></a>
+
+       MIME access-type name:   content-id
+
+       Required parameters:     none
+
+       Optional parameters:     none
+
+       Published specification: this document
+
+       Person & email address
+       to contact for further
+       information:             Ed Levinson <ELevinson@accurate.com>
+
+       Additional requirements:
+
+</p><p class="rfcparagraph">       The content-id header of the access-type=content-id MIME
+       entity must match (be identical to) exactly one content-id
+       in the same message, excluding other access-type=content-id
+       entities.  Thus, the content-id access type can only occur
+       within a multipart message and can refer to another body
+       part anywhere in the same message.
+
+</p><p class="rfcparagraph">       A MIME User Agent (MUA) constructs the resultant MIME body
+       part as described below.  We call the access-type=content-id
+       MIME entity the referring body part and the MIME body part
+       to which it refers, the one with the matching content-id,
+       the referenced body part.  The MIME entity that results from
+       content-id access type consists of:
+
+</p><p class="rfcparagraph">   (a) the referenced body part's content-type header,
+
+   (b) the referring body part's headers except its content-type
+       header,
+
+   (c) any headers in the referenced body part not in the referring
+       one,
+
+   (d)  the line separating the headers from the body, and
+
+   (e)  the referenced body part's body.
+	<a name="section-2.2"><h3>2.2  Example Usage</h3></a>
+
+   The following example shows a message that consists of two identical
+   images.
+
+</p><p class="rfcparagraph">            MIME-Version: 1.0
+            Content-Type: Multipart/Mixed;
+               boundary=tiger-lily
+
+            --tiger-lily
+            Content-Type: image/jpeg
+            Content-ID: <950323.1552@XIson.com>
+
+            AAAcdb...
+            --tiger-lily
+            Content-type: Message/External-Body;
+               access-type=content-id
+            Content-ID: <950323.1552@XIson.com>
+            Content-Description:
+               This body part is duplicated by reference
+
+            --tiger-lily--
+
+       The equivalent MIME entity for the second body part is:
+
+</p><p class="rfcparagraph">            --tiger-lily
+            Content-Type: image/jpeg
+            Content-ID: <950323.1552@XIson.com>
+            Content-Description:
+               This body part is duplicated by reference
+
+            AAAcdb...
+            --tiger-lily
+
+	<a name="section-3"><h2>3.  Security Considerations</h2></a>
+
+   The content-id access-type does not impact the security of messages
+   or systems.  The referenced MIME entity may have security
+   implications.
+	<a name="section-4"><h2>4.  References</h2></a>
+
+
+   [822]       Crocker, D., "Standard for the Format of ARPA Internet
+               Text Messages", STD 11, RFC 822, UDEL, August 1982.
+
+</p><p class="rfcparagraph">   [SGML]      ISO 8879:1988, Information processing -- Text and office
+               systems -- Standard Generalized Markup Language (SGML).
+
+</p><p class="rfcparagraph">   [MIME]      Borenstein, N., and N. Freed, "MIME  (Multipurpose
+               Internet Mail Extensions) Part One: Mechanisms for
+               Specifying and Describing the Format of Internet
+               Message Bodies", RFC 1521, Bellcore, Innosoft,
+               September 1993.
+
+</p>	<a name="section-5"><h2>5.  Authors' Addresses</h2></a>
+
+Edward Levinson
+Accurate Information Systems, Inc.
+	<a name="section-2"><h2>2.  Industrial Way</h2></a>
+Eatontown, NJ  07724-2265
+USA
+
+Phone: +1 908 389 5550
+EMail: <ELevinson@Accurate.com>
+
+
+James Clark
+	<a name="section-90"><h2>90.  Clarendon Road</h2></a>
+London W11 2HR
+UK
+
+EMail: <jjc@jclark.com>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Levinson & Clark              Experimental                      [Page 4]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

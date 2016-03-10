@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph">NETWORK WORKING GROUP                                   R.Thomas
+REQUEST FOR COMMENTS #339                               BBN
+N.I.C. #9932                                            May 5,1972
+
+
+             MLTNET - A "MULTI-TELNET" SUBSYSTEM FOR TENEX
+
+INTRODUCTION
+
+MLTNET is a TELNET-like facility for TENEX which enables a user to
+control a number of jobs, running on different ARPANET hosts. It
+multiplexes the user's local console among the remote jobs. MLTNET is
+useful in applications which require coordinated behavior of several
+network hosts.  In particular, we have found it helpful in debugging
+programs which make use of the network. The MLTNET program is designed
+to be easy to use and, while used in remote mode, to be as transparent
+as possible to the user. It is somewhat less sophisticated than the
+TENEX user-TELNET program. MLTNET is currently a subsystem on the BBN-
+TENEX host.
+
+</p><p class="rfcparagraph">USING MLTNET
+
+MLTNET operates in two modes:
+
+</p><p class="rfcparagraph">	<a name="section-1"><h2>1.       Local Mode Operation:</h2></a>
+        When in local mode MLTNET interprets input types by the
+        user as commands to it. Commands consist of a mnemonic
+        command name followed by zero or more parameters.
+        Included in the commands recognized by MLTNET are ones
+        which enable the user to associate a name of his choice
+        with a connection to an ARPANET site, to establish a
+        connection with a named site, to list the network status
+        as seen from the user's TENEX etc.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.       Remote Mode Operation</h2></a>
+        When operating in remote mode MLTNET makes the user's
+        console appear to be directly connected to a remote
+        site. It transmits input typed by the user to the
+        remote site and prints output recieved from the remote
+        site. Output received from a remote site while the user
+        is in local mode or is interacting with another remote
+        site is buffered for the user by MLTNET.
+
+</p><p class="rfcparagraph">        MLTNET has been designed to be transparent to the user
+        while operating in remote mode. In particular, when in
+        remote mode it transmits user-types ^C (CONTROL-C, the
+        TENEX "attention" character) and ^T (CONTROL-T, the
+        TENEX "time used query" character) to the remote site.
+
+</p><p class="rfcparagraph">
+
+                                                                [Page 1]
+
+        When in local mode ^C and ^T have their usual TENEX
+        effect.
+
+</p><p class="rfcparagraph">        Occasinally a user may find it necessary to modify the
+        characteristics of a connection to a particular remote
+        site. For example, he may want to have MLTNET echo
+        typed input as it is transmitted. Or, he may be using a
+        remote host which requires both upper and lower case
+        characters from a local terminal which has only upper
+        case; in such a case he would want MLTNET to transmit
+        upper and lower case as appropriate. In remote mode
+        operation MLTNET recognizes "!" as an escape character
+        and interprets the character following it as a command
+        to change the characterristics of the connection currently
+        in use. Commands recognized by MLTNET in remote mode
+        are summerized in the next section. To have MLTNET
+        transmit "!" to the remote site the user types "!!".
+
+</p><p class="rfcparagraph">MLTNET Command Summary
+
+Local Mode Commands
+
+MLTNET uses the character "<" to signal the user that it is in local
+mode ready to accept input. Commands and command parameters may be
+editted as they are input.The character ^A (CONTROL-A) deletes the last
+character input. In response to a ^A MLTNET types " deleted. The
+character ^R (CONTROL-R) causes the input string as collected so far to
+be retyped (with all editting carried out). MLTNET responds to the
+character RUBOUT (octal 177) by aborting the current input collecting
+operation and typeing the ready character "<". The ALTMODE character
+(octal 175) may be used to invoke command recognition and completion. If
+insufficient information is availble to recognize an input string as a
+command MLTNET responds to ALTMODE by ringing the terminal bell. Any
+prefix which uniquely identifies a command is recognized as that command
+by MLTNET.
+
+</p><p class="rfcparagraph">In the following, <name> and <site> denote command parameters. They are
+strings terminated by a space or carriage return. <name> is a user
+chosen string of 14 characters or less; site is either the name of an
+ARPANET host or the string "LOCAL".
+
+</p><p class="rfcparagraph">The commands recognized by MLTNET in local mode are:
+
+</p><p class="rfcparagraph">ASSIGN:
+        syntax: ASSIGN <name> <site>
+        effect: Associates the user chosen string <name> with a
+                connection to the ARPANET site <site>.
+
+</p><p class="rfcparagraph">
+
+
+                                                                [Page 2]
+
+TALK:
+        syntax: TALK <name>
+        effect: Switches from command mode to remote mode
+                directing subsequent console input to the site
+                associated with <name>. If no ARPANET site is
+                currently associated with <name>, the user is
+                asked to spesify a site. The first time the
+                user "talks" to a particular named site MLTNET
+                goes through the ARPANET initial connection
+                protocol with the remote site in order to
+                establish a duplex connection with it.
+
+</p><p class="rfcparagraph">NAMES:
+        syntax: NAMES
+        effect: Prints on the console the <name>/<site>
+                associatins currently known to MLTNET.
+
+</p><p class="rfcparagraph">QUIT:
+        syntax: QUIT
+        effect: Returns control to the TENEX EXEC breaking all
+                connections with remote hosts. It is good
+                practice to log out of each remote host before
+                using the QUIT command.
+
+</p><p class="rfcparagraph">NETSTAT:
+        syntax: NETSTAT
+        effect: Prints on the console the network status as seen
+                from the local TENEX.
+
+</p><p class="rfcparagraph">RENAME:
+        syntax: RENAME <name>1 <name>2
+        effect: Associates <name>2 with the ARPANET site
+                previously associated with <name>1.
+
+</p><p class="rfcparagraph">FLUSH:
+        syntax: FLUSH <name>
+        effect: Breaks the network connection with the ARPANET
+                site associated with <name> and, in addition,
+                breaks the association between <name> and that
+                site.
+
+</p><p class="rfcparagraph">HOSTS:
+        syntax: HOSTS
+        effect: Prints on the console the list of hosts
+                currently known to the MLTNET subsystem.
+
+</p><p class="rfcparagraph">HELP:
+        syntax: HELP
+
+
+
+                                                                [Page 3]
+
+        effect: Prints on the console a breif summary of how to
+                use MLTNET.
+
+</p><p class="rfcparagraph">Remote Mode Commands
+
+In remote mode MLTNET recognizes the escape character "!" as a signal to
+interpret the following character as a command.  Currently MLTNET
+recognizes the following characters as commands to it:
+
+</p><p class="rfcparagraph">Q:      (quit) Causes MLTNET to switch from remote mode to local
+        mode.
+
+</p><p class="rfcparagraph">L:      (local echo) Causes MLTNET to echo characters as it
+        transmits them to the remote site. ;L is the inverse of
+        R. The default case.
+
+</p><p class="rfcparagraph">R:      (remote echo) Causes MLTNET to transmit characters typed
+        to it without echoing them; invers of L.
+
+</p><p class="rfcparagraph">U:      (upper case) Causes MLTNET to transmit upper case letters
+        as typed; the inverse of S. The default case.
+
+</p><p class="rfcparagraph">S:      (small letters - lower case): Causes MLTNET to transmit
+        upper case letters typed to it as lower case letters.
+        In this mode of operation "^" acts as a shift key; "^"
+        may be transmitted by typing "!^". S is the inverse of
+        U.
+
+</p><p class="rfcparagraph">X:      (where X is any character other than Q, L, R, U or S):
+        Causes MLTNET to transmit X.
+
+</p><p class="rfcparagraph">The following is an annotated scenario which illustrates the use of
+MLTNET; in it characters typed by  the users are underlined.
+
+</p>
+       [ This RFC was put into machine readable form for entry ]
+        [ into the online RFC archives by Tor Fredrik Aas 1/98 ]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                [Page 4]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

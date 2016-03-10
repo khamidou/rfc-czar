@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph">Internet Engineering Task Force (IETF)                         S. Turner
+Request for Comments: 5967                                          IECA
+Updates: 2986                                                August 2010
+Category: Informational
+ISSN: 2070-1721
+
+
+                   The application/pkcs10 Media Type
+
+<h2>Abstract</h2>
+
+   This document specifies a media type used to carry PKCS #10
+   certification requests as defined in RFC 2986.  It carries over the
+   original specification from RFC 2311, which recently has been moved
+   to Historic status, and properly links it to RFC 2986.
+
+</p><p class="rfcparagraph">Status of This Memo
+
+   This document is not an Internet Standards Track specification; it is
+   published for informational purposes.
+
+</p><p class="rfcparagraph">   This document is a product of the Internet Engineering Task Force
+   (IETF).  It represents the consensus of the IETF community.  It has
+   received public review and has been approved for publication by the
+   Internet Engineering Steering Group (IESG).  Not all documents
+   approved by the IESG are a candidate for any level of Internet
+   Standard; see Section 2 of RFC 5741.
+
+</p><p class="rfcparagraph">   Information about the current status of this document, any errata,
+   and how to provide feedback on it may be obtained at
+   http://www.rfc-editor.org/info/rfc5967.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (c) 2010 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+</p><p class="rfcparagraph">   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (http://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
+   the Trust Legal Provisions and are provided without warranty as
+   described in the Simplified BSD License.
+   This document may contain material from IETF Documents or IETF
+   Contributions published or made publicly available before November
+   10, 2008.  The person(s) controlling the copyright in some of this
+   material may not have granted the IETF Trust the right to allow
+   modifications of such material outside the IETF Standards Process.
+   Without obtaining an adequate license from the person(s) controlling
+   the copyright in such materials, this document may not be modified
+   outside the IETF Standards Process, and derivative works of it may
+   not be created outside the IETF Standards Process, except to format
+   it for publication as an RFC or to translate it into languages other
+   than English.
+
+</p><p class="rfcparagraph">	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   [RFC2311] first defined the application/pkcs10 media type.  When
+   [RFC2633] was published, the application/pkcs10 section was dropped,
+   but for some reason the text was not incorporated into the PKCS #10
+   document [RFC2986].  [RFC2311] was moved to Historic status by
+   [RFC5751].  To ensure the IANA media type registration points to a
+   non-Historic document, this document updates [RFC2986] with the
+   definition of the application/pkcs10 media type and an IANA
+   registration based on [RFC4288].
+
+</p><p class="rfcparagraph">   The text for Section 2 is adapted from Section 3.7 of [RFC2311].
+
+</p><p class="rfcparagraph">	<a name="section-1.1"><h3>1.1   Requirements Terminology</h3></a>
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in [RFC2119].
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Creating a Certification Request</h2></a>
+
+   A typical application that allows a user to generate cryptographic
+   information has to submit that information to a Certification
+   Authority (CA), who transforms it into a certificate.  PKCS #10
+   [RFC2986] describes a syntax for certification requests.
+
+</p><p class="rfcparagraph">   The details of certification requests and the process of obtaining a
+   certificate are beyond the scope of this memo.  Instead, only the
+   format of data used in application/pkcs10 is defined.
+
+</p><p class="rfcparagraph">	<a name="section-2.1"><h3>2.1   Format of the application/pkcs10 Body</h3></a>
+
+   PKCS #10 defines the ASN.1 type CertificationRequest for use in
+   submitting a certification request.  For transfer to a CA, this
+   abstract syntax needs to be encoded and identified in a unique
+   manner.  When the media type application/pkcs10 is used, the body
+   MUST be a CertificationRequest.
+
+</p><p class="rfcparagraph">   A robust application SHOULD output Distinguished Encoding Rules
+   (DER), but allow Basic Encoding Rules (BER) or DER on input.
+
+</p><p class="rfcparagraph">   Data produced by BER or DER is 8-bit, but some transports are limited
+   to 7-bit data.  In such cases, a suitable 7-bit transfer encoding
+   MUST be applied; in MIME-compatible transports, the base64 encoding
+   [RFC4648] SHOULD be used with application/pkcs10, although any 7-bit
+   transfer encoding may work.
+
+</p><p class="rfcparagraph">	<a name="section-2.2"><h3>2.2   Sending and Receiving an application/pkcs10 Body Part</h3></a>
+
+   For sending a certificate-signing request, the application/pkcs10
+   message format MUST be used to convey a PKCS #10 certificate-signing
+   request.  Note that for sending certificates and Certificate
+   Revocation Lists (CRLs) without any signed content, the
+   application/pkcs7-mime message format MUST be used to convey a
+   degenerate PKCS #7 signedData "certs-only" message [RFC5751].
+
+</p><p class="rfcparagraph">   To send an application/pkcs10 body, the application generates the
+   cryptographic information for the user.  The details of the
+   cryptographic information are beyond the scope of this memo.
+
+</p><p class="rfcparagraph">   Step 1. The cryptographic information is placed within a PKCS #10
+           CertificationRequest.
+
+</p><p class="rfcparagraph">   Step 2. The CertificationRequest is encoded according to BER or DER
+           (preferred, DER).
+
+</p><p class="rfcparagraph">   Step 3. As a typical step, the encoded CertificationRequest is also
+           base64 encoded so that it is 7-bit data suitable for transfer
+           in ESMTP.  This then becomes the body of an
+           application/pkcs10 body part.
+
+</p><p class="rfcparagraph">   The result might look like this:
+
+</p><p class="rfcparagraph">      Content-Type: application/pkcs10; name=smime.p10
+      Content-Transfer-Encoding: base64
+      Content-Disposition: attachment; filename=smime.p10
+
+      rfvbnj756tbBghyHhHUujhJhjH77n8HHGT9HG4VQpfyF467GhIGfHfYT6
+      7n8HHGghyHhHUujhJh4VQpfyF467GhIGfHfYGTrfvbnjT6jH7756tbB9H
+      f8HHGTrfvhJhjH776tbB9HG4VQbnj7567GhIGfHfYT6ghyHhHUujpfyF4
+      0GhIGfHfQbnj756YT64V
+   A typical application only needs to send a certification request.  It
+   is a Certification Authority that has to receive and process the
+   request.  The steps for recovering the CertificationRequest from the
+   message are straightforward but are not presented here.  The
+   procedures for processing the certification request are beyond the
+   scope of this document.
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   IANA Considerations</h2></a>
+
+   IANA has updated the registration for the application/pkcs10 media
+   subtype in the Application Media Types registry using the filled-in
+   template from BCP 13 [RFC4288] given below.
+
+</p><p class="rfcparagraph">	<a name="section-3.1"><h3>3.1   Registration of Media Subtype application/pkcs10</h3></a>
+
+   The media subtype for a PKCS #10 certification request is
+   application/pkcs10.
+
+</p><p class="rfcparagraph">      Type name: application
+
+      Subtype name: pkcs10
+
+      Required parameters: None
+
+      Optional parameters: None
+
+      Encoding considerations: binary; see Section 2.
+
+</p><p class="rfcparagraph">      Security considerations:
+
+</p><p class="rfcparagraph">         Clients use a certification request to request that a
+         Certification Authority certify a public key.  The
+         certification request is digitally signed.  Also, see
+         Section 6.
+
+</p><p class="rfcparagraph">      Interoperability considerations: See Section 2.
+
+</p><p class="rfcparagraph">      Published specification: This specification.
+
+</p><p class="rfcparagraph">      Applications which use this media type:
+
+</p><p class="rfcparagraph">         Applications that support PKCS #10 certification requests
+         [RFC2986].
+
+</p><p class="rfcparagraph">      Additional information:
+
+</p><p class="rfcparagraph">         Magic number(s): None
+         File extension(s): .p10
+         Macintosh File Type Code(s):
+
+</p><p class="rfcparagraph">      Person & email address to contact for further information:
+        Sean Turner <turners@ieca.com>
+
+      Restrictions on usage: none
+
+      Author: Sean Turner <turners@ieca.com>
+
+      Intended usage: COMMON
+
+      Change controller: The IESG
+
+	<a name="section-4"><h2>4.   Security Considerations</h2></a>
+
+   The security considerations of [RFC2986] and [RFC5751] apply; no new
+   security considerations are introduced by this document.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   Acknowledgements</h2></a>
+
+   I wish to thank the authors of RFC 2311, Steve Dusse, Paul Hoffman,
+   Blake Ramsdell, Laurence Lundblade, and Lisa Repka.
+
+</p><p class="rfcparagraph">   I would also like to thank Bjoern Hoehrmann for his review of the
+   media subtype application.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.   References</h2></a>
+
+	<a name="section-6.1"><h3>6.1   Normative References</h3></a>
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">   [RFC2986]  Nystrom, M. and B. Kaliski, "PKCS #10: Certification
+              Request Syntax Specification Version 1.7", RFC 2986,
+              November 2000.
+
+</p><p class="rfcparagraph">   [RFC4288]  Freed, N. and J. Klensin, "Media Type Specifications and
+              Registration Procedures", BCP 13, RFC 4288, December 2005.
+
+</p><p class="rfcparagraph">   [RFC4648]  Josefsson, S., "The Base16, Base32, and Base64 Data
+              Encodings", RFC 4648, October 2006.
+
+</p><p class="rfcparagraph">   [RFC5751]  Ramsdell, B. and S. Turner, "Secure/Multipurpose Internet
+              Mail Extensions (S/MIME) Version 3.2 Message
+              Specification", RFC 5751, January 2010.
+   [X.690]    ITU-T Recommendation X.690 (2002) | ISO/IEC 8825-1:2002.<br>
+              Information Technology - ASN.1 encoding rules:
+              Specification of Basic Encoding Rules (BER), Canonical
+              Encoding Rules (CER) and Distinguished Encoding Rules
+              (DER).
+
+</p><p class="rfcparagraph">	<a name="section-6.2"><h3>6.2   Informative References</h3></a>
+
+   [RFC2311]  Dusse, S., Hoffman, P., Ramsdell, B., Lundblade, L., and
+              L. Repka, "S/MIME Version 2 Message Specification", RFC
+              2311, March 1998.
+
+</p><p class="rfcparagraph">   [RFC2633]  Ramsdell, B., Ed., "S/MIME Version 3 Message
+              Specification", RFC 2633, June 1999.
+
+</p>Author's Address
+
+   Sean Turner
+   IECA, Inc.
+   3057 Nutley Street, Suite 106
+   Fairfax, VA 22031
+   USA
+
+   EMail: turners@ieca.com
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Turner                        Informational                     [Page 6]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

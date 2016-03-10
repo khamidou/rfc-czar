@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                           J. Smith<br>Request for Comments: 3614              IBM T. J. Watson Research Center<br>Category: Informational                                   September 2003<br><br></p>
+                  <h1>
+            A Uniform Resource Name (URN) Namespace for the
+                  Motion Picture Experts Group (MPEG)</h1>
+                  <h2>Status of this Memo</h2>
+
+   This memo provides information for the Internet community.  It does
+   not specify an Internet standard of any kind.  Distribution of this
+   memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (2003).  All Rights Reserved.<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This document describes a Uniform Resource Name (URN) namespace for
+   the Motion Picture Experts Group (MPEG) for naming persistent
+   resources as part of the MPEG standards.  Example resources include
+   technical documents and specifications, eXtensible Markup Language
+   (XML) Schemas, classification schemes, XML Document Type Definitions
+   (DTDs), namespaces, style sheets, media assets, and other types of
+   resources produced or managed by MPEG.
+
+</p><p class="rfcparagraph">	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   MPEG is a working group of the International Organization for
+   Standardization (ISO) and International Engineering Consortium (IEC)
+   in charge of the development of standards for coded representation of
+   digital audio and video.  MPEG has produced MPEG-1, the standard on
+   which such products as Video CD and MP3 are based, MPEG-2, the
+   standard on which such products as Digital Television set top boxes
+   and DVD are based, MPEG-4, the standard for multimedia for the fixed
+   and mobile web, and MPEG-7, "Multimedia Content Description
+   Interface", the standard for description and search of audio and
+   visual content. Work on MPEG-21, "Multimedia Framework" is currently
+   underway.
+
+</p><p class="rfcparagraph">   MPEG would like to assign unique, permanent, location-independent
+   names based on URNs for some resources it produces or manages.
+
+</p><p class="rfcparagraph">   This namespace specification is for a formal namespace.
+	<a name="section-2"><h2>2.   Specification Template</h2></a>
+
+   Namespace ID:
+
+</p><p class="rfcparagraph">      "mpeg"
+
+   Registration Information:
+
+</p><p class="rfcparagraph">      Version: 1
+      Date: 2001-11-20
+
+   Declared registrant of the namespace:
+
+</p><p class="rfcparagraph">      Name:           John R. Smith
+      Title:          Chair, MPEG MDS Subgroup
+      Affiliation:    IBM T. J. Watson Research Center
+      Address:        30 Saw Mill River Road
+                      Hawthorne, NY 10532 USA
+      Phone:          +1 (914) 784-7320<br>
+      Email:          jrsmith@watson.ibm.com
+
+   Declaration of structure:
+
+</p><p class="rfcparagraph">      URNs assigned by MPEG will have the following hierarchical
+      structure based on the organizational structure of the MPEG
+      standards:
+
+</p><p class="rfcparagraph">         urn:mpeg:{standard name}:{assigned US-ASCII string}
+
+      where "{standard name}" is a US-ASCII string that conforms to URN
+      Syntax requirements ([RFC2141]) and corresponds to the name of an
+      MPEG standard (such as "mpeg1", "mpeg2", "mpeg4", "mpeg7",
+      "mpeg21", and
+
+      "{assigned US-ASCII string}" is a US-ASCII string that conforms to
+      URN Syntax requirements ([RFC2141]).
+
+</p><p class="rfcparagraph">      The individual URNs shall be assigned by MPEG through the process
+      of development of MPEG standards.
+
+</p><p class="rfcparagraph">   Relevant ancillary documentation:
+
+</p><p class="rfcparagraph">      None
+
+   Identifier uniqueness considerations:
+
+</p><p class="rfcparagraph">      MPEG shall establish unique identifiers as appropriate.
+      Uniqueness is guaranteed as long as the assigned string is never
+      reassigned for a given standard name and that the standard name is
+      never reassigned.
+
+</p><p class="rfcparagraph">   Identifier persistence considerations:
+
+</p><p class="rfcparagraph">      MPEG is committed to maintaining the accessibility and persistence
+      of all resources that are officially assigned URNs by the
+      organization.
+
+</p><p class="rfcparagraph">      Persistence of identifiers is dependent upon suitable delegation
+      of resolution at the level of "standard name"(s), and persistence
+      of standard name assignment.
+
+</p><p class="rfcparagraph">   Process of identifier assignment:
+
+</p><p class="rfcparagraph">      Assignment is limited to the owner and those authorities that are
+      specifically designated by the owner.  MPEG may designate portions
+      of its namespace for assignment by other parties.
+
+</p><p class="rfcparagraph">   Process of identifier resolution:
+
+</p><p class="rfcparagraph">      The owner will develop and maintain "URN catalogs" that map all
+      assigned URNs to Uniform Resource Locators (URLs) specifically to
+      enable Web-based resolution of named resources.  In the future an
+      interactive online resolution system may be developed to automate
+      this process.
+
+</p><p class="rfcparagraph">      The owner will authorize additional resolution services as
+      appropriate.
+
+</p><p class="rfcparagraph">   Rules for Lexical Equivalence:
+
+</p><p class="rfcparagraph">      The "standard name" is case-insensitive.  Thus, the portion of the
+      URN:
+
+</p><p class="rfcparagraph">         urn:mpeg:{standard name}:
+
+</p><p class="rfcparagraph">      is case-insensitive for matches.  The remainder of the identifier
+      must be considered case-sensitive.
+
+</p><p class="rfcparagraph">   Conformance with URN Syntax:
+
+</p><p class="rfcparagraph">      No special considerations.
+
+</p><p class="rfcparagraph">   Validation mechanism:
+
+</p><p class="rfcparagraph">      None specified.  The owner will develop and maintain URN catalogs.
+      The presence of a URN in a catalog indicates that it is valid.
+
+</p><p class="rfcparagraph">   Scope:
+
+</p><p class="rfcparagraph">      Global
+
+	<a name="section-3"><h2>3.   Examples</h2></a>
+
+   The following examples are not guaranteed to be real.  They are
+   presented for pedagogical reasons only.
+
+</p><p class="rfcparagraph">      urn:mpeg:mpeg7:schema:2001
+      urn:mpeg:mpeg7:cs:VideoDomainCS:2001
+      urn:mpeg:mpeg7:cs:GenreCS:2001
+      urn:mpeg:mpeg7:cs:ContentCS:2001
+
+	<a name="section-4"><h2>4.   Namespace Considerations</h2></a>
+
+   URN assignment procedures:
+
+</p><p class="rfcparagraph">      The individual URNs shall be assigned through the process of
+      development of MPEG standards by the Moving Picture Experts Group
+      (MPEG), which is a working group of ISO/IEC.
+
+</p><p class="rfcparagraph">   URN resolution/delegation:
+
+</p><p class="rfcparagraph">      The resolution and delegation shall be determined through the
+      process of development of MPEG standards by the Moving Picture
+      Experts Group (MPEG).  MPEG has developed requests for
+      registration authority for MPEG-7 classification schemes and
+      MPEG-21 identification systems. These registration authorities
+      shall be responsible for corresponding parts of MPEG namespace.
+
+</p><p class="rfcparagraph">   Type of resources to be identified:
+
+</p><p class="rfcparagraph">      Types of resources to be identified include XML schema definition
+      files, classification schemes, identification systems.
+
+</p><p class="rfcparagraph">   Type of services to be supported:
+
+</p><p class="rfcparagraph">      Types of services supported include controlled term lookup in
+      classification schemes, resolution of ids in identification
+      systems.
+	<a name="section-5"><h2>5.   Community Considerations</h2></a>
+
+   Open assignment and use of identifiers within the namespace:
+
+</p><p class="rfcparagraph">      With on-going development of MPEG standards, MPEG shall establish
+      requirements for assignment and use of identifiers within MPEG
+      namespace.  MPEG has already established requirements for
+      assignment and use of MPEG-7 classification schemes under MPEG
+      namespace. A registration authority shall have the responsibility
+      for processing third party requests for registering classification
+      schemes.
+
+</p><p class="rfcparagraph">   Open operation of resolution servers for the namespace (server):
+
+</p><p class="rfcparagraph">      With on-going development of MPEG standards, MPEG shall establish
+      requirements and seek candidates for operating resolution servers
+      as appropriate.
+
+</p><p class="rfcparagraph">   Creation of software that can meaningfully resolve and access
+   services for the namespace (client):
+
+</p><p class="rfcparagraph">      With on-going development of MPEG standards, MPEG shall develop
+      reference software implementations of its standards.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.   Security Considerations</h2></a>
+
+   There are no additional security considerations other than those
+   normally associated with the use and resolution of URNs in general.
+
+</p><p class="rfcparagraph">	<a name="section-7"><h2>7.   IANA Considerations</h2></a>
+
+   The IANA has registered formal URN namespace 12, to MPEG within the
+   IANA registry of URN NIDs.
+
+</p><p class="rfcparagraph">	<a name="section-8"><h2>8.   Normative References</h2></a>
+
+   [RFC2141] Moats, R., "URN Syntax", RFC 2141, May 1997.
+
+</p><p class="rfcparagraph">	<a name="section-9"><h2>9.   Author's Address</h2></a>
+
+   John R. Smith
+   IBM T. J. Watson Research Center
+   30 Saw Mill River Road
+   Hawthorne, NY 10532 USA
+
+   Phone: 1 (914) 784-7320<br>
+   EMail: jrsmith@watson.ibm.com
+	<a name="section-10"><h2>10.   Full Copyright Statement</h2></a>
+
+   Copyright (C) The Internet Society (2003).  All Rights Reserved.<br>
+
+</p><p class="rfcparagraph">   This document and translations of it may be copied and furnished to
+   others, and derivative works that comment on or otherwise explain it
+   or assist in its implementation may be prepared, copied, published
+   and distributed, in whole or in part, without restriction of any
+   kind, provided that the above copyright notice and this paragraph are
+   included on all such copies and derivative works.  However, this
+   document itself may not be modified in any way, such as by removing
+   the copyright notice or references to the Internet Society or other
+   Internet organizations, except as needed for the purpose of
+   developing Internet standards in which case the procedures for
+   copyrights defined in the Internet Standards process must be
+   followed, or as required to translate it into languages other than
+   English.
+
+</p><p class="rfcparagraph">   The limited permissions granted above are perpetual and will not be
+   revoked by the Internet Society or its successors or assignees.
+
+</p><p class="rfcparagraph">   This document and the information contained herein is provided on an
+   "AS IS" basis and THE INTERNET SOCIETY AND THE INTERNET ENGINEERING
+   TASK FORCE DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING
+   BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION
+   HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED WARRANTIES OF
+   MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is currently provided by the
+   Internet Society.
+
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Smith                        Informational                      [Page 6]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

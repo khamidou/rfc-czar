@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph">Internet Engineering Task Force (IETF)                         S. Sakane
+Request for Comments: 6784                                 Cisco Systems
+Category: Standards Track                                    M. Ishiyama
+ISSN: 2070-1721                                      Toshiba Corporation
+                                                           November 2012
+
+
+                      Kerberos Options for DHCPv6
+
+<h2>Abstract</h2>
+
+   This document defines four new options for the Dynamic Host
+   Configuration Protocol for IPv6 (DHCPv6).  These options are used to
+   carry configuration information for Kerberos.
+
+</p><p class="rfcparagraph">Status of This Memo
+
+   This is an Internet Standards Track document.
+
+</p><p class="rfcparagraph">   This document is a product of the Internet Engineering Task Force
+   (IETF).  It represents the consensus of the IETF community.  It has
+   received public review and has been approved for publication by the
+   Internet Engineering Steering Group (IESG).  Further information on
+   Internet Standards is available in Section 2 of RFC 5741.
+
+</p><p class="rfcparagraph">   Information about the current status of this document, any errata,
+   and how to provide feedback on it may be obtained at
+   http://www.rfc-editor.org/info/rfc6784.
+<h2>Copyright Notice</h2>
+
+   Copyright (c) 2012 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+</p><p class="rfcparagraph">   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (http://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
+   the Trust Legal Provisions and are provided without warranty as
+   described in the Simplified BSD License.
+
+</p><p class="rfcparagraph">   This document may contain material from IETF Documents or IETF
+   Contributions published or made publicly available before November
+   10, 2008.  The person(s) controlling the copyright in some of this
+   material may not have granted the IETF Trust the right to allow
+   modifications of such material outside the IETF Standards Process.
+   Without obtaining an adequate license from the person(s) controlling
+   the copyright in such materials, this document may not be modified
+   outside the IETF Standards Process, and derivative works of it may
+   not be created outside the IETF Standards Process, except to format
+   it for publication as an RFC or to translate it into languages other
+   than English.
+
+</p><p class="rfcparagraph">Table of Contents
+<a href="#section-1" class="">1. Introduction ...................................................</a><br>
+<a href="#section-2" class="">2. Conventions Used in This Document ..............................</a><br>
+<a href="#section-3" class="">3. Kerberos Options ...............................................</a><br>
+<a href="#section-3.1" class="indent-1">3.1. Kerberos Principal Name Option ............................</a><br>
+<a href="#section-3.2" class="indent-1">3.2. Kerberos Realm Name Option ................................</a><br>
+<a href="#section-3.3" class="indent-1">3.3. Kerberos Default Realm Name Option ........................</a><br>
+<a href="#section-3.4" class="indent-1">3.4. Kerberos KDC Option .......................................</a><br>
+<a href="#section-4" class="">4. Client and Server Operation ....................................</a><br>
+<a href="#section-4.1" class="indent-1">4.1. KDC Discovery for a Client ................................</a><br>
+<a href="#section-5" class="">5. IANA Considerations ............................................</a><br>
+<a href="#section-6" class="">6. Security Considerations ........................................</a><br>
+<a href="#section-7" class="">7. Acknowledgments ................................................</a><br>
+<a href="#section-8" class="">8. References ....................................................</a><br>
+<a href="#section-8.1" class="indent-1">8.1. Normative References .....................................</a><br>
+<a href="#section-8.2" class="indent-1">8.2. Informative References ...................................</a><br>
+   Appendix A. An Example of the Operation of the Client .............11
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   Kerberos Version 5 [RFC4120] is a trusted third-party authentication
+   system.  Each organization wishing to use Kerberos establishes its
+   own "realm", and each client is registered as part of that realm.  At
+   least one Key Distribution Center (KDC) is required for the operation
+   of a Kerberos realm.
+
+</p><p class="rfcparagraph">   When a client wishes to communicate with, and be authenticated to, a
+   Kerberos application server (also a client of the KDC), the client
+   identifies itself, and its realm, to the KDC and acquires a
+   credential from the KDC.  The client then presents the credential to
+   the Kerberos application server, which can use the credential to
+   authenticate the client.  The client needs to know at least one IP
+   address for a KDC in order to initiate this process.
+
+</p><p class="rfcparagraph">   One example of the application of this protocol is as follows.  A
+   student might want to use a shared, public workstation, one that is
+   not configured for Kerberos.  If there is a mechanism for the
+   workstation to obtain a realm name and IP address for a KDC, then a
+   student need only input a user-id and pass phrase to be able to use
+   Kerberos.
+
+</p><p class="rfcparagraph">   The Kerberos V5 specification [RFC4120] defines the use of DNS SRV
+   records [RFC2782] for KDC discovery.  Some systems, such as
+   industrial systems, do not use DNS.  Such systems already have their
+   own name spaces and their own name resolution systems, including
+   preconfigured mapping tables for devices, and do not use Fully
+   Qualified Domain Names.  However, many of these systems do use DHCP.
+
+</p><p class="rfcparagraph">   Adding a DNS server to such systems may decrease the reliability of
+   the system and increase the management cost.  In such an environment,
+   another mechanism is needed to provide an IP address for the KDC.
+   For the PacketCable Architecture [PCARCH], RFC 3634 [RFC3634] defines
+   the KDC Server Address sub-option for the DHCPv4 CableLabs Client
+   Configuration option.  However, a mechanism is still needed to
+   provide a realm name and an IPv6 address -- one that does not depend
+   on any external architecture.
+
+</p><p class="rfcparagraph">   This document defines a Kerberos option for DHCPv6 that provides a
+   realm name and/or a list of KDC IP addresses.  This option does not
+   replace or modify any of the existing methods for obtaining this
+   information.
+	<a name="section-2"><h2>2.   Conventions Used in This Document</h2></a>
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in RFC 2119 [RFC2119].
+
+</p><p class="rfcparagraph">   It is assumed that the readers are familiar with the terms and
+   concepts described in DHCPv6 [RFC3315], Kerberos V5 [RFC4120], and
+   DNS SRV [RFC2782].
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   Kerberos Options</h2></a>
+
+   This document defines four DHCPv6 configuration parameters for
+   Kerberos.
+
+</p><p class="rfcparagraph">      Kerberos Principal Name Option
+
+      Kerberos Realm Name Option
+
+      Kerberos Default Realm Name Option
+
+      Kerberos KDC Option
+
+   This section describes the format of each option and the usage of
+   each field in that option.
+
+</p><p class="rfcparagraph">   These options, except for the Kerberos KDC Option, MUST NOT appear
+   more than once in a DHCPv6 message.
+
+</p><p class="rfcparagraph">	<a name="section-3.1"><h3>3.1   Kerberos Principal Name Option</h3></a>
+
+   The Kerberos Principal Name Option carries the name of a Kerberos
+   principal.  This is sent by the client to the DHCPv6 server, which
+   MAY use it to select a specific set of configuration parameters,
+   either for a client or for a Kerberos application server.
+   The format of the Kerberos Principal Name Option is:
+
+</p><p class="rfcparagraph">      0                   1                   2                   3
+      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |   OPTION_KRB_PRINCIPAL_NAME   |          option-len           |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      :                                                               :
+      :                        principal-name                         :
+      :                       (variable length)                       :
+      :                                                               :
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+   o  option-code (16 bits): OPTION_KRB_PRINCIPAL_NAME (75)
+
+   o  option-len (16 bits): length of the principal-name field.
+
+</p><p class="rfcparagraph">   o  principal-name (variable): a client principal name.  The encoding
+      of the principal-name field MUST conform to the definition of
+      "PrincipalName" in Section 5.2.2 of RFC 4120 [RFC4120].
+
+</p><p class="rfcparagraph">	<a name="section-3.2"><h3>3.2   Kerberos Realm Name Option</h3></a>
+
+   The Kerberos Realm Name Option carries a Kerberos realm name.  A
+   DHCPv6 client uses this option to specify to a DHCPv6 server which
+   realm the client wants to access.
+
+</p><p class="rfcparagraph">   The format of the Kerberos Realm Name Option is:
+
+</p><p class="rfcparagraph">      0                   1                   2                   3
+      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |     OPTION_KRB_REALM_NAME     |          option-len           |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      :                                                               :
+      :                          realm-name                           :
+      :                       (variable length)                       :
+      :                                                               :
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+   o  option-code (16 bits): OPTION_KRB_REALM_NAME (76)
+
+   o  option-len (16 bits): the length of the realm-name field in
+      octets.
+
+</p><p class="rfcparagraph">   o  realm-name (variable): a realm-name.  The encoding of the
+      realm-name field MUST conform to the definition of "Realm" in
+      Section 5.2.2 of RFC 4120 [RFC4120].
+	<a name="section-3.3"><h3>3.3   Kerberos Default Realm Name Option</h3></a>
+
+   The Kerberos Default Realm Name Option is used to specify a default
+   realm name for the Kerberos system.  A DHCPv6 server uses this option
+   to specify the default realm name to both clients and Kerberos
+   application servers.
+
+</p><p class="rfcparagraph">   The option-code of this option is OPTION_KRB_DEFAULT_REALM_NAME (77).<br>
+   The format and usage of the option-len and realm-name fields are
+   identical to those for the Kerberos Realm Name Option.
+
+</p><p class="rfcparagraph">	<a name="section-3.4"><h3>3.4   Kerberos KDC Option</h3></a>
+
+   The Kerberos KDC Option is used to provide configuration information
+   about a KDC.
+
+</p><p class="rfcparagraph">   The format of the Kerberos KDC Option is:
+
+</p><p class="rfcparagraph">      0                   1                   2                   3
+      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |         OPTION_KRB_KDC        |          option-len           |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |           Priority            |            Weight             |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      | Transport Type|          Port Number          |               |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+               |
+      |                                                               |
+      |                                                               |
+      |                       KDC IPv6 address<pre>        +---------------+
+      |                                               |               |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+               :
+      :                                                               :
+      :                          realm-name                           :
+      :                       (variable length)                       :
+      :                                                               :
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+   o  option-code (16 bits): OPTION_KRB_KDC (78)
+
+   o  option-len (16 bits): 23 + the length of the realm-name field in
+      octets.
+
+</p><p class="rfcparagraph">   o  Priority (16 bits): see the description of the Weight field.
+   o  Weight (16 bits): the Priority and Weight fields provide a hint to
+      the client as to which KDC to select.  The usage of the Priority
+      and Weight values MUST follow the specification for DNS SRV
+      [RFC2782].
+
+</p><p class="rfcparagraph">   o  Transport Type (8 bits): The Transport Type specifies the
+      transport protocol used for Kerberos.  Kerberos [RFC4120] defines
+      UDP and TCP transports.  Exchanges over TCP are further described
+      in [RFC5021], while the transport of Kerberos over Transport Layer
+      Security (TLS) is described in [RFC6251].
+
+</p><p class="rfcparagraph">   The transport type is defined below.
+
+</p><p class="rfcparagraph">        Value    Transport Type
+        ----     --------------
+        0        Reserved
+        1        UDP
+        2        TCP
+        3        TLS
+        4-254    Unassigned
+        255      Reserved
+
+   o  Port Number (16 bits): the port number on which the KDC listens.
+
+</p><p class="rfcparagraph">   o  KDC IPv6 address (128 bits): the IPv6 address of the KDC.
+
+</p><p class="rfcparagraph">   o  realm-name (variable): the name of the realm for which the
+      specified KDC provides service.  The encoding of the realm-name
+      field MUST conform to the definition of "Realm" in Section 5.2.2
+      of RFC 4120 [RFC4120].
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   Client and Server Operation</h2></a>
+
+   This section describes the operations of the client and server.  It
+   assumes that the client has been configured with a principal name.
+
+</p><p class="rfcparagraph">   If a client requires a realm name, the client sends a DHCPv6 Option
+   Request Option (ORO) specifying the Kerberos Default Realm Name
+   Option.  The DHCPv6 server responds with a Reply message containing a
+   Kerberos Default Realm Name Option.
+
+</p><p class="rfcparagraph">   If a client requires configuration parameters for a KDC, the client
+   sends a DHCPv6 ORO specifying the Kerberos KDC Option.  The client
+   MAY include a Kerberos Principal Name Option.  The client MAY include
+   a Kerberos Realm Name Option.
+
+</p><p class="rfcparagraph">   The DHCPv6 server replies with one or more sets of configuration
+   parameters for a Kerberos KDC.  If the client has specified either a
+   Kerberos Principal Name Option or a Kerberos Realm Name Option, then
+   the DHCPv6 server MAY use those parameters to select specific sets of
+   configuration parameters.
+
+</p><p class="rfcparagraph">   Where the server replies with more than one set of configuration
+   parameters, the usage of the Priority and Weight fields by the client
+   MUST follow the specification for DNS SRV [RFC2782].
+
+</p><p class="rfcparagraph">   The client MAY include other options with data values as hints to the
+   DHCPv6 server about parameter values the client would like to have
+   returned; this is specified in Section 18.1.5 of RFC 3315 [RFC3315].
+
+</p><p class="rfcparagraph">	<a name="section-4.1"><h3>4.1   KDC Discovery for a Client</h3></a>
+
+   When a client implements both the DNS method defined by
+   Section 7.2.3.2 of [RFC4120] and the DHCP method defined by this
+   document, the choice of method is determined by local policy.  The
+   administrator of the realm usually defines the method as part of the
+   configuration of the client before the client is installed.
+
+</p><p class="rfcparagraph">   When no criteria have been specified and the client could get the
+   Kerberos information from either the DNS server or the DHCPv6 server,
+   then the information from DNS SHOULD be preferred.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   IANA Considerations</h2></a>
+
+   IANA has assigned four option codes from the DHCPv6 Option Codes
+   registry for the following:
+
+</p><p class="rfcparagraph">      75 OPTION_KRB_PRINCIPAL_NAME
+
+      76 OPTION_KRB_REALM_NAME
+
+      77 OPTION_KRB_DEFAULT_REALM_NAME
+
+      78 OPTION_KRB_KDC
+
+   IANA has created the Kerberos Message Transport Types sub-registry,
+   under the Kerberos Parameters registry.  The initial entries are
+   described in Section 3.4.
+
+</p><p class="rfcparagraph">   The assignment of future entries is by "IETF Review" policy as
+   described in BCP 26 [RFC5226].  Per that policy, a document specifies
+   the symbolic name of such entries, which are assigned numeric codes
+   by IANA once publication is approved.
+	<a name="section-6"><h2>6.   Security Considerations</h2></a>
+
+   The security considerations in RFC 3315 [RFC3315] apply.
+
+</p><p class="rfcparagraph">   DHCPv6 messages can be modified in transit.  If an adversary modifies
+   the response from a DHCPv6 server or injects its own response, a
+   client may be led into contacting a malicious KDC.  Both cases are
+   categorized as a Denial-of-Service (DoS) attack.  However, a
+   malicious KDC does not know the shared key and so is unable to
+   proceed any further with the exchange.  If a client receives a
+   response from such a KDC, the client can use the shared key to detect
+   that the message originates from a malicious KDC.
+
+</p><p class="rfcparagraph">   A shared, unconfigured workstation may obtain its KDC information,
+   and default realm, via DHCPv6.  Such a workstation may not have a
+   host or other service key, and thus it may be unable to validate the
+   Ticket-Granting Ticket issued by the KDC.  A modified DHCPv6 response
+   would then result in the workstation talking to a malicious KDC, and
+   the workstation would not be able to detect that this has happened.
+   This in turn could allow access by unauthorized users.
+
+</p><p class="rfcparagraph">   To minimize potential vulnerabilities, a client SHOULD use DHCPv6
+   authentication as defined in Section 21 of RFC 3315 [RFC3315].
+
+</p><p class="rfcparagraph">   Kerberos information may be manually configured on the client before
+   requesting information from DHCPv6.  Manual configuration of the
+   device SHOULD be preferred to configuration via the DHCPv6 server.
+
+</p><p class="rfcparagraph">	<a name="section-7"><h2>7.   Acknowledgments</h2></a>
+
+   The authors are very grateful to Nobuo Okabe and Shigeya Suzuki.
+   They contributed the explanation as to why DNS is inappropriate for
+   some industry networks.  Ted Lemon made many suggestions to improve
+   DHCP aspects of this specification.  Ken'ichi Kamada and Yukiyo
+   Akisada contributed to the initial work on this document.  Tom Petch
+   helped to improve the readability of this document.  The authors also
+   thank Jeffrey Hutzelman, Kazunori Miyazawa, Kensuke Hosoya, Nicolas
+   Williams, Nobumichi Ozoe, Sam Hartman, and Stephen Farrell.  They
+   made valuable comments and suggestions.
+	<a name="section-8"><h2>8.   References</h2></a>
+
+	<a name="section-8.1"><h3>8.1   Normative References</h3></a>
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">   [RFC2782]  Gulbrandsen, A., Vixie, P., and L. Esibov, "A DNS RR for
+              specifying the location of services (DNS SRV)", RFC 2782,
+              February 2000.
+
+</p><p class="rfcparagraph">   [RFC3315]  Droms, R., Bound, J., Volz, B., Lemon, T., Perkins, C.,
+              and M. Carney, "Dynamic Host Configuration Protocol for
+              IPv6 (DHCPv6)", RFC 3315, July 2003.
+
+</p><p class="rfcparagraph">   [RFC4120]  Neuman, C., Yu, T., Hartman, S., and K. Raeburn, "The
+              Kerberos Network Authentication Service (V5)", RFC 4120,
+              July 2005.
+
+</p><p class="rfcparagraph">   [RFC5021]  Josefsson, S., "Extended Kerberos Version 5 Key
+              Distribution Center (KDC) Exchanges over TCP", RFC 5021,
+              August 2007.
+
+</p><p class="rfcparagraph">   [RFC5226]  Narten, T. and H. Alvestrand, "Guidelines for Writing an
+              IANA Considerations Section in RFCs", BCP 26, RFC 5226,
+              May 2008.
+
+</p><p class="rfcparagraph">	<a name="section-8.2"><h3>8.2   Informative References</h3></a>
+
+   [PCARCH]   CableLabs, "PacketCable 1.0(TM) Architecture Framework
+              Technical Report", December 1999,
+              <http://www.packetcable.com/downloads/specs/
+              pkt-tr-arch-v01-991201.pdf>.
+
+</p><p class="rfcparagraph">   [RFC3634]  Luehrs, K., Woundy, R., Bevilacqua, J., and N. Davoust,
+              "Key Distribution Center (KDC) Server Address Sub-option
+              for the Dynamic Host Configuration Protocol (DHCP)
+              CableLabs Client Configuration (CCC) Option", RFC 3634,
+              December 2003.
+
+</p><p class="rfcparagraph">   [RFC6251]  Josefsson, S., "Using Kerberos Version 5 over the
+              Transport Layer Security (TLS) Protocol", RFC 6251,
+              May 2011.
+Appendix A.  An Example of the Operation of the Client
+
+   When no criteria have been specified and the client could get the
+   Kerberos information from either the DNS server or the DHCPv6 server,
+   then the information from DNS SHOULD be preferred.  The following is
+   an informational guide for the client in such an environment.
+
+</p><p class="rfcparagraph">                               No Resp. or
+               +------------+  DNS Info. +-----------+ No Resp.
+     Start --> | Ask DHCP(1)| ---------> | Ask DNS(3)| ------><br>
+               +------------+            +-----------+     Terminate(4)
+                /          \                      \
+      Only KRB /            \ DNS and              \ KRB Info.
+        Info. /              \ KRB Info.            \
+             /                \                      \
+            |                  |                       |
+            |                  V                       |
+            V     No Ans.  +-----------+  KRB Info.    V
+       Use Info. <-------- | Ask DNS(6)| ---------> Use Info.<br>
+       from DHCP           +-----------+
+</pre>
+            from DNS
+       (2), (7)                                     (5), (8)<br>
+
+        Abbreviations:
+          Resp.: Response
+          Info.: Information
+          KRB  : Kerberos
+
+   1) Initially, the client requests both DNS and Kerberos information
+      from the DHCPv6 server.
+
+</p><p class="rfcparagraph">   2) If the DHCPv6 server replies with Kerberos information and not
+      with DNS information, then the client uses that information.
+
+</p><p class="rfcparagraph">   3) If the DHCPv6 server does not reply or replies with only DNS
+      information, then the client requests Kerberos information from
+      the DNS server.
+
+</p><p class="rfcparagraph">   4) If the client gets no response or no Kerberos information from
+      the DNS server, then the client terminates the process.
+
+</p><p class="rfcparagraph">   5) If the client gets Kerberos information from the DNS server, then
+      the client uses that information.
+
+</p><p class="rfcparagraph">   6) If, as the result of (1), the DHCPv6 server replies with both DNS<br>
+      and Kerberos information, then the client requests Kerberos
+      information from the DNS server.
+   7) If the client gets no response from the DNS server, then the
+      client uses the Kerberos information from the DHCPv6 server.
+
+</p><p class="rfcparagraph">   8) If, as the result of (6), the DNS server replies with Kerberos<br>
+      information, then the client uses the information from the DNS
+      server and not that from the DHCPv6 server.
+
+</p>Authors' Addresses
+
+   Shoichi Sakane
+   Cisco Systems
+   9-7-1 Akasaka
+   Minato-ku, Tokyo  107-6227
+   Japan
+
+   EMail: ssakane@cisco.com
+
+
+   Masahiro Ishiyama
+   Toshiba Corporation
+   1, Komukai-toshiba-cho, Saiwai-ku,
+   Kawasaki, Kanagawa  212-8582
+   Japan
+
+   EMail: masahiro.ishiyama@toshiba.co.jp
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Sakane & Ishiyama            Standards Track                   [Page 12]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

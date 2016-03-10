@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                          J. Galvin<br>Request For Comments: 1847                                     S. Murphy<br>Category: Standards Track                    Trusted Information Systems<br>                                                              S. Crocker<br>                                                         CyberCash, Inc.<br>                                                                N. Freed<br>                                            Innosoft International, Inc.<br>                                                            October 1995<br><br></p>
+                  <h1>
+                     Security Multiparts for MIME:
+                Multipart/Signed and Multipart/Encrypted</h1>
+                  <h2>Status of this Memo</h2>
+
+   This document specifies an Internet standards track protocol for the
+   Internet community, and requests discussion and suggestions for
+   improvements.  Please refer to the current edition of the "Internet
+   Official Protocol Standards" (STD 1) for the standardization state
+   and status of this protocol.  Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This document defines a framework within which security services may
+   be applied to MIME body parts.  MIME, an acronym for "Multipurpose
+   Internet Mail Extensions", defines the format of the contents of
+   Internet mail messages and provides for multi-part textual and non-
+   textual message bodies.  The new content types are subtypes of
+   multipart: signed and encrypted.  Each will contain two body parts:
+   one for the protected data and one for the control information
+   necessary to remove the protection.  The type and contents of the
+   control information body parts are determined by the value of the
+   protocol parameter of the enclosing multipart/signed or
+   multipart/encrypted content type, which is required to be present.
+
+</p><p class="rfcparagraph">Table of Contents
+<a href="#section-1" class="">1. Introduction .............................................</a><br>
+<a href="#section-2" class="">2. Definition of Security Subtypes of Multipart .............</a><br>
+<a href="#section-2.1" class="indent-1">2.1 Definition of Multipart/Signed .........................</a><br>
+<a href="#section-2.2" class="indent-1">2.2 Definition of Multipart/Encrypted ......................</a><br>
+<a href="#section-3" class="">3. Definition of Control Information Content Types ..........</a><br>
+<a href="#section-4" class="">4. Definition of Key Management Content Types ...............</a><br>
+<a href="#section-5" class="">5. Security Considerations ..................................</a><br>
+<a href="#section-6" class="">6. Acknowledgements .........................................</a><br>
+<a href="#section-7" class="">7. References ...............................................</a><br>
+<a href="#section-8" class="">8. Authors' Addresses .......................................</a><br>
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   An Internet electronic mail message consists of two parts: the
+   headers and the body.  The headers form a collection of field/value
+   pairs structured according to STD 11, RFC 822 [1], whilst the body,
+   if structured, is defined according to MIME [2].  The basic MIME
+   specification does not provide specific security protection.
+
+</p><p class="rfcparagraph">   This document defines a framework whereby security protection
+   provided by other protocols may be used with MIME in a complementary
+   fashion.  By itself, it does not specify security protection.  A MIME
+   agent must include support for both the framework defined here and a
+   mechanism to interact with a security protocol defined in a separate
+   document.  The resulting combined service provides security for
+   single-part and multi-part textual and non-textual messages.
+
+</p><p class="rfcparagraph">   The framework is provided by defining two new security subtypes of
+   the MIME multipart content type: signed and encrypted.  In each of
+   the security subtypes, there are exactly two related body parts: one
+   for the protected data and one for the control information.  The type
+   and contents of the control information body parts are determined by
+   the value of the protocol parameter of the enclosing multipart/signed
+   or multipart/encrypted content type, which is required to be present.
+   By registering new values for the required protocol parameter, the
+   framework is easily extended to accommodate a variety of protocols.
+
+</p><p class="rfcparagraph">   A MIME agent that includes support for this framework will be able to
+   recognize a security multipart body part and to identify its
+   protected data and control information body parts.  If the value of
+   the protocol parameter is unrecognized the MIME agent will not be
+   able to process the security multipart.  However, a MIME agent may
+   continue to process any other body parts that may be present.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Definition of Security Subtypes of Multipart</h2></a>
+
+   The multipart/signed content type specifies how to support
+   authentication and integrity services via digital signature.  The
+   control information is carried in the second of the two required body
+   parts.
+
+</p><p class="rfcparagraph">   The multipart/encrypted content type specifies how to support
+   confidentiality via encryption.  The control information is carried
+   in the first of the two required body parts.
+
+</p><p class="rfcparagraph">   A three-step process is described for the origination and reception
+   of the multipart/signed and multipart/encrypted contents.  The
+   details of the processing performed during each step is left to be
+   specified by the security protocol being used.
+	<a name="section-2.1"><h3>2.1   Definition of Multipart/Signed</h3></a>
+
+   (1)  MIME type name: multipart<br>
+
+   (2)  MIME subtype name: signed<br>
+
+   (3)  Required parameters: boundary, protocol, and micalg<br>
+
+   (4)  Optional parameters: none<br>
+
+   (5)  Security considerations: Must be treated as opaque while in<br>
+        transit
+
+   The multipart/signed content type contains exactly two body parts.
+   The first body part is the body part over which the digital signature
+   was created, including its MIME headers.  The second body part
+   contains the control information necessary to verify the digital
+   signature.  The first body part may contain any valid MIME content
+   type, labeled accordingly.  The second body part is labeled according
+   to the value of the protocol parameter.
+
+</p><p class="rfcparagraph">   The attribute token for the protocol parameter is "protocol", i.e.,
+
+    parameter := "protocol" "=" value
+
+   The value token is comprised of the type and sub-type tokens of the
+   Content-Type: header of the second body part, i.e.,
+
+    value := <"> type "/" subtype <">
+
+   where the type and subtype tokens are defined by the MIME [2]
+   specification.  The semantics of the protocol parameter are defined
+   according to its value.
+
+</p><p class="rfcparagraph">   The attribute token for the micalg parameter is "micalg", i.e.,
+
+    parameter := "micalg" "=" value
+
+   The Message Integrity Check (MIC) is the name given to the quantity
+   computed over the body part with a message digest or hash function,
+   in support of the digital signature service.  Valid value tokens are
+   defined by the specification for the value of the protocol parameter.
+   The value may be a comma (",") separated list of tokens, indicating
+   the use of multiple MIC algorithms.  As a result, the comma (",")
+   character is explicitly excluded from the list of characters that may
+   be included in a token used as a value of the micalg parameter.  If
+   multiple MIC algorithms are specified, the purpose and use of the
+   multiple algorithms is defined by the protocol.  If the MIC algorithm
+   is also specified in the control information and the value there does
+   not agree with the value in this parameter, it must be treated as an
+   error.
+
+</p><p class="rfcparagraph">    NOTE: The presence of the micalg parameter on the
+    multipart/signed content type header is explicitly intended to
+    support one-pass processing.  MIME implementations may locate
+    the second body part by inputting the first body part and
+    computing the specified MIC values until the boundary
+    identifying the second body part is found.
+
+</p><p class="rfcparagraph">   The entire contents of the multipart/signed container must be treated
+   as opaque while it is in transit from an originator to a recipient.
+   Intermediate message transfer agents must not alter the content of a
+   multipart/signed in any way, including, but not limited to, changing
+   the content transfer encoding of the body part or any of its
+   encapsulated body parts.
+
+</p><p class="rfcparagraph">   The signature in a multipart/signed only applies to the material that
+   is actually within the multipart/signed object.  In particular, it
+   does not apply to any enclosing message material, nor does it apply
+   to entities that are referenced (e.g. via a MIME message/external-
+   body) by rather than included in the signed content.
+
+</p><p class="rfcparagraph">   When creating a multipart/signed body part, the following sequence of
+   steps describes the processing necessary.  It must be emphasized that
+   these steps are descriptive, not prescriptive, and in no way impose
+   restrictions or requirements on implementations of this
+   specification.
+
+</p><p class="rfcparagraph">   (1)  The content of the body part to be protected is prepared<br>
+        according to a local convention.  The content is then
+        transformed into a MIME body part in canonical MIME format,
+        including an appropriate set of MIME headers.
+
+</p><p class="rfcparagraph">        In addition, if the multipart/signed object is EVER to be
+        transferred over the standard Internet SMTP infrastructure, the
+        resulting MIME body is constrained to 7 bits -- that is, the use
+        of material requiring either 8bit or binary
+        content-transfer-encoding is NOT allowed.  Such 8bit or binary
+        material MUST be encoded using either the quoted-printable or
+        base64 encodings.
+
+</p><p class="rfcparagraph">        This requirement exists because it is not generally possible,
+        given the current characteristics of Internet SMTP, for a
+        message originator to guarantee that a message will travel only
+        along paths capable of carrying 8bit or binary material.
+        SMTP clients normally have the option of either converting the
+        message to eliminate the use of 8bit or binary encoding or
+        returning a nondelivery notification to the originator.
+        However, conversion is not viable in the case of signed objects
+        since conversion would necessarily invalidate the signature.
+        This leaves a nondelivery notification as the only available
+        option, which is not acceptable.
+
+</p><p class="rfcparagraph">   (2)  The body part (headers and content) to be digitally signed is<br>
+        prepared for signature according to the value of the protocol
+        parameter.  The MIME headers of the signed body part are
+        included in the signature to protect the integrity of the MIME
+        labeling of the data that is signed.
+
+</p><p class="rfcparagraph">   (3)  The prepared body part is made available to the signature creation<br>
+        process according to a local convention.  The signature creation
+        process must make available to a MIME implementation two data
+        streams: the control information necessary to verify the
+        signature, which the MIME implementation will place in the second
+        body part and label according to the value of the protocol
+        parameter, and the digitally signed body part, which the MIME
+        implementation will use as the first body part.
+
+</p><p class="rfcparagraph">   When receiving a multipart/signed body part, the following sequence
+   of steps describes the processing necessary to verify the signature
+   or signatures.  It must be emphasized that these steps are
+   descriptive, not prescriptive, and in no way impose restrictions or
+   requirements on implementations of this specification.
+
+</p><p class="rfcparagraph">   (1)  The first body part and the control information in the second body<br>
+        part must be prepared for the signature verification process
+        according to the value of the protocol parameter.
+
+</p><p class="rfcparagraph">   (2)  The prepared body parts must be made available to the signature<br>
+        verification process according to a local convention.  The
+        signature verification process must make available to the MIME
+        implementation the result of the signature verification and the
+        body part that was digitally signed.
+
+</p><p class="rfcparagraph">            NOTE: The result of the signature verification is likely to
+            include a testament of the success or failure of the
+            verification.  Also, in the usual case, the body part
+            returned after signature verification will be the same as
+            the body part that was received.  We do not insist that
+            this be the case to allow for protocols that may modify the
+            body part during the signature processing.
+   (3)  The result of the signature verification process is made available<br>
+        to the user and the MIME implementation continues processing with
+        the verified body part, i.e., the body part returned by the
+        signature verification process.
+
+</p><p class="rfcparagraph">   The following example is an illustration of a multipart/signed body
+   part.  It is necessarily incomplete since the control information is
+   defined by the security protocol, which must be specified in a
+   separate document.
+
+</p><p class="rfcparagraph">    Content-Type: multipart/signed; protocol="TYPE/STYPE";
+            micalg="MICALG"; boundary="Signed Boundary"
+
+    --Signed Boundary
+    Content-Type: text/plain; charset="us-ascii"
+
+    This is some text to be signed although it could be
+    any type of data, labeled accordingly, of course.
+
+</p><p class="rfcparagraph">    --Signed Boundary
+    Content-Type: TYPE/STYPE
+
+    CONTROL INFORMATION for protocol "TYPE/STYPE" would be here
+
+    --Signed Boundary--
+
+	<a name="section-2.2"><h3>2.2   Definition of Multipart/Encrypted</h3></a>
+
+   (1)  MIME type name: multipart<br>
+
+   (2)  MIME subtype name: encrypted<br>
+
+   (3)  Required parameters: boundary, protocol<br>
+
+   (4)  Optional parameters: none<br>
+
+   (5)  Security considerations: none<br>
+
+   The multipart/encrypted content type contains exactly two body parts.
+   The first body part contains the control information necessary to
+   decrypt the data in the second body part and is labeled according to
+   the value of the protocol parameter.  The second body part contains
+   the data which was encrypted and is always labeled
+   application/octet-stream.
+
+</p><p class="rfcparagraph">   The attribute token for the protocol parameter is "protocol", i.e.,
+
+    parameter := "protocol" "=" value
+   The value token is comprised of the type and sub-type tokens of the
+   Content-Type: header of the first body part, i.e.,
+
+    value := <"> type "/" subtype <">
+
+   where the type and subtype tokens are defined by the MIME [2]
+   specification.  The semantics of the protocol parameter are defined
+   according to its value.
+
+</p><p class="rfcparagraph">   When creating a multipart/encrypted body part, the following sequence
+   of steps describes the processing necessary.  It must be emphasized
+   that these steps are descriptive, not prescriptive, and in no way
+   impose restrictions or requirements on implementations of this
+   specification.
+
+</p><p class="rfcparagraph">   (1)  The contents of the body part to be protected is prepared according<br>
+        to a local convention.  The contents are then transformed into a
+        MIME body part in canonical MIME format, including an appropriate
+        set of MIME headers.
+
+</p><p class="rfcparagraph">   (2)  The body part (headers and content) to be encrypted is prepared for<br>
+        encryption according to the value of the protocol parameter.  The
+        MIME headers of the encrypted body part are included in the
+        encryption to protect from disclosure the MIME labeling of the
+        data that is encrypted.
+
+</p><p class="rfcparagraph">   (3)  The prepared body part is made available to the encryption process<br>
+        according to a local convention.  The encryption process must make
+        available to a MIME implementation two data streams: the control
+        information necessary to decrypt the body part, which the MIME
+        implementation will place in the first body part and label
+        according to the value of the protocol parameter, and the
+        encrypted body part, which the MIME implementation will place in
+        the second body part and label application/octet-stream.  Thus,
+        when used in a multipart/encrypted, the application/octet-stream
+        data is comprised of a nested MIME body part.
+
+</p><p class="rfcparagraph">   When receiving a multipart/encrypted body part, the following
+   sequence of steps describes the processing necessary to decrypt the
+   enclosed data.  It must be emphasized that these steps are
+   descriptive, not prescriptive, and in no way impose restrictions or
+   requirements on implementations of this specification.
+
+</p><p class="rfcparagraph">   (1)  The second body part and the control information in the first body<br>
+        part must be prepared for the decryption process according to the
+        value of the protocol parameter.
+   (2)  The prepared body parts must be made available to the decryption<br>
+        process according to a local convention.  The decryption process
+        must make available to the MIME implementation the result of the
+        decryption and the decrypted form of the encrypted body part.
+
+</p><p class="rfcparagraph">            NOTE: The result of the decryption process is likely to
+            include a testament of the success or failure of the
+            decryption.  Failure may be due to an inability to locate
+            the proper decryption key or the proper recipient field,
+            etc.  Implementors should note that the data, if any, of a
+            failed decryption process is pretty much guaranteed to be
+            garbage.
+
+</p><p class="rfcparagraph">   (3)  The result of the decryption process is made available to the user<br>
+        and the MIME implementation continues processing with the decrypted
+        body part, i.e., the body part returned by the decryption process.
+
+</p><p class="rfcparagraph">            NOTE: A MIME implementation will not be able to display the
+            received form of the second body part because the
+            application of encryption will transform the body part.
+            This transformation will not be described in the MIME
+            headers (Content-Type: and Content-Transfer-Encoding:) but,
+            rather, will be described in the content of the first body
+            part.  Therefore, an implementation should wait until the
+            encryption has been removed before attempting to display
+            the content.
+
+</p><p class="rfcparagraph">   The following example is an illustration of a multipart/encrypted
+   body part.  It is necessarily incomplete since the control
+   information is defined by the security protocol, which must be
+   specified in a separate document.
+
+</p><p class="rfcparagraph">    Content-Type: multipart/encrypted; protocol="TYPE/STYPE";
+            boundary="Encrypted Boundary"
+
+    --Encrypted Boundary
+    Content-Type: TYPE/STYPE
+
+    CONTROL INFORMATION for protocol "TYPE/STYPE" would be here
+
+    --Encrypted Boundary
+    Content-Type: application/octet-stream
+
+        Content-Type: text/plain; charset="us-ascii"
+        All of this indented text, including the indented headers,
+        would be unreadable since it would have been encrypted by
+        the protocol "TYPE/STYPE".  Also, this encrypted data could
+        be any type of data, labeled accordingly, of course.
+
+</p><p class="rfcparagraph">    --Encrypted Boundary--
+
+	<a name="section-3"><h2>3.   Definition of Control Information Content Types</h2></a>
+
+   This document defines a framework within which security services may
+   be applied to MIME body parts.  A minimal MIME implementation will be
+   able to recognize multipart/signed and multipart/encrypted body parts
+   and be able to identify the protected data and control information
+   body parts within them.
+
+</p><p class="rfcparagraph">   Complete support for security services requires the MIME agent to
+   recognize the value of the protocol parameter and to continue
+   processing based on its value.  The value of the protocol parameter
+   is the same value used to label the content type of the control
+   information.
+
+</p><p class="rfcparagraph">   The value of the protocol parameter and the resulting processing
+   required must be specified in the document defining the security
+   protocol used.  That document must also precisely specify the
+   contents of the control information body part.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   Definition of Key Management Content Types</h2></a>
+
+   This specification recognizes that the complete specification of a
+   MIME-based security protocol must include a mechanism for
+   distributing the cryptographic material used in support of the
+   security services.  For example, a digital signature service
+   implemented with asymmetric cryptography requires that a signer's
+   public key be available to the signee.
+
+</p><p class="rfcparagraph">   One possible mechanism for distributing cryptographic material is to
+   define two additional body parts: one for the purpose of requesting
+   cryptographic information and one for the purpose of returning the
+   cryptographic information requested.  The specification of a security
+   protocol may include a definition of two such body parts or it may
+   specify an alternate mechanism for the distribution of cryptographic
+   material.
+	<a name="section-5"><h2>5.   Security Considerations</h2></a>
+
+   This specification describes an enhancement to MIME to support signed
+   and encrypted body parts.  In that context this entire document is
+   about security.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.   Acknowledgements</h2></a>
+
+   David H. Crocker suggested the use of a multipart structure for the
+   MIME and PEM interaction.
+
+</p><p class="rfcparagraph">	<a name="section-7"><h2>7.   References</h2></a>
+
+   [1] Crocker, D., "Standard for the Format of ARPA Internet Text
+       Messages", STD 11, RFC 822, University of Delaware, August 1982.
+
+</p>   [2] Borenstein, N., and N. Freed, "MIME (Multipurpose Internet Mail
+       Extension) Part One: Mechanisms for Specifying and Describing the
+       Format of Internet Message Bodies", RFC 1521, Bellcore and
+       Innosoft, September 1993.
+	<a name="section-8"><h2>8.   Authors' Addresses</h2></a>
+
+   Jim Galvin
+   Trusted Information Systems
+   3060 Washington Road
+   Glenwood, MD  21738
+
+   Phone: +1 301 854 6889
+   Fax: +1 301 854 5363
+   EMail:  galvin@tis.com
+
+
+   Sandy Murphy
+   Trusted Information Systems
+   3060 Washington Road
+   Glenwood, MD  21738
+
+   Phone: +1 301 854 6889
+   Fax: +1 301 854 5363
+   EMail:  sandy@tis.com
+
+
+   Steve Crocker
+   CyberCash, Inc.
+   2086 Hunters Crest Way
+   Vienna, VA 22181
+
+   Phone::    +1 703 620 1222
+   Fax:    +1 703 391 2651
+   EMail:  crocker@cybercash.com
+
+
+   Ned Freed
+   Innosoft International, Inc.
+   1050 East Garvey Avenue South
+   West Covina, CA 91790
+
+   Phone: +1 818 919 3600
+   Fax: +1 818 919 3614
+   EMail:  ned@innosoft.com
+
+
+
+
+
+
+
+
+
+
+
+Galvin, et al               Standards Track                    [Page 11]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

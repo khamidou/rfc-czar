@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                        N. Brownlee<br>Request for Comments: 2723                    The University of Auckland<br>Category: Informational                                     October 1999<br><br></p>
+                  <h1>
+            SRL: A Language for Describing Traffic Flows and
+                   Specifying Actions for Flow Groups</h1>
+                  <h2>Status of this Memo</h2>
+
+   This memo provides information for the Internet community.  It does
+   not specify an Internet standard of any kind.  Distribution of this
+   memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (1999).  All Rights Reserved.<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This document describes a language for specifying rulesets, i.e.
+   configuration files which may be loaded into a traffic flow meter so
+   as to specify which traffic flows are measured by the meter, and the
+   information it will store for each flow.
+
+</p><p class="rfcparagraph">Table of Contents
+<a href="#section-1" class="">1 Purpose and Scope . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-1.1" class="indent-1">1.1 RTFM Meters and Traffic Flows . . . . . . . . . . . . . </a><br>
+<a href="#section-1.2" class="indent-1">1.2 SRL Overview  . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2" class="">2 SRL Language Description  . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2.1" class="indent-1">2.1 Define Directive  . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2.2" class="indent-1">2.2 Program . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2.3" class="indent-1">2.3 Declaration . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3" class="">3 Statement . . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.1" class="indent-1">3.1 IF_statement  . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.1.1" class="indent-2">3.1.1 expression  . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.1.2" class="indent-2">3.1.2 term  . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.1.3" class="indent-2">3.1.3 factor  . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.1.4" class="indent-2">3.1.4 operand_list  . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.1.5" class="indent-2">3.1.5 operand . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.1.6" class="indent-2">3.1.6 Test Part . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.1.7" class="indent-2">3.1.7 Action Part . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.1.8" class="indent-2">3.1.8 ELSE Clause . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.2" class="indent-1">3.2 Compound_statement  . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.3" class="indent-1">3.3 Imperative_statement  . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.3.1" class="indent-2">3.3.1 SAVE Statement  . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.3.2" class="indent-2">3.3.2 COUNT Statement . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.3.3" class="indent-2">3.3.3 EXIT Statement  . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.3.4" class="indent-2">3.3.4 IGNORE Statement  . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.3.5" class="indent-2">3.3.5 NOMATCH Statement . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.3.6" class="indent-2">3.3.6 STORE Statement . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.3.7" class="indent-2">3.3.7 RETURN Statement  . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.4" class="indent-1">3.4 Subroutine_declaration  . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.5" class="indent-1">3.5 CALL_statement  . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4" class="">4 Example Programs  . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.1" class="indent-1">4.1 Classify IP Port Numbers  . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.2" class="indent-1">4.2 Classify Traffic into Groups of Networks  . . . . . . . </a><br>
+<a href="#section-5" class="">5 Security Considerations . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-6" class="">6 IANA Considerations . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-7" class="">7 APPENDICES  . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-7.1" class="indent-1">7.1 Appendix A: SRL Syntax in BNF . . . . . . . . . . . . . </a><br>
+<a href="#section-7.2" class="indent-1">7.2 Appendix B: Syntax for Values and Masks . . . . . . . . </a><br>
+<a href="#section-7.3" class="indent-1">7.3 Appendix C: RTFM Attribute Information  . . . . . . . . </a><br>
+<a href="#section-8" class="">8 Acknowledgments . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-9" class="">9 References  . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-10" class="">10 Author's Address  . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-11" class="">11 Full Copyright Statement  . . . . . . . . . . . . . . . . . </a><br>
+
+	<a name="section-1"><h2>1.   Purpose and Scope</h2></a>
+
+   A ruleset for an RTFM Meter is a sequence of instructions to be
+   executed by the meter's Pattern Matching Engine (PME).  The form of
+   these instructions is described in detail in the 'RTFM Architecture'
+   and 'RTFM Meter MIB' documents [RTFM-ARC, RTFM-MIB], but most users -
+   at least initially - find them confusing and difficult to write,
+   mainly because the effect of each instruction is strongly dependent
+   on the state of the meter's Packet Matching Engine at the moment of
+   its execution.
+
+</p><p class="rfcparagraph">   SRL (the Simple Ruleset Language) is a procedural language for
+   creating RTFM rulesets.  It has been designed to be simple for people
+   to understand, using statements which help to clarify the execution
+   context in which they operate.  SRL programs will be compiled into
+   rulesets which can then be downloaded to RTFM meters.
+
+</p><p class="rfcparagraph">   An SRL compiler is available as part of NeTraMet (a free-software
+   implementation of the RTFM meter and manager), version 4.2
+   [NETRAMET].
+
+</p><p class="rfcparagraph">	<a name="section-1.1"><h3>1.1   RTFM Meters and Traffic Flows</h3></a>
+
+   The RTFM Architecture [RTFM-ARC] defines a set of 'attributes' which
+   apply to network traffic.  Among the attributes are 'address
+   attributes,' such as PeerType, PeerAddress, TransType and
+   TransAddress, which have meaning for many protocols, e.g. for IPv4
+   traffic (PeerType == 1) PeerAddress is an IP address, TransType is
+   TCP(6), UDP(17), ICMP(1), etc., and TransAddress is usually an IP<br>
+   port number.
+
+</p><p class="rfcparagraph">   An 'RTFM Traffic Flow' is simply a stream of packets observed by a
+   meter as they pass across a network between two end points (or
+   to/from a single end point).  Each 'end point' of a flow is specified
+   by the set of values of its address attributes.
+
+</p><p class="rfcparagraph">   An 'RTFM Meter' is a measuring device - e.g. a program running on a
+   Unix or PC host - which observes passing packets and builds 'Flow
+   Data Records' for the flows of interest.
+
+</p><p class="rfcparagraph">   RTFM traffic flows have another important property - they are bi-
+   directional.  This means that each flow data record in the meter has
+   two sets of counters, one for packets travelling from source to
+   destination, the other for returning packets.  Within the RTFM
+   architecture such counters appear as further attributes of the flow.
+
+</p><p class="rfcparagraph">   An RTFM meter must be configured by the user, which means creating a
+   'Ruleset' so as to specify which flows are to be measured, and how
+   much information (i.e. which attributes) should be stored for each of
+   them.  A ruleset is effectively a program for a minimal virtual
+   machine, the 'Packet Matching Engine (PME),' which is described in
+   detail in [RTFM-ARC]. An RTFM meter may run multiple rule sets, with
+   every passing packet being processed by each of the rulesets.  The
+   rule 'actions' in this document are described as though only a single
+   ruleset were running.
+
+</p><p class="rfcparagraph">   In the past creating a ruleset has meant writing machine code for the
+   PME, which has proved rather difficult to do.  SRL provides a high-
+   level language which should enable users to create effective rulesets
+   without having to understand the details of the PME.
+
+</p><p class="rfcparagraph">   The language may be useful in other applications, being suitable for
+   any application area which involves selecting traffic flows from a
+   stream of packets.
+
+</p><p class="rfcparagraph">	<a name="section-1.2"><h3>1.2   SRL Overview</h3></a>
+
+   An SRL program is executed from the beginning for each new packet
+   arriving at the meter.  It has two essential goals.
+
+</p><p class="rfcparagraph">   (a) Decide whether the current packet is part of a flow which is of
+       interest and, if necessary, determine its direction (i.e. decide
+       which of its end-points is considered to be its source).  Other
+       packets will be ignored.
+   (b) SAVE whatever information is required to identify the flow and
+       accumulate (COUNT) quantitative information for that flow.
+
+</p><p class="rfcparagraph">   At execution, the meter's Packet Matching Engine (PME) begins by
+   using source and destination attributes as they appear 'on the wire.'
+   If the attributes do not match those of a flow to be recorded, the
+   PME will normally execute the program again, this time with the
+   source and destination addresses interchanged.  Because of this bi-
+   directional matching, an RTFM meter is able to build up tables of
+   flows with two sets of counters - one for forward packets, the other
+   for backward packets.  The programmer can, if required, suppress the
+   reverse-direction matching and assign 'forward' and 'backward'
+   directions which conform to the conventions of the external context.
+
+</p><p class="rfcparagraph">   Goal (a) is achieved using IF statements which perform comparisons on
+   information from the packet or from SRL variables.  Goal (b) is
+   achieved using one or more SAVE statements to store the flow's
+   identification attributes; a COUNT statement then increments the
+   statistical data accumulating for it.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   SRL Language Description</h2></a>
+
+   The SRL language is explained below using 'railway diagrams' to
+   describe the syntax.  Flow through a diagram is from left to right.
+   The only exception to this is that lines carrying a left arrow may
+   only be traversed right to left.  In the diagrams, keywords are
+   written in capital letters; in practice an SRL compiler must be
+   insensitive to case.  Lower-case identifiers are explained in the
+   text, or they refer to another diagram.
+
+</p><p class="rfcparagraph">   The tokens of an SRL program obey the following rules:
+
+</p><p class="rfcparagraph">   -  Comments may appear on any line of an SRL program, following a #
+   -  White space is used to separate tokens
+   -  Semicolon is used as the terminator for most statements
+   -  Identifiers (e.g. for defines and labels) must start with a letter
+   -  Identifiers may contain letters, digits and underscores
+   -  The case of letters is not significant
+   -  Reserved words (shown in upper case in this document) may not be
+      used as identifiers
+
+	<a name="section-2.1"><h3>2.1   Define Directive</h3></a>
+
+   --- DEFINE -- defname ---- = ---- defined_text ------------------ ;
+
+</p><p class="rfcparagraph">   Simple parameterless defines are supported via the syntax above.  The
+   define name, defname, is an identifier.  The defined text starts
+   after the equal sign, and continues up to (but not including) the
+   closing semicolon.  If a semicolon is required within the defined
+   text it must be preceded by a backslash, i.e. \; in an SRL define
+   produces ; in the text.
+
+</p><p class="rfcparagraph">   Wherever defname appears elsewhere in the program, it will be
+   replaced by the defined text.
+
+</p><p class="rfcparagraph">   For example,
+
+   DEFINE ftp = (20, 21);  # Well-known Port numbers from [ASG-NBR]
+   DEFINE telnet = 23;
+   DEFINE www = 80;
+
+</p><p class="rfcparagraph">	<a name="section-2.2"><h3>2.2   Program</h3></a>
+
+   ------------<pre>+-------+-------- Statement -------+-------+-----------
+               |       |                          |       |
+               |       +------- Declaration ------+       |
+               |                                          |
+               +---------------------<--------------------+
+
+   An SRL program is a sequence of statements or declarations.  It does
+   not have any special enclosing symbols.  Statements and declarations
+   terminate with a semicolon, except for compound statements, which
+   terminate with a right brace.
+
+</p><p class="rfcparagraph">	<a name="section-2.3"><h3>2.3   Declaration</h3></a>
+
+   ---------------------- Subroutine_declaration ---------------------
+
+   SRL's only explicit declaration is the subroutine declaration.  Other
+   implicit declarations are labels (declared where they appear in front
+   of a statement) and subroutine parameters (declared in the subroutine
+   header).
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   Statement</h2></a>
+
+   ----------------+---- IF_statement ----------------+---------------
+                   |                                  |
+                   +---- Compound_statement ----------+
+                   |                                  |
+                   +---- Imperative_statement --------+
+                   |                                  |
+                   +---- CALL_statement --------------+
+
+   An SRL program is a sequence of SRL statements.  There are four kinds
+   of statements, as follows.
+	<a name="section-3.1"><h3>3.1   IF_statement</h3></a>
+
+               Test Part                Action Part
+             .............            ...............
+
+</p><p class="rfcparagraph">   --- IF --- expression ---+------------+---- Statement ----+--->
+                            |            |                   |
+                            +-- SAVE , --+                   |
+                            |                                |
+                            +-- SAVE ; ----------------------+
+
+          >-----------+-----------------------------+-----------------
+                      |                             |
+                      +-----ELSE --- Statement -----+
+
+	<a name="section-3.1.1"><h4>3.1.1   expression</h4></a>
+
+   -------- term --------+------------------------+-------------------
+                         |                        |
+                         +--<-- term ----- || ----+    logical OR
+
+	<a name="section-3.1.2"><h4>3.1.2   term</h4></a>
+
+   ------- factor -------+------------------------+-------------------
+                         |                        |
+                         +--<-- factor --- && ----+    logical AND
+
+	<a name="section-3.1.3"><h4>3.1.3   factor</h4></a>
+
+   ------------+-------- attrib  ==  operand_list --------+-----------
+               |                                          |
+               +------------ ( expression ) --------------+
+
+	<a name="section-3.1.4"><h4>3.1.4   operand_list</h4></a>
+
+   ----------+------------------ operand -----------------+-----------
+             |                                            |
+             +-- ( operand ---+-------------------+-- ) --+
+                              |                   |
+                              +-<-- operand  , ---+
+
+	<a name="section-3.1.5"><h4>3.1.5   operand</h4></a>
+
+   ------------- value ---------+----------------------+--------------
+                                |                      |
+                                +------- / width ------+
+                                |                      |
+                                +------- & mask -------+
+	<a name="section-3.1.6"><h4>3.1.6   Test Part</h4></a>
+
+   The IF statement evaluates a logical expression.  If the expression
+   value is TRUE, the action indicated in the 'Action Part' of the
+   diagram is executed.  If the value is FALSE and the IF has an ELSE
+   clause, that ELSE clause is executed (see below).
+
+</p><p class="rfcparagraph">   The simplest form of expression is a test for equality (== operator);
+   in this an RTFM attribute value (from the packet or from an SRL
+   variable) is ANDed with a mask and compared with a value.  A list of
+   RTFM attributes is given in Appendix C. More complicated expressions
+   may be built up using parentheses and the && (logical AND) and ||
+   (logical OR) operators.
+
+</p><p class="rfcparagraph">   Operand values may be specified as dotted decimal, hexadecimal or as
+   a character constant (enclosed in apostrophes).  The syntax for
+   operand values is given in Appendix B.
+
+</p><p class="rfcparagraph">   Masks may be specified as numbers,
+           dotted decimal  e.g. &255.255
+        or hexadecimal     e.g. &FF-FF
+   or as a width in bits   e.g. /16
+
+   If a mask is not specified, an all-ones mask is used.
+
+</p><p class="rfcparagraph">   In SRL a value is always combined with a mask; this combination is
+   referred to as an operand.  For example, if we were interested in
+   flows originating from IP network 130.216, we might write:
+
+</p><p class="rfcparagraph">      IF SourcePeerAddress == 130.216.0.0 & 255.255.0.0  SAVE;
+
+</p><p class="rfcparagraph">   or equivalently
+
+      IF SourcePeerAddress == 130.216/16  SAVE;
+
+</p><p class="rfcparagraph">   A list of values enclosed in parentheses may also be specified; the
+   test succeeds if the masked attribute equals any of the values in the
+   list.  For example:
+
+</p><p class="rfcparagraph">      IF SourcePeerAddress == ( 130.216.7/24, 130.216.34/24 ) SAVE;
+
+</p><p class="rfcparagraph">   As this last example indicates, values are right-padded with zeroes,
+   i.e. the given numbers specify the leading bytes of masks and values.
+
+</p><p class="rfcparagraph">   The operand values and masks used in an IF statement must be
+   consistent with the attribute being tested.  For example, a four-byte
+   value is acceptable as a peer address, but would not be accepted as a
+   transport address (which may not be longer than two bytes).
+	<a name="section-3.1.7"><h4>3.1.7   Action Part</h4></a>
+
+   A SAVE action (i.e. SAVE , or SAVE ;) saves attribute(s), mask(s) and
+   value(s) as given in the statement.  If the IF expression tests more
+   than one attribute, the masks and values are saved for all the
+   matched attributes.  For each value_list in the statement the value
+   saved is the one which the packet actually matched.  See below for
+   further description of SAVE statements.
+
+</p><p class="rfcparagraph">   Other actions are described in detail under "Imperative statements"
+   below.  Note that the RETURN action is valid only within subroutines.
+
+</p><p class="rfcparagraph">	<a name="section-3.1.8"><h4>3.1.8   ELSE Clause</h4></a>
+
+   An ELSE Clause provides a statement which will be executed if the
+   IF's test fails.  The statement following ELSE will often be another
+   IF statement, providing SRL's version of a 'select' statement.  Note
+   that an ELSE clause always matches the immediately preceding IF.
+
+</p><p class="rfcparagraph">	<a name="section-3.2"><h3>3.2   Compound_statement</h3></a>
+
+   -------+-------------+----- { ---+---- Statement ----+--- } -------
+          |             |           |                   |
+          +-- label : --+           +--------<----------+
+
+   A compound statement is a sequence of statements enclosed in braces.
+   Each statement will terminate with a semicolon, unless it is another
+   compound statement (which terminates with a right brace).
+
+</p><p class="rfcparagraph">   A compound statement may be labelled, i.e. preceded by an identifier
+   followed by a semi-colon.  Each statement inside the braces is
+   executed in sequence unless an EXIT statement is performed, as
+   explained below.
+
+</p><p class="rfcparagraph">   Labels have a well-defined scope, within which they must be unique.
+   Labels within a subroutine (i.e. between a SUBROUTINE and its
+   matching ENDSUB) are local to that subroutine and are not visible
+   outside it.  Labels outside subroutines are part of a program's outer
+   block.
+	<a name="section-3.3"><h3>3.3   Imperative_statement</h3></a>
+
+   ------+---------------------------------------------------+------ ;
+         |                                                   |
+         +-- SAVE attrib --+--+-----------+--+---------------+
+         |                 |  |           |  |               |
+         |                 |  +- / width -+  |               |
+         |                 |  |           |  |               |
+         |                 |  +- & mask --+  |               |
+         |                 |                 |               |
+         |                 +--- = operand ---+               |
+         |                                                   |
+         +-- COUNT ------------------------------------------+
+         |                                                   |
+         +-- EXIT label  ------------------------------------+
+         |                                                   |
+         +-- IGNORE -----------------------------------------+
+         |                                                   |
+         +-- NOMATCH ----------------------------------------+
+         |                                                   |
+         +-- RETURN --+-------+------------------------------+
+         |            |       |                              |
+         |            +-- n --+                              |
+         |                                                   |
+         +-- STORE variable := value ------------------------+
+
+	<a name="section-3.3.1"><h4>3.3.1   SAVE Statement</h4></a>
+
+   The SAVE statement saves information which will (later) identify the
+   flow in the meter's flow table.  It does not actually record anything
+   in the table; this is done when a subsequent COUNT statement
+   executes.
+
+</p><p class="rfcparagraph">   SAVE has two possible forms:
+
+</p><p class="rfcparagraph">   SAVE attrib = operand ; saves the attribute, mask and value as given
+        in the statement.  This form of the SAVE statement is similar to
+        that allowed in an IF statement, except that - since imperative
+        statements do not perform a test - you may save an arbitrary
+        value.
+
+</p><p class="rfcparagraph">   SAVE attrib ;
+   SAVE attrib / width ;
+   SAVE attrib & mask ; saves the attribute and mask from the statement,
+        and the value resulting from their application to the current
+        packet.  This is most useful when used to save a value with a
+        wider mask than than was used to select the packet.  For
+        example:
+             IF DestPeerAddress == 130.216/16
+                     NOMATCH;
+             ELSE IF SourcePeerAddress == 130.216/16 {
+                     SAVE SourcePeerAddress /24;
+                     COUNT;
+                     }
+             ELSE IGNORE;
+
+</p><p class="rfcparagraph">	<a name="section-3.3.2"><h4>3.3.2   COUNT Statement</h4></a>
+
+   The COUNT statement appears after all testing and saving is complete;
+   it instructs the PME to build the flow identifier from the attributes
+   which have been SAVEd, find it in the meter's flow table (creating a
+   new entry if this is the first packet observed for the flow), and
+   increment its counters.  The meter then moves on to examine the next
+   incoming packet.
+
+</p><p class="rfcparagraph">	<a name="section-3.3.3"><h4>3.3.3   EXIT Statement</h4></a>
+
+   The EXIT statement exits a labelled compound statement.  The next
+   statement to be executed will be the one following that compound
+   statement.  This provides a well-defined way to jump to a clearly
+   identified point in a program.  For example:
+
+</p><p class="rfcparagraph">   outer: {
+      ...
+      if SourcePeerAddress == 192.168/16
+         exit outer;  # exits the statement labelled 'outer'
+      ...
+      }
+   # execution resumes here
+
+   In practice the language provides sufficient logical structure that
+   one seldom - if ever - needs to use the EXIT statement.
+
+</p><p class="rfcparagraph">	<a name="section-3.3.4"><h4>3.3.4   IGNORE Statement</h4></a>
+
+   The IGNORE statement terminates examination of the current packet
+   without saving any information from it.  The meter then moves on to
+   examine the next incoming packet, beginning again at the first
+   statement of its program.
+
+</p><p class="rfcparagraph">	<a name="section-3.3.5"><h4>3.3.5   NOMATCH Statement</h4></a>
+
+   The NOMATCH statement indicates that matching has failed for this
+   execution of the program.  If it is executed when a packet is being
+   processed with its addresses in 'on the wire' order, the PME will
+   perform the program again from the beginning with source and
+   destination addresses interchanged.  If it is executed following such
+   an interchange, the packet will be IGNOREd.
+
+</p><p class="rfcparagraph">   NOMATCH is illustrated in the SAVE example (section 3.3.1), where it
+   is used to ensure that flows having 130.216/16 as an end-point are
+   counted as though 130.216 had been those flows' source peer (IP)
+   address.
+
+</p><p class="rfcparagraph">	<a name="section-3.3.6"><h4>3.3.6   STORE Statement</h4></a>
+
+   The STORE statement assigns a value to an SRL variable and SAVEs it.
+   There are six SRL variables:
+
+</p><p class="rfcparagraph">           SourceClass        SourceKind
+           DestClass          DestKind
+           FlowClass          FlowKind
+
+   Their names have no particular significance; they were arbitrarily
+   chosen as likely RTFM attributes but can be used to store any
+   single-byte integer values.  Their values are set to zero each time
+   examination of a new packet begins.  For example:
+
+</p><p class="rfcparagraph">   STORE SourceClass := 3;
+   STORE FlowKind := 'W'
+
+	<a name="section-3.3.7"><h4>3.3.7   RETURN Statement</h4></a>
+
+   The RETURN statement is used to return from subroutines and can be
+   used only within the context of a subroutine.  It is described in
+   detail below (CALL statement).
+
+</p><p class="rfcparagraph">	<a name="section-3.4"><h3>3.4   Subroutine_declaration</h3></a>
+
+   -- SUBROUTINE subname ( --+-----------------------------+-- ) -->
+                             |                             |
+                             +--+-- ADDRESS --- pname --+--+
+                                |                       |
+                                +-- VARIABLE -- pname --+
+                                |                       |
+                                +------<------- , ------+
+
+          >------+-------- Statement ---------+----- ENDSUB -------- ;
+                 |                            |
+                 +-------------<--------------+
+   A Subroutine declaration has three parts:
+
+</p><p class="rfcparagraph">      the subname is an identifier, used to name the subroutine.
+
+</p><p class="rfcparagraph">      the parameter list specifies the subroutine's parameters.  Each
+         parameter is preceded with a keyword indicating its type -
+         VARIABLE indicates an SRL variable (see the STORE statement
+         above), ADDRESS indicates any other RTFM attribute.  A
+         parameter name may be any identifier, and its scope is limited
+         to the subroutine's body.
+
+</p><p class="rfcparagraph">      the body specifies what processing the subroutine will perform.
+         This is simply a sequence of Statements, terminated by the
+         ENDSUB keyword.
+
+</p><p class="rfcparagraph">   Note that EXITs in a subroutine may not refer to labels outside it.
+   The only way to leave a subroutine is via a RETURN statement.
+
+</p><p class="rfcparagraph">	<a name="section-3.5"><h3>3.5   CALL_statement</h3></a>
+
+   ---- CALL subname ( --+---------------------+-- ) ---->
+                         |                     |
+                         +--+-- parameter --+--+
+                            |               |
+                            +----<--- , ----+
+
+         >---+-------------------------------------+--- ENDCALL ---- ;
+             |                                     |
+             +---+--+-- n : --+--- Statement --+---+
+                 |  |         |                |
+                 |  +----<----+                |
+                 |                             |
+                 +--------------<--------------+
+</pre>
+
+
+   The CALL statement invokes an SRL subroutine.  The parameters are SRL
+   variables or other RTFM attributes, and their types must match those
+   in the subroutine declaration.  Following the parameters is a
+   sequence of statements, each preceded by an integer label.  These
+   labels will normally be 1:, 2:, 3:, etc, but they do not have to be
+   contiguous, nor in any particular order.  They are referred to in
+   RETURN statements within the subroutine body.
+
+</p><p class="rfcparagraph">   e.g. RETURN 2;   would return to the statement labelled 2:
+                       within in the CALL statement.
+
+</p><p class="rfcparagraph">   Execution of the labelled statement completes the CALL.
+   If the return statement does not specify a return label, the first
+   statement executed after RETURN will be the statement immediately
+   following ENDCALL.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   Example Programs</h2></a>
+
+	<a name="section-4.1"><h3>4.1   Classify IP Port Numbers</h3></a>
+
+   #
+   #  Classify IP port numbers
+   #
+      define IPv4 = 1;  # Address Family number from [ASG-NBR]
+   #
+      define ftp = (20, 21);  # Well-Known Port numbers from [ASG-NBR]
+      define telnet = 23;
+      define www = 80;
+   #
+      define tcp = 6;  # Protocol numbers from [ASG-NBR]
+      define udp = 17;
+   #
+      if SourcePeerType == IPv4 save;
+      else ignore;  # Not an IPv4 packet
+   #
+      if (SourceTransType == tcp || SourceTransType == udp) save, {
+         if SourceTransAddress == (www, ftp, telnet)  nomatch;
+            # We want the well-known port as Dest
+   #
+         if DestTransAddress == telnet
+            save, store FlowKind := 'T';
+         else if DestTransAddress == www
+            save, store FlowKind := 'W';
+         else if DestTransAddress == ftp
+            save, store FlowKind := 'F';
+         else {
+            save DestTransAddress;
+            store FlowKind := '?';
+            }
+         }
+      else save SourceTransType = 0;
+   #
+      save SourcePeerAddress /32;
+      save DestPeerAddress   /32;
+      count;
+   #
+   This program counts only IP packets, saving SourceTransType (tcp, udp
+   or 0), Source- and DestPeerAddress (32-bit IP addresses) and FlowKind
+   ('W' for www, 'F' for ftp, 'T' for telnet, '?' for unclassified).
+   The program uses a NOMATCH action to specify the packet direction -
+   its resulting flows will have the well-known ports as their
+   destination.
+
+</p><p class="rfcparagraph">	<a name="section-4.2"><h3>4.2   Classify Traffic into Groups of Networks</h3></a>
+
+   #
+   # SRL program to classify traffic into network groups
+   #
+   define my_net = 130.216/16;
+   define k_nets = ( 130.217/16, 130.123/16, 130.195/16,
+                    132.181/16, 138.75/16, 139.80/16 );
+   #
+      call net_kind (SourcePeerAddress, SourceKind)
+         endcall;
+      call net_kind (DestPeerAddress,   DestKind)
+         endcall;
+      count;
+   #
+      subroutine net_kind (address addr, variable net)
+         if addr == my_net save, {
+            store net := 10;  return 1;
+            }
+         else if addr == k_nets save, {
+            store net := 20;  return 2;
+            }
+         save addr/24;  # Not my_net or in k_nets
+         store net := 30;  return 3;
+         endsub;
+   #
+
+   The net_kind subroutine determines whether addr is my network
+   (130.216), one of the Kawaihiko networks (in the k_nets list), or
+   some other network.  It saves the network address from addr (16 bits
+   for my_net and the k_net networks, 24 bits for others), stores a
+   value of 10, 20 or 30 in net, and returns to 1:, 2:  or 3:.  Note
+   that the network numbers used are contained within the two DEFINEs,
+   making them easy to change.
+
+</p><p class="rfcparagraph">   net_kind is called twice, saving Source- and DestPeerAddress and
+   Source- and DestKind; the COUNT statement produces flows identified
+   by these four RTFM attributes, with no particular source-dest
+   ordering.
+   In the program no use is made of return numbers and they could have
+   been omitted.  However, we might wish to re-use the subroutine in
+   another program doing different things for different return numbers,
+   as in the version below.
+
+</p><p class="rfcparagraph">   call net_kind (DestPeerAddress, DestKind)
+      1: nomatch;  # We want my_net as source
+         endcall;
+   call net_kind (SourcePeerAddress, SourceKind)
+      1: count;    # my_net -> other networks
+         endcall;
+   save SourcePeerAddress /24;
+   save DestPeerAddress /24;
+   count;
+
+</p><p class="rfcparagraph">   This version uses a NOMATCH statement to ensure that its resulting
+   flows have my_net as their source.  The NOMATCH also rejects my_net
+   -> my_net traffic.  Traffic which doesn't have my_net as source or
+   destination saves 24 bits of its peer addresses (the subroutine might
+   only have saved 16) before counting such an unusual flow.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   Security Considerations</h2></a>
+
+   SRL is a language for creating rulesets (i.e. configuration files)
+   for RTFM Traffic Meters - it does not present any security issues in
+   itself.
+
+</p><p class="rfcparagraph">   On the other hand, flow data gathered using such rulesets may well be
+   valuable.  It is therefore important to take proper precautions to
+   ensure that access to the meter and its data is secure.  Ways to
+   achieve this are discussed in detail in the Architecture and Meter
+   MIB documents [RTFM-ARC, RTFM-MIB].
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.   IANA Considerations</h2></a>
+
+   Appendix C below lists the RTFM attributes by name.  Since SRL only
+   refers to attributes by name, SRL users do not have to know the
+   attribute numbers.
+
+</p><p class="rfcparagraph">   The size (in bytes) of the various attribute values is also listed in
+   Appendix C. These sizes reflect the object sizes for the attribute
+   values as they are stored in the RTFM Meter MIB [RTFM-MIB].
+
+</p><p class="rfcparagraph">   IANA considerations for allocating new attributes are discussed in
+   detail in the RTFM Architecture document [RTFM-ARC].
+	<a name="section-7"><h2>7.   APPENDICES</h2></a>
+
+	<a name="section-7.1"><h3>7.1   Appendix A: SRL Syntax in BNF</h3></a>
+
+      <SRL program>    ::=  <S or D> | <SRL program> <S or D>
+
+      <S or D>         ::=  <statement> | <declaration>
+
+      <declaration>    ::=  <Subroutine declaration>
+
+      <statement>      ::=  <IF statement> |
+                            <Compound statement> |
+                            <Imperative statement> |
+                            <CALL statement>
+
+      <IF statement>   ::=  IF <expression> <if action> <opt else>
+
+      <if action>      ::=  SAVE ; |
+                            SAVE , <statement> |
+                            <statement>
+
+      <opt else>       ::=  <null> |
+                            ELSE <statement>
+
+      <expression>     ::=  <term> | <term> || <term>
+
+      <term>           ::=  <factor> | <factor> && <factor>
+
+      <factor>         ::=  <attribute> == <operand list> |
+                            ( <expression> )
+
+      <operand list>   ::=  <operand> | ( <actual operand list> )
+
+      <actual operand list> ::= <operand> |
+                            <actual operand list> , <operand>
+
+      <operand>        ::=  <value> |
+                            <value> / <width> |
+                            <value> & <mask>
+
+      <Compound statement> ::= <opt label> { <statement seq> }
+
+      <opt label>      ::=  <null> |
+                            <identifier> :
+
+</p><p class="rfcparagraph">      <statement seq>  ::=  <statement> | <statement seq> <statement>
+
+      <Imperative statement> ::=  ; |
+                            SAVE <attribute> <opt operand> ; |
+                            COUNT ; |
+                            EXIT <label> ; |
+                            IGNORE ; |
+                            NOMATCH ; |
+                            RETURN <integer> ; |
+                            RETURN ; |
+                            STORE <variable> := <value> ;
+
+</p><p class="rfcparagraph">      <opt operand>    ::=  <null> |
+                            <width or mask> |
+                            = <operand>
+
+      <width or mask>   ::= / <width> | & <mask>
+
+      <Subroutine declaration> ::=
+                            SUBROUTINE <sub header> <sub body> ENDSUB ;
+
+</p><p class="rfcparagraph">      <sub header>     ::=  <subname> ( ) |
+                            <subname> ( <sub param list> )
+
+      <sub param list> ::= <sub param> | <sub param list> , <sub param>
+
+      <sub param>      ::=  ADDRESS <pname> | VARIABLE <pname>
+
+      <pname>          ::=  <identifier>
+
+      <sub body>       ::=  <statement sequence>
+
+      <CALL statement> ::=  CALL <call header> <opt call body> ENDCALL ;
+
+</p><p class="rfcparagraph">      <call header>    ::=  <subname> ( ) |
+                            <subname> ( <call param list> )
+
+      <call param list> ::= <call param> |
+                            <call param list> , <call param>
+
+      <call param>     ::=  <attribute> | <variable>
+
+      <opt call body>  ::=  <null> |
+                            <actual call body>
+
+      <actual call body> ::=  <numbered statement> |
+                            <actual call body> <numbered statement>
+
+      <numbered statement> ::= <int label seq> <statement>
+
+      <int label seq>  ::=  <integer> : | <int label seq> <integer> :
+   The following are terminals, recognised by the scanner:
+
+</p><p class="rfcparagraph">      <identifier>     Described in section 2
+      <integer>        A decimal integer
+
+      <attribute>      Attribute name, as listed in Appendix C
+
+      <value>, <mask>  Described in section 5.2
+
+      <width>     ::= <integer>
+      <label>     ::= <identifier>
+
+      <variable>  ::=  SourceClass | DestClass | FlowClass |
+                        SourceKind | DestKind | FlowKind
+
+	<a name="section-7.2"><h3>7.2   Appendix B: Syntax for Values and Masks</h3></a>
+
+   Values and masks consist of sequences of numeric fields, each of one
+   or more bytes.  The non-blank character following a field indicates
+   the field width, and whether the number is decimal or hexadecimal.
+   These 'field type' characters may be:
+
+</p><p class="rfcparagraph">     .  period      decimal, single byte
+     -  minus       hex,     single byte
+     !  exclaim     decimal, two bytes
+
+   For example, 130.216.0.0 is an IP address (in dotted decimal), and
+   FF-FF-00-00 is an IP address in hexadecimal.
+
+</p><p class="rfcparagraph">   The last field of a value or mask has no field width character.
+   Instead it takes the same width as the preceding field.  For example,
+   1.3.10!50 and 1.3.0.10.0.50 are two different ways to specify the
+   same value.
+
+</p><p class="rfcparagraph">   Unspecified fields (at the right-hand side of a value or mask) are
+   set to zero, i.e. 130.216 is the same as 130.216.0.0.
+
+</p><p class="rfcparagraph">   If only a single field is specified (no field width character), the
+   value given fills the whole field.  For example, 23 and 0.23 specify
+   the same value for a SourceTransAddress operand.  For variables
+   (which have one-byte values) a C-style character constant may also be
+   used.
+
+</p><p class="rfcparagraph">   IPv6 addresses and masks may also be used, following the conventions
+   set out in the IP Version 6 Addressing Architecture RFC [V6-ADR].
+	<a name="section-7.3"><h3>7.3   Appendix C: RTFM Attribute Information</h3></a>
+
+   The following attributes may be tested in an IF statement, and their
+   values may be SAVEd (except for MatchingStoD). Their maximum size (in
+   bytes) is shown to the left, and a brief description is given for
+   each.  The names given here are reserved words in SRL (they are
+   <attribute> terminals in the grammar given in Appendix A).
+
+</p><p class="rfcparagraph">   Note that this table gives only a very brief summary.  The Meter MIB
+   [RTFM-MIB] provides the definitive specification of attributes and
+   their allowed values.  The MIB variables which represent flow
+   attributes have 'flowData' prepended to their names to indicate that
+   they belong to the MIB's flowData table.
+
+</p><p class="rfcparagraph">   1  SourceInterface, DestInterface
+         Interface(s) on which the flow was observed
+
+   1  SourceAdjacentType, DestAdjacentType
+         Indicates the interface type(s), i.e. an ifType from [ASG-NBR],
+         or an Address Family Number (if metering within a tunnel)
+
+   0  SourceAdjacentAddress, DestAdjacentAddress
+         For IEEE 802.x interfaces, the MAC addresses for the flow
+
+   1  SourcePeerType, DestPeerType
+         Peer protocol types, i.e. Address Family Number from [ASG-NBR],
+         such as IPv4, Novell, Ethertalk, ..
+
+</p><p class="rfcparagraph">   0  SourcePeerAddress, DestPeerAddress
+         Peer Addresses (size varies, e.g. 4 for IPv4, 3 for Ethertalk))
+
+   1  SourceTransType, DestTransType
+         Transport layer type, i.e. Protocol Number from [ASG-NBR]
+         such as tcp(6), udp(17), ospf(89), ..<br>
+
+</p><p class="rfcparagraph">   2  SourceTransAddress, DestTransAddress
+         Transport layer addresses (e.g. port numbers for TCP and UDP)
+
+   1  FlowRuleset
+         Rule set number for the flow
+
+   1  MatchingStoD
+         Indicates whether the packet is being matched with its
+         addresses in 'wire order.'  See [RTFM-ARC] for details.
+
+</p><p class="rfcparagraph">   The following variables may be tested in an IF, and their values may
+   be set by a STORE. They all have one-byte values.
+      SourceClass, DestClass, FlowClass,
+      SourceKind,  DestKind,  FlowKind
+
+   The following RTFM attributes are not address attributes - they are
+   measured attributes of a flow.  Their values may be read from an RTFM
+   meter.  (For example, NeTraMet uses a FORMAT statement to specify
+   which attribute values are to be read from the meter.)
+
+   8  ToOctets, FromOctets
+         Total number of octets seen for each direction of the flow
+
+   8  ToPDUs, FromPDUs
+         Total number of PDUs seen for each direction of the flow
+
+   4  FirstTime, LastActiveTime
+         Time (in centiseconds) that first and last PDUs were seen
+         for the flow
+
+   Other attributes will be defined by the RTFM working group from time
+   to time.
+
+</p><p class="rfcparagraph">	<a name="section-8"><h2>8.   Acknowledgments</h2></a>
+
+   The SRL language is part of the RTFM Working Group's efforts to make
+   the RTFM traffic measurement system easier to use.  Initial work on
+   the language was done by Cyndi Mills and Brad Frazee in Boston.  SRL
+   was developed in Auckland; it was greatly assisted by detailed
+   discussion with John White and Russell Fulton.  Discussion has
+   continued on the RTFM and NeTraMet mailing lists.
+
+</p><p class="rfcparagraph">	<a name="section-9"><h2>9.   References</h2></a>
+
+   [ASG-NBR]  Reynolds, J. and J. Postel, "Assigned Numbers",
+              STD 2, RFC 1700, October 1994.
+
+</p><p class="rfcparagraph">   [NETRAMET] Brownlee, N., NeTraMet home page,
+              http://www.auckland.ac.nz/net/NeTraMet
+
+   [RTFM-ARC] Brownlee, N., Mills, C. and G. Ruth, "Traffic Flow
+              Measurement: Architecture", RFC 2722, October 1999.
+
+</p><p class="rfcparagraph">   [RTFM-MIB] Brownlee, N., "Traffic Flow Measurement: Meter MIB",
+              RFC 2720, October 1999.
+
+</p><p class="rfcparagraph">   [V6-ADDR]  Hinden, R. and S. Deering, "IP Version 6 Addressing
+              Architecture," RFC 2373, July 1998.
+	<a name="section-10"><h2>10.   Author's Address</h2></a>
+
+   Nevil Brownlee
+   Information Technology Systems & Services
+   The University of Auckland
+   Private Bag 92-019
+   Auckland, New Zealand
+
+   Phone: +64 9 373 7599 x8941
+   EMail: n.brownlee@auckland.ac.nz
+	<a name="section-11"><h2>11.   Full Copyright Statement</h2></a>
+
+   Copyright (C) The Internet Society (1999).  All Rights Reserved.<br>
+
+</p><p class="rfcparagraph">   This document and translations of it may be copied and furnished to
+   others, and derivative works that comment on or otherwise explain it
+   or assist in its implementation may be prepared, copied, published
+   and distributed, in whole or in part, without restriction of any
+   kind, provided that the above copyright notice and this paragraph are
+   included on all such copies and derivative works.  However, this
+   document itself may not be modified in any way, such as by removing
+   the copyright notice or references to the Internet Society or other
+   Internet organizations, except as needed for the purpose of
+   developing Internet standards in which case the procedures for
+   copyrights defined in the Internet Standards process must be
+   followed, or as required to translate it into languages other than
+   English.
+
+</p><p class="rfcparagraph">   The limited permissions granted above are perpetual and will not be
+   revoked by the Internet Society or its successors or assigns.
+
+</p><p class="rfcparagraph">   This document and the information contained herein is provided on an
+   "AS IS" basis and THE INTERNET SOCIETY AND THE INTERNET ENGINEERING
+   TASK FORCE DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING
+   BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION
+   HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED WARRANTIES OF
+   MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is currently provided by the
+   Internet Society.
+
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Brownlee                     Informational                     [Page 22]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

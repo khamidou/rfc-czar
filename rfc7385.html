@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph">Internet Engineering Task Force (IETF)                      L. Andersson
+Request for Comments: 7385                           Huawei Technologies
+Updates: 6514                                                 G. Swallow
+Category: Standards Track                                  Cisco Systems
+ISSN: 2070-1721                                             October 2014
+
+
+         IANA Registry for P-Multicast Service Interface (PMSI)
+                        Tunnel Type Code Points
+
+<h2>Abstract</h2>
+
+   RFC 6514 created a space of Tunnel Type code points for a new BGP
+   attribute called the "P-Multicast Service Interface Tunnel (PMSI
+   Tunnel) attribute".  However, the RFC did not create a corresponding
+   IANA registry.
+
+</p><p class="rfcparagraph">   There now is need to make further code point allocations from this
+   name space.  This document serves to update RFC 6514 in that it
+   creates an IANA registry for that purpose.
+
+</p><p class="rfcparagraph">Status of This Memo
+
+   This is an Internet Standards Track document.
+
+</p><p class="rfcparagraph">   This document is a product of the Internet Engineering Task Force
+   (IETF).  It represents the consensus of the IETF community.  It has
+   received public review and has been approved for publication by the
+   Internet Engineering Steering Group (IESG).  Further information on
+   Internet Standards is available in Section 2 of RFC 5741.
+
+</p><p class="rfcparagraph">   Information about the current status of this document, any errata,
+   and how to provide feedback on it may be obtained at
+   http://www.rfc-editor.org/info/rfc7385.
+<h2>Copyright Notice</h2>
+
+   Copyright (c) 2014 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+</p><p class="rfcparagraph">   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (http://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
+   the Trust Legal Provisions and are provided without warranty as
+   described in the Simplified BSD License.
+
+</p><p class="rfcparagraph">Table of Contents
+<a href="#section-1" class="">1. Introduction  . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2" class="">2. Security Considerations . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3" class="">3. IANA Considerations . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4" class="">4. References  . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.1" class="indent-1">4.1. Normative References  . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.2" class="indent-1">4.2. Informative References  . . . . . . . . . . . . . . . . </a><br>
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .   4
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   4
+
+
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   In 'BGP Encodings and Procedures for Multicast in MPLS/BGP IP VPNs'
+   [RFC6514], an optional transitive BGP attribute called the
+   "P-Multicast Service Interface Tunnel (PMSI Tunnel) attribute" is
+   specified.  This BGP attribute uses an octet field to specify the
+   PMSI tunnel type.  RFC 6514 allocates the values 0-7.
+
+</p><p class="rfcparagraph">   There is now a need to make further code point allocations from this
+   name space.  In particular, "Inter-Area P2MP Segmented LSPs"
+   [SEAMLESS-MCAST] needs to make such an allocation.  However, the RFC
+   did not create an IANA registry for these code points.
+
+</p><p class="rfcparagraph">   This document creates a new IANA registry called "P-Multicast Service
+   Interface Tunnel (PMSI Tunnel) Tunnel Types" for these code points.
+   The registry is created in the "Border Gateway Protocol (BGP)
+   Parameters" registry.
+
+</p><p class="rfcparagraph">   Creating this registry is an update of RFC 6514 [RFC6514].
+	<a name="section-2"><h2>2.   Security Considerations</h2></a>
+
+   This document simply creates an IANA registry from a table in RFC
+   6514.  Thus, there are no security concerns.
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   IANA Considerations</h2></a>
+
+   IANA has created a new registry called "P-Multicast Service Interface
+   Tunnel (PMSI Tunnel) Tunnel Types" in the "Border Gateway Protocol
+   (BGP) Parameters" registry.
+
+</p><p class="rfcparagraph">   The allocation policy for values 0x00 to 0xFA is IETF Review
+   [RFC5226].  Values 0xFB to 0xFE are experimental and are not to be
+   assigned. 0xFF is reserved, the status of 0xFF may only be changed
+   through Standards Action [RFC5226].
+
+</p><p class="rfcparagraph">   The initial registry should appear as:
+
+</p><p class="rfcparagraph">      Value        Meaning                        Reference
+
+      0x00         no tunnel information present  [RFC6514]
+      0x01         RSVP-TE P2MP LSP               [RFC6514]
+      0x02         mLDP P2MP LSP                  [RFC6514]
+      0x03         PIM-SSM Tree                   [RFC6514]
+      0x04         PIM-SM Tree                    [RFC6514]
+      0x05         BIDIR-PIM Tree                 [RFC6514]
+      0x06         Ingress Replication            [RFC6514]
+      0x07         mLDP MP2MP LSP                 [RFC6514]
+      0x08 - 0xFA  Unassigned
+      0xFB - 0xFE  Experimental                   [RFC7385]
+      0xFF         Reserved                       [RFC7385]
+
+
+                                 Figure 1
+
+	<a name="section-4"><h2>4.   References</h2></a>
+
+	<a name="section-4.1"><h3>4.1   Normative References</h3></a>
+
+   [RFC5226]  Narten, T. and H. Alvestrand, "Guidelines for Writing an
+              IANA Considerations Section in RFCs", BCP 26, RFC 5226,
+              May 2008, <http://www.rfc-editor.org/info/rfc5226>.
+
+</p><p class="rfcparagraph">   [RFC6514]  Aggarwal, R., Rosen, E., Morin, T., and Y. Rekhter, "BGP
+              Encodings and Procedures for Multicast in MPLS/BGP IP
+              VPNs", RFC 6514, February 2012,
+              <http://www.rfc-editor.org/info/rfc6514>.
+	<a name="section-4.2"><h3>4.2   Informative References</h3></a>
+
+   [SEAMLESS-MCAST]
+              Rekhter, Y. and R. Aggarwal, "Inter-Area P2MP Segmented
+              LSPs", Work in Progress, draft-ietf-mpls-seamless-
+              mcast-14, July 2014.
+
+</p><p class="rfcparagraph">Acknowledgements
+
+   The authors want to thank Adrian Farrel for unwavering support and
+   our L3VPN, MPLS, and IDR co-chairs for swift processing of this
+   document.
+
+</p>Authors' Addresses
+
+   Loa Andersson
+   Huawei Technologies
+
+   EMail: loa@mail01.huawei.com
+
+
+   George Swallow
+   Cisco Systems
+
+   EMail: swallow@cisco.com
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Andersson & Swallow          Standards Track                    [Page 4]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                          B. Miller<br>Request for Comments: 1097                                    CMU-NetDev<br>                                                            1 April 1989<br><br></p>
+                  <h1>                    TELNET SUBLIMINAL-MESSAGE Option</h1>
+                  <h2>Status of this Memo</h2>
+
+   This RFC specifies a standard for the Internet community.  Hosts on
+   the Internet that display subliminal messages within the Telnet
+   protocol are expected to adopt and implement this standard.
+   Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph">	<a name="section-1"><h2>1.   Command name and code.</h2></a>
+
+   SUBLIMINAL-MESSAGE        257
+
+	<a name="section-2"><h2>2.   Command meanings.</h2></a>
+
+   IAC WILL SUBLIMINAL-MESSAGE
+
+      The sender of this command REQUESTS permission to, or confirms
+      that it will, display subliminal messages.
+
+</p><p class="rfcparagraph">   IAC WONT SUBLIMINAL-MESSAGE
+
+      The sender of this command REFUSES to display subliminal messages.
+
+</p><p class="rfcparagraph">   IAC DO SUBLIMINAL-MESSAGE
+
+      The sender of this command REQUESTS that the receiver, or grants
+      the receiver permission to, display subliminal messages.
+
+</p><p class="rfcparagraph">   IAC DONT SUBLIMINAL-MESSAGE
+
+      The sender of this command DEMANDS that the receiver not display
+      subliminal messages.
+
+</p><p class="rfcparagraph">   IAC SB SUBLIMINAL-MESSAGE <16-bit value> <16-bit value> <string> IAC
+      SE
+
+      The sender specifies a message to be subliminaly displayed by the
+      remote host.  If the client has agreed (via the standard WILL WONT
+      DO DONT mechanism) to display subliminal messages, it must accept
+      this subnegotiation and attempt to display the message string on
+      the users console for the specified duration and continue to do so
+      at fixed intervals until another SUBLIMINAL-MESSAGE subnegotiation
+      is received.  The position and rendering of the message of
+      implementation dependent.
+
+</p><p class="rfcparagraph">      The first 16-bit value specifies the duration of the message in
+      milliseconds.  It is sent MSB first.  The second 16-bit value
+      specifies the frequency with which the message is displayed.  It
+      represents the number of seconds between displays and is also sent
+      MSB first.  The final parameter is the message itself.
+
+</p><p class="rfcparagraph">      The syntax for this subnegotiation is:
+
+</p><p class="rfcparagraph">                IAC SB SUBLIMINAL-MESSAGE
+                    DURATION[1] DURATION[0]
+                    FREQUENCY[1] FREQUENCY[0]
+                    MESSAGE_STRING
+                IAC SE
+
+      As required by the Telnet protocol, any occurence of 255 in the
+      subnegotiation must be doubled to destinguish it from the IAC
+      character (which has a value of 255).
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   Default.</h2></a>
+
+   WONT SUBLIMINAL-MESSAGE
+
+   DONT SUBLIMINAL-MESSAGE
+
+   i.e., subliminal messages will not be displayed.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   Motivation for the option</h2></a>
+
+   Frequently the use of "Message of the day" banners and newsletters is
+   insufficient to convince stubborn users to upgrade to the latest
+   version of telnet.  Some users will use the same outdated version for
+   years.  I ran across this problem trying to convince people to use
+   the REMOTE-FLOW-CONTROL Telnet option.  These users need to be gently
+   "persuaded".
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   Description and implementation notes.</h2></a>
+
+   The quality of the client implementation will depend on it's ability
+   to display and erase text strings in a small amount of time.  The
+   current implementation at CMU takes into acount terminal line speed,
+   advanced video capabilities, and screen phospher persistance when
+   calculating how long to wait before erasing a message.
+
+</p><p class="rfcparagraph">   While it is permitted for the client to display the message text
+   "in-line", best results at obtained by printing the message at the
+   top or side of console screen where it will just catch the corner of
+   the user's visual field.
+
+</p><p class="rfcparagraph">   A version is currently under development at CMU to display the
+   message using morse-code over the keyboard caps-lock LED.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.   Examples</h2></a>
+
+   In the following example all numbers are in decimal notation.
+
+</p><p class="rfcparagraph">   1.  Server suggests and client agrees to use SUBLIMINAL-MESSAGE.
+
+</p><p class="rfcparagraph">      (Server sends) IAC DO SUBLIMINAL-MESSAGE
+      (Client sends) IAC WILL SUBLIMINAL-MESSAGE
+      (Server sends) IAC SB SUBLIMINAL-MESSAGE 0 5 0 20 "Use VMS" IAC SE
+
+         [The server is "suggesting" that the user employ a stable
+         operating system, not an unreasonable request...]
+
+      The client should immediately begin displaying the message and
+      should continue to do so at regular intervals.
+
+</p><p class="rfcparagraph">   2.  Server preempts previous subliminal message.
+
+</p><p class="rfcparagraph">      (Server sends) IAC SB SUBLIMINAL-MESSAGE 0 5 0 20 "Go home" IAC SE
+
+      The client should now no longer display the previous message and
+      should immediately begin displaying the new one.
+
+</p><p class="rfcparagraph">   3.  Server has messed with user enough for one day.
+
+</p><p class="rfcparagraph">      (Server sends) IAC SB SUBLIMINAL-MESSAGE 0 0 0 0 "" IAC SE
+
+      The client must cease display of any subliminal messages.
+
+</p><p class="rfcparagraph">	<a name="section-7"><h2>7.   Acknowledgements.</h2></a>
+
+   We do things just a little sneakier here at CMU.
+
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+Miller                                                          [Page 3]
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

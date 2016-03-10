@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                         W. Simpson<br>Request for Comments: 2153                                    DayDreamer<br>Updates: RFCs 1661, 1962                                        May 1997<br>Category: Informational<br><br></p>
+                  <h1>
+                         PPP Vendor Extensions
+</h1>
+                  <h2>Status of this Memo</h2>
+
+   This document provides information for the Internet community.  It
+   does not specify an Internet standard of any kind.  Distribution of
+   this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   The Point-to-Point Protocol (PPP) [1] provides a standard method for
+   transporting multi-protocol datagrams over point-to-point links.  PPP
+   defines an extensible Link Control Protocol (LCP) for establishing,
+   configuring, and testing the data-link connection; and a family of
+   Network Control Protocols (NCPs) for establishing and configuring
+   different network-layer protocols.
+
+</p><p class="rfcparagraph">   This document defines a general mechanism for proprietary vendor
+   extensions.
+
+</p><p class="rfcparagraph">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Simpson                      Informational                      [Page i]
+
+
+
+
+
+RFC 2153                 PPP vendor extensions                  May 1997
+
+
+                           Table of Contents
+<a href="#section-1" class="">1. Control Packets ......................................</a><br>
+<a href="#section-1.1" class="indent-1">1.1 Vendor Specific Packet .........................</a><br>
+<a href="#section-2" class="">2. Configuration Options ................................</a><br>
+<a href="#section-2.1" class="indent-1">2.1 Vendor-Specific Option .........................</a><br>
+<a href="#section-3" class="">3. Organizationally Unique Identifiers ..................</a><br>
+
+     SECURITY CONSIDERATIONS ......................................    5
+
+     REFERENCES ...................................................    5
+
+     CONTACTS .....................................................    6
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Simpson                      Informational                     [Page ii]
+
+
+
+
+
+RFC 2153                 PPP vendor extensions                  May 1997
+
+
+	<a name="section-1"><h2>1.   Control Packets</h2></a>
+
+   The Packet format and basic facilities are already defined for LCP
+   [1] and related NCPs.
+
+</p><p class="rfcparagraph">   Up-to-date values of the LCP Code field are specified in the most
+   recent "Assigned Numbers" [2].  This document concerns the following
+   values:
+
+</p><p class="rfcparagraph">       0      Vendor Specific
+
+
+
+	<a name="section-1.1"><h3>1.1   Vendor Specific Packet</h3></a>
+
+   Description
+
+      Some implementors might not need nor want to publish their
+      proprietary algorithms and attributes.  This mechanism is
+      available to specify these without encumbering the IANA with
+      proprietary number requests.
+
+</p><p class="rfcparagraph">      Vendor Specific packets MAY be sent at any time, including before
+      LCP has reached the Opened state.
+
+</p><p class="rfcparagraph">      The sender transmits a LCP or NCP packet with the Code field set
+      to 0 (Vendor Specific), the Identifier field set, the local
+      Magic-Number (if any) inserted, the OUI and Kind fields set, and
+      the Value(s) field filled with any desired data, but not exceeding
+      the default MRU minus twelve.
+
+</p><p class="rfcparagraph">      Receipt of a Vendor Specific packet causes the RXR or RUC event.
+      The response to the Vendor Specific packet is vender specific.
+
+</p><p class="rfcparagraph">      Receipt of a Code-Reject for the packet SHOULD generate the RXJ+
+      (permitted) event.
+
+</p><p class="rfcparagraph">   Rationale:
+
+</p><p class="rfcparagraph">      This is defined as general feature of all PPP Control Protocols,
+      to avoid future conflicts in vendor secretly self-assigned Code
+      numbers.
+
+</p><p class="rfcparagraph">   A summary of the Vendor Specific packet format is shown below.  The
+   fields are transmitted from left to right.
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |     Code      |  Identifier   |            Length             |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                         Magic-Number                          |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                      OUI                      |     Kind      |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |    Value(s) ...
+   +-+-+-+-+-+-+-+-+
+
+   Code
+
+       0 for Vendor Specific
+
+   Identifier
+
+      The Identifier field MUST be changed for each Vendor Specific
+      packet sent.
+
+</p><p class="rfcparagraph">   Length
+
+      >= 12
+
+      When the Length is twelve, no Value(s) field is present.
+
+</p><p class="rfcparagraph">   Magic-Number
+
+      The Magic-Number field is four octets and aids in detecting links
+      that are in the looped-back condition.  Until the Magic-Number
+      Configuration Option has been successfully negotiated, the Magic-
+      Number MUST be transmitted as zero.  See the Magic-Number
+      Configuration Option for further explanation.
+
+</p><p class="rfcparagraph">   OUI
+
+      three octets.  The vendor's Organizationally Unique Identifier.
+      The bits within the octet are in canonical order, and the most
+      significant octet is transmitted first.
+
+</p><p class="rfcparagraph">   Kind
+
+      one octet.  Indicates a sub-type for the OUI.  There is no
+      standardization for this field.  Each OUI implements its own
+      values.
+
+</p><p class="rfcparagraph">      The Kind field may be extended by the vendor to include zero or
+      more octets of the Value(s) field.
+   Value(s)
+
+      Zero or more octets.  The details are implementation specific.
+
+</p><p class="rfcparagraph">
+	<a name="section-2"><h2>2.   Configuration Options</h2></a>
+
+   The Configuration Option format and basic options are already defined
+   for LCP [1].
+
+</p><p class="rfcparagraph">   Up-to-date values of the LCP Option Type field are specified in the
+   most recent "Assigned Numbers" [2].  This document concerns the
+   following values:
+
+</p><p class="rfcparagraph">       0      Vendor-Specific
+
+
+
+	<a name="section-2.1"><h3>2.1   Vendor-Specific Option</h3></a>
+
+   Description
+
+      Some implementors might not need nor want to publish their
+      proprietary algorithms and attributes.  This mechanism is
+      available to specify these without encumbering the IANA with
+      proprietary number requests.
+
+</p><p class="rfcparagraph">      Before accepting this option, the implementation must verify that
+      the Organizationally Unique Identifier and Kind specify a known
+      mechanism, and that any vendor specific negotiation values are
+      fully understood.
+
+</p><p class="rfcparagraph">   Rationale:
+
+</p><p class="rfcparagraph">      This is defined as general feature of all PPP Control Protocols,
+      to avoid future conflicts in vendor secretly self-assigned Type
+      numbers.
+
+</p><p class="rfcparagraph">   A summary of the Vendor-Specific Configuration Option format is shown
+   below.  The fields are transmitted from left to right.
+
+</p><p class="rfcparagraph">   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |     Type      |    Length     |              OUI
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+          ...      |     Kind      |  Value(s) ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+   Type
+
+       0
+
+   Length
+
+      >= 6
+
+      When the Length is six, no Value(s) field is present.
+
+</p><p class="rfcparagraph">   OUI
+
+      three octets.  The vendor's Organizationally Unique Identifier.
+      The bits within the octet are in canonical order, and the most
+      significant octet is transmitted first.
+
+</p><p class="rfcparagraph">   Kind
+
+      one octet.  Indicates a sub-type for the OUI.  There is no
+      standardization for this field.  Each OUI implements its own
+      values.
+
+</p><p class="rfcparagraph">      The Kind field may be extended by the vendor to include zero or
+      more octets of the Value(s) field.
+
+</p><p class="rfcparagraph">   Value(s)
+
+      Zero or more octets.  The details are implementation specific.
+
+</p><p class="rfcparagraph">
+	<a name="section-3"><h2>3.   Organizationally Unique Identifiers</h2></a>
+
+   The three-octet Organizationally Unique Identifier (OUI) identifies
+   an organization that administers the meaning of the message.  This
+   OUI is based on IEEE 802 vendor assignments.
+
+</p><p class="rfcparagraph">   IEEE contact details for assignment of an OUI are given in [RFC-
+   1700].  Vendors that desire to use their IEEE 802 OUI for PPP Vendor
+   Extensions should also register the OUI with IANA.
+
+</p><p class="rfcparagraph">   In the alternative, a vendor that does not otherwise need an IEEE
+   assigned OUI can request a PPP specific OUI from IANA.  This OUI
+   shall be assigned from the 'CF0000' series.  This has both the
+   "locally-assigned" and "broadcast/multicast" bits set to 1; that is,
+   the least significant two bits of the most significant octet are both
+   set to 1.
+
+</p><p class="rfcparagraph">   Appearance in memory, bits transmitted right-to-left within octets,
+   octets transmitted left-to-right:
+
+</p><p class="rfcparagraph">   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |1 1 0 0 1 1 1 1|x x x x x x x x|x x x x x x x x|
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+                | |
+                | Multicast
+                Local
+
+   Rationale:
+
+</p><p class="rfcparagraph">      This is defined for vendors that are not able to use IEEE
+      assignments, such as software-only vendors.
+
+</p><p class="rfcparagraph">      It is not clear how the IEEE assigns blocks.  In some instances,
+      the "locally-assigned" bit is known to have been used.
+
+</p><p class="rfcparagraph">      However, multicast has no meaning in PPP.  Therefore, an IEEE
+      assigned OUI would have the multicast bit cleared to 0.
+
+</p><p class="rfcparagraph">      The 'CF0000' series was arbitrarily chosen to match the PPP NLPID
+      'CF', as a matter of mnemonic convenience.
+
+</p><p class="rfcparagraph">
+Security Considerations
+
+   Security issues are not discussed in this document.
+
+</p><p class="rfcparagraph">
+References
+
+   [1]   Simpson, W., Editor, "The Point-to-Point Protocol (PPP)", STD
+         51, RFC 1661, DayDreamer, July 1994.
+
+</p><p class="rfcparagraph">   [2]   Reynolds, J.K., Postel, J.B., "Assigned Numbers", RFC-1700,
+         July 1992.
+Contacts
+
+   Comments about this document should be discussed on the ietf-
+   ppp@merit.edu mailing list.
+
+</p><p class="rfcparagraph">   This document was reviewed by the Point-to-Point Protocol Working
+   Group of the Internet Engineering Task Force (IETF).  The working
+   group can be contacted via the current chair:
+
+</p><p class="rfcparagraph">      Karl Fox
+      Ascend Communications
+      655 Metro Place South, Suite 379
+      Dublin, Ohio  43017
+
+          karl@Ascend.com
+
+
+   Questions about this document can also be directed to:
+
+</p>      William Allen Simpson
+      DayDreamer
+      Computer Systems Consulting Services
+      1384 Fontaine
+      Madison Heights, Michigan  48071
+
+          wsimpson@UMich.edu
+          wsimpson@GreenDragon.com (preferred)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Simpson                      Informational                      [Page 6]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

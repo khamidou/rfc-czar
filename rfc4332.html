@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                           K. Leung<br>Request for Comments: 4332                                      A. Patel<br>Category: Informational                                    Cisco Systems<br>                                                             G. Tsirtsis<br>                                                    Flarion Technologies<br>                                                             E. Klovning<br>                                                 Birdstep Technology ASA<br>                                                           December 2005<br><br></p>
+                  <h1>
+           Cisco's Mobile IPv4 Host Configuration Extensions</h1>
+                  <h2>Status of This Memo</h2>
+
+   This memo provides information for the Internet community.  It does
+   not specify an Internet standard of any kind.  Distribution of this
+   memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (2005).<br>
+
+</p><p class="rfcparagraph">IESG Note
+
+   This RFC is not a candidate for any level of Internet Standard.  The
+   IETF disclaims any knowledge of the fitness of this RFC for any
+   purpose and in particular notes that the decision to publish is not
+   based on IETF review for such things as security, congestion control,
+   or inappropriate interaction with deployed protocols.  The RFC Editor
+   has chosen to publish this document at its discretion.  Readers of
+   this document should exercise caution in evaluating its value for
+   implementation and deployment.  See RFC 3932 for more information.
+
+</p><p class="rfcparagraph">   This RFC does not offer any security mechanisms to provide data
+   origin authentication and integrity, yet these security services are
+   vitally important in this context.
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   An IP device requires basic host configuration to be able to
+   communicate.  For example, it will typically require an IP address
+   and the address of a DNS server.  This information is configured
+   statically or obtained dynamically using Dynamic Host Configuration
+   Protocol (DHCP) or Point-to-Point Protocol/IP Control Protocol
+   (PPP/IPCP).  However, both DHCP and PPP/IPCP provide host
+   configuration based on the access network.  In Mobile IPv4, the
+   registration process boots up a Mobile Node at an access network,
+   also known as a foreign network.  The information to configure the
+   host needs to be based on the home network.  This document describes
+   the Cisco vendor-specific extensions to Mobile IPv4 to provide the
+   base host configuration in Registration Request and Reply messages.
+
+</p><p class="rfcparagraph">Table of Contents
+<a href="#section-1" class="">1. Introduction ...................................................</a><br>
+<a href="#section-2" class="">2. Host Configuration Extensions Summary ..........................</a><br>
+<a href="#section-3" class="">3. Host Configuration Extensions ..................................</a><br>
+<a href="#section-3.1" class="indent-1">3.1. Host Configuration Request Extension ......................</a><br>
+<a href="#section-3.2" class="indent-1">3.2. Home Network Length Prefix Extension ......................</a><br>
+<a href="#section-3.3" class="indent-1">3.3. DNS Server Extension ......................................</a><br>
+<a href="#section-3.4" class="indent-1">3.4. DHCP Server Extension .....................................</a><br>
+<a href="#section-3.5" class="indent-1">3.5. DHCP Client ID Extension ..................................</a><br>
+<a href="#section-3.6" class="indent-1">3.6. Default Gateway Extension .................................</a><br>
+<a href="#section-3.7" class="indent-1">3.7. DNS Suffix Extension ......................................</a><br>
+<a href="#section-3.8" class="indent-1">3.8. Configuration URL Extension ...............................</a><br>
+<a href="#section-4" class="">4. Security Considerations ........................................</a><br>
+<a href="#section-5" class="">5. Acknowledgements ...............................................</a><br>
+<a href="#section-6" class="">6. Informative References .........................................</a><br>
+
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   An IPv4 device requires some basic configuration to communicate with
+   other nodes.  Typically, it has an IP address for an interface and
+   DNS server's IP address to resolve the peer's hostname to an IP
+   address.  DHCP [RFC2131] and PPP/IPCP [RFC1332] provide host
+   configuration information on the access network interface, but this
+   is inadequate in a Mobile IPv4 environment.  In Mobile IPv4
+   [RFC3344], a Mobile Node has a virtual network interface on the home
+   network, anchored by the Home Agent.  The IP address, home subnet
+   prefix, default gateway, and home network's DNS servers are essential
+   in the boot up of a network interface.  In some cases, these are the
+   only pieces of information needed by the Mobile Node.
+
+</p><p class="rfcparagraph">   The Mobile IPv4 registration process provides the mechanism for a
+   Mobile Node to boot up on a foreign network.  Upon the successful
+   registration, the Mobile Node can communicate with the Correspondent
+   Node.  The need to provide an efficient method to obtain the host
+   configuration exists.  If the Mobile Node is a DHCP client, it can
+   obtain configuration parameters from the DHCP server in the home
+   network after the initial registration.
+
+</p><p class="rfcparagraph">   This document introduces the Cisco vendor-specific extensions (VSEs)
+   [RFC3115] to provide the means for a Mobile Node to download some
+   fundamental configuration associated with the home network via the
+   Home Agent.  These extensions provide information for home subnet
+   prefix, DNS server, DHCP server, DHCP client identifier, default
+   gateway, DNS suffix, and configuration URL.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Host Configuration Extensions Summary</h2></a>
+
+   The following Cisco vendor-specific extensions provide the host
+   configuration for a Mobile Node.  The "Host Configuration Request"
+   extension is allowed only in the Registration Request.  The rest of
+   the extensions are appended in the Registration Reply.
+
+</p><p class="rfcparagraph">   o  Host Configuration Request
+
+      *  Request for host configuration information from the Mobile Node
+         to the Home Agent.
+
+</p><p class="rfcparagraph">   o  Home Network Prefix Length
+
+      *  The length of the subnet prefix on the home network.
+
+</p><p class="rfcparagraph">   o  Default Gateway
+
+      *  The default gateway's IP address on the home network.
+
+</p><p class="rfcparagraph">   o  DNS Server
+
+      *  The DNS server's IP address in the home network.
+
+</p><p class="rfcparagraph">   o  DNS Suffix
+
+      *  The DNS suffix for hostname resolution in the home network.
+
+</p><p class="rfcparagraph">   o  DHCP Client ID
+
+      *  The DHCP Client ID used to obtain the IP address.  When the
+         Mobile Node returns home and is responsible for managing its
+         own address, this information maps to the client identifier
+         option as defined in section 9.14 of [RFC2132] and referenced
+         in [RFC2131].
+
+</p><p class="rfcparagraph">   o  DHCP Server
+
+      *  The DHCP server's IP address in the home network.
+
+</p><p class="rfcparagraph">   o  Configuration URL
+
+      *  The URL for the Mobile Node to download configuration
+         parameters from a server.
+   When the Mobile Node needs to obtain its host configuration, the Host
+   Configuration Request VSE is appended to the Registration Request.
+   This VSE indicates to the Home Agent that either all or selected host
+   configuration VSEs need to be appended to the Registration Reply.  If
+   the Home Agent retrieved the information from a DHCP server (in Proxy
+   DHCP mode), then the DHCP Client ID and DHCP Server extensions are
+   appended in the Registration Reply.  These DHCP-related extensions
+   are populated with values that had been used in the DHCP messages
+   exchanged between the Home Agent and the DHCP server.
+
+</p><p class="rfcparagraph">   The VSEs are authenticated as part of the registration message using
+   any of the authentication mechanism defined for Mobile IP ([RFC3344],
+   [RFC3012]).
+
+</p><p class="rfcparagraph">   This message MAY contain extensions defined in Mobile IP, including
+   vendor-specific extensions [RFC3115].
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   Host Configuration Extensions</h2></a>
+
+   Cisco's host configuration extensions to Mobile IPv4 are based on the
+   vendor-specific extensions defined in [RFC3115].  The format of the
+   VSE TLV (Type-Length-Value) is as follows:
+
+</p><p class="rfcparagraph">    0               1               2               3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |     Type      |   Length      |          Reserved             |
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |                          Vendor/Org-ID                        |
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |       Vendor-NVSE-Type        |     Vendor-NVSE-Value ...
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+     Type: 134
+
+     Length:
+
+</p><p class="rfcparagraph">        Indicates the length (in bytes) of the data field within this
+        extension, excluding the Type and Length fields.
+
+</p><p class="rfcparagraph">     Reserved:
+
+</p><p class="rfcparagraph">        Reserved for future use.  To be set to 0 while sending, ignored
+        on reception.
+
+</p><p class="rfcparagraph">     Vendor/Org-ID:
+
+</p><p class="rfcparagraph">        9 (Cisco Systems)
+     Vendor-NVSE-Type:
+
+</p><p class="rfcparagraph">        14 (Host Configuration)
+
+     Vendor-NVSE-Value:
+
+</p><p class="rfcparagraph">        Format is shown below for each subtype.  The Sub-Type field is
+        an integer from 0 to 255.
+
+</p><p class="rfcparagraph">	<a name="section-3.1"><h3>3.1   Host Configuration Request Extension</h3></a>
+
+   This format of the Host Configuration Request extension is shown
+   below.
+
+</p><p class="rfcparagraph">     0               1               2               3
+     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     |           Sub-Type            |           Selector            |
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+      Sub-Type:
+
+</p><p class="rfcparagraph">         0
+
+      Selector:
+
+</p><p class="rfcparagraph">         0 indicates all host configuration available to the Home
+         Agent (HA) is requested by the Mobile Node.
+
+</p><p class="rfcparagraph">	<a name="section-3.2"><h3>3.2   Home Network Length Prefix Extension</h3></a>
+
+   This format of the Home Network Prefix Length extension is shown
+   below.
+
+</p><p class="rfcparagraph">     0               1               2               3
+     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     |           Sub-Type            |        Prefix Length          |
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+      Sub-Type:
+
+</p><p class="rfcparagraph">         1
+
+      Prefix Length:
+
+</p><p class="rfcparagraph">         The number of bits in the home subnet prefix.
+	<a name="section-3.3"><h3>3.3   DNS Server Extension</h3></a>
+
+   This format of the DNS Server extension is shown below.
+
+</p><p class="rfcparagraph">     0               1               2               3
+     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     |           Sub-Type            |        Primary DNS Server
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+                 . . .               |        Secondary DNS Server
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+                 . . .               |
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+      Sub-Type:
+
+</p><p class="rfcparagraph">         2
+
+      Primary DNS Server:
+
+</p><p class="rfcparagraph">         The IP address of the primary DNS server.
+
+</p><p class="rfcparagraph">      Secondary DNS Server:
+
+</p><p class="rfcparagraph">         The IP address of the secondary DNS server.
+
+</p><p class="rfcparagraph">	<a name="section-3.4"><h3>3.4   DHCP Server Extension</h3></a>
+
+   This format of the DHCP Server extension is shown below.
+
+</p><p class="rfcparagraph">     0               1               2               3
+     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     |           Sub-Type            |          DHCP Server
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+                 . . .               |
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+      Sub-Type:
+
+</p><p class="rfcparagraph">         3
+
+      DHCP Server:
+
+</p><p class="rfcparagraph">         The IP address of the DHCP server.
+	<a name="section-3.5"><h3>3.5   DHCP Client ID Extension</h3></a>
+
+   This format of the DHCP Client ID extension is shown below.
+
+</p><p class="rfcparagraph">     0               1               2               3
+     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     |           Sub-Type            |          Client ID . . .
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+      Sub-Type:
+
+</p><p class="rfcparagraph">         4
+
+      Client ID:
+
+</p><p class="rfcparagraph">         DHCP servers use this value to index their database of address
+         bindings.  This value is expected to be unique for all clients
+         in an administrative domain.  The size of field is between 2
+         and 255 octets.
+
+</p><p class="rfcparagraph">	<a name="section-3.6"><h3>3.6   Default Gateway Extension</h3></a>
+
+   This format of the Default Gateway extension is shown below.
+
+</p><p class="rfcparagraph">     0               1               2               3
+     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     |           Sub-Type            |          Default Gateway
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+                 . . .               |
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+      Sub-Type:
+
+</p><p class="rfcparagraph">         5
+
+      Default Gateway:
+
+</p><p class="rfcparagraph">         The IP address of the default gateway for the Mobile Node on
+         the home network.
+	<a name="section-3.7"><h3>3.7   DNS Suffix Extension</h3></a>
+
+   This format of the DNS Suffix extension is shown below.
+
+</p><p class="rfcparagraph">     0               1               2               3
+     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     |           Sub-Type            |         DNS Suffix . . .
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+      Sub-Type:
+
+</p><p class="rfcparagraph">         6
+
+      DNS Suffix:
+
+</p><p class="rfcparagraph">         The DNS suffix to be appended to the name of Mobile Node when
+         completing its fully qualified domain name (FQDN).  The size of
+         field is between 1 and 246 octets.
+
+</p><p class="rfcparagraph">	<a name="section-3.8"><h3>3.8   Configuration URL Extension</h3></a>
+
+   This format of the Configuration URL extension is shown below.
+
+</p><p class="rfcparagraph">     0               1               2               3
+     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     |           Sub-Type            |         URL String . . .
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+      Sub-Type:
+
+</p><p class="rfcparagraph">         7
+
+      URL String:
+
+</p><p class="rfcparagraph">         The Mobile Node can retrieve configuration parameters via the
+         URL.  The URL is at most 246 bytes in length.
+	<a name="section-4"><h2>4.   Security Considerations</h2></a>
+
+   The host configuration extensions follow the same rules for Mobile IP
+   extensions in registration messages.  See the Security Considerations
+   section in RFC 3344.
+
+</p><p class="rfcparagraph">   The Configuration URL extension may trigger the Mobile Node to
+   download the configuration parameters from a server.  The protection
+   of the data transfer is outside the scope of this document.  Possible
+   options include encryption of data before transfer or using HTTPS.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   Acknowledgements</h2></a>
+
+   The authors would like to acknowledge Jayshree Bharatia, Kuntal
+   Chowdhury, Avi Lior, and Lila Madour for their contributions to the
+   work in progress titled "Mobile IPv4 Extension for Configuration
+   Options Exchange".
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.   Informative References</h2></a>
+
+   [RFC1332]  McGregor, G., "The PPP Internet Protocol Control Protocol
+              (IPCP)", RFC 1332, May 1992.
+
+</p><p class="rfcparagraph">   [RFC2131]  Droms, R., "Dynamic Host Configuration Protocol",
+              RFC 2131, March 1997.
+
+</p><p class="rfcparagraph">   [RFC2132]  Alexander, S. and R. Droms, "DHCP Options and BOOTP Vendor
+              Extensions", RFC 2132, March 1997.
+
+</p><p class="rfcparagraph">   [RFC3012]  Perkins, C. and P. Calhoun, "Mobile IPv4 Challenge/
+              Response Extensions", RFC 3012, November 2000.
+
+</p><p class="rfcparagraph">   [RFC3115]  Dommety, G. and K. Leung, "Mobile IP Vendor/
+              Organization-Specific Extensions", RFC 3115, April 2001.
+
+</p><p class="rfcparagraph">   [RFC3344]  Perkins, C., "IP Mobility Support for IPv4", RFC 3344,
+              August 2002.
+Authors' Addresses
+
+   Kent Leung
+   Cisco Systems
+   170 W. Tasman Drive
+   San Jose, CA  95134
+   US
+
+   Phone: +1 408-526-5030
+   EMail: kleung@cisco.com
+
+
+   Alpesh Patel
+   Cisco Systems
+   170 W. Tasman Drive
+   San Jose, CA  95134
+   US
+
+   Phone: +1 408-853-9580
+   EMail: alpesh@cisco.com
+
+
+   George Tsirtsis
+   Flarion Technologies
+   Bedminster One
+   135 Route 202/206 South
+   Bedminster, NJ  07921
+   US
+
+   Phone: +1 908-947-7059
+   EMail: g.tsirtsis@flarion.com
+
+
+   Espen Klovning
+   Birdstep Technology ASA
+   Bryggegata 7
+   Oslo,   0250
+   Norway
+
+   Phone: +47 95 20 26 29
+   EMail: espen@birdstep.com
+Full Copyright Statement
+
+   Copyright (C) The Internet Society (2005).<br>
+
+</p><p class="rfcparagraph">   This document is subject to the rights, licenses and restrictions
+   contained in BCP 78 and at www.rfc-editor.org/copyright.html, and
+   except as set forth therein, the authors retain all their rights.
+
+</p><p class="rfcparagraph">   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY AND THE INTERNET
+   ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED,
+   INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE
+   INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED
+   WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Intellectual Property
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the procedures with respect to rights in RFC documents can be
+   found in BCP 78 and BCP 79.
+
+</p><p class="rfcparagraph">   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+</p><p class="rfcparagraph">   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at ietf-
+   ipr@ietf.org.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is currently provided by the
+   Internet Society.
+
+</p>
+
+
+
+
+
+Leung, et al.                Informational                     [Page 11]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

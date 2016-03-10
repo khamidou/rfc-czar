@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                       W. Segmuller<br>Request for Comments: 5231                                      B. Leiba<br>Obsoletes: 3431                          IBM T.J. Watson Research Center<br>Category: Standards Track                                   January 2008<br><br></p>
+                  <h1>
+              Sieve Email Filtering: Relational Extension</h1>
+                  <h2>Status of This Memo</h2>
+
+   This document specifies an Internet standards track protocol for the
+   Internet community, and requests discussion and suggestions for
+   improvements.  Please refer to the current edition of the "Internet
+   Official Protocol Standards" (STD 1) for the standardization state
+   and status of this protocol.  Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This document describes the RELATIONAL extension to the Sieve mail
+   filtering language defined in RFC 3028.  This extension extends
+   existing conditional tests in Sieve to allow relational operators.
+   In addition to testing their content, it also allows for testing of
+   the number of entities in header and envelope fields.
+
+</p><p class="rfcparagraph">   This document obsoletes RFC 3431.
+
+</p><p class="rfcparagraph">Table of Contents
+<a href="#section-1" class="">1. Introduction  . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2" class="">2. Conventions Used in This Document . . . . . . . . . . . . . . </a><br>
+<a href="#section-3" class="">3. Comparators . . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4" class="">4. Match Types . . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.1" class="indent-1">4.1. Match Type VALUE  . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.2" class="indent-1">4.2. Match Type COUNT  . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-5" class="">5. Interaction with Other Sieve Actions  . . . . . . . . . . . . </a><br>
+<a href="#section-6" class="">6. Example . . . . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-7" class="">7. Extended Example  . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-8" class="">8. Changes since RFC 3431  . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-9" class="">9. IANA Considerations . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-10" class="">10. Security Considerations . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-11" class="">11. Normative References  . . . . . . . . . . . . . . . . . . . . </a><br>
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   The RELATIONAL extension to the Sieve mail filtering language [Sieve]
+   provides relational operators on the address, envelope, and header
+   tests.  This extension also provides a way of counting the entities
+   in a message header or address field.
+
+</p><p class="rfcparagraph">   With this extension, the Sieve script may now determine if a field is
+   greater than or less than a value instead of just equivalent.  One
+   use is for the x-priority field: move messages with a priority
+   greater than 3 to the "work on later" folder.  Mail could also be
+   sorted by the from address.  Those userids that start with 'a'-'m' go
+   to one folder, and the rest go to another folder.
+
+</p><p class="rfcparagraph">   The Sieve script can also determine the number of fields in the
+   header, or the number of addresses in a recipient field, for example,
+   whether there are more than 5 addresses in the to and cc fields.
+
+</p><p class="rfcparagraph">   The capability string associated with the extension defined in this
+   document is "relational".
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Conventions Used in This Document</h2></a>
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in BCP 14, RFC 2119.
+
+</p><p class="rfcparagraph">   Conventions for notations are as in [Sieve] section 1.1, including
+   the use of [Kwds] and the use of [ABNF].
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   Comparators</h2></a>
+
+   This document does not define any comparators or exempt any
+   comparators from the require clause.  Any comparator used must be
+   treated as defined in [Sieve].
+
+</p><p class="rfcparagraph">   The "i;ascii-numeric" comparator, as defined in [RFC4790], MUST be
+   supported for any implementation of this extension.  The comparator
+   "i;ascii-numeric" MUST support at least 32-bit unsigned integers.
+
+</p><p class="rfcparagraph">   Larger integers MAY be supported.  Note: the "i;ascii-numeric"
+   comparator does not support negative numbers.
+	<a name="section-4"><h2>4.   Match Types</h2></a>
+
+   This document defines two new match types.  They are the VALUE match
+   type and the COUNT match type.
+
+</p><p class="rfcparagraph">   The syntax is:
+
+</p><p class="rfcparagraph">   MATCH-TYPE =/ COUNT / VALUE
+
+   COUNT = ":count" relational-match
+
+   VALUE = ":value" relational-match
+
+   relational-match = DQUOTE
+           ("gt" / "ge" / "lt" / "le" / "eq" / "ne") DQUOTE
+           ; "gt" means "greater than", the C operator ">".
+           ; "ge" means "greater than or equal", the C operator ">=".
+           ; "lt" means "less than", the C operator "<".
+           ; "le" means "less than or equal", the C operator "<=".
+           ; "eq" means "equal to", the C operator "==".
+           ; "ne" means "not equal to", the C operator "!=".
+
+</p><p class="rfcparagraph">	<a name="section-4.1"><h3>4.1   Match Type VALUE</h3></a>
+
+   The VALUE match type does a relational comparison between strings.
+
+</p><p class="rfcparagraph">   The VALUE match type may be used with any comparator that returns
+   sort information.
+
+</p><p class="rfcparagraph">   A value from the message is considered the left side of the relation.
+   A value from the test expression, the key-list for address, envelope,
+   and header tests, is the right side of the relation.
+
+</p><p class="rfcparagraph">   If there are multiple values on either side or both sides, the test
+   is considered true if any pair is true.
+
+</p><p class="rfcparagraph">	<a name="section-4.2"><h3>4.2   Match Type COUNT</h3></a>
+
+   The COUNT match type first determines the number of the specified
+   entities in the message and does a relational comparison of the
+   number of entities, as defined below, to the values specified in the
+   test expression.
+
+</p><p class="rfcparagraph">   The COUNT match type SHOULD only be used with numeric comparators.
+
+</p><p class="rfcparagraph">   The Address Test counts the number of addresses (the number of
+   "mailbox" elements, as defined in [RFC2822]) in the specified fields.
+   Group names are ignored, but the contained mailboxes are counted.
+   The Envelope Test counts the number of addresses in the specified
+   envelope parts.  The envelope "to" will always have only one entry,
+   which is the address of the user for whom the Sieve script is
+   running.  Using this test, there is no way a Sieve script can
+   determine if the message was actually sent to someone else.  The
+   envelope "from" will be 0 if the MAIL FROM is empty, or 1 if MAIL
+   FROM is not empty.
+
+</p><p class="rfcparagraph">   The Header Test counts the total number of instances of the specified
+   fields.  This does not count individual addresses in the "to", "cc",
+   and other recipient fields.
+
+</p><p class="rfcparagraph">   In all cases, if more than one field name is specified, the counts
+   for all specified fields are added together to obtain the number for
+   comparison.  Thus, specifying ["to", "cc"] in an address COUNT test
+   compares the total number of "to" and "cc" addresses; if separate
+   counts are desired, they must be done in two comparisons, perhaps
+   joined by "allof" or "anyof".
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   Interaction with Other Sieve Actions</h2></a>
+
+   This specification adds two match types.  The VALUE match type only
+   works with comparators that return sort information.  The COUNT match
+   type only makes sense with numeric comparators.
+
+</p><p class="rfcparagraph">   There is no interaction with any other Sieve operations, nor with any
+   known extensions.  In particular, this specification has no effect on
+   implicit KEEP, nor on any explicit message actions.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.   Example</h2></a>
+
+   Using the message:
+
+</p><p class="rfcparagraph">      received: ...
+      received: ...
+      subject: example
+      to: foo@example.com, baz@example.com
+      cc: qux@example.com
+
+   The test:
+
+</p><p class="rfcparagraph">      address :count "ge" :comparator "i;ascii-numeric"
+                      ["to", "cc"] ["3"]
+
+   would evaluate to true, and the test
+      anyof ( address :count "ge" :comparator "i;ascii-numeric"
+                      ["to"] ["3"],
+              address :count "ge" :comparator "i;ascii-numeric"
+                      ["cc"] ["3"] )
+
+   would evaluate to false.
+
+</p><p class="rfcparagraph">   To check the number of received fields in the header, the following
+   test may be used:
+
+</p><p class="rfcparagraph">      header :count "ge" :comparator "i;ascii-numeric"
+                      ["received"] ["3"]
+
+   This would evaluate to false.  But
+
+      header :count "ge" :comparator "i;ascii-numeric"
+                      ["received", "subject"] ["3"]
+
+   would evaluate to true.
+
+</p><p class="rfcparagraph">   The test:
+
+</p><p class="rfcparagraph">      header :count "ge" :comparator "i;ascii-numeric"
+                      ["to", "cc"] ["3"]
+
+   will always evaluate to false on an RFC 2822 compliant message
+   [RFC2822], since a message can have at most one "to" field and at
+   most one "cc" field.  This test counts the number of fields, not the
+   number of addresses.
+	<a name="section-7"><h2>7.   Extended Example</h2></a>
+
+      require ["relational", "comparator-i;ascii-numeric", "fileinto"];
+
+</p><p class="rfcparagraph">      if header :value "lt" :comparator "i;ascii-numeric"
+                ["x-priority"] ["3"]
+      {
+         fileinto "Priority";
+      }
+
+      elsif address :count "gt" :comparator "i;ascii-numeric"
+                 ["to"] ["5"]
+      {
+         # everything with more than 5 recipients in the "to" field
+         # is considered SPAM
+         fileinto "SPAM";
+      }
+
+      elsif address :value "gt" :all :comparator "i;ascii-casemap"
+                 ["from"] ["M"]
+      {
+         fileinto "From N-Z";
+      } else {
+         fileinto "From A-M";
+      }
+
+      if allof ( address :count "eq" :comparator "i;ascii-numeric"
+                         ["to", "cc"] ["1"] ,
+                 address :all :comparator "i;ascii-casemap"
+                         ["to", "cc"] ["me@foo.example.com"] )
+      {
+         fileinto "Only me";
+      }
+
+	<a name="section-8"><h2>8.   Changes since RFC 3431</h2></a>
+
+   Apart from several minor editorial/wording changes, the following
+   list describes the notable changes to this specification since RFC
+   3431.
+
+</p><p class="rfcparagraph">   o  Updated references, including changing the comparator reference
+      from the Application Configuration Access Protocol (ACAP) to the
+      "Internet Application Protocol Collation Registry" document
+      [RFC4790].
+
+</p><p class="rfcparagraph">   o  Updated and corrected the examples.
+   o  Added definition comments to ABNF for "gt", "lt", etc.
+
+</p><p class="rfcparagraph">   o  Clarified what RFC 2822 elements are counted in the COUNT test.
+
+</p><p class="rfcparagraph">   o  Removed the requirement to strip white space from header fields
+      before comparing; a more general version of this requirement has
+      been added to the Sieve base spec.
+
+</p><p class="rfcparagraph">	<a name="section-9"><h2>9.   IANA Considerations</h2></a>
+
+   The following template specifies the IANA registration of the
+   relational Sieve extension specified in this document:
+
+</p><p class="rfcparagraph">   To: iana@iana.org
+   Subject: Registration of new Sieve extension
+
+   Capability name: relational
+   Description:     Extends existing conditional tests in Sieve language
+                    to allow relational operators
+   RFC number:      RFC 5231
+   Contact address: The Sieve discussion list <ietf-mta-filters@imc.org>
+
+	<a name="section-10"><h2>10.   Security Considerations</h2></a>
+
+   An implementation MUST ensure that the test for envelope "to" only
+   reflects the delivery to the current user.  Using this test, it MUST
+   not be possible for a user to determine if this message was delivered
+   to someone else.
+
+</p><p class="rfcparagraph">   Additional security considerations are discussed in [Sieve].
+
+</p><p class="rfcparagraph">	<a name="section-11"><h2>11.   Normative References</h2></a>
+
+   [ABNF]     Crocker, D., Ed. and P. Overell, "Augmented BNF for Syntax
+              Specifications: ABNF", RFC 4234, October 2005.
+
+</p><p class="rfcparagraph">   [Kwds]     Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">   [RFC2822]  Resnick, P., "Internet Message Format", RFC 2822,
+              April 2001.
+
+</p><p class="rfcparagraph">   [RFC4790]  Newman, C., Duerst, M., and A. Gulbrandsen, "Internet
+              Application Protocol Collation Registry", RFC 4790,
+              March 2007.
+
+</p><p class="rfcparagraph">   [Sieve]    Guenther, P., Ed. and T. Showalter, Ed., "Sieve: An Email
+              Filtering Language", RFC 5228, January 2008.
+Authors' Addresses
+
+   Wolfgang Segmuller
+   IBM T.J. Watson Research Center
+   19 Skyline Drive
+   Hawthorne, NY  10532
+   US
+
+   Phone: +1 914 784 7408
+   EMail: werewolf@us.ibm.com
+
+
+   Barry Leiba
+   IBM T.J. Watson Research Center
+   19 Skyline Drive
+   Hawthorne, NY  10532
+   US
+
+   Phone: +1 914 784 7941
+   EMail: leiba@watson.ibm.com
+Full Copyright Statement
+
+   Copyright (C) The IETF Trust (2008).<br>
+
+</p><p class="rfcparagraph">   This document is subject to the rights, licenses and restrictions
+   contained in BCP 78, and except as set forth therein, the authors
+   retain all their rights.
+
+</p><p class="rfcparagraph">   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY, THE IETF TRUST AND
+   THE INTERNET ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS
+   OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF
+   THE INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED
+   WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Intellectual Property
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the procedures with respect to rights in RFC documents can be
+   found in BCP 78 and BCP 79.
+
+</p><p class="rfcparagraph">   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+</p><p class="rfcparagraph">   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at
+   ietf-ipr@ietf.org.
+
+</p>
+
+
+
+
+
+
+
+
+
+
+Segmuller & Leiba           Standards Track                     [Page 9]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

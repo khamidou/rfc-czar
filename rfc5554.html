@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                        N. Williams<br>Request for Comments: 5554                                           Sun<br>Updates: 2743                                                   May 2009<br>Category: Standards Track<br><br></p>
+                  <h1>
+                   Clarifications and Extensions to
+ the Generic Security Service Application Program Interface (GSS-API)
+                    for the Use of Channel Bindings</h1>
+                  <h2>Status of This Memo</h2>
+
+   This document specifies an Internet standards track protocol for the
+   Internet community, and requests discussion and suggestions for
+   improvements.  Please refer to the current edition of the "Internet
+   Official Protocol Standards" (STD 1) for the standardization state
+   and status of this protocol.  Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (c) 2009 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+</p><p class="rfcparagraph">   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents in effect on the date of
+   publication of this document (http://trustee.ietf.org/license-info).
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This document clarifies and generalizes the Generic Security Service
+   Application Programming Interface (GSS-API) "channel bindings"
+   facility, and imposes requirements on future GSS-API mechanisms and
+   programming language bindings of the GSS-API.
+
+</p><p class="rfcparagraph">Table of Contents
+<a href="#section-1" class="">1. Introduction ...................................................</a><br>
+<a href="#section-2" class="">2. Conventions Used in This Document ..............................</a><br>
+<a href="#section-3" class="">3. New Requirements for GSS-API Mechanisms ........................</a><br>
+<a href="#section-4" class="">4. Generic Structure for GSS-API Channel Bindings .................</a><br>
+<a href="#section-5" class="">5. Security Considerations ........................................</a><br>
+<a href="#section-6" class="">6. References .....................................................</a><br>
+<a href="#section-6.1" class="indent-1">6.1. Normative References ......................................</a><br>
+<a href="#section-6.2" class="indent-1">6.2. Informative References ....................................</a><br>
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   The base GSS-API version 2, update 1 specification [RFC2743] provides
+   a facility for channel binding (see also [RFC5056]), but its
+   treatment is incomplete.  The GSS-API C-bindings specification
+   [RFC2744] expands somewhat on this facility in what should be a
+   generic way, but is instead a C-specific way, thus leaving the
+   treatment of this facility incomplete.
+
+</p><p class="rfcparagraph">   This document clarifies the GSS-API's channel binding facility and
+   generalizes the parts of it that are specified in the C-bindings
+   document but that should have been generic from the start.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Conventions Used in This Document</h2></a>
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in [RFC2119].
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   New Requirements for GSS-API Mechanisms</h2></a>
+
+   Given the publication of RFC 5056, we now assert that all new GSS-API
+   mechanisms that support channel binding MUST conform to [RFC5056].
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   Generic Structure for GSS-API Channel Bindings</h2></a>
+
+   The base GSS-API version 2, update 1 specification [RFC2743] provides
+   a facility for channel binding.  It models channel bindings as an
+   OCTET STRING and leaves it to the GSS-API version 2, update 1
+   C-bindings specification to specify the structure of the contents of
+   the channel bindings OCTET STRINGs.  The C-bindings specification
+   [RFC2744] then defines, in terms of C, what should have been a
+   generic structure for channel bindings.  The Kerberos V GSS mechanism
+   [RFC4121] also defines a method for encoding GSS channel bindings in
+   a way that is independent of the C-bindings -- otherwise, the
+   mechanism's channel binding facility would not be useable with other
+   language bindings.
+
+</p><p class="rfcparagraph">   In other words, the structure of GSS channel bindings given in
+   [RFC2744] is actually generic in spite of being specified in terms of
+   C concepts and syntax.
+
+</p><p class="rfcparagraph">   We generalize it as shown below, using the same pseudo-ASN.1 as is
+   used in RFC 2743.  Although the figure below is, indeed, a valid
+   ASN.1 [CCITT.X680] type, we do not provide a full ASN.1 module as
+   none is needed because no standard encoding of this structure is
+   needed -- the definition below is part of an abstract API, not part
+   of a protocol defining bits on the wire.  GSS-API mechanisms do need
+   to encode the contents of this structure, but that encoding will be
+   mechanism specific (see below).
+
+</p><p class="rfcparagraph">      GSS-CHANNEL-BINDINGS ::= SEQUENCE {
+              initiator-address-type  INTEGER,      -- See RFC2744
+              initiator-address       OCTET STRING, -- See RFC2744
+              acceptor-address-type   INTEGER,      -- See RFC2744
+              acceptor-address        OCTET STRING, -- See RFC2744
+              application-data        OCTET STRING  -- See RFC5056
+      }
+
+                Abstract GSS-API Channel Bindings Structure
+
+   The values for the address fields are described in [RFC2744].
+
+</p><p class="rfcparagraph">   New language-specific bindings of the GSS-API SHOULD specify a
+   language-specific formulation of this structure.
+
+</p><p class="rfcparagraph">   Where a language binding of the GSS-API models channel bindings as
+   OCTET STRINGs (or the language's equivalent), then the implementation
+   MUST assume that the given bindings correspond only to the
+   application-data field of GSS-CHANNEL-BINDINGS as shown above, rather
+   than some encoding of GSS-CHANNEL-BINDINGS.
+
+</p><p class="rfcparagraph">   As mentioned above, [RFC4121] describes an encoding of the above GSS-
+   CHANNEL-BINDINGS structure and then hashes that encoding.  Other GSS-
+   API mechanisms are free to use that encoding.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   Security Considerations</h2></a>
+
+   For general security considerations relating to channel bindings, see
+   [RFC5056].
+
+</p><p class="rfcparagraph">   Language bindings that use OCTET STRING (or equivalent) for channel
+   bindings will not support the use of network addresses as channel
+   bindings.  This should not cause any security problems, as the use of
+   network addresses as channel bindings is not generally secure.
+   However, it is important that "end-point channel bindings" not be
+   modeled as network addresses; otherwise, such channel bindings may
+   not be useable with all language bindings of the GSS-API.
+	<a name="section-6"><h2>6.   References</h2></a>
+
+	<a name="section-6.1"><h3>6.1   Normative References</h3></a>
+
+   [RFC2119]     Bradner, S., "Key words for use in RFCs to Indicate
+                 Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">   [RFC2743]     Linn, J., "Generic Security Service Application Program
+                 Interface Version 2, Update 1", RFC 2743, January 2000.
+
+</p><p class="rfcparagraph">   [RFC2744]     Wray, J., "Generic Security Service API Version 2 :
+                 C-bindings", RFC 2744, January 2000.
+
+</p><p class="rfcparagraph">   [RFC4121]     Zhu, L., Jaganathan, K., and S. Hartman, "The Kerberos
+                 Version 5 Generic Security Service Application Program
+                 Interface (GSS-API) Mechanism: Version 2", RFC 4121,
+                 July 2005.
+
+</p><p class="rfcparagraph">   [RFC5056]     Williams, N., "On the Use of Channel Bindings to Secure
+                 Channels", RFC 5056, November 2007.
+
+</p><p class="rfcparagraph">	<a name="section-6.2"><h3>6.2   Informative References</h3></a>
+
+   [CCITT.X680]  International Telephone and Telegraph Consultative
+                 Committee, "Abstract Syntax Notation One (ASN.1):
+                 Specification of basic notation", CCITT Recommendation
+                 X.680, July 2002.
+
+</p>Author's Address
+
+   Nicolas Williams
+   Sun Microsystems
+   5300 Riata Trace Ct
+   Austin, TX  78727
+   US
+
+   EMail: Nicolas.Williams@sun.com
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Williams                    Standards Track                     [Page 4]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

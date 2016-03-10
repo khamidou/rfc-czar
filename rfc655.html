@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph">TELNET OUTPUT FORMFEED DISPOSITION OPTION
+RFC 655, NIC 31158 (Oct. 25, 1974)
+D. Crocker (UCLA-NMC)
+Online file: [ISI]<DCROCKER>NAOFFD.TXT
+
+              TELNET OUTPUT FORMFEED DISPOSITION OPTION
+
+	<a name="section-1"><h2>1.  Command name and code</h2></a>
+   NAOFFD - 13
+      (Negotiate About Output Formfeed Disposition)
+
+	<a name="section-2"><h2>2.  Command meanings</h2></a>
+   In the following, we are discussing a simplex connection, as described in 
+   the NAOL and NAOP Telnet Options specifications.
+      IAC DO NAOFFD
+         The data sender requests or agrees to negotiate about output
+         formfeed disposition with the data receiver.  In the case
+         where agreement has been reached and in the absence of
+         further subnegotiations, the data receiver is assumed to be
+         handling output formfeeds.
+      IAC DON'T NAOFFD
+         The data sender refuses to negotiate about output formfeed
+         disposition with the data receiver, or demands a return to
+         the unnegotiated default mode.
+      IAC WILL NAOFFD
+         The data receiver requests or agrees to negotiate about
+         output formfeed disposition with the sender.  In the case
+         where agreement has been reached and in the absence of
+         further subnegotiations, the data receiver alone is assumed
+         to be handling output formfeeds.
+      IAC WON'T NAOFFD
+         The data receiver refuses to negotiate about output formfeed
+         disposition, or demands a return to the unnegotiated default
+         mode.
+      IAC SB NAOFFD DS <8-bit value> IAC SE
+         The data sender specifies, with the 8-bit value, which party
+         should handle formfeeds and what their disposition should be.
+         The code for DS is 1.
+      IAC SB NAOFFD DR <8-bit value> IAC SE
+         The data receiver specifies, with the 8-bit value, which
+         party should handle formfeeds and what their disposition
+         should be.  The code for DR is 0.
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.  Default</h2></a>
+   DON'T NAOFFD/WON'T NAOFFD
+      In the default absence of negotiations concerning which party, data 
+      sender or data receiver, is handling output formfeeds, neither party
+      is required to handle formfeeds and neither party is prohibited from 
+      handling them; but it is appropriate if at least the data receiver 
+      handles formfeed considerations, albeit primitively.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.  Motivation for the Option</h2></a>
+   Please refer to section 4 of the NAOL and of the NAOFFD Telnet option 
+   descriptions.
+
+	<a name="section-5"><h2>5.  Description of the Option</h2></a>
+   The data sender and the data receiver use the 8-bit value along with the
+   DS and DR SB commands as follows:
+
+</p>      8-bit value                      Meaning                       
+
+      0            Command sender suggests that he alone will handle  
+                   formfeeds, for the connection.                     
+      1 to 250     Command sender suggests that the other party alone 
+                   should handle formfeeds, but suggests that the
+                   indicated value be used.  The value is the number  
+                   of character-times to wait or number of NULs to    
+                   insert in the data stream before sending the next
+                   data character.
+      251          Command sender suggests that the other party alone 
+                   handle formfeeds, but suggests that each           
+                   occurrence of the character be replaced by         
+                   carriage-return/line-feed.                         
+      252          Command sender suggests that the other party alone 
+                   handle formfeeds, but suggests that they be        
+                   discarded.                                         
+      253          Command sender suggests that the other party alone 
+                   should handle formfeeds, but suggests that         
+                   formfeeds be simulated.                            
+      254          Command sender suggests that the other party alone 
+                   should handle output formfeeds but suggests        
+                   waiting for a character to be transmitted (on the  
+                   other simplex connection) before sending more      
+                   data. Note that, due to the assynchrony of the two 
+                   simplex connections, phase problems can occur with 
+                   this option.                                       
+      255          Command sender suggests that the other party alone 
+                   should handle output formfeeds and suggests        
+                   nothing about how it should be done. 
+
+   The guiding rules are that: 
+
+      1) if neither data receiver nor data sender wants to handle output 
+      formfeeds, the data receiver must do it, and
+      2) if both data receiver and data sender want to handle output
+      formfeeds, the data sender gets to do it. 
+
+   The reasoning for the former rule is that if neither wants to do
+   it, then the default in the NAOFFD option dominates.  If both want
+   to do it, the sender, who is presumed to have special knowledge
+   about the data, should be allowed to do it, taking into account any
+   suggestions the receiver may make.  Simulation is defined as the
+   replacement of the formfeed character by enough line-feeds (only)
+   to advance the paper (or line-pointer) to the top of the next page
+   (or to the top of the terminal screen).  Note that delays,
+   controlled by the data sender, must consist of NUL characters
+   inserted immediately after the formfeed character.  This is
+   necessary due to the assynchrony of network transmission.  As with
+   all option negotiations, neither party should suggest a state
+   already in effect except to refuse to negotiate; changes should be
+   acknowledged; and once refused, an option should not be resuggested
+   until "something changes" (e.g., another process starts).  At any
+   time, either party can disable further negotiation by giving the
+   appropriate WON'T NAOFFD or DON'T NAOFFD command.
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph">Internet Engineering Task Force (IETF)                           C. Shao
+Request for Comments: 7494                                       H. Deng
+Category: Standards Track                                   China Mobile
+ISSN: 2070-1721                                            R. Pazhyannur
+                                                           Cisco Systems
+                                                                 F. Bari
+                                                                    AT&T
+                                                                R. Zhang
+                                                           China Telecom
+                                                           S. Matsushima
+                                                        SoftBank Telecom
+                                                              April 2015
+
+
+    IEEE 802.11 Medium Access Control (MAC) Profile for Control and
+            Provisioning of Wireless Access Points (CAPWAP)
+
+<h2>Abstract</h2>
+
+   The Control and Provisioning of Wireless Access Points (CAPWAP)
+   protocol binding for IEEE 802.11 defines two Medium Access Control
+   (MAC) modes for IEEE 802.11 Wireless Transmission Points (WTPs):
+   Split and Local MAC.  In the Split MAC mode, the partitioning of
+   encryption/decryption functions is not clearly defined.  In the Split
+   MAC mode description, IEEE 802.11 encryption is specified as located
+   in either the Access Controller (AC) or the WTP, with no clear way
+   for the AC to inform the WTP of where the encryption functionality
+   should be located.  This leads to interoperability issues, especially
+   when the AC and WTP come from different vendors.  To prevent
+   interoperability issues, this specification defines an IEEE 802.11
+   MAC Profile message element in which each profile specifies an
+   unambiguous division of encryption functionality between the WTP and
+   AC.
+
+</p><p class="rfcparagraph">Status of This Memo
+
+   This is an Internet Standards Track document.
+
+</p><p class="rfcparagraph">   This document is a product of the Internet Engineering Task Force
+   (IETF).  It represents the consensus of the IETF community.  It has
+   received public review and has been approved for publication by the
+   Internet Engineering Steering Group (IESG).  Further information on
+   Internet Standards is available in Section 2 of RFC 5741.
+
+</p><p class="rfcparagraph">   Information about the current status of this document, any errata,
+   and how to provide feedback on it may be obtained at
+   http://www.rfc-editor.org/info/rfc7494.
+<h2>Copyright Notice</h2>
+
+   Copyright (c) 2015 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+</p><p class="rfcparagraph">   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (http://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
+   the Trust Legal Provisions and are provided without warranty as
+   described in the Simplified BSD License.
+
+</p><p class="rfcparagraph">Table of Contents
+<a href="#section-1" class="">1. Introduction  . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2" class="">2. IEEE MAC Profile Descriptions . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2.1" class="indent-1">2.1. Split MAC with WTP Encryption . . . . . . . . . . . . . </a><br>
+<a href="#section-2.2" class="indent-1">2.2. Split MAC with AC Encryption  . . . . . . . . . . . . . </a><br>
+<a href="#section-2.3" class="indent-1">2.3. IEEE 802.11 MAC Profile Frame Exchange  . . . . . . . . </a><br>
+<a href="#section-3" class="">3. MAC Profile Message Element Definitions . . . . . . . . . . </a><br>
+<a href="#section-3.1" class="indent-1">3.1. IEEE 802.11 Supported MAC Profiles  . . . . . . . . . . </a><br>
+<a href="#section-3.2" class="indent-1">3.2. IEEE 802.11 MAC Profile . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4" class="">4. Security Considerations . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-5" class="">5. IANA Considerations . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-6" class="">6. References  . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-6.1" class="indent-1">6.1. Normative References  . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-6.2" class="indent-1">6.2. Informative References  . . . . . . . . . . . . . . . . </a><br>
+   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  12
+   Contributors  . . . . . . . . . . . . . . . . . . . . . . . . . .  12
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  12
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   The CAPWAP protocol supports two MAC modes of operation: Split and
+   Local MAC, as described in [RFC5415] and [RFC5416].  However, there
+   are MAC functions that have not been clearly defined.  For example,
+   IEEE 802.11 [IEEE.802.11] encryption is specified as located in
+   either the AC or the WTP with no clear way to negotiate where it
+   should be located.  Because different vendors have different
+   definitions of the MAC mode, many MAC-layer functions are mapped
+   differently to either the WTP or the AC by different vendors.
+   Therefore, depending upon the vendor, the operators in their
+   deployments have to perform different configurations based on
+   implementation of the two modes by their vendor.  If there is no
+   clear specification, then operators will experience interoperability
+   issues with WTPs and ACs from different vendors.
+
+</p><p class="rfcparagraph">   Figure 1 from [RFC5416] illustrates how some functions are processed
+   in different places in the Local MAC and Split MAC mode.
+   Specifically, note that in the Split MAC mode, the IEEE 802.11
+   encryption/decryption is specified as WTP/AC, implying that it could
+   be at either location.  This is not an issue with Local MAC because
+   encryption is always at the WTP.
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |            Functions                  | Local MAC | Split MAC |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |             |Distribution Service     |  WTP/AC   |     AC    |
+   +             +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |             |Integration Service      |   WTP     |     AC    |
+   +             +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |             |Beacon Generation        |   WTP     |     WTP   |
+   +             +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |             |Probe Response Generation|   WTP     |     WTP   |
+   +             +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   | Function    |Power Mgmt/              |   WTP     |     WTP   |
+   +             |Packet Buffering         |           |           |
+   |             +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |             |Fragmentation/           |   WTP     |    WTP/AC |
+   +             |Defragmentation          |           |           |
+   |             +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |             |Assoc/Disassoc/Reassoc   |  WTP/AC   |     AC    |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |             |Classifying              |   WTP     |     AC    |
+   +   IEEE      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   | 802.11 QoS  |Scheduling               |   WTP     |    WTP/AC |
+   +             +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |             |Queuing                  |   WTP     |    WTP    |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |             |IEEE 802.1X/EAP          |   AC      |    AC     |
+   +   IEEE      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   | 802.11 RSN  |RSNA Key Management      |   AC      |    AC     |
+   +  (WPA2)     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |             |IEEE 802.11              |   WTP     |    WTP/AC |
+   +             |Encryption/Decryption    |           |           |
+   |-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+   Note:
+     RSN - Robust Security Network
+     RSNA - Robust Security Network Association
+     WPA2 - Wi-Fi Protected Access 2
+
+              Figure 1: Functions in Local MAC and Split MAC
+
+   To solve this problem, this specification introduces the IEEE 802.11
+   MAC Profile.  The IEEE 802.11 MAC Profile unambiguously specifies
+   where the various MAC functionalities should be located.
+	<a name="section-2"><h2>2.   IEEE MAC Profile Descriptions</h2></a>
+
+   A IEEE 802.11 MAC Profile refers to a description of how the MAC
+   functionality is split between the WTP and AC shown in Figure 1.
+
+</p><p class="rfcparagraph">	<a name="section-2.1"><h3>2.1   Split MAC with WTP Encryption</h3></a>
+
+   The functional split for the Split MAC with WTP encryption is
+   provided in Figure 2.  This profile is similar to the Split MAC
+   description in [RFC5416], except that IEEE 802.11 encryption/
+   decryption is at the WTP.  Note that fragmentation is always done at
+   the same entity as the encryption.  Consequently, in this profile
+   fragmentation/defragmentation is also done only at the WTP.  Note
+   that scheduling functionality is denoted as WTP/AC.  As explained in
+   [RFC5416], this means that the admission control component of IEEE
+   802.11 resides on the AC; the real-time scheduling and queuing
+   functions are on the WTP.
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |            Functions                  | Profile   |
+   |                                       |    0      |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |             |Distribution Service     |   AC      |
+   +             +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |             |Integration Service      |   AC      |
+   +             +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |             |Beacon Generation        |   WTP     |
+   +             +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |             |Probe Response Generation|   WTP     |
+   +             +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   | Function    |Power Mgmt/              |   WTP     |
+   +             |Packet Buffering        |           |
+   |             +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |             |Fragmentation/           |   WTP     |
+   +             |Defragmentation          |           |
+   |             +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |             |Assoc/Disassoc/Reassoc   |   AC      |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |             |Classifying              |   AC      |
+   +   IEEE      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   | 802.11 QoS  |Scheduling               |   WTP/AC  |
+   +             +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |             |Queuing                  |   WTP     |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |             |IEEE 802.1X/EAP          |   AC      |
+   +   IEEE      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   | 802.11 RSN  |RSNA Key Management      |   AC      |
+   +  (WPA2)     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |             |IEEE 802.11              |   WTP     |
+   +             |Encryption/Decryption    |           |
+   |-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+   Note:
+   EAP - Extensible Authentication Protocol
+
+           Figure 2: Functions in Split MAC with WTP Encryption
+	<a name="section-2.2"><h3>2.2   Split MAC with AC Encryption</h3></a>
+
+   The functional split for the Split MAC with AC encryption is provided
+   in Figure 3.  This profile is similar to the Split MAC in [RFC5416],
+   except that IEEE 802.11 encryption/decryption is at the AC.  Since
+   fragmentation is always done at the same entity as the encryption, in
+   this profile, AC does fragmentation/defragmentation.
+
+</p><p class="rfcparagraph">   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |            Functions                  | Profile   |
+   |                                       |    1      |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |             |Distribution Service     |   AC      |
+   +             +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |             |Integration Service      |   AC      |
+   +             +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |             |Beacon Generation        |   WTP     |
+   +             +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |             |Probe Response Generation|   WTP     |
+   +             +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   | Function    |Power Mgmt/              |   WTP     |
+   +             |Packet Buffering         |           |
+   |             +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |             |Fragmentation/           |   AC      |
+   +             |Defragmentation          |           |
+   |             +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |             |Assoc/Disassoc/Reassoc   |   AC      |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |             |Classifying              |   AC      |
+   +   IEEE      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   | 802.11 QoS  |Scheduling               |   WTP     |
+   +             +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |             |Queuing                  |   WTP     |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |             |IEEE 802.1X/EAP          |   AC      |
+   +   IEEE      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   | 802.11 RSN  |RSNA Key Management      |   AC      |
+   +  (WPA2)     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |             |IEEE 802.11              |   AC      |
+   +             |Encryption/Decryption    |           |
+   |-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+            Figure 3: Functions in Split MAC with AC encryption
+	<a name="section-2.3"><h3>2.3   IEEE 802.11 MAC Profile Frame Exchange</h3></a>
+
+   An example of message exchange using the IEEE 802.11 MAC Profile
+   message element is shown in Figure 4.  The WTP informs the AC of the
+   various MAC Profiles it supports.  This happens in either a Discovery
+   Request message or the Join Request message.  The AC determines the
+   appropriate profile and configures the WTP with the profile while
+   configuring the WLAN.
+
+</p><p class="rfcparagraph">       +-+-+-+-+-+-+                             +-+-+-+-+-+-+
+       |    WTP    |                             |    AC     |
+       +-+-+-+-+-+-+                             +-+-+-+-+-+-+
+             |Join Request[Supported IEEE 802.11       |
+             |       MAC Profiles   ]                  |
+             |---------------------------------------->|
+             |                                         |
+             |Join Response                            |
+             |<----------------------------------------|
+             |                                         |
+             |IEEE 802.11 WLAN Config. Request [       |
+             | IEEE 802.11 Add WLAN,                   |
+             | IEEE 802.11 MAC Profile                 |
+             |   ]                                     |
+             |<----------------------------------------|
+             |                                         |
+             |IEEE 802.11 WLAN Config. Response        |
+             |---------------------------------------->|
+
+          Figure 4: Message Exchange for Negotiating MAC Profiles
+
+	<a name="section-3"><h2>3.   MAC Profile Message Element Definitions</h2></a>
+
+	<a name="section-3.1"><h3>3.1   IEEE 802.11 Supported MAC Profiles</h3></a>
+
+   The IEEE 802.11 Supported MAC Profile message element allows the WTP
+   to communicate the profiles it supports.  The Discovery Request
+   message, Primary Discovery Request message, and Join Request message
+   may include one such message element.
+
+</p><p class="rfcparagraph">           0               1               2               3
+           0 1 2 3 4 5 6 7 0 1 2 3 4 5 6 7 0 1 2 3 4 5 6 7 0
+          +=+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+          | Num_Profiles  |  Profile_1    |   Profile_[2..N]..
+          +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+
+               Figure 5: IEEE 802.11 Supported MAC Profiles
+
+   o  Type: 1060 for IEEE 802.11 Supported MAC Profiles
+   o  Num_Profiles >=1: This refers to the number of profiles present in
+      this message element.  There must be at least one profile.
+
+</p><p class="rfcparagraph">   o  Profile: Each profile is identified by a value specified in
+      Section 3.2.
+
+</p><p class="rfcparagraph">	<a name="section-3.2"><h3>3.2   IEEE 802.11 MAC Profile</h3></a>
+
+   The IEEE 802.11 MAC Profile message element allows the AC to select a
+   profile.  This message element may be provided along with the IEEE
+   802.11 ADD WLAN message element while configuring a WLAN on the WTP.
+
+</p><p class="rfcparagraph">           0 1 2 3 4 5 6 7
+          +=+-+-+-+-+-+-+-+
+          |  Profile      |
+          +-+-+-+-+-+-+-+-+
+
+                     Figure 6: IEEE 802.11 MAC Profile
+
+   o  Type: 1061 for IEEE 802.11 MAC Profile
+
+   o  Profile: The profile is identified by a value as given below
+
+      *  0: This refers to the IEEE 802.11 Split MAC Profile with WTP
+         encryption
+
+      *  1: This refers to the IEEE 802.11 Split MAC Profile with AC
+         encryption
+
+	<a name="section-4"><h2>4.   Security Considerations</h2></a>
+
+   This document does not introduce any new security risks compared to
+   [RFC5416].  The negotiation messages between the WTP and AC have
+   origin authentication and data integrity.  As a result, an attacker
+   cannot interfere with the messages to force a less-secure mode
+   choice.  The security considerations described in [RFC5416] apply
+   here as well.
+	<a name="section-5"><h2>5.   IANA Considerations</h2></a>
+
+   The following IANA actions have been completed.
+
+</p><p class="rfcparagraph">   o  This specification defines two new message elements: IEEE 802.11
+      Supported MAC Profiles (described in Section 3.1) and the IEEE
+      802.11 MAC Profile (described in Section 3.2).  These elements
+      have been registered in the existing "CAPWAP Message Element Type"
+      registry, defined in [RFC5415].
+
+</p><p class="rfcparagraph">              CAPWAP Protocol Message Element                Type Value
+              IEEE 802.11 Supported MAC Profiles              1060
+              IEEE 802.11 MAC Profile                         1061
+
+   o  The IEEE 802.11 Supported MAC Profiles message element and IEEE
+      802.11 MAC Profile message element include a Profile field (as
+      defined in Section 3.2).  The Profile field in the IEEE 802.11
+      Supported MAC Profiles denotes the MAC Profiles supported by the
+      WTP.  The Profile field in the IEEE 802.11 MAC Profile denotes the
+      MAC Profile assigned to the WTP.  The namespace for the field is 8
+      bits (0-255).  This specification defines two values: zero (0) and<br>
+      one (1) as described below.  The remaining values (2-255) are<br>
+      controlled and maintained by IANA, and the registration procedure
+      is Expert Review [RFC5226].  IANA has created a new subregistry
+      called "IEEE 802.11 Split MAC Profile" under the existing registry
+      "Control And Provisioning of Wireless Access Points (CAPWAP)
+      Parameters".  The registry format is given below.
+
+</p><p class="rfcparagraph">               Profile                             Type Value  Reference
+               Split MAC with WTP encryption       0           RFC 7494
+               Split MAC with AC encryption        1           RFC 7494
+	<a name="section-6"><h2>6.   References</h2></a>
+
+	<a name="section-6.1"><h3>6.1   Normative References</h3></a>
+
+   [IEEE.802.11]
+              IEEE, "IEEE Standard for Information Technology -
+              Telecommunications and information exchange between
+              systems - Local and metropolitan area networks - Specific
+              requirements Part 11: Wireless LAN Medium Access Control
+              (MAC) and Physical Layer (PHY) Specifications", IEEE Std
+              802.11-2012, March 2012,
+              <http://standards.ieee.org/about/get/802/802.11.html>.
+
+</p><p class="rfcparagraph">   [RFC5415]  Calhoun, P., Ed., Montemurro, M., Ed., and D. Stanley,
+              Ed., "Control And Provisioning of Wireless Access Points
+              (CAPWAP) Protocol Specification", RFC 5415, March 2009,
+              <http://www.rfc-editor.org/info/rfc5415>.
+
+</p><p class="rfcparagraph">   [RFC5416]  Calhoun, P., Ed., Montemurro, M., Ed., and D. Stanley,
+              Ed., "Control and Provisioning of Wireless Access Points
+              (CAPWAP) Protocol Binding for IEEE 802.11", RFC 5416,
+              March 2009, <http://www.rfc-editor.org/info/rfc5416>.
+
+</p><p class="rfcparagraph">	<a name="section-6.2"><h3>6.2   Informative References</h3></a>
+
+   [RFC5226]  Narten, T. and H. Alvestrand, "Guidelines for Writing an
+              IANA Considerations Section in RFCs", BCP 26, RFC 5226,
+              May 2008, <http://www.rfc-editor.org/info/rfc5226>.
+Acknowledgments
+
+   The authors are grateful for extremely valuable suggestions from
+   Dorothy Stanley in developing this specification.
+
+</p><p class="rfcparagraph">   Guidance from the management team -- Melinda Shore, Scott Bradner,
+   Chris Liljenstolpe, Benoit Claise, Joel Jaeggli, and Dan Romascanu --
+   is highly appreciated.
+
+</p>Contributors
+
+   Yifan Chen <chenyifan@chinamobile.com>
+
+   Naibao Zhou <zhounaibao@chinamobile.com>
+
+Authors' Addresses
+
+   Chunju Shao
+   China Mobile
+   No.32 Xuanwumen West Street
+   Beijing  100053
+   China
+
+   EMail: shaochunju@chinamobile.com
+
+
+   Hui Deng
+   China Mobile
+   No.32 Xuanwumen West Street
+   Beijing  100053
+   China
+
+   EMail: denghui@chinamobile.com
+
+
+   Rajesh S. Pazhyannur
+   Cisco Systems
+   170 West Tasman Drive
+   San Jose, CA 95134
+   United States
+
+   EMail: rpazhyan@cisco.com
+   Farooq Bari
+   AT&T
+   7277 164th Ave NE
+   Redmond, WA 98052
+   United States
+
+   EMail: farooq.bari@att.com
+
+
+   Rong Zhang
+   China Telecom
+   No.109 Zhongshandadao avenue
+   Guangzhou  510630
+   China
+
+   EMail: zhangr@gsta.com
+
+
+   Satoru Matsushima
+   SoftBank Telecom
+   1-9-1 Higashi-Shinbashi, Munato-ku
+   Tokyo
+   Japan
+
+   EMail: satoru.matsushima@g.softbank.co.jp
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Shao, et al.                 Standards Track                   [Page 13]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

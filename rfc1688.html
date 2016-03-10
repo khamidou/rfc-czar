@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                         W. Simpson<br>Request for Comments: 1688                                    Daydreamer<br>Category: Informational                                      August 1994<br><br></p>
+                  <h1>
+                      IPng Mobility Considerations</h1>
+                  <h2>Status of this Memo</h2>
+
+   This memo provides information for the Internet community.  This memo
+   does not specify an Internet standard of any kind.  Distribution of
+   this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This document was submitted to the IPng Area in response to RFC 1550.
+   Publication of this document does not imply acceptance by the IPng
+   Area of any ideas expressed within.  Comments should be submitted to
+   the big-internet@munnari.oz.au mailing list.  This RFC specifies
+   criteria related to mobility for consideration in design and
+   selection of the Next Generation of IP.
+
+</p><p class="rfcparagraph">Table of Contents
+<a href="#section-1" class="">1. Introduction .........................................</a><br>
+<a href="#section-2" class="">2. Addressing ...........................................</a><br>
+<a href="#section-2.1" class="indent-1">2.1 Ownership ......................................</a><br>
+<a href="#section-2.2" class="indent-1">2.2 Topology .......................................</a><br>
+<a href="#section-2.3" class="indent-1">2.3 Manufacturer ...................................</a><br>
+<a href="#section-2.4" class="indent-1">2.4 Numbering ......................................</a><br>
+<a href="#section-2.5" class="indent-1">2.5 Configuration ..................................</a><br>
+<a href="#section-3" class="">3. Communication ........................................</a><br>
+<a href="#section-3.1" class="indent-1">3.1 Topological Changes ............................</a><br>
+<a href="#section-3.2" class="indent-1">3.2 Routing Updates ................................</a><br>
+<a href="#section-3.3" class="indent-1">3.3 Path Optimization ..............................</a><br>
+<a href="#section-3.4" class="indent-1">3.4 At Home ........................................</a><br>
+<a href="#section-3.5" class="indent-1">3.5 Away From Home .................................</a><br>
+<a href="#section-4" class="">4. Security .............................................</a><br>
+<a href="#section-4.1" class="indent-1">4.1 Authentication .................................</a><br>
+<a href="#section-4.2" class="indent-1">4.2 Anonymity ......................................</a><br>
+<a href="#section-4.3" class="indent-1">4.3 Location Privacy ...............................</a><br>
+<a href="#section-4.4" class="indent-1">4.4 Content Privacy ................................</a><br>
+<a href="#section-5" class="">5. Bandwidth ............................................</a><br>
+<a href="#section-5.1" class="indent-1">5.1 Administrative Messages ........................</a><br>
+<a href="#section-5.2" class="indent-1">5.2 Response Time ..................................</a><br>
+<a href="#section-5.3" class="indent-1">5.3 Header Prediction ..............................</a><br>
+<a href="#section-6" class="">6. Processing ...........................................</a><br>
+<a href="#section-6.1" class="indent-1">6.1 Fixed Location .................................</a><br>
+<a href="#section-6.2" class="indent-1">6.2 Simple Fields ..................................</a><br>
+<a href="#section-6.3" class="indent-1">6.3 Simple Tests ...................................</a><br>
+<a href="#section-6.4" class="indent-1">6.4 Type, Length, Value ............................</a><br>
+   Acknowledgements .............................................    9
+   Security Considerations ......................................    9
+   Author's Address .............................................    9
+
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   Current versions of the Internet Protocol make an implicit assumption
+   that a node's point of attachment remains fixed.  Datagrams are sent
+   to a node based on the location information contained in the node's
+   IP address.
+
+</p><p class="rfcparagraph">   If a node moves while keeping its IP address unchanged, its IP
+   network number will not reflect its new point of attachment.  The
+   routing protocols will not be able to route datagrams to it
+   correctly.
+
+</p><p class="rfcparagraph">   A number of considerations arise for routing these datagrams to a
+   Mobile Node.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Addressing</h2></a>
+
+   Each Mobile Node must have at least one Home-Address which identifies
+   it to other nodes.  This Home-Address must be globally unique.
+
+</p><p class="rfcparagraph">	<a name="section-2.1"><h3>2.1   Ownership</h3></a>
+
+   The presence of ownership information in the Home-Address would be
+   beneficial.  A Mobile Node will be assigned a Home-Address by the
+   organization that owns the machine, and will be able to use that
+   Home-Address regardless of the current point of attachment.
+
+</p><p class="rfcparagraph">   The ownership information must be organized in such a fashion to
+   facilitate "inverse" lookup in the Domain Name Service, and other
+   future services.
+
+</p><p class="rfcparagraph">   Ownership information could be used by other nodes to ascertain the
+   current topological location of the Mobile Node.
+
+</p><p class="rfcparagraph">   Ownership information could also be used for generation of accounting
+   records.
+	<a name="section-2.2"><h3>2.2   Topology</h3></a>
+
+   There is no requirement that the Home-Address contain topological
+   information.  Indeed, by the very nature of mobility, any such
+   topological information is irrelevant.
+
+</p><p class="rfcparagraph">   Topological information in the Home-Address must not hinder mobility,
+   whether by prevention of relocation, or by wasting bandwidth or
+   processing efficiency.
+
+</p><p class="rfcparagraph">	<a name="section-2.3"><h3>2.3   Manufacturer</h3></a>
+
+   There is no requirement that the Home-Address contain manufacturer
+   information.
+
+</p><p class="rfcparagraph">   Manufacturer information in the Home-Address must not hinder
+   mobility, whether by prevention of relocation, or by wasting
+   bandwidth or processing efficiency.
+
+</p><p class="rfcparagraph">	<a name="section-2.4"><h3>2.4   Numbering</h3></a>
+
+   The number of mobile nodes is expected to be constrained by the
+   population of users within the lifetime of the IPng protocol.  The
+   maximum world-wide sustainable population is estimated as 16e9,
+   although during the lifetime of IPng the population is not expected
+   to exceed 8e9.
+
+</p><p class="rfcparagraph">   Each user is assumed to be mobile, and to have a maximum combined
+   personal mobile and home network(s) on the order of 4e3 nodes.
+
+</p><p class="rfcparagraph">   The expectation is that only 46 bits will be needed to densely number
+   all mobile and home nodes.
+
+</p><p class="rfcparagraph">   The size of addressing elements is also constrained by bandwidth
+   efficiency and processing efficiency, as described later.
+
+</p><p class="rfcparagraph">	<a name="section-2.5"><h3>2.5   Configuration</h3></a>
+
+   Since the typical user would be unlikely to be aware of or willing
+   and able to maintain 4e3 nodes, the assignment of Home-Addresses must
+   be automatically configurable.  Registration of the nodes must be
+   dynamic and transparent to the user, both at home and away from home.
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   Communication</h2></a>
+
+   A Mobile Node must continue to be capable of communicating directly
+   with other nodes which do not implement mobility functions.
+   No protocol enhancements are required in hosts or routers that are
+   not serving any of the mobility functions.  Similarly, no additional
+   protocols are needed by a router (that is not acting as a Home Agent
+   or a Foreign Agent) to route datagrams to or from a Mobile Node.
+
+</p><p class="rfcparagraph">   A Mobile Node using its Home-Address must be able to communicate with
+   other nodes after having been disconnected from the Internet, and
+   then reconnected at a different point of attachment.
+
+</p><p class="rfcparagraph">   A Mobile Node using its Home-Address must be able to communicate with
+   other nodes while roaming between different points of attachment,
+   without loss of transport connections.
+
+</p><p class="rfcparagraph">	<a name="section-3.1"><h3>3.1   Topological Changes</h3></a>
+
+   In order that transport connections be maintained while roaming,
+   topological changes must not affect transport connections.
+
+</p><p class="rfcparagraph">   For correspondent nodes which do not implement mobility functions,
+   topological changes should not be communicated to the correspondent.
+
+</p><p class="rfcparagraph">   For correspondent nodes which implement mobility functions, the
+   correspondent should be capable of determining topological changes.
+
+</p><p class="rfcparagraph">   Topological change information must be capable of insertion and
+   removal by routers in the datagram path, as well as by the
+   correspondent and Mobile Node.
+
+</p><p class="rfcparagraph">	<a name="section-3.2"><h3>3.2   Routing Updates</h3></a>
+
+   Mobile Nodes are expected to be able to change their point of
+   attachment no more frequently than once per second.
+
+</p><p class="rfcparagraph">   Changes in topology which occur more frequently must be handled at
+   the link layer transparently to the internetwork layer.  It is
+   further noted that engineering margins may require the link layer to
+   handle all changes at a frequency in the neighborhood of 10 seconds.
+
+</p><p class="rfcparagraph">   Changes in topology which occur less frequently must be immediately
+   reflected in the mobility updates.  This may preclude the use of the
+   Domain Name Service as the repository of mobility topological
+   information.
+
+</p><p class="rfcparagraph">   It must be noted that global routing updates do not operate at this
+   frequency.  As old topological information may be obsoleted faster
+   than global routing updates, access to the repository of mobility
+   topological information must be independent of prior topological
+   information.
+   The mobility specific repository should use ownership information in
+   the Home-Address for access to the repository.
+
+</p><p class="rfcparagraph">	<a name="section-3.3"><h3>3.3   Path Optimization</h3></a>
+
+   Optimization of the path from a correspondent to a mobile node is not
+   required.  However, such optimization is desirable.
+
+</p><p class="rfcparagraph">   For correspondent nodes which implement mobility functions, the
+   correspondent should be capable of determining the optimal path.
+
+</p><p class="rfcparagraph">   The optimization mechanism is also constrained by security, bandwidth
+   efficiency and processing efficiency, as described later.
+
+</p><p class="rfcparagraph">	<a name="section-3.4"><h3>3.4   At Home</h3></a>
+
+   Mobile Nodes do not require special "virtual" home network addresses.
+   The assumption that extra addresses or multiple routers are available
+   is unwarranted in small networks.
+
+</p><p class="rfcparagraph">   Mobile Nodes must operate without special assistance from routers in
+   order to communicate directly with other nodes on the home subnetwork
+   link.
+
+</p><p class="rfcparagraph">	<a name="section-3.5"><h3>3.5   Away From Home</h3></a>
+
+   When a router is present, and the correspondent does not implement
+   mobility functions, the router must be capable of redirecting the
+   correspondent to communicate directly with the Mobile Node.
+
+</p><p class="rfcparagraph">   When no router is present, Mobile Nodes must be capable of
+   communicating directly with other nodes on the same link.
+
+</p><p class="rfcparagraph">   Mobility must not create an environment which is less secure than the
+   current Internet.
+
+</p><p class="rfcparagraph">   Changes in topology must not affect internode security mechanisms.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   Security</h2></a>
+
+	<a name="section-4.1"><h3>4.1   Authentication</h3></a>
+
+   Mobility registration messages must be authenticated between the home
+   topological repository and Mobile Node.
+
+</p><p class="rfcparagraph">   When the correspondent implements mobility functions, redirection or
+   path optimization must be authenticated between the correspondent and
+   Mobile Node.
+	<a name="section-4.2"><h3>4.2   Anonymity</h3></a>
+
+   The capability to attach to a foreign administrative domain without
+   the awareness of the foreign administration is not prohibited.
+   However, any mobility mechanism must provide the ability to prevent
+   such attachment.
+
+</p><p class="rfcparagraph">	<a name="section-4.3"><h3>4.3   Location Privacy</h3></a>
+
+   The capability to attach to a foreign administrative domain without
+   the awareness of correspondents is not prohibited.  However, any
+   mobility mechanism must provide the ability for the home
+   administration to trace the current path to the point of attachment.
+
+</p><p class="rfcparagraph">	<a name="section-4.4"><h3>4.4   Content Privacy</h3></a>
+
+   Security mechanisms which provide content privacy must not obscure or
+   have a dependency on the topological location of Mobile Nodes.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   Bandwidth</h2></a>
+
+   Mobility must operate in the current link environment, and must not
+   be dependent on bandwidth improvements.  The Mobile Node's directly
+   attached link is likely to be bandwidth limited.
+
+</p><p class="rfcparagraph">   In particular, radio frequency spectrum is already a scarce
+   commodity.  Higher bandwidth links are likely to continue to be
+   scarce in the mobile environment.
+
+</p><p class="rfcparagraph">   Current applications of mobility using radio links include HF links
+   which are subject to serious fading and noise constraints, VHF and
+   UHF line of sight radio between ships or field sites, and UHF
+   Satellite Communications links.
+
+</p><p class="rfcparagraph">   The HF radio bandwidth is fixed at 1200 or 2400 bps by international
+   treaty, statute, and custom, and is not likely to change.
+
+</p><p class="rfcparagraph">   The European standard for cellular radio is 2400 bps GSM.
+
+</p><p class="rfcparagraph">   The most prevalent deployed analog cellular and land-line modulation
+   used by mobile nodes is 2400 bps.
+
+</p><p class="rfcparagraph">   Current digital cellular deployment is 19,200 bps CDPD shared among
+   many users.  At early installations, under light loads, effective FTP
+   throughput has been observed as low as 200 bps.
+
+</p><p class="rfcparagraph">   Future digital cellular deployment is 9,600 and 14,400 bps CDMA,
+   which is shared between voice and data on a per user basis.
+   Effective FTP throughput has been measured as low as 7,200 bps.
+
+</p><p class="rfcparagraph">   Future Personal Communications Services (PCS) will also have
+   relatively little bandwidth.  In industrialized nations, the
+   bandwidth available to each user is constrained by the density of
+   deployment, and is commensurate with planned digital cellular
+   deployment.
+
+</p><p class="rfcparagraph">   It appears likely that satellite-based PCS will be widely deployed
+   for basic telephony communications in many newly-industrialized and
+   lesser-developed countries.  There is already significant PCS
+   interest in East and SouthEast Asia, India, and South America.
+
+</p><p class="rfcparagraph">   Van Jacobson header prediction is widely used, and essential to
+   making the use of such links viable.
+
+</p><p class="rfcparagraph">	<a name="section-5.1"><h3>5.1   Administrative Messages</h3></a>
+
+   The number of administrative mobility messages sent or received by
+   the Mobile Node must be limited to as few as possible.  In order to
+   meet the frequency requirement of changing point of attachment once
+   per second, registration of changes must not require more than a
+   single request and reply.
+
+</p><p class="rfcparagraph">   The size of administrative mobility messages must be kept as short as
+   possible.  In order to meet the frequency requirement of changing
+   point of attachment once per second, the registration messages must
+   not total more than 120 bytes for a complete transaction, including
+   link and internet headers.
+
+</p><p class="rfcparagraph">	<a name="section-5.2"><h3>5.2   Response Time</h3></a>
+
+   For most mobile links in current use, the typical TCP/IPv4 datagram
+   overhead of 40 bytes is too large to maintain an acceptable typing
+   response of 200 milliseconds round trip time.
+
+</p><p class="rfcparagraph">   Therefore, the criteria for IPng mobility is that the response time
+   not be perceptably worse than IPv4.
+
+</p><p class="rfcparagraph">   This allows no more than 6 bytes of additional overhead per datagram
+   to be added by IPng.
+
+</p><p class="rfcparagraph">      This was a primary concern in the design of mobility forwarding
+      headers.  Larger headers were rejected outright, and negotiation
+      is provided for smaller headers than the default method.
+      Topological headers are removed by the Foreign Agent prior to
+      datagram transmission over the slower link to the Mobile Node,
+      which also aids header prediction, as described below.
+	<a name="section-5.3"><h3>5.3   Header Prediction</h3></a>
+
+   Header prediction can be useful in reducing bandwidth usage on
+   multiple related datagrams.  It requires a point-to-point peer
+   relationship between nodes, so that a header history can be
+   maintained between the peers.
+
+</p><p class="rfcparagraph">   Header prediction is less effective in mobile environments, as the
+   header history is lost each time a Mobile Node changes its point of
+   attachment.  The new Foreign Agent will not have the same history as
+   the previous Agent.
+
+</p><p class="rfcparagraph">   In order for header prediction to operate successfully, changing
+   topological information must be removed from datagram overhead prior
+   to transmission of the datagram on any final hop's directly attached
+   link.  This applies to both the Mobile Node peering with a Foreign
+   Agent, and also the final link to a Correspondent.  Otherwise, header
+   prediction cannot be relied upon to improve bandwidth utilization on
+   low-speed Mobile and Correspondent links.
+
+</p><p class="rfcparagraph">   Since the changing topological information cannot be removed in the
+   forwarding path of the datagram, header prediction will also be
+   affected at any other pair of routers in the datagram path.  Each
+   time that a Mobile Node moves, the topological portion of the header
+   will change, and header history used at those routers will be
+   updated.  Unless topological information is limited to as few headers
+   as possible, this may render header prediction ineffective as more
+   Mobile Nodes are deployed.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.   Processing</h2></a>
+
+   Mobility must operate in the current processor environment, and must
+   not be dependent on hardware improvements.
+
+</p><p class="rfcparagraph">   Common hardware implementations of Mobile Nodes include lower speed
+   processors, and highly integrated components.  These are not readily
+   upgradable.
+
+</p><p class="rfcparagraph">   The most prevalent mobile platform is a low speed i86, i286 or i386.
+
+</p><p class="rfcparagraph">   The most common ASIC processor is a low speed i186.
+
+</p><p class="rfcparagraph">	<a name="section-6.1"><h3>6.1   Fixed Location</h3></a>
+
+   The processing limitations require that datagram header fields which
+   are frequently examined by Mobile Nodes, or used for datagram
+   forwarding to or from Mobile Nodes, are in a fixed location and do
+   not require lengths and offsets.
+      Varied number of fields was explicitly rejected in the design of
+      mobility registration and forwarding headers.
+
+</p><p class="rfcparagraph">	<a name="section-6.2"><h3>6.2   Simple Fields</h3></a>
+
+   The processing limitations require that datagram header fields which
+   are frequently examined by Mobile Nodes, or used for datagram
+   forwarding to or from Mobile Nodes, are simple and fixed size.
+
+</p><p class="rfcparagraph">      Varied length of fields was explicitly rejected in the design of
+      mobility forwarding headers.
+
+</p><p class="rfcparagraph">	<a name="section-6.3"><h3>6.3   Simple Tests</h3></a>
+
+   Because the most prevalent processors are "little-endian", while
+   network protocols are in practice "big-endian", the field processing
+   must primarily use simple equality tests, rather than variable shifts
+   and prefix matches.
+
+</p><p class="rfcparagraph">	<a name="section-6.4"><h3>6.4   Type, Length, Value</h3></a>
+
+   Fields which are not frequently examined, whether due to infrequent
+   transmission or content that is not relevant in every message, must
+   be of the Type, Length, Value format.
+
+</p><p class="rfcparagraph">Acknowledgements
+
+   This compilation is primarily based on the work in progress of the
+   IETF Mobile IP Working Group.
+
+</p><p class="rfcparagraph">Security Considerations
+
+   Security issues are discussed in section 4.
+
+</p><p class="rfcparagraph">Author's Address
+
+   Questions about this memo can also be directed to:
+
+</p>   William Allen Simpson
+   Daydreamer
+   Computer Systems Consulting Services
+   1384 Fontaine
+   Madison Heights, Michigan  48071
+
+   EMail: Bill.Simpson@um.cc.umich.edu or
+          bsimpson@MorningStar.com
+
+
+
+
+
+Simpson                                                         [Page 9]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

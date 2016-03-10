@@ -1,0 +1,2315 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                       T. George<br>Request for Comments: 4165                                B. Bidulock<br>Category: Standards Track                                     OpenSS7<br>                                                             R. Dantu<br>                                            University of North Texas<br>                                                      H. Schwarzbauer<br>                                                              Siemens<br>                                                         K. Morneault<br>                                                        Cisco Systems<br>                                                       September 2005<br><br></p>
+                  <h1>
+       Signaling System 7 (SS7) Message Transfer Part 2 (MTP2) -
+               User Peer-to-Peer Adaptation Layer (M2PA)</h1>
+                  <h2>Status of This Memo</h2>
+
+   This document specifies an Internet standards track protocol for the
+   Internet community, and requests discussion and suggestions for
+   improvements.  Please refer to the current edition of the "Internet
+   Official Protocol Standards" (STD 1) for the standardization state
+   and status of this protocol.  Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (2005).<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This document defines a protocol supporting the transport of
+   Signaling System Number 7 (SS7) Message Transfer Part (MTP) Level 3
+   signaling messages over Internet Protocol (IP) using the services of
+   the Stream Control Transmission Protocol (SCTP).  This protocol would
+   be used between SS7 Signaling Points using the MTP Level 3 protocol.
+   The SS7 Signaling Points may also use standard SS7 links using the
+   SS7 MTP Level 2 to provide transport of MTP Level 3 signaling
+   messages.  The protocol operates in a manner similar to MTP Level 2
+   so as to provide peer-to-peer communication between SS7 endpoints.
+<h2>Table of Contents</h2>
+<a href="#section-1" class="">1. Introduction ...................................................</a><br>
+<a href="#section-1.1" class="indent-1">1.1. Scope .....................................................</a><br>
+<a href="#section-1.2" class="indent-1">1.2. Terminology ...............................................</a><br>
+<a href="#section-1.3" class="indent-1">1.3. Abbreviations .............................................</a><br>
+<a href="#section-1.4" class="indent-1">1.4. Conventions ...............................................</a><br>
+<a href="#section-1.5" class="indent-1">1.5. Signaling Transport Architecture ..........................</a><br>
+<a href="#section-1.6" class="indent-1">1.6. Services Provided by M2PA .................................</a><br>
+<a href="#section-1.7" class="indent-1">1.7. Functions Provided by M2PA ................................</a><br>
+<a href="#section-1.8" class="indent-1">1.8. Definition of the M2PA Boundaries ........................</a><br>
+<a href="#section-1.9" class="indent-1">1.9. Differences Between M2PA and M2UA ........................</a><br>
+<a href="#section-2" class="">2. Protocol Elements .............................................</a><br>
+<a href="#section-2.1" class="indent-1">2.1. Common Message Header ....................................</a><br>
+<a href="#section-2.2" class="indent-1">2.2. M2PA Header ..............................................</a><br>
+<a href="#section-2.3" class="indent-1">2.3. M2PA Messages ............................................</a><br>
+<a href="#section-3" class="">3. State Control .................................................</a><br>
+<a href="#section-3.1" class="indent-1">3.1. SCTP Association State Control ...........................</a><br>
+<a href="#section-3.2" class="indent-1">3.2. M2PA Link State Control ..................................</a><br>
+<a href="#section-4" class="">4. Procedures ....................................................</a><br>
+<a href="#section-4.1" class="indent-1">4.1. Procedures to Support MTP2 Features ......................</a><br>
+<a href="#section-4.2" class="indent-1">4.2. Procedures to Support the MTP3/MTP2 Interface ............</a><br>
+<a href="#section-4.3" class="indent-1">4.3. SCTP Considerations ......................................</a><br>
+<a href="#section-5" class="">5. Examples of M2PA Procedures ...................................</a><br>
+<a href="#section-5.1" class="indent-1">5.1. Link Initialization (Alignment) ..........................</a><br>
+<a href="#section-5.2" class="indent-1">5.2. Message Transmission and Reception .......................</a><br>
+<a href="#section-5.3" class="indent-1">5.3. Link Status Indication ...................................</a><br>
+<a href="#section-5.4" class="indent-1">5.4. Link Status Message (Processor Outage) ...................</a><br>
+<a href="#section-5.5" class="indent-1">5.5. Level 2 Flow Control .....................................</a><br>
+<a href="#section-5.6" class="indent-1">5.6. MTP3 Signaling Link Congestion ...........................</a><br>
+<a href="#section-5.7" class="indent-1">5.7. Link Deactivation ........................................</a><br>
+<a href="#section-5.8" class="indent-1">5.8. Link Changeover ..........................................</a><br>
+<a href="#section-6" class="">6. Security Considerations .......................................</a><br>
+<a href="#section-7" class="">7. IANA Considerations ...........................................</a><br>
+<a href="#section-7.1" class="indent-1">7.1. SCTP Payload Protocol Identifier .........................</a><br>
+<a href="#section-7.2" class="indent-1">7.2. M2PA Protocol Extensions .................................</a><br>
+<a href="#section-8" class="">8. Acknowledgements ..............................................</a><br>
+<a href="#section-9" class="">9. References ....................................................</a><br>
+<a href="#section-9.1" class="indent-1">9.1. Normative References .....................................</a><br>
+<a href="#section-9.2" class="indent-1">9.2. Informative References ...................................</a><br>
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+	<a name="section-1.1"><h3>1.1   Scope</h3></a>
+
+   There is a need for Switched Circuit Network (SCN) signaling protocol
+   delivery over an IP network.  This includes message transfer between
+   the following:
+
+</p><p class="rfcparagraph">      - a Signaling Gateway (SG) and a Media Gateway Controller (MGC)
+        [RFC2719]
+
+      - a SG and an IP Signaling Point (IPSP)
+
+      - an IPSP and an IPSP
+
+   This could allow for convergence of some signaling and data networks.
+   SCN signaling nodes would have access to databases and other devices
+   in the IP network domain that do not use SS7 signaling links.
+   Likewise, IP telephony applications would have access to SS7
+   services.  There may also be operational cost and performance
+   advantages when traditional signaling links are replaced by IP
+   network "connections".
+
+</p><p class="rfcparagraph">   The delivery mechanism described in this document allows for full
+   MTP3 message handling and network management capabilities between any
+   two SS7 nodes communicating over an IP network.  An SS7 node equipped
+   with an IP network connection is called an IP Signaling Point (IPSP).
+   The IPSPs function as traditional SS7 nodes using the IP network
+   instead of SS7 links.
+
+</p><p class="rfcparagraph">   The delivery mechanism should:
+
+</p><p class="rfcparagraph">      - Support seamless operation of MTP3 protocol peers over an IP
+        network connection.
+
+</p><p class="rfcparagraph">      - Support the MTP Level 2 / MTP Level 3 interface boundary.
+
+</p><p class="rfcparagraph">      - Support management of SCTP transport associations and traffic
+        instead of MTP2 Links.
+
+</p><p class="rfcparagraph">      - Support asynchronous reporting of status changes to management.
+
+</p><p class="rfcparagraph">	<a name="section-1.2"><h3>1.2   Terminology</h3></a>
+
+   MTP  - The Message Transfer Part of the SS7 protocol [Q.700] [Q.701]
+   [Q.702] [Q.703] [Q.704] [Q.705] [T1.111].
+
+</p><p class="rfcparagraph">   MTP2 - MTP Level 2, the MTP signaling link layer.
+   MTP3 - MTP Level 3, the MTP signaling network layer.
+
+</p><p class="rfcparagraph">   MTP2-User - A protocol that normally uses the services of MTP Level
+   2.  The only MTP2 user is MTP3.  The MTP2 user is equivalent to the
+   M2PA user.
+
+</p><p class="rfcparagraph">   Signaling End Point (SEP) - An SS7 Signaling Point that originates or
+   terminates signaling messages.  One example is a central office
+   switch.  [RFC2719]
+
+   IP Signaling Point (IPSP) - An SS7 Signaling Point with an IP network
+   connection used for SS7 over IP.
+
+</p><p class="rfcparagraph">   Signaling Gateway (SG) - A signaling agent that receives/sends SCN
+   native signaling at the edge of the IP network [RFC2719].  In this
+   context, an SG is an SS7 Signaling Point that has both an IP network
+   connection used for SS7 over IP, and a traditional (non-IP) link to
+   an SS7 network.
+
+</p><p class="rfcparagraph">   Signal Transfer Point (STP) - A Signal Transfer Point as defined by
+   MTP standards, e.g., [Q.700].
+
+</p><p class="rfcparagraph">   Signaling Point (STP) - A Signaling Point as defined by MTP
+   standards, e.g., [Q.700].
+
+</p><p class="rfcparagraph">   Association - An association refers to an SCTP association [RFC2960].
+   The association provides the transport for MTP3 protocol data units
+   and M2PA adaptation layer peer messages.
+
+</p><p class="rfcparagraph">   Network Byte Order - Most significant byte first, also known as "Big
+   Endian".  See [RFC791], Appendix B "Data Transmission Order".
+
+</p><p class="rfcparagraph">   Stream - A stream refers to an SCTP stream [RFC2960].
+
+</p><p class="rfcparagraph">	<a name="section-1.3"><h3>1.3   Abbreviations</h3></a>
+
+   BSNT   - Backward Sequence Number to be Transmitted
+
+   FSNC   - Forward Sequence Number of last message accepted by remote
+            level 2
+
+   LI     - Length Indicator
+
+   MSU    - Message Signal Unit
+
+   SCCP   - Signaling Connection Control Part
+
+   SCN    - Switched Circuit Network
+   SCTP   - Stream Control Transmission Protocol
+
+   SIF    - Signaling Information Field
+
+   SIO    - Service Information Octet
+
+   SLC    - Signaling Link Code
+
+   SS7    - Signaling System Number 7
+
+   SSN    - Stream Sequence Number
+
+   STP    - Signal Transfer Point
+
+	<a name="section-1.4"><h3>1.4   Conventions</h3></a>
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in [RFC2119].
+
+</p><p class="rfcparagraph">	<a name="section-1.5"><h3>1.5   Signaling Transport Architecture</h3></a>
+
+   The architecture that has been defined [RFC2719] for Switched Circuit
+   Network (SCN) signaling transport over IP uses multiple components,
+   including an IP transport protocol, the Stream Control Transmission
+   Protocol (SCTP), and an adaptation module to support the services
+   expected by a particular SCN signaling protocol from its underlying
+   protocol layer.
+
+</p><p class="rfcparagraph">   Within this framework architecture, this document defines an SCN
+   adaptation module that is suitable for the transport of SS7 MTP3
+   messages.  The adaptation layer, known as the MTP2 User Peer-to-peer
+   Adaptation Layer (M2PA), provides MTP3 with an interface and services
+   similar to MTP2.  In effect, MTP2 and lower layers of the traditional
+   SS7 protocol stack are replaced by an IP equivalent.
+
+</p><p class="rfcparagraph">   Figure 1 shows the seamless interworking at the MTP3 layer.  MTP3 is
+   adapted to the SCTP layer using the MTP2 User Peer-to-peer Adaptation
+   Layer (M2PA).  All the primitives between MTP3 and MTP2 are supported
+   by M2PA.  The SCTP association acts as one SS7 link between the
+   IPSPs.  An IPSP may have the Signaling Connection Control Part (SCCP)
+   and other SS7 layers above MTP3.
+               ********   IP   ********
+               * IPSP *--------* IPSP *
+               ********        ********<pre>
+
+               +------+        +------+
+               | TCAP |        | TCAP |
+               +------+        +------+
+               | SCCP |        | SCCP |
+               +------+        +------+
+               | MTP3 |        | MTP3 |
+               +------+        +------+
+               | M2PA |        | M2PA |
+               +------+        +------+
+               | SCTP |        | SCTP |
+               +------+        +------+
+               | IP   |        | IP   |
+               +------+        +------+
+
+        IP    - Internet Protocol
+        IPSP  - IP Signaling Point
+        SCTP  - Stream Control Transmission Protocol [RFC2960]
+
+        Figure 1.  M2PA Symmetrical Peer-to-Peer Architecture
+
+   Figure 2 shows an example of M2PA used in a Signaling Gateway (SG).
+   The SG is an IPSP that is equipped with both traditional SS7 and IP
+   network connections.
+
+</p><p class="rfcparagraph">   The SEP and the SG communicate through a traditional SS7 link, which
+   follows a protocol such as [Q.702].  The SG and the IPSP communicate
+   through an IP link using the M2PA protocol.  Messages sent from the
+   SEP to the IPSP (and vice versa) are routed by the SG.
+
+</p><p class="rfcparagraph">   Any of the nodes in the diagram could have SCCP or other SS7 layers
+   above MTP3.  The Signaling Gateway acts as a Signal Transfer Point
+   (STP).  Other STPs MAY be present in the SS7 path between the SEP and
+   the SG.
+       ********  SS7   ***************   IP   ********
+       * SEP  *--------*     SG      *--------* IPSP *
+       ********        ***************        ********
+
+       +------+                               +------+
+       | TCAP |                               | TCAP |
+       +------+                               +------+
+       | SCCP |                               | SCCP |
+       +------+        +-------------+        +------+
+       | MTP3 |        |    MTP3     |        | MTP3 |
+       +------+        +------+------+        +------+
+       | MTP2 |        | MTP2 | M2PA |        | M2PA |
+       |      |        |      +------+        +------+
+       |      |        |      | SCTP |        | SCTP |
+       +------+        +------+------+        +------+
+       | MTP1 |        | MTP1 | IP   |        | IP   |
+       +------+        +------+------+        +------+
+
+        SEP   - SS7 Signaling Endpoint
+
+            Figure 2.  M2PA in IP Signaling Gateway
+
+   Figure 2 is only an example.  Other configurations are possible.  In
+   short, M2PA uses the SCTP association as an SS7 link.  The
+   M2PA/SCTP/IP stack can be used in place of an MTP2/MTP1 stack.
+
+</p><p class="rfcparagraph">	<a name="section-1.5.1"><h4>1.5.1   Point Code Representation</h4></a>
+
+   MTP requires that each node with an MTP3 layer is identified by an
+   SS7 point code.  In particular, each IPSP MUST have its own SS7 point
+   code.
+
+</p><p class="rfcparagraph">	<a name="section-1.6"><h3>1.6   Services Provided by M2PA</h3></a>
+
+   The SS7 MTP3/MTP2 (MTP2-User) interface is retained in the IPSP.  The
+   M2PA protocol layer is required to provide a set of services to its
+   user equivalent to that provided by MTP Level 2 to MTP Level 3.
+
+</p><p class="rfcparagraph">   These services are described in the following subsections.
+
+</p><p class="rfcparagraph">	<a name="section-1.6.1"><h4>1.6.1   Support for MTP Level 2 / MTP Level 3 Interface Boundary</h4></a>
+
+   This interface is the same as the MTP2/MTP3 interface described in
+   the applicable SS7 standards [Q.703] [Q.704] [T1.111] [Q.2140], with
+   the addition of support for the larger sequence numbers found in
+   [T1.111] and [Q.2210].
+   M2PA receives the primitives sent from MTP3 to its lower layer.  M2PA
+   processes these primitives or maps them to appropriate primitives at
+   the M2PA/SCTP interface.  Likewise, M2PA sends primitives to MTP3
+   similar to those used in the MTP3/MTP2 interface.
+
+</p><p class="rfcparagraph">   Because M2PA uses larger sequence numbers than MTP2, the MTP3
+   Changeover procedure MUST use the Extended Changeover Order and
+   Extended Changeover Acknowledgement messages described in [Q.2210]
+   and [T1.111].
+
+</p><p class="rfcparagraph">   Also, the following MTP3/MTP2 primitives must use the larger sequence
+   numbers:
+
+</p><p class="rfcparagraph">      - BSNT Confirmation
+
+      - Retrieval Request and FSNC
+
+	<a name="section-1.6.2"><h4>1.6.2   Support for Peer-to-Peer Communication</h4></a>
+
+   In SS7, MTP Level 2 sends three types of messages, known as signal
+   units: Message Signal Units (MSUs), Link Status Signal Units (LSSUs),
+   and Fill-In Signal Units (FISUs).
+
+</p><p class="rfcparagraph">   MSUs originate at a higher level than MTP2, and are destined for a
+   peer at another node.  Likewise, M2PA passes these messages from MTP3
+   to SCTP as data for transport across a link.  These are called User
+   Data messages in M2PA.
+
+</p><p class="rfcparagraph">   LSSUs allow peer MTP2 layers to exchange status information.
+   Analogous messages are needed for M2PA.  The Link Status message
+   serves this purpose.
+
+</p><p class="rfcparagraph">   FISUs are transmitted continuously when no other signal units are
+   waiting to be sent.  FISUs also carry acknowledgement of messages.
+   Since an IP network is a shared resource, it would be undesirable to
+   have a message type that is sent continuously as is the case with
+   FISUs.  Furthermore, SCTP does not require its upper layer to
+   continuously transmit messages.  Therefore, M2PA does not provide a
+   protocol data unit like the FISU.  The M2PA User Data message is used
+   to carry acknowledgement of messages.  If M2PA needs to acknowledge a
+   message, and it has no MTP3 message of its own to send, an empty User
+   Data message can be sent.
+	<a name="section-1.7"><h3>1.7   Functions Provided by M2PA</h3></a>
+
+	<a name="section-1.7.1"><h4>1.7.1   MTP2 Functionality</h4></a>
+
+   M2PA provides MTP2 functionality that is not provided by SCTP; thus,
+   together M2PA and SCTP provide functionality similar to that of MTP2.
+
+</p><p class="rfcparagraph">   SCTP provides reliable, sequenced delivery of messages.
+
+</p><p class="rfcparagraph">   M2PA functionality includes:
+
+</p><p class="rfcparagraph">      - Data retrieval to support the MTP3 changeover procedure
+
+      - Reporting of link status changes to MTP3
+
+      - Processor outage procedure
+
+      - Link alignment procedure
+
+	<a name="section-1.7.2"><h4>1.7.2   Mapping of SS7 and IP Entities</h4></a>
+
+   The M2PA layer must maintain a map of each of its SS7 links to the
+   corresponding SCTP association.
+
+</p><p class="rfcparagraph">	<a name="section-1.7.3"><h4>1.7.3   SCTP Association Management</h4></a>
+
+   SCTP allows a user-specified number of streams to be opened during
+   the initialization.  It is the responsibility of the M2PA layer to
+   ensure proper management of the streams allowed within each
+   association.
+
+</p><p class="rfcparagraph">   M2PA uses two streams in each direction for each association.  Stream
+   0 in each direction is designated for Link Status messages.  Stream 1
+   is designated for User Data messages, as well as Link Status messages
+   that must remain in sequence with the User Data messages.  Separating
+   the Link Status and User Data messages into separate streams allows
+   M2PA to prioritize the messages in a manner similar to MTP2.
+
+</p><p class="rfcparagraph">   Notifications received from SCTP are processed by M2PA or translated
+   into an appropriate notification to be sent to the upper layer MTP3.
+
+</p><p class="rfcparagraph">	<a name="section-1.7.4"><h4>1.7.4   Retention of MTP3 in the SS7 Network</h4></a>
+
+   M2PA allows MTP3 to perform all of its Message Handling and Network
+   Management functions with IPSPs as it does with other SS7 nodes.
+	<a name="section-1.8"><h3>1.8   Definition of the M2PA Boundaries</h3></a>
+
+	<a name="section-1.8.1"><h4>1.8.1   Definition of the M2PA / MTP Level 3 Boundary</h4></a>
+
+   The upper layer primitives provided by M2PA are the same as those
+   provided by MTP2 to MTP3.  These primitives are described in the
+   applicable SS7 standards [Q.703] [Q.704] [T1.111] [Q.2140].
+
+</p><p class="rfcparagraph">	<a name="section-1.8.2"><h4>1.8.2   Definition of the Lower Layer Boundary between M2PA and SCTP</h4></a>
+
+   The upper layer primitives provided by SCTP are described in
+   [RFC2960] Section 10 "Interface with Upper Layer".
+
+</p><p class="rfcparagraph">	<a name="section-1.9"><h3>1.9   Differences Between M2PA and M2UA</h3></a>
+
+   The MTP2 User Adaptation Layer (M2UA) [M2UA] also adapts the MTP3
+   layer to the SCTP/IP stack.  It does so through a backhauling
+   architecture [RFC2719].  This section is intended to clarify some of
+   the differences between the M2PA and M2UA approaches.
+
+</p><p class="rfcparagraph">   A possible M2PA architecture is shown in Figure 3.  Here the IPSP's
+   MTP3 uses its underlying M2PA as a replacement for MTP2.
+   Communication between the two layers MTP3/M2PA is defined by the same
+   primitives as in SS7 MTP3/MTP2.  M2PA performs functions similar to
+   MTP2.
+
+</p><p class="rfcparagraph">       ********  SS7   ***************   IP   ********
+       * SEP  *--------*     SG      *--------* IPSP *
+       ********        ***************        ********
+
+       +------+        +-------------+        +------+
+       | SCCP |        |    SCCP     |        | SCCP |
+       +------+        +-------------+        +------+
+       | MTP3 |        |    MTP3     |        | MTP3 |
+       +------+        +------+------+        +------+
+       | MTP2 |        | MTP2 | M2PA |        | M2PA |
+       |      |        |      +------+        +------+
+       |      |        |      | SCTP |        | SCTP |
+       +------+        +------+------+        +------+
+       | MTP1 |        | MTP1 | IP   |        | IP   |
+       +------+        +------+------+        +------+
+
+                  Figure 3.  M2PA in IP Signaling Gateway
+
+   A comparable architecture for M2UA is shown in Figure 4.  In M2UA,
+   the MGC's MTP3 uses the SG's MTP2 as its lower SS7 layer.  Likewise,
+   the SG's MTP2 uses the MGC's MTP3 as its upper SS7 layer.  In SS7,
+   communication between the MTP3 and MTP2 layers is defined by
+   primitives.  In M2UA, the MTP3/MTP2 communication is defined as M2UA
+   messages and sent over the IP connection.
+
+</p><p class="rfcparagraph">       ********  SS7   ***************   IP   ********
+       * SEP  *--------*     SG      *--------* MGC  *
+       ********        ***************        ********
+
+       +------+                               +------+
+       | SCCP |                               | SCCP |
+       +------+                               +------+
+       | MTP3 |             (NIF)             | MTP3 |
+       +------+        +------+------+        +------+
+       | MTP2 |        | MTP2 | M2UA |        | M2UA |
+       |      |        |      +------+        +------+
+       |      |        |      | SCTP |        | SCTP |
+       +------+        +------+------+        +------+
+       | MTP1 |        | MTP1 | IP   |        | IP   |
+       +------+        +------+------+        +------+
+
+        NIF   - Nodal Interworking Function
+
+                  Figure 4.  M2UA in IP Signaling Gateway
+
+   M2PA and M2UA are similar in that:
+
+</p><p class="rfcparagraph">      a. Both transport MTP3 data messages.
+
+</p><p class="rfcparagraph">      b. Both present an MTP2 upper interface to MTP3.
+
+</p><p class="rfcparagraph">   Differences between M2PA and M2UA include:
+
+</p><p class="rfcparagraph">      a. M2PA: IPSP processes MTP3/MTP2 primitives.
+         M2UA: MGC transports MTP3/MTP2 primitives between the SG's MTP2
+               and the MGC's MTP3 (via the NIF) for processing.
+
+</p><p class="rfcparagraph">      b. M2PA: SG-IPSP connection is an SS7 link.
+         M2UA: SG-MGC connection is not an SS7 link.  It is an
+               extension of MTP to a remote entity.
+
+</p><p class="rfcparagraph">      c. M2PA: SG is an SS7 node with a point code.
+         M2UA: SG is not an SS7 node and has no point code.
+
+</p><p class="rfcparagraph">      d. M2PA: SG can have upper SS7 layers, e.g., SCCP.
+         M2UA: SG does not have upper SS7 layers since it has no MTP3.
+
+</p><p class="rfcparagraph">      e. M2PA: relies on MTP3 for management procedures.
+         M2UA: uses M2UA management procedures.
+   Potential users of M2PA and M2UA should be aware of these differences
+   when deciding how to use them for SS7 signaling transport over IP
+   networks.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Protocol Elements</h2></a>
+
+   This section describes the format of various messages used in this
+   protocol.
+
+</p><p class="rfcparagraph">   All fields in an M2PA message must be transmitted in the network byte
+   order, i.e., most significant byte first, unless otherwise stated.
+
+</p><p class="rfcparagraph">	<a name="section-2.1"><h3>2.1   Common Message Header</h3></a>
+
+   The protocol messages for M2PA require a message header structure
+   that contains a version, message class, message type, and message
+   length.  The header structure is shown in Figure 5.
+
+</p><p class="rfcparagraph">       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |    Version    |     Spare     | Message Class | Message Type  |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |                        Message Length                         |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+                     Figure 5.  Common Message Header
+
+	<a name="section-2.1.1"><h4>2.1.1   Version</h4></a>
+
+   The version field contains the version of M2PA.  The supported
+   versions are:
+
+</p><p class="rfcparagraph">            Value
+          (decimal)  Version
+          ---------  -------
+              1      Release 1.0 of M2PA protocol
+
+	<a name="section-2.1.2"><h4>2.1.2   Spare</h4></a>
+
+   The Spare field SHOULD be set to all zeroes (0's) by the sender and
+   ignored by the receiver.  The Spare field SHOULD NOT be used for
+   proprietary information.
+	<a name="section-2.1.3"><h4>2.1.3   Message Class</h4></a>
+
+   The following List contains the valid Message Classes:
+
+</p><p class="rfcparagraph">            Value
+          (decimal)  Message Class
+          ---------  -------------
+             11      M2PA Messages
+
+   Other values are invalid for M2PA.
+
+</p><p class="rfcparagraph">	<a name="section-2.1.4"><h4>2.1.4   Message Type</h4></a>
+
+   The following list contains the message types for the defined
+   messages.
+
+</p><p class="rfcparagraph">            Value
+          (decimal)  Message Type
+          ---------  -------------
+              1      User Data
+              2      Link Status
+
+   Other values are invalid.
+
+</p><p class="rfcparagraph">	<a name="section-2.1.5"><h4>2.1.5   Message Length</h4></a>
+
+   The Message Length defines the length of the message in octets,
+   including the Common Header.
+
+</p><p class="rfcparagraph">	<a name="section-2.2"><h3>2.2   M2PA Header</h3></a>
+
+   All protocol messages for M2PA require an M2PA-specific header.  The
+   header structure is shown in Figure 6.
+
+</p><p class="rfcparagraph">       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |     unused    |                      BSN                      |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |     unused    |                      FSN                      |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+                  Figure 6.  M2PA-specific Message Header
+
+	<a name="section-2.2.1"><h4>2.2.1   Backward Sequence Number (BSN)</h4></a>
+
+   This is the FSN of the message last received from the peer.
+	<a name="section-2.2.2"><h4>2.2.2   Forward Sequence Number (FSN)</h4></a>
+
+   This is the M2PA sequence number of the User Data message being sent.
+
+</p><p class="rfcparagraph">   The FSN and BSN values range from 0 to 16,777,215.
+
+</p><p class="rfcparagraph">	<a name="section-2.3"><h3>2.3   M2PA Messages</h3></a>
+
+   The following section defines the messages and parameter contents.
+   An M2PA message consists of a Common Message Header and M2PA Header,
+   followed by the data appropriate to the message.
+
+</p><p class="rfcparagraph">   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   \                                                               \
+   /                     Common Message Header                     /
+   \                                                               \
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   \                                                               \
+   /                  M2PA-specific Message Header                 /
+   \                                                               \
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   \                                                               \
+   /                         Message Data                          /
+   \                                                               \
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+   The field "Message Data" contains either:
+
+</p><p class="rfcparagraph">      - a User Data message (Section 2.3.1), or
+      - a Link State message (Section 2.3.2)
+
+	<a name="section-2.3.1"><h4>2.3.1   User Data</h4></a>
+
+   The User Data is the data sent from MTP3.  The User Data is an
+   optional field.  It need not be included in an acknowledgement-only
+   message.
+
+</p><p class="rfcparagraph">   The format of the User Data message is as follows:
+
+</p><p class="rfcparagraph">    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   \                                                               \
+   /                            Data                               /
+   \                                                               \
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   The Data field contains the following fields of the MTP Message
+   Signal Unit (MSU):
+
+</p><p class="rfcparagraph">      - the Message Priority field (PRI)
+      - Service Information Octet (SIO)
+      - Signaling Information Field (SIF)
+
+   The MTP MSU is described in Q.703 [Q.703], Section 2.2, "Signal Unit
+   Format", and T1.111.3 [T1.111], Section 2.2, "Signal Unit Format".
+   The Japanese TTC standard uses the PRI field as an MTP3 Message
+   Priority field [JT-Q703] [JT-Q704].  For versions of MTP that do not
+   use these two bits, the entire first octet of the Data field is
+   spare.
+
+</p><p class="rfcparagraph">   The format of the first octet of the Data field is:
+
+</p><p class="rfcparagraph">       0
+       0 1 2 3 4 5 6 7
+      +-+-+-+-+-+-+-+-+
+      |PRI|   spare   | (followed by SIO, SIF)
+      +-+-+-+-+-+-+-+-+
+
+      PRI - Priority used only in national MTP defined in [JT-Q703] and
+            [JT-Q704].  These bits are spare for other MTP versions.
+
+</p><p class="rfcparagraph">   Note that the Data field SHALL NOT contain other components of the
+   MTP MSU format:
+
+</p><p class="rfcparagraph">      - Flag
+      - Backward Sequence Number (BSN)
+      - Backward Indicator Bit (BIB)
+      - Forward Sequence Number (FSN)
+      - Forward Indicator Bit (FIB)
+      - Length Indicator (LI)
+      - Check bits (CK)
+
+   The Data field SHALL be transmitted in the byte order as defined by
+   MTP3.
+
+</p><p class="rfcparagraph">   M2PA SHALL NOT add padding to the MTP3 message.
+
+</p><p class="rfcparagraph">   Note: In the SS7 Recommendations, the format of the messages and
+   fields within the messages are based on bit transmission order.  In
+   these recommendations, the Least Significant Bit (LSB) of each field
+   is positioned to the right.  The received SS7 fields are populated
+   octet by octet as received into the 4-octet word, as shown below.
+   As an example, in the ANSI MTP protocol, the Data field format is
+   shown below:
+
+</p><p class="rfcparagraph">      |MSB---------------------------------------------------------LSB|
+       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |PRI|   spare   |      SIO      |   SIF octet   |      ...      |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      \                                                               \
+      /                               :                               /
+      \                                                               \
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |      ...      |      ...      |      ...      |   SIF octet   |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+   Within each octet, the Least Significant Bit (LSB) per the SS7
+   Recommendations is to the right (e.g., bit 15 of SIO is the LSB).
+
+</p><p class="rfcparagraph">	<a name="section-2.3.2"><h4>2.3.2   Link Status</h4></a>
+
+   The MTP2 Link Status message can be sent between M2PA peers to
+   indicate link status.  This message performs a function similar to
+   the Link Status Signal Unit in MTP2.  The format of the Link Status
+   message is as follows:
+
+</p><p class="rfcparagraph">       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |                            State                              |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+   The valid values for State are shown in the following table.
+
+</p><p class="rfcparagraph">            Value
+          (decimal)  Description
+          ---------  -----------
+              1      Alignment
+              2      Proving Normal
+              3      Proving Emergency
+              4      Ready
+              5      Processor Outage
+              6      Processor Recovered
+              7      Busy
+              8      Busy Ended
+              9      Out of Service (OOS)
+<a name="section-2.3.2.1"><h4>2.3.2.1   Link Status Proving</h4></a>
+                        <a href="raw/text/rfc4165.txt" class="rawLink">raw</a>
+                    
+
+   The Link Status Proving message may optionally carry additional
+   bytes.  If the optional bytes are used, the format of the message is
+   as follows.
+
+</p><p class="rfcparagraph">       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |                            State                              |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      \                                                               \
+      /                            filler                             /
+      \                                                               \
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+   It is RECOMMENDED that the length of the Link Status Proving message
+   be similar to the size of the User Data messages that will be carried
+   on the link.
+
+</p><p class="rfcparagraph">   It is RECOMMENDED that the filler field contain a number pattern that
+   varies among the Link Status Proving messages, and that allows the
+   SCTP checksum [RFC3309] to be used to verify the accuracy of
+   transmission.
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   State Control</h2></a>
+
+	<a name="section-3.1"><h3>3.1   SCTP Association State Control</h3></a>
+
+   Figure 7 illustrates state changes in the M2PA management of the SCTP
+   association, together with the causing events.  Note that some of the
+   error conditions are not shown in the state diagram.
+
+</p><p class="rfcparagraph">   Following is a list of the M2PA Association States and a description
+   of each.
+
+</p><p class="rfcparagraph">   IDLE - State of the association during power-up initialization.
+
+</p><p class="rfcparagraph">   ASSOCIATING - M2PA is attempting to establish an SCTP association.
+
+</p><p class="rfcparagraph">   ESTABLISHED - SCTP association is established.
+                         +-----------+
+                         |   IDLE    |
+                         +-----------+
+                               |
+                               | Associate
+                               | (Issue SCTP associate)
+                               |
+                               |   +----------------------+
+                               |   |         (Issue SCTP  |
+                               V   V          associate)  |
+                         +-------------+                  |
+                         | ASSOCIATING |----------------->+
+                         +-------------+  SCTP Comm Error |
+                               |                          |
+                               |                          |
+                               | SCTP Comm Up             |
+                               |                          |
+                               V                          |
+                         +-------------+                  |
+                         | ESTABLISHED |----------------->+
+                         +-------------+   SCTP Comm Error
+                                        OR SCTP Comm Lost
+
+           Figure 7.  M2PA Association State Transition Diagram
+
+	<a name="section-3.2"><h3>3.2   M2PA Link State Control</h3></a>
+
+   The M2PA link moves from one state to another in response to various
+   events.  The events that may result in a change of state include:
+
+</p><p class="rfcparagraph">      - MTP3 primitive requests
+
+      - Receipt of messages from the peer M2PA
+
+      - Expiration of timers
+
+      - SCTP notifications
+
+   These events affect the M2PA link state in a manner similar to MTP2.
+	<a name="section-4"><h2>4.   Procedures</h2></a>
+
+   Because M2PA provides MTP3 with an interface and functionality like
+   MTP2, its internal functioning is similar to that of MTP2.
+
+</p><p class="rfcparagraph">   Except as modified in this document, M2PA SHOULD follow the
+   requirements of the applicable MTP2 specification.  These may include
+   [Q.703] or [T1.111].  The same standard MUST be followed on both ends
+   of the M2PA link.
+
+</p><p class="rfcparagraph">   In particular, the corresponding applicable timer value defaults and
+   ranges specified for the applicable MTP2 standard should be used for
+   the M2PA timers.
+
+</p><p class="rfcparagraph">   When referring to MTP2 terminology in this document, the terminology
+   of [Q.703] is used.  This does not imply that the requirements of
+   [Q.703] are to be followed.
+
+</p><p class="rfcparagraph">	<a name="section-4.1"><h3>4.1   Procedures to Support MTP2 Features</h3></a>
+
+	<a name="section-4.1.1"><h4>4.1.1   Signal Unit Format, Delimitation, Acceptance</h4></a>
+
+   Messages for transmission across the network must follow the format
+   described in Section 2.
+
+</p><p class="rfcparagraph">   SCTP provides reliable, in-sequence delivery of user messages.
+   Therefore the related functionality of MTP2 is not needed.  SCTP does
+   not provide functions related to Link State Control in MTP2.  These
+   functions must be provided by M2PA.
+
+</p><p class="rfcparagraph">   Since SCTP provides delivery of messages, there is no need for M2PA
+   to delimit its messages with a flag, as is done in MTP2.
+   Furthermore, M2PA does not need to perform zero bit insertion and
+   deletion on its messages.
+
+</p><p class="rfcparagraph">   Since SCTP uses a checksum to detect transmission errors, there is no
+   need for an M2PA checksum, as is needed in MTP2.  This also
+   eliminates the need for the error rate monitors of MTP2.
+
+</p><p class="rfcparagraph">   Since SCTP provides reliable delivery and ordered delivery, M2PA does
+   not perform retransmissions.  This eliminates the need for the
+   forward and backward indicator bits in MTP2 signal units.
+
+</p><p class="rfcparagraph">   Acceptance of a message is indicated by a successful receipt of the
+   message from SCTP.
+	<a name="section-4.1.2"><h4>4.1.2   MTP and SCTP Entities</h4></a>
+
+   This section describes how M2PA relates MTP and SCTP entities.
+
+</p><p class="rfcparagraph">   Each MTP link corresponds to an SCTP association.  To prevent
+   duplicate associations from being established, it is RECOMMENDED that
+   each endpoint know the IP address (or IP addresses, if multi-homing
+   is used) and port number of both endpoints.  SCTP prevents two
+   associations with the same IP addresses and port numbers from being
+   established.
+
+</p><p class="rfcparagraph">   It is necessary for at least one of the endpoints to be listening on
+   the port on which the other endpoint is trying to establish the
+   association.  Therefore, at least one of the port numbers SHOULD be
+   the M2PA registered port.
+
+</p><p class="rfcparagraph">   If only one association is to be established between these two IP
+   addresses, then the association SHOULD be established using the M2PA
+   registered port at each endpoint.
+
+</p><p class="rfcparagraph">   If it is desirable to create multiple associations (for multiple
+   links) between the two IP addresses, different port numbers can be
+   used for each association.  Nevertheless, the M2PA registered port
+   number SHOULD be used at one end of each association.
+
+</p><p class="rfcparagraph">   Each combination of IP address/port for the two endpoints (i.e., each
+   association) MUST be mapped to the same Signaling Link Code (SLC) at
+   each endpoint, so that each endpoint knows which link is being
+   created at the time the SCTP association is established.  However,
+   M2PA does not do any processing based on the SLC.
+
+</p><p class="rfcparagraph">   Following are examples of the relationships between associations and
+   links.  Note that a link is an SCTP association identified by two
+   endpoints.  Each endpoint is identified by an IP address and port
+   number.  Each association is mapped to an SLC.
+
+</p><p class="rfcparagraph">   Figure 8 shows a case with two IPSPs, each with two IP addresses.
+   Two associations are the links that connect the two IPSPs.  Since
+   these links are in the same link set, they MUST have different SLCs.
+
+</p><p class="rfcparagraph">   Table 1 shows the relationships in tabular form.  Table 1 is only
+   conceptual.  The actual method for mapping the SCTP associations to
+   the SLCs is implementation dependent.
+                   IPSP X                        IPSP Y
+
+               +-------------+               +-------------+
+               |             |     SCTP      |             |
+               |         IPA | association 1 | IPB         |
+               |   port = PW +---------------+ port = PW   |
+               |     SLC = a |               | SLC = a     |
+               |             |               |             |
+               |             |               |             |
+               |             |     SCTP      |             |
+               |         IPC | association 2 | IPD         |
+               |   port = PW +---------------+ port = PW   |
+               |     SLC = b |               | SLC = b     |
+               |             |               |             |
+               |             |               |             |
+               +-------------+               +-------------+
+
+            IPx = IP address
+            PW  = Registered port number for M2PA
+
+               Figure 8.  Two IPSPs with Two IP Addresses Each
+
+
+        +-------------+---------------------------------------+-----+
+        | Association |      IPSP X       |      IPSP Y       | SLC |
+        |             +------------+------+------------+------+     |
+        |             | IP address | Port | IP address | Port |     |
+        +=============+============+======+============+======+=====+
+        |      1      |    IPA     |  PW  |    IPB     |  PW  |  a  |
+        +-------------+------------+------+------------+------+-----+
+        |      2      |    IPC     |  PW  |    IPD     |  PW  |  b  |
+        +-------------+------------+------+------------+------+-----+
+
+              Table 1.  Two IPSPs with Two IP Addresses Each
+
+   Figure 9 and Table 2 show an example with three IPSPs.  Note that in
+   this example, the two links are in different link sets.  Therefore,
+   it is possible that the SLC values a and b MAY be equal.
+                   IPSP X                        IPSP Y
+
+               +-------------+               +-------------+
+               |             |     SCTP      |             |
+               |         IPA | association 1 | IPB         |
+               |   port = PW +---------------+ port = PW   |
+               |     SLC = a |               | SLC = a     |
+               |             |               |             |
+               |             |               |             |
+               |             |     SCTP      |             |
+               |         IPC | association 2 |             |
+               |   port = PW +-------+       |             |
+               |     SLC = b |       |       |             |
+               |             |       |       |             |
+               |             |       |       |             |
+               +-------------+       |       +-------------+
+                                     |
+                                     |
+                                     |           IPSP Z
+                                     |
+                                     |       +-------------+
+                                     |       |             |
+                                     |       | IPD         |
+                                     +-------+ port = PW   |
+                                             | SLC = b     |
+                                             |             |
+                                             |             |
+                                             |             |
+                                             |             |
+                                             |             |
+                                             |             |
+                                             |             |
+                                             |             |
+                                             +-------------+
+
+            IPx = IP address
+            PW  = Registered port number for M2PA
+
+                 Figure 9.  One IPSP Connected to Two IPSPs
+        +-------------+---------------------------------------+-----+
+        | Association |      IPSP X       |     IPSP Y/Z      | SLC |
+        |             +------------+------+------------+------+     |
+        |             | IP address | Port | IP address | Port |     |
+        +=============+============+======+============+======+=====+
+        |      1      |    IPA     |  PW  |    IPB     |  PW  |  a  |
+        +-------------+------------+------+------------+------+-----+
+        |      2      |    IPC     |  PW  |    IPD     |  PW  |  b  |
+        +-------------+------------+------+------------+------+-----+
+
+                 Table 2.  One IPSP Connected to Two IPSPs
+
+   Figure 10 and Table 3 show two associations between the same IP
+   addresses.  This is accomplished by using different port numbers for
+   each association at one endpoint.
+
+</p><p class="rfcparagraph">                   IPSP X                        IPSP Y
+
+               +-------------+               +-------------+
+               |             |     SCTP      |             |
+               |         IPA | association 1 | IPB         |
+               |   port = P1 +---------------+ port = PW   |
+               |     SLC = a |               | SLC = a     |
+               |             |               |             |
+               |             |               |             |
+               |             |     SCTP      |             |
+               |         IPA | association 2 | IPB         |
+               |   port = PW +---------------+ port = PW   |
+               |     SLC = b |               | SLC = b     |
+               |             |               |             |
+               |             |               |             |
+               +-------------+               +-------------+
+
+            IPx = IP address
+            P1  = Pre-selected port number
+            PW  = Registered port number for M2PA
+
+             Figure 10.  Multiple Associations Between Two IP Addresses
+        +-------------+---------------------------------------+-----+
+        | Association |      IPSP X       |      IPSP Y       | SLC |
+        |             +------------+------+------------+------+     |
+        |             | IP address | Port | IP address | Port |     |
+        +=============+============+======+============+======+=====+
+        |      1      |    IPA     |  P1  |    IPB     |  PW  |  a  |
+        +-------------+------------+------+------------+------+-----+
+        |      2      |    IPA     |  PW  |    IPB     |  PW  |  b  |
+        +-------------+------------+------+------------+------+-----+
+</pre>
+
+
+           Table 3.  Multiple Associations Between Two IP Addresses
+
+   The association SHALL contain two streams in each direction.  Stream
+   0 is designated for Link Status messages.  Stream 1 is designated for
+   User Data messages, as well as Link Status messages that must remain
+   in sequence with the User Data messages.
+
+</p><p class="rfcparagraph">   The following Link Status messages SHALL be sent on the Link Status
+   stream (stream 0):
+
+</p><p class="rfcparagraph">      - Alignment
+      - Proving Normal
+      - Proving Emergency
+      - Ready (when sent during alignment)
+      - Busy
+      - Busy Ended
+      - Out of Service
+
+   The following Link Status messages SHALL be sent on the User Data
+   stream (stream 1):
+
+</p><p class="rfcparagraph">      - Processor Outage
+      - Processor Recovered
+      - Ready (when sent at the end of processor outage)
+
+	<a name="section-4.1.3"><h4>4.1.3   Link Alignment</h4></a>
+
+   The purposes of the alignment procedure are:
+
+</p><p class="rfcparagraph">      (1) To provide a handshaking procedure so that both endpoints are<br>
+          prepared to send SS7 traffic, and to prevent traffic from
+          being sent before the other end is ready.
+
+</p><p class="rfcparagraph">      (2) To verify that the SCTP association is suitable for use as an<br>
+          SS7 link.
+   Link alignment takes place after the association is established.  If
+   SCTP fails to establish the association, and M2PA has received a
+   Start Request from its MTP3, then M2PA SHALL report to MTP3 that the
+   link is out of service.
+
+</p><p class="rfcparagraph">   The Link Status Out of Service message replaces the SIOS message of
+   MTP2.  Unlike MTP2, the message SHOULD NOT be transmitted
+   continuously.  After the association is established, M2PA SHALL send
+   a Link Status Out of Service message to its peer.  Prior to the
+   beginning of alignment, M2PA MAY send additional Link Status Out of
+   Service messages.
+
+</p><p class="rfcparagraph">   The Link Status Alignment message replaces the SIO message of MTP2.
+   This message is sent to signal the beginning of the alignment
+   procedure.  The Link Status Alignment message SHOULD NOT be
+   transmitted continuously.  M2PA MAY send additional Link Status
+   Alignment until it receives Link Status Alignment, Link Status
+   Proving Normal, or Link Status Proving Emergency from the peer.
+
+</p><p class="rfcparagraph">   The Link Status Proving Normal message replaces the SIN message of
+   MTP2.  The Link Status Proving Emergency message replaces the SIE
+   message of MTP2.
+
+</p><p class="rfcparagraph">   The proving period MAY be omitted if this is allowed by the
+   applicable MTP2 standard (e.g., [Q.2140]).
+
+</p><p class="rfcparagraph">   If proving is performed, then during the proving period (i.e., after
+   M2PA starts the proving period timer T4), M2PA SHALL send Link Status
+   Proving messages to its peer at an interval defined by the protocol
+   parameter Proving_Interval.  It is RECOMMENDED that Proving_Interval
+   be set so that the traffic load generated with the Link Status
+   Proving messages during the proving period is comparable to the
+   normal traffic load expected when the link is in service.
+
+</p><p class="rfcparagraph">   The Link Status Ready message replaces the FISU of MTP2 that is sent
+   at the end of the proving period.  The Link Status Ready message is
+   used to verify that both ends have completed proving.  When M2PA
+   starts timer T1, it SHALL send a Link Status Ready message to its
+   peer in the case where MTP2 would send a FISU after proving is
+   complete.  If the Link Status Ready message is sent, then M2PA MAY
+   send additional Link Status Ready messages while timer T1 is running.
+   These Link Status Ready messages are sent on the Link Status stream.
+
+</p><p class="rfcparagraph">   In the case that MTP2 sends an MSU or SIPO message at the end of
+   proving, M2PA SHALL send (respectively) a User Data or Link Status
+   Processor Outage message.
+	<a name="section-4.1.4"><h4>4.1.4   Processor Outage</h4></a>
+
+   The Link Status Processor Outage message replaces the SIPO message of
+   MTP2.  Unlike MTP2, the message SHOULD NOT be transmitted
+   continuously.  M2PA SHALL send a Link Status Processor Outage message
+   to its peer at the beginning of a processor outage condition where
+   MTP2 would send SIPO.  M2PA MAY send additional Link Status Processor
+   Outage messages as long as that condition persists.  The Link Status
+   Processor Outage message SHALL be sent on the User Data stream.
+
+</p><p class="rfcparagraph">   While in a local processor outage (LPO) condition:
+
+</p><p class="rfcparagraph">      (a) Any User Data messages received from the peer MUST NOT be
+          acknowledged and MUST be buffered.
+
+</p><p class="rfcparagraph">      (b) M2PA SHOULD continue to acknowledge User Data messages
+          received and accepted by MTP3 before the local processor
+          outage.
+
+</p><p class="rfcparagraph">      (c) M2PA SHOULD continue to transmit messages that have been sent
+          by its upper layer MTP3.
+
+</p><p class="rfcparagraph">   While there is a remote processor outage (RPO) condition:
+
+</p><p class="rfcparagraph">      (a) M2PA SHOULD continue to acknowledge User Data messages
+          received and accepted by MTP3, regardless of the remote
+          processor outage.
+
+</p><p class="rfcparagraph">      (b) If any User Data messages received from the peer after the
+          Link Status Processor Outage cannot be delivered to MTP3, then
+          these messages MUST NOT be acknowledged and MUST be buffered.
+
+</p><p class="rfcparagraph">   If M2PA receives a Flush command from MTP3,
+
+      (a) M2PA SHALL discard any incoming messages that were queued and
+          unacknowledged during the processor outage condition.
+
+</p><p class="rfcparagraph">      (b) M2PA SHALL discard messages in the transmit and retransmit
+          queues as required by MTP2.
+
+</p><p class="rfcparagraph">   If M2PA receives a Continue command from MTP3, M2PA SHALL begin
+   processing the incoming messages that were queued and unacknowledged
+   during the processor outage condition.
+
+</p><p class="rfcparagraph">   When the local processor outage condition ends, M2PA SHALL send a
+   Link Status Processor Recovered message to its peer on the User Data
+   stream.  This message is used to signal the end of the processor
+   outage condition, instead of an MSU or FISU, as is used in MTP2.  The
+   BSN in the Link Status Processor Recovered message is set to the FSN
+   of the last User Data message received (and not discarded) from the
+   peer M2PA.  M2PA SHALL cease transmitting User Data messages after
+   sending the Link Status Processor Recovered message, until it has
+   received the Link Status Ready message (see below).
+
+</p><p class="rfcparagraph">   Upon receiving the Link Status Processor Recovered message, the M2PA
+   in RPO SHALL respond with a Link Status Ready message on the User
+   Data stream.  The BSN in the Link Status Ready message is set to the
+   FSN of the last User Data message received (and not discarded) from
+   the peer M2PA.
+
+</p><p class="rfcparagraph">   Upon receiving the Link Status Ready message, the M2PA formerly in
+   LPO SHALL respond with a Link Status Ready message on the User Data
+   stream.  The BSN in the Link Status Ready message is set to the FSN
+   of the last User Data message received (and not discarded) from the
+   peer M2PA.
+
+</p><p class="rfcparagraph">   M2PA (at both the LPO and RPO ends) uses the BSN value in the
+   received Link Status Ready message to resynchronize its sequence
+   numbers, if this is required by MTP2.  M2PA SHALL NOT resume
+   transmitting User Data messages until it has sent the Link Status
+   Ready message.
+
+</p><p class="rfcparagraph">   During resynchronization, M2PA SHALL NOT discard any received User
+   Data messages that were sent after the processor outage ended.
+
+</p><p class="rfcparagraph">   When M2PA experiences a local processor outage, it MAY put the link
+   out of service by sending a Link Status Out of Service message, if
+   this is allowed by the applicable MTP2 standard (e.g., [Q.2140]).
+
+</p><p class="rfcparagraph">   In other respects, M2PA SHOULD follow the same procedures as MTP2 in
+   processor outage.
+
+</p><p class="rfcparagraph">	<a name="section-4.1.5"><h4>4.1.5   Level 2 Flow Control</h4></a>
+
+   The Link Status Busy message replaces the SIB message of MTP2.  The
+   message SHOULD NOT be transmitted continuously.  M2PA SHALL send a
+   Link Status Busy message to its peer at the beginning of a receive
+   congestion condition where MTP2 would send SIB.  M2PA MAY send
+   additional Link Status Busy messages as long as that condition
+   persists.  When the condition ends, M2PA SHALL send a Link Status
+   Busy Ended message to its peer.
+
+</p><p class="rfcparagraph">   M2PA SHALL continue transmitting messages while it is in receive
+   congestion, but MUST NOT acknowledge the message that triggered the
+   sending of the Link Status Busy message, nor any messages received
+   before the sending of Link Status Busy Ended.
+   When the peer M2PA receives the first Link Status Busy message, it
+   SHALL start the Remote Congestion timer T6 if there are messages in
+   the retransmission buffer awaiting acknowledgement (i.e., T7 is
+   running).  M2PA SHALL stop the T7 timer if it is running.  Additional
+   Link Status Busy messages received while T6 is running do not cause
+   T6 to be reset and do not cause T7 to be started.  While T6 is
+   running, T7 SHALL NOT be started.
+
+</p><p class="rfcparagraph">   When the peer M2PA receives the Link Status Busy Ended message and T6
+   has not expired, it SHALL stop T6 (if T6 is running) and start T7 (if
+   there are messages awaiting acknowledgement in the retransmission
+   buffer).
+
+</p><p class="rfcparagraph">   The peer M2PA SHOULD continue receiving and acknowledging messages
+   while the other end is busy, but MUST NOT send User Data messages
+   after receiving Link Status Busy and before receiving Link Status
+   Busy Ended.
+
+</p><p class="rfcparagraph">	<a name="section-4.1.6"><h4>4.1.6   Link Out of Service</h4></a>
+
+   The Link Status Out of Service message replaces the SIOS message of
+   MTP2.  Unlike MTP2, the message SHOULD NOT be transmitted
+   continuously.  M2PA SHALL send a Link Status Out of Service message
+   to its peer at the beginning of a condition where MTP2 would send
+   SIOS.  M2PA MAY send additional Link Status Out of Service messages
+   as long as that condition persists.
+
+</p><p class="rfcparagraph">   When M2PA places a link in the OUT OF SERVICE state, M2PA SHOULD NOT
+   terminate the SCTP association.
+
+</p><p class="rfcparagraph">	<a name="section-4.1.7"><h4>4.1.7   SCTP Association Problems</h4></a>
+
+   The SCTP association for a link may become unusable, such as when one
+   of the following occurs:
+
+</p><p class="rfcparagraph">      - SCTP sends a Send Failure notification to M2PA.
+
+</p><p class="rfcparagraph">      - SCTP sends a Communication Lost notification to M2PA.
+
+</p><p class="rfcparagraph">      - SCTP sends a Communication Error notification to M2PA.
+
+</p><p class="rfcparagraph">      - The SCTP association is lost.
+
+</p><p class="rfcparagraph">   If the SCTP association for a link becomes unable to transmit or
+   receive messages, M2PA SHALL report to MTP3 that the link is out of
+   service and enter the OUT OF SERVICE state.
+	<a name="section-4.1.8"><h4>4.1.8   Transmission and Reception Priorities</h4></a>
+
+   In MTP, Link Status messages have priority over User Data messages
+   ([Q.703], Section 11.2).  To achieve this in M2PA, M2PA uses separate
+   streams in its SCTP association for Link Status messages and User
+   Data messages.
+
+</p><p class="rfcparagraph">   M2PA SHALL send all messages using the ordered delivery option of
+   SCTP.
+
+</p><p class="rfcparagraph">   M2PA SHOULD give higher priority to messages sent on the Link Status
+   stream than to messages sent on the User Data stream when sending
+   messages to SCTP.
+
+</p><p class="rfcparagraph">   M2PA SHOULD give higher priority to reading the Link Status stream
+   than to reading the User Data stream.
+
+</p><p class="rfcparagraph">   M2PA SHOULD give higher priority to receiving notifications from SCTP
+   than to reading either the Link Status stream or the User Data
+   stream.
+
+</p><p class="rfcparagraph">	<a name="section-4.1.9"><h4>4.1.9   M2PA Version Control</h4></a>
+
+   A node upgraded to a newer version of M2PA SHOULD support the older
+   versions used on other nodes with which it is communicating.  If that
+   is the case, then alignment can proceed normally.
+
+</p><p class="rfcparagraph">   In particular, it is recommended that for future modifications to
+   this protocol:
+
+</p><p class="rfcparagraph">      - Any newer version SHOULD be able to process the messages from an
+        older version.
+
+</p><p class="rfcparagraph">      - A newer version of M2PA SHOULD refrain from sending messages to
+        an older version of M2PA messages that the older version cannot
+        process.
+
+</p><p class="rfcparagraph">      - If an older version of M2PA receives a message that it cannot
+        process, it SHOULD discard the message.
+
+</p><p class="rfcparagraph">      - In cases where different processing is done in two versions for
+        the same format of a message, then the newer version SHOULD
+        contain procedures to recognize and handle this appropriately.
+
+</p><p class="rfcparagraph">   In case a newer version of M2PA is incompatible with an older
+   version, the newer version SHOULD recognize this and prevent the
+   alignment of the link.  If a Link Status Alignment message with an
+   unsupported version is received by the newer version, the receiving
+   end's M2PA SHOULD reply with a Link Status Out of Service message and
+   not complete the alignment procedure.
+
+</p><p class="rfcparagraph">	<a name="section-4.2"><h3>4.2   Procedures to Support the MTP3/MTP2 Interface</h3></a>
+
+	<a name="section-4.2.1"><h4>4.2.1   Sending and Receiving Messages</h4></a>
+
+   When MTP3 sends a message for transmission to M2PA, M2PA passes the
+   corresponding M2PA message to SCTP using the SEND primitive.
+
+</p><p class="rfcparagraph">   User Data messages SHALL be sent via the User Data stream (stream 1)
+   of the association.
+
+</p><p class="rfcparagraph">   M2PA Link Status messages are passed to SCTP using the SEND
+   primitive.
+
+</p><p class="rfcparagraph">   The following Link Status messages SHALL be sent on the Link Status
+   stream (stream 0):
+
+</p><p class="rfcparagraph">      - Alignment
+      - Proving Normal
+      - Proving Emergency
+      - Ready (when sent during alignment)
+      - Busy
+      - Busy Ended
+      - Out of Service
+
+   The following Link Status messages SHALL be sent on the User Data
+   stream (stream 1):
+
+</p><p class="rfcparagraph">      - Processor Outage
+      - Processor Recovered
+      - Ready (when sent at the end of processor outage)
+
+   If M2PA receives a message from SCTP with an invalid Message Class or
+   unsupported Message Type in the Common Message Header, M2PA SHALL
+   discard the message.
+
+</p><p class="rfcparagraph">   For message types other than User Data, the Forward Sequence Number
+   is set to the FSN of the last User Data message sent.
+
+</p><p class="rfcparagraph">   If M2PA receives a User Data message with an FSN that is out of
+   order, M2PA SHALL discard the message.
+
+</p><p class="rfcparagraph">   Note: In all calculations involving FSN and BSN, the programmer
+   should be aware that the value wraps around to 0 after reaching its
+   maximum value.
+   When there is a message to acknowledge, M2PA MUST acknowledge the
+   message with the next User Data message sent.  If there is no User
+   Data message available to be sent when there is a message to
+   acknowledge, M2PA SHOULD generate and send a User Data message with
+   no data payload, without delay.  (In other words, in the case where
+   MTP2 would acknowledge a message with a FISU, M2PA SHOULD acknowledge
+   the message with an empty User Data message.)  The FSN for this empty
+   User Data message is not incremented.  It MUST contain the same FSN
+   as the most recently sent User Data message that contains data.
+   Delaying of acknowledgements can result in poor SS7 performance.
+
+</p><p class="rfcparagraph">   If M2PA receives an empty User Data message, it SHALL NOT send an
+   acknowledgement of that message.
+
+</p><p class="rfcparagraph">   Note that there is no reason to place Link Status messages or empty
+   User Data messages in the M2PA retransmit buffer, since these
+   messages are not retrieved for changeover and timer T7 does not apply
+   to them.
+
+</p><p class="rfcparagraph">   Note that since SCTP provides reliable delivery and ordered delivery
+   within the stream, M2PA does not perform retransmissions.
+   Nevertheless, M2PA SHALL retain transmitted User Data messages in a
+   retransmit queue until they are acknowledged.  These messages are
+   needed in case MTP3 performs data retrieval as part of a changeover
+   procedure.
+
+</p><p class="rfcparagraph">   Because propagation delays in IP networks are more variable than in
+   traditional SS7 networks, a single T7 timer (excessive delay of
+   acknowledgement), as in MTP2, is inadequate.  If any message is
+   unacknowledged after a period equal to the T7 value, the T7 timer
+   SHALL expire.
+
+</p><p class="rfcparagraph">	<a name="section-4.2.2"><h4>4.2.2   MTP3 Signaling Link Congestion</h4></a>
+
+   M2PA SHALL detect transmit congestion in its buffers according to the
+   requirements for signaling link transmit congestion in MTP3, e.g.,
+   Q.704 [Q.704], Section 3.8.
+
+</p><p class="rfcparagraph">	<a name="section-4.2.3"><h4>4.2.3   Changeover</h4></a>
+
+   The objective of the changeover is to ensure that signaling traffic
+   carried by the unavailable signaling link is diverted to the
+   alternative signaling link(s) as quickly as possible while avoiding
+   message loss, duplication, or mis-sequencing.  For this purpose, the
+   changeover procedure includes data retrieval, which is performed
+   before opening the alternative signaling links to the diverted
+   traffic.  Data retrieval consists of these steps:
+      (1) buffer updating, i.e., identifying all those User Data<br>
+          messages in the retransmission buffer of the unavailable
+          signaling link which have not been received by the far end
+          M2PA, as well as untransmitted messages, and
+
+      (2) transferring those messages to the transmission buffers of the<br>
+          alternate links.
+
+</p><p class="rfcparagraph">   Note that only User Data messages containing data are retrieved and
+   transmitted over the alternate links.  Link Status messages and empty
+   User Data messages SHALL NOT be retrieved and transmitted over the
+   alternate links.
+
+</p><p class="rfcparagraph">   M2PA's Sequence Numbers are 24 bits long.  MTP2's Forward and
+   Backward Sequence Numbers are only seven bits long.  Hence, it is
+   necessary for MTP3 to accommodate the larger sequence numbers.  This
+   is done through the use of the Extended Changeover Order (XCO) and
+   Extended Changeover Acknowledgement (XCA) messages instead of the
+   Changeover Order (COO) and Changeover Acknowledgement (COA) messages.
+   The XCO and XCA messages are specified in [Q.2210] Section 9.8.1 and
+   T1.111.4 [T1.111], Section 15.4.  Only the XCO and XCA messages from
+   [Q.2210] or [T1.111] are required.  The BSN is placed in the XCO/XCA
+   message as explained in [Q.2210] and [T1.111].
+
+</p><p class="rfcparagraph">   Also, the following MTP3/MTP2 primitives MUST use the larger sequence
+   numbers:
+
+</p><p class="rfcparagraph">      - BSNT Confirmation
+
+      - Retrieval Request and FSNC
+
+   If M2PA receives a Retrieval Request and FSNC request from MTP3, M2PA
+   SHALL retrieve from its buffers and deliver to MTP3 in order:
+
+</p><p class="rfcparagraph">      (a) any transmitted User Data messages beginning with the first
+          unacknowledged message with FSN greater than FSNC.
+
+</p><p class="rfcparagraph">      (b) any untransmitted User Data messages.
+
+</p><p class="rfcparagraph">   For emergency changeover, MTP3 retrieves only the unsent messages for
+   transmission on the alternate link(s).  If M2PA receives a Retrieval
+   Request and FSNC request with no FSNC value, or with an invalid FSNC,
+   then M2PA SHALL retrieve from its buffers and deliver to MTP3 in
+   order:
+
+</p><p class="rfcparagraph">      (a) any untransmitted User Data messages.
+   The Japanese TTC version of MTP defined in [JT-Q703] and [JT-Q704]
+   has a Retrieval Request (as well as Retrieval Request and FSNC).  The
+   Retrieval allows MTP3 to retrieve both unsent and unacknowledged
+   messages for transmission on the alternate link(s).  In this version
+   of MTP, if M2PA receives a Retrieval Request, then M2PA SHALL
+   retrieve from its buffers and deliver to MTP3 in order:
+
+</p><p class="rfcparagraph">      (a) any transmitted but unacknowledged User Data messages.
+
+</p><p class="rfcparagraph">      (b) any untransmitted User Data messages.
+
+</p><p class="rfcparagraph"><a name="section-4.2.3.1"><h4>4.2.3.1   Multiple User Data Streams and Changeover</h4></a>
+                        <a href="raw/text/rfc4165.txt" class="rawLink">raw</a>
+                    
+
+   The changeover procedure makes it problematic for M2PA to have
+   multiple User Data streams in one direction for a link.  Buffer
+   updating would have to be done separately for each User Data stream
+   to avoid duplication or loss of messages.  But MTP3 provides for only
+   one XCO/XCA message for sending the last-received sequence number.
+
+</p><p class="rfcparagraph">   Even with sequence numbering of User Data messages at the M2PA layer,
+   it is necessary to perform buffer updating on each stream.  Since the
+   M2PA messages would be delivered over multiple streams, there could
+   be a gap in the M2PA sequence numbers at the receiving end when the
+   changeover procedure begins.  If only the M2PA sequence number is
+   used in the XCO/XCA message, there would be a possibility of losing
+   the messages in the gap, or duplicating messages after the gap.
+
+</p><p class="rfcparagraph">   M2PA links with multiple User Data streams would be possible if a
+   multiple-BSNT XCO/XCA message is defined in MTP3, or if MTP3 allows
+   multiple XCO/XCA messages (one for each User Data stream) to be sent
+   during a changeover.  This is beyond the scope of this document.
+
+</p><p class="rfcparagraph">	<a name="section-4.3"><h3>4.3   SCTP Considerations</h3></a>
+
+   Some M2PA procedures may be affected by the use of SCTP as a
+   transport layer.  These considerations are discussed in this section.
+
+</p><p class="rfcparagraph">	<a name="section-4.3.1"><h4>4.3.1   SCTP Slow Start</h4></a>
+
+   SCTP contains a slow start algorithm to control the amount of data
+   being injected into the network.  The algorithm allows SCTP to probe
+   the network to determine the available capacity.  The algorithm is
+   invoked in these cases: when transmission begins on an association,
+   after a sufficiently long idle period, or after repairing loss
+   detected by the SCTP retransmission timer.
+   It is possible that transmission of M2PA messages MAY be delayed by
+   SCTP slow start under certain conditions, including the following:
+
+</p><p class="rfcparagraph">      (a) Link Alignment.  Link alignment takes place after an
+          association is established.  SCTP invokes the slow start
+          algorithm since transmission is beginning on the association.
+
+</p><p class="rfcparagraph">      (b) Changeover.  Messages are retrieved from one link
+          (association) and transferred to another for transmission.  If
+          the second link had previously been idle, or is in the process
+          of link alignment, SCTP may invoke the slow start algorithm.
+
+</p><p class="rfcparagraph">      (c) Path failure (multi-homing).  If SCTP switches from a failed
+          path to a new path, and the new path had previously been idle,
+          SCTP may invoke the slow start algorithm.
+
+</p><p class="rfcparagraph">      (d) Reduced traffic volume.  Any time that M2PA sends a low volume
+          of traffic on a link and then the volume increases, SCTP may
+          invoke the slow start algorithm.
+
+</p><p class="rfcparagraph">   Programmers should be aware of this condition and how it may affect
+   M2PA performance.  In some cases, it may be possible to avoid the
+   negative effects of slow start.  For example, the Link Status Proving
+   messages sent during the proving period may be used to complete slow
+   start before the link is placed in service.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   Examples of M2PA Procedures</h2></a>
+
+   In general, messages passed between MTP3 and M2PA are the same as
+   those passed between MTP3 and MTP2.  M2PA interprets messages from
+   MTP3 and sends the appropriate message to SCTP.  Likewise, messages
+   from SCTP are used to generate a meaningful message to MTP3.
+
+</p><p class="rfcparagraph">   Note that throughout this section, the primitives between MTP3 and
+   M2PA are named using the MTP terminology [Q.700] [Q.701] [Q.702]
+   [Q.703] [Q.704] [Q.705].  Communications between M2PA and SCTP are
+   named using SCTP terminology.
+
+</p><p class="rfcparagraph">	<a name="section-5.1"><h3>5.1   Link Initialization (Alignment)</h3></a>
+
+   An example of the message flow used to bring an SS7 link in service
+   is shown in Figures 11 and 12.  Alignment is done by both ends of the
+   link.  To simplify the diagram, alignment is shown on one end only.
+   Some messages from the remote end are not shown.  It is assumed in
+   this example that SCTP has been initialized.
+       MTP3        M2PA        SCTP        SCTP        M2PA        MTP3
+       ----        ----        ----        ----        ----        ----
+        .           .           .           .           .           .
+        .           Associate   .           .           .           .
+        .           ------------>           .           .           .
+        .           .           .           .           .           .
+        .           .           (SCTP Association       .           .
+        .           .            procedure)             .           .
+        .           .           .           .           .           .
+        .           Communication Up        Communication Up        .
+        .           <------------           ------------>           .
+        .           .           .           .           .           .
+        .           Link Status Out of Service          .           .
+        .           ------------------------------------>           .
+        .           .           .           .           .           .
+        Emergency OR            .           .           .           .
+        Emergency Ceases        .           .           .           .
+        ------------>           .           .           .           .
+        .           .           .           .           .           .
+        Start       .           .           .           .           .
+        ------------>           .           .           .           .
+        .           .           .           .           .           .
+        .           .           .           .           .           .
+        .           Link Status Alignment   .           .           .
+        .           ------------------------------------>           .
+        .           .           .           .           .           .
+        .           Start timer T2          .           .           .
+        .           .           .           .           .           .
+        .           .           .   Link Status Alignment           .
+        .           <------------------------------------           .
+        .           .           .           .           .           .
+        .           Stop timer T2           .           .           .
+        .           .           .           .           .           .
+
+</p><p class="rfcparagraph">        Proving period begins.
+
+</p><p class="rfcparagraph">           Figure 11.  Example: Link Initialization - Alignment
+       MTP3        M2PA        SCTP        SCTP        M2PA        MTP3
+       ----        ----        ----        ----        ----        ----
+        .           .           .           .           .           .
+        .           Start timer T3          .           .           .
+        .           Link Status Proving     .           .           .
+        .           ------------------------------------>           .
+        .           .           .           .           .           .
+        .           .           .     Link Status Proving           .
+        .           <------------------------------------           .
+        .           .           .           .           .           .
+        .           Stop timer T3           .           .           .
+        .           .           .           .           .           .
+        .           Start timer T4          .           .           .
+        .           Link Status Proving     .           .           .
+        .           ------------------------------------>           .
+        .           ------------------------------------>           .
+        .           ------------------------------------>           .
+        .           ------------------------------------>           .
+        .           ------------------------------------>           .
+        .           ------------------------------------>           .
+        .           .           .           .           .           .
+        .           Timer T4 expires        .           .           .
+        .           .           .           .           .           .
+
+</p><p class="rfcparagraph">        Send Link Status Ready (one or more) and wait for the remote end
+        to complete its proving period.
+
+</p><p class="rfcparagraph">        .           .           .           .           .           .
+        .           Start timer T1          .           .           .
+        .           .           .           .           .           .
+        .           Link Status Ready       .           .           .
+        .           ------------------------------------>           .
+        .           .           .           .           .           .
+        .           .           .           .           .           .
+        .           .           .       Link Status Ready           .
+        .           <------------------------------------           .
+        .           .           .           .           .           .
+        .           Stop timer T1           .           .           .
+        .           .           .           .           .           .
+        In Service              .           .           In Service
+        <------------           .           .           ------------>
+        .           .           .           .           .           .
+
+</p><p class="rfcparagraph">        MTP3 MAY begin sending data messages.
+
+</p><p class="rfcparagraph">            Figure 12.  Example: Link Initialization - Proving
+	<a name="section-5.2"><h3>5.2   Message Transmission and Reception</h3></a>
+
+   Messages are transmitted using the Data Request primitive from MTP3
+   to M2PA.  Figure 13 shows the case where the Link is In Service.  The
+   message is passed from MTP3 of the source to MTP3 of the destination.
+
+</p><p class="rfcparagraph">       MTP3        M2PA        SCTP        SCTP        M2PA        MTP3
+       ----        ----        ----        ----        ----        ----
+        .           .           .           .           .           .
+        Message for             .           .           .           .
+        transmission            .           .           .           .
+        ------------>           .           .           .           .
+        .           .           .           .           .           .
+        .           Send        .           .           .           .
+        .           (Data Message)          .           .           .
+        .           ------------>           .           .           .
+        .           .           .           .           .           .
+        .           .           (SCTP sends message)    .           .
+        .           .           .           .           .           .
+        .           .           .           Receive                 .
+        .           .           .           ------------>           .
+        .           .           .           .           .           .
+        .           .           .           .        Received message
+        .           .           .           .           ------------>
+        .           .           .           .           .           .
+
+</p><p class="rfcparagraph">            Figure 13.  Example: Link Initialization - In Service
+
+	<a name="section-5.3"><h3>5.3   Link Status Indication</h3></a>
+
+   An example of a Link Status Indication is shown in Figure 14.  If
+   SCTP sends a Communication Lost primitive to M2PA, M2PA notifies MTP3
+   that the link is out of service.  MTP3 responds in its usual way.
+
+</p><p class="rfcparagraph">       MTP3        M2PA        SCTP        SCTP        M2PA        MTP3
+       ----        ----        ----        ----        ----        ----
+        .           .           .           .           .           .
+        .           Communication Lost      .           .           .
+        .           <------------           .           .           .
+        .           .           .           .           .           .
+        Out of Service          .           .           .           .
+        <------------           .           .           .           .
+        .           .           .           .           .           .
+
+</p><p class="rfcparagraph">                Figure 14.  Example: Link Status Indication
+	<a name="section-5.4"><h3>5.4   Link Status Message (Processor Outage)</h3></a>
+
+   Figure 15 shows how M2PA responds to a local processor outage.  M2PA
+   sends a Link Status message to its peer.  The peer M2PA notifies MTP3
+   of the outage.  MTP3 can then follow the processor outage procedures
+   as in [Q.703].
+
+</p><p class="rfcparagraph">       MTP3        M2PA        SCTP        SCTP        M2PA        MTP3
+       ----        ----        ----        ----        ----        ----
+        .           .           .           .           .           .
+        .       M2PA detects    .           .           .           .
+        .       Local Processor .           .           .           .
+        .       Outage          .           .           .           .
+        .           .           .           .           .           .
+        .           Link Status .           .           .           .
+        .           Processor Outage        .           .           .
+        .           ------------------------------------>           .
+        .           .           .           .           .           .
+        .           .           .           .        Remote Processor
+        .           .           .           .        Outage         .
+        .           .           .           .           ------------>
+        .           .           .           .           .           .
+        .           Link Status             .           .           .
+        .           Processor               .           .           .
+        .           Recovered               .           .           .
+        .           ------------------------------------>           .
+        .           .           .           .           .           .
+        .           .           .           .        Remote Processor
+        .           .           .           .        Outage Ceases
+        .           .           .           .           ------------>
+        .           .           .           .           .           .
+        .           .           .       Link Status Ready           .
+        .           <------------------------------------           .
+        .           .           .           .           .           .
+        .           Link Status Ready       .           .           .
+        .           ------------------------------------>           .
+        .           .           .           .           .           .
+        Message for             .           .           .           .
+        transmission            .           .           .           .
+        ------------>           .           .           .           .
+        .           .           .           .           .           .
+        .           User Data               .           .           .
+        .           ------------------------------------>           .
+        .           .           .           .           .           .
+
+</p><p class="rfcparagraph">        Figure 15.  Example: Link Status Message - Processor Outage
+   Figure 16 shows an example of processor outage in more detail.  All
+   M2PA messages in this example are sent on the Data stream (stream 1).
+
+</p><p class="rfcparagraph">                    A                                   B
+       ----------------------------        ----------------------------
+
+       MTP3        M2PA        SCTP        SCTP        M2PA        MTP3
+       ----        ----        ----        ----        ----        ----
+        .           .           .           .           .           .
+        6 Messages for          .           .           .           .
+        transmission            .           .           .           .
+        ------------>           .           .          6 Messages for
+        .           .           .           .            transmission
+        .           .           .           .           <------------
+        .           User Data FSN=1         .           .           .
+        .           ------------------------------------>           .
+        .           User Data FSN=2         .           .           .
+        .           ------------------------------------>           .
+        .           User Data FSN=3         .           .           .
+        .           ------------------------------------>           .
+        .           .           .        User Data FSN=11           .
+        .           <------------------------------------           .
+        .           .           .        User Data FSN=12           .
+        .           <------------------------------------           .
+        .           .           .        User Data FSN=13           .
+        .           <------------------------------------           .
+
+</p><p class="rfcparagraph">   Side A detects LPO.
+
+</p><p class="rfcparagraph">        .           .           .           .           .           .
+        .           .           .  User Data FSN=14 BSN=3           .
+        .           <------------------------------------           .
+        .           .           .  User Data FSN=15 BSN=3           .
+        .           <------------------------------------           .
+        .           .           .  User Data FSN=16 BSN=3           .
+        .           <------------------------------------           .
+        .           LS PO FSN=3 BSN=11      .           .           .
+        .           ------------------------------------>           .
+        .           .           .           .        Remote Processor
+        .           .           .           .        Outage         .
+        .           .           .           .           ------------>
+
+   While in LPO, A must buffer messages 14-16 without acknowledging
+   them.  A may continue transmitting messages from MTP3, and
+   acknowledging messages that were received before LPO.
+        .           .           .           .           .           .
+        .           User Data FSN=4 BSN=13  .           .           .
+        .           ------------------------------------>           .
+        .           User Data FSN=5 BSN=13  .           .           .
+        .           ------------------------------------>           .
+        .           User Data FSN=6 BSN=13  .           .           .
+        .           ------------------------------------>           .
+        .           .           .           .           .           .
+
+</p><p class="rfcparagraph">    While in RPO, B may continue acknowledging messages.  Suppose that
+    B receives message 4 and 5, but has not processed 6 yet.
+
+</p><p class="rfcparagraph">         .           .           .           .           .           .
+         .                  (empty) User Data FSN=16 BSN=4
+         .           <------------------------------------           .
+         .                  (empty) User Data FSN=16 BSN=5
+         .           <------------------------------------           .
+
+</p><p class="rfcparagraph">    LPO ends at A.  A flushes 14-16 (the messages that were buffered
+    without acknowledgement).
+
+</p><p class="rfcparagraph">         .           .           .           .           .           .
+         .           LS PR FSN=6 BSN=13      .           .           .
+         .           ------------------------------------>           .
+         .           .           .           .        Remote Processor
+         .           .           .           .        Outage Ceases
+         .           .           .           .           ------------>
+         .           .           .           .           .           .
+
+</p><p class="rfcparagraph">    Suppose that B processed message 5, but never processed message 6.
+    B flushes message 6 from its Receive Buffer.  B notifies A of this
+    using the Link Status Ready message setting BSN=5, the last message
+    that was processed at B.
+
+</p><p class="rfcparagraph">         .           .           .           .           .           .
+         .           .           .           .           .           .
+         .           .           .   LS Ready FSN=13 BSN=5           .
+         .           <------------------------------------           .
+         .           .           .           .           .           .
+
+</p><p class="rfcparagraph">    B has completed synchronization of sequence numbers and has sent
+    an LS Ready, so it is able to resume sending data at this point
+    with the new sequence numbers (starting with FSN=14).
+         .           .           .           .           .           .
+         .           .           .           .           . Message for
+         .           .           .           .            transmission
+         .           .           .           .           <------------
+         .           .           .  User Data FSN=14 BSN=5           .
+         .           <------------------------------------           .
+         .           .           .           .           .           .
+
+</p><p class="rfcparagraph">    A can use the Link Status Ready information to resynchronize its
+    sequence numbers to begin with FSN=6 in the next User Data message.
+
+</p><p class="rfcparagraph">         .           .           .           .           .           .
+         .           LS Ready FSN=5 BSN=13   .           .           .
+         .           ------------------------------------>           .
+         .           .           .           .           .           .
+
+</p><p class="rfcparagraph">    A has completed synchronization of sequence number and has both
+    received and sent an LS Ready, so it is able to resume sending data
+    at this point with the new sequence numbers and acknowledging data
+    received after receiving LS Ready.
+
+</p><p class="rfcparagraph">
+         .           .           .           .           .           .
+         .           .           .           .           .           .
+         .           User Data FSN=5 BSN=14 (empty)      .           .
+         .           ------------------------------------>           .
+         .           .           .           .           .           .
+         Message for             .           .           . Message for
+         transmission            .           .            transmission
+         ------------>           .           .           <------------
+         .           User Data FSN=6 BSN=14  .           .           .
+         .           ------------------------------------>           .
+         .           .           .  User Data FSN=15 BSN=5           .
+         .           <------------------------------------           .
+         .           .           .           .           .           .
+         .           .      (empty) User Data FSN=15 BSN=6           .
+         .           <------------------------------------           .
+         .           User Data FSN=6 BSN=15 (empty)      .           .
+         .           ------------------------------------>           .
+         .           .           .           .           .           .
+         .           .           .           .           .           .
+         .           .           .           .           .           .
+
+</p><p class="rfcparagraph">            Figure 16.  Example: Processor Outage and Recovery
+	<a name="section-5.5"><h3>5.5   Level 2 Flow Control</h3></a>
+
+   Figures 17 and 18 illustrate the Level 2 Flow Control procedure.  In
+   Figure 17, congestion ceases before timer T6 expires.  Figure 18
+   shows the case where T6 expires.
+
+</p><p class="rfcparagraph">       MTP3        M2PA        SCTP        SCTP        M2PA        MTP3
+       ----        ----        ----        ----        ----        ----
+        .           .           .           .           .           .
+        .           Implementation dependent            .           .
+        .           determination of M2PA               .           .
+        .           receive congestion onset            .           .
+        .           .           .           .           .           .
+        .           Link Status Busy        .           .           .
+        .           ------------------------------------>           .
+        .           .           .           .           .           .
+        .           .           .           .          Start        .
+        .           .           .           .          Timer T6     .
+        .           .           .           .           .           .
+        .           Implementation dependent            .           .
+        .           determination of M2PA               .           .
+        .           receive congestion abatement        .           .
+        .           .           .           .           .           .
+        .           Link Status Busy Ended  .           .           .
+        .           ------------------------------------>           .
+        .           .           .           .           .           .
+        .           .           .           .          Stop         .
+        .           .           .           .          Timer T6     .
+        .           .           .           .           .           .
+
+</p><p class="rfcparagraph">       Figure 17.  Example: Level 2 Flow Control - Congestion Ceases
+       MTP3        M2PA        SCTP        SCTP        M2PA        MTP3
+       ----        ----        ----        ----        ----        ----
+        .           .           .           .           .           .
+        .           Implementation dependent            .           .
+        .           determination of M2PA               .           .
+        .           receive congestion onset            .           .
+        .           .           .           .           .           .
+        .           Link Status Busy        .           .           .
+        .           ------------------------------------>           .
+        .           .           .           .           .           .
+        .           .           .           .          Start        .
+        .           .           .           .          Timer T6     .
+        .           .           .           .            :          .
+        .           .           .           .            :          .
+        .           .           .           .          Timer T6     .
+        .           .           .           .          Expires      .
+        .           .           .           .           .           .
+        .           .          Link Status Out of Service           .
+        .           <------------------------------------           .
+        .           .           .           .           .           .
+        .           .           .           .          Out of Service
+        .           .           .           .           ------------>
+        .           .           .           .           .           .
+
+</p><p class="rfcparagraph">       Figure 18.  Example: Level 2 Flow Control - Timer T6 Expires
+	<a name="section-5.6"><h3>5.6   MTP3 Signaling Link Congestion</h3></a>
+
+   In Figure 19, M2PA notifies MTP3 of congestion onset and abatement.
+   The notification includes the congestion level, if there are levels
+   of congestion defined.
+
+</p><p class="rfcparagraph">       MTP3        M2PA        SCTP        SCTP        M2PA        MTP3
+       ----        ----        ----        ----        ----        ----
+        .           .           .           .           .           .
+        .           Implementation dependent            .           .
+        .           determination of M2PA   .           .           .
+        .           transmit congestion     .           .           .
+        .           onset (level)           .           .           .
+        .           .           .           .           .           .
+        Congestion Indication   .           .           .           .
+        (level)     .           .           .           .           .
+        <------------           .           .           .           .
+        .           .           .           .           .           .
+        .           Implementation dependent            .           .
+        .           determination of M2PA   .           .           .
+        .           transmit congestion     .           .           .
+        .           abatement (level)       .           .           .
+        .           .           .           .           .           .
+        Congestion Indication   .           .           .           .
+        (level)     .           .           .           .           .
+        <------------           .           .           .           .
+        .           .           .           .           .           .
+
+</p><p class="rfcparagraph">            Figure 19.  Example: MTP3 Signaling Link Congestion
+	<a name="section-5.7"><h3>5.7   Link Deactivation</h3></a>
+
+   Figure 20 shows an example of link deactivation.  MTP3 can request
+   that a link be taken out of service.
+
+</p><p class="rfcparagraph">       MTP3        M2PA        SCTP        SCTP        M2PA        MTP3
+       ----        ----        ----        ----        ----        ----
+        .           .           .           .           .           .
+        Stop        .           .           .           .           .
+        ------------>           .           .           .           .
+        .           .           .           .           .           .
+        .           Link Status Out of Service          .           .
+        .           ------------------------------------>           .
+        .           .           .           .           .           .
+        Out of Service          .           .           .           .
+        <------------           .           .           .           .
+        .           .           .           .           .           .
+
+</p><p class="rfcparagraph">                  Figure 20.  Example: Link Deactivation
+
+	<a name="section-5.8"><h3>5.8   Link Changeover</h3></a>
+
+   In Figure 21, MTP3 performs a changeover because the link went out of
+   service.  MTP3 selects a different link to retransmit the
+   unacknowledged and unsent messages.
+       MTP3        M2PA        SCTP        SCTP        M2PA        MTP3
+       ----        ----        ----        ----        ----        ----
+        .           .           .           .           .           .
+        .           Communication Lost      .           .           .
+        .           <------------           .           .           .
+        .           .           .           .           .           .
+        Out of Service          .           .           .           .
+        <------------           .           .           .           .
+        .           .           .           .           .           .
+        Retrieve BSNT           .           .           .           .
+        ------------>           .           .           .           .
+        .           .           .           .           .           .
+        BSNT Confirmation       .           .           .           .
+        <------------           .           .           .           .
+        .           .           .           .           .           .
+        XCO (BSNT) on another link          .           .           .
+        ------------------------------------------------------------>
+        .           .           .           .           .           .
+        .           .           .           .           Retrieve BSNT
+        .           .           .           .           <------------
+        .           .           .           .           .           .
+        .           .           .           .       BSNT Confirmation
+        .           .           .           .           ------------>
+        .           .           .           .           .           .
+        .           .           .           .           .  XCA (BSNT)
+        <------------------------------------------------------------
+        .           .           .           .           .           .
+        Retrieval Request       .           .           .           .
+        and FSNC    .           .           .           .           .
+        ------------>           .           .           .           .
+        .           .           .           .           .           .
+        Retrieved Message       .           .           .           .
+        <------------           .           .           .           .
+        .  :        .           .           .           .           .
+        .  :        .           .           .           .           .
+        <------------           .           .           .           .
+        .           .           .           .           .           .
+        Retrieval Complete      .           .           .           .
+        <------------           .           .           .           .
+        .           .           .           .           .           .
+        Send messages on another link.
+
+</p><p class="rfcparagraph">                   Figure 21.  Example: Link Changeover
+	<a name="section-6"><h2>6.   Security Considerations</h2></a>
+
+   M2PA is designed to carry signaling messages for telephony services.
+   As such, M2PA MUST involve the security needs of several parties:
+
+</p><p class="rfcparagraph">      - the end users of the services
+
+      - the network providers
+
+      - the applications involved
+
+   Additional requirements MAY come from local regulation.
+
+</p><p class="rfcparagraph">   While these parties may have some overlapping security needs, their
+   needs may not be identical.  Any security solution SHOULD fulfill all
+   of the different parties' needs.
+
+</p><p class="rfcparagraph">   Consult [RFC3788] for a discussion of security requirements and for
+   guidance on the use of security protocols.  Implementers of M2PA MUST
+   follow the guidelines in [RFC3788].
+
+</p><p class="rfcparagraph">	<a name="section-7"><h2>7.   IANA Considerations</h2></a>
+
+	<a name="section-7.1"><h3>7.1   SCTP Payload Protocol Identifier</h3></a>
+
+   The SCTP Registered User Port Number Assignment for M2PA is 3565.
+   The TCP Registered User Port Number 3565 is also assigned to M2PA, in
+   case a specification for M2PA over TCP is created.
+
+</p><p class="rfcparagraph">   The value assigned by IANA for the Payload Protocol Identifier in the
+   SCTP Payload Data chunk is
+
+        M2PA     5
+
+   The SCTP Payload Protocol Identifier is included in each SCTP Data
+   chunk, to indicate which protocol the SCTP is carrying.  This Payload
+   Protocol Identifier is not directly used by SCTP but may be used by
+   certain network entities to identify the type of information being
+   carried in a Data chunk.
+
+</p><p class="rfcparagraph">   The User Adaptation peer may use the Payload Protocol Identifier as a
+   way of determining additional information about the data being
+   presented to it by SCTP.
+	<a name="section-7.2"><h3>7.2   M2PA Protocol Extensions</h3></a>
+
+   This protocol may be extended through IANA in three ways:
+
+</p><p class="rfcparagraph">      - through definition of additional message classes,
+
+      - through definition of additional message types, and
+
+      - through definition of additional message parameters.
+
+</p><p class="rfcparagraph">   The definition and use of new message classes, types, and parameters
+   is an integral part of SIGTRAN adaptation layers.  Thus, these
+   extensions are assigned by IANA through an IETF Consensus action as
+   defined in [RFC2434].
+
+</p><p class="rfcparagraph">   The proposed extension must in no way adversely affect the general
+   working of the protocol.
+
+</p><p class="rfcparagraph">   The defined values for the message classes, types, and parameters are
+   listed in the Signaling User Adaptation Layer registry
+   (sigtran-adapt).
+
+</p><p class="rfcparagraph">	<a name="section-7.2.1"><h4>7.2.1   IETF Defined Message Classes</h4></a>
+
+   The documentation for a new message class MUST include the following
+   information:
+
+</p><p class="rfcparagraph">      (a) A long and short name for the message class.
+
+</p><p class="rfcparagraph">      (b) A detailed description of the purpose of the message class.
+
+</p><p class="rfcparagraph">	<a name="section-7.2.2"><h4>7.2.2  IETF Defined Message Types</h4></a>
+
+   Documentation of the message type MUST contain the following
+   information:
+
+</p><p class="rfcparagraph">      (a) A long and short name for the new message type.
+
+</p><p class="rfcparagraph">      (b) A detailed description of the structure of the message.
+
+</p><p class="rfcparagraph">      (c) A detailed definition and description of the intended use of
+          each field within the message.
+
+</p><p class="rfcparagraph">      (d) A detailed procedural description of the use of the new
+          message type within the operation of the protocol.
+
+</p><p class="rfcparagraph">      (e) A detailed description of error conditions when receiving this
+          message type.
+   When an implementation receives a message type that it does not
+   support, it MUST discard the message.
+
+</p><p class="rfcparagraph">	<a name="section-7.2.3"><h4>7.2.3   IETF-defined Parameter Extension</h4></a>
+
+   Documentation of the message parameter MUST contain the following
+   information:
+
+</p><p class="rfcparagraph">      (a) Name of the parameter type.
+
+</p><p class="rfcparagraph">      (b) Detailed description of the structure of the parameter field.
+
+</p><p class="rfcparagraph">      (c) Detailed definition of each component of the parameter value.
+
+</p><p class="rfcparagraph">      (d) Detailed description of the intended use of this parameter
+          type, and an indication of whether, and under what
+          circumstances, multiple instances of this parameter type may
+          be found within the same message type.
+
+</p><p class="rfcparagraph">	<a name="section-7.2.4"><h4>7.2.4   Defined Values</h4></a>
+
+   This section lists the values defined in this document that should be
+   included in the Signaling User Adaptation Layer registry
+   (sigtran-adapt).
+
+</p><p class="rfcparagraph">   The following values for Message Class are defined in this document:
+
+</p><p class="rfcparagraph">            Value
+          (decimal)  Message Class
+          ---------  -------------
+             11      M2PA Messages
+
+   The following values for Message Type are defined in this document:
+
+</p><p class="rfcparagraph">            Value
+          (decimal)  Message Type
+          ---------  -------------
+              1      User Data
+              2      Link Status
+
+	<a name="section-8"><h2>8.   Acknowledgements</h2></a>
+
+   The authors would like to thank the following for their valuable
+   comments and suggestions: Brian Tatum, Wayne Davis, Cliff Thomas,
+   Jeff Copley, Monique Bernard, Malleswar Kalla, Ian Rytina, Greg
+   Sidebottom, Al Varney, Jeff Craig, and Andrew Booth.
+	<a name="section-9"><h2>9.   References</h2></a>
+
+	<a name="section-9.1"><h3>9.1   Normative References</h3></a>
+
+   [JT-Q703]  TTC, "Message Transfer Part Signalling Link," TTC Standard
+              JT-Q703, Telecommunication Technology Committee (TTC),
+              version 3 (April 27, 1994).
+
+</p><p class="rfcparagraph">   [JT-Q704]  TTC, "Message Transfer Part Signalling Network Functions,"
+              TTC Standard JT-Q704, Telecommunication Technology
+              Committee (TTC), version 4 (May 30, 2002).
+
+</p><p class="rfcparagraph">   [Q.703]    ITU, "Signalling System No. 7 - Signalling Link," ITU-T
+              Recommendation Q.703, ITU-T Telecommunication
+              Standardization Sector of ITU (July 1996).
+
+</p><p class="rfcparagraph">   [Q.704]    ITU, "Message Transfer Part - Signalling Network Functions
+              and Messages," ITU-T Recommendation Q.704, ITU-T
+              Telecommunication Standardization Sector of ITU (July
+              1996).
+
+</p><p class="rfcparagraph">   [Q.2140]   ITU, "B-ISDN ATM Adaptation Layer - Service Specific
+              Coordination Function for Signalling at the Network Node
+              Interface (SSCF at NNI)," ITU-T Recommendation Q.2140,
+              ITU-T Telecommunication Standardization Sector of ITU
+              (February 1995).
+
+</p><p class="rfcparagraph">   [Q.2210]   ITU, "Message Transfer Part Level 3 Functions and Messages
+              Using the Services of ITU-T Recommendation Q.2140," ITU-T
+              Recommendation Q.2210, ITU-T Telecommunication
+              Standardization Sector of ITU (July 1996).
+
+</p><p class="rfcparagraph">   [RFC791]   Postel, J., "Internet Protocol", STD 5, RFC 791, September
+              1981.
+
+</p><p class="rfcparagraph">   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">   [RFC2434]  Narten, T. and H. Alvestrand, "Guidelines for Writing an
+              IANA Considerations Section in RFCs", BCP 26, RFC 2434,
+              October 1998.
+
+</p><p class="rfcparagraph">   [RFC2960]  Stewart, R., Xie, Q., Morneault, K., Sharp, C.,
+              Schwarzbauer, H., Taylor, T., Rytina, I., Kalla, M.,
+              Zhang, L., and V. Paxson, "Stream Control Transmission
+              Protocol", RFC 2960, October 2000.
+   [RFC3309]  Stone, J., Stewart, R., and D. Otis, "Stream Control
+              Transmission Protocol (SCTP) Checksum Change", RFC 3309,
+              September 2002.
+
+</p><p class="rfcparagraph">   [RFC3788]  Loughney, J., Tuexen, M., and J. Pastor-Balbas, "Security
+              Considerations for Signaling Transport (SIGTRAN)
+              Protocols", RFC 3788, June 2004.
+
+</p><p class="rfcparagraph">   [T1.111]   ANSI, "American National Standard for Telecommunications -
+              Signaling System Number 7 (SS7) - Message Transfer Part
+              (MTP)," ANSI T1.111-2001, American National Standards
+              Institute (February 2001).
+
+</p><p class="rfcparagraph">	<a name="section-9.2"><h3>9.2   Informative References</h3></a>
+
+   [M2UA]     K. Morneault, et. al., "Signaling System 7 (SS7) Message
+              Transfer Part 2 (MTP2) - User Adaptation Layer," RFC 3331,
+              Internet Engineering Task Force - Signalling Transport
+              Working Group (September, 2002).
+
+</p><p class="rfcparagraph">   [Q.700]    ITU, "Introduction to CCITT Signalling System No. 7,"
+              ITU-T Recommendation Q.700, ITU-T Telecommunication
+              Standardization Sector of ITU (March 1993).
+
+</p><p class="rfcparagraph">   [Q.701]    ITU, "Functional Description of the Message Transfer Part
+              (MTP) of Signalling System No. 7," ITU-T Recommendation
+              Q.701, ITU-T Telecommunication Standardization Sector of
+              ITU (March 1993).
+
+</p><p class="rfcparagraph">   [Q.702]    ITU, "Signalling Data Link," ITU-T Recommendation Q.702,
+              ITU-T Telecommunication Standardization Sector of ITU
+              (November 1988).
+
+</p><p class="rfcparagraph">   [Q.705]    ITU, "Signalling System No. 7 - Signalling Network
+              Structure," ITU-T Recommendation Q.705, ITU-T
+              Telecommunication Standardization Sector of ITU (March
+              1993).
+
+</p><p class="rfcparagraph">   [RFC2719]  Ong, L., Rytina, I., Garcia, M., Schwarzbauer, H., Coene,
+              L., Lin, H., Juhasz, I., Holdrege, M., and C. Sharp,
+              "Framework Architecture for Signaling Transport", RFC
+              2719, October 1999.
+Authors' Addresses
+
+   Tom George
+   Plano, TX
+   USA
+
+   Phone: +1-972-985-4594
+   EMail: tgeorge_tx@verizon.net
+
+   Brian Bidulock
+   OpenSS7 Corporation
+   1469 Jeffreys Crescent
+   Edmonton, AB  T6L 6T1
+   Canada
+
+   Phone: +1-780-490-1141
+   EMail: bidulock@openss7.org
+
+   Ram Dantu, Ph.D.
+   Assistant Professor
+   Department of Computer Science
+   University of North Texas
+   Denton, TX 76203
+   USA
+
+   Phone: +1-940-565-2822
+   EMail: rdantu@unt.edu
+
+   Hanns Juergen Schwarzbauer
+   SIEMENS AG
+   Hofmannstr. 51
+   81359 Munich
+   Germany
+
+   Phone: +49-89-722-24236
+   EMail: HannsJuergen.Schwarzbauer@Siemens.com
+
+   Ken Morneault
+   Cisco Systems Inc.
+   13615 Dulles Technology Drive
+   Herndon, VA 20171
+   USA
+
+   Phone: +1-703-484-3323
+   EMail: kmorneau@cisco.com
+Full Copyright Statement
+
+   Copyright (C) The Internet Society (2005).<br>
+
+</p><p class="rfcparagraph">   This document is subject to the rights, licenses and restrictions
+   contained in BCP 78, and except as set forth therein, the authors
+   retain all their rights.
+
+</p><p class="rfcparagraph">   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY AND THE INTERNET
+   ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED,
+   INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE
+   INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED
+   WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Intellectual Property
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the procedures with respect to rights in RFC documents can be
+   found in BCP 78 and BCP 79.
+
+</p><p class="rfcparagraph">   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+</p><p class="rfcparagraph">   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at ietf-
+   ipr@ietf.org.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is currently provided by the
+   Internet Society.
+
+</p>
+
+
+
+
+
+George, et al.              Standards Track                    [Page 53]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

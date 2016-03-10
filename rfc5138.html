@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                             S. Cox<br>Request for Comments: 5138                                         CSIRO<br>Category: Informational                                    February 2008<br><br></p>
+                  <h1>
+      A Uniform Resource Name (URN) Namespace for the Commission
+   for the Management and Application of Geoscience Information (CGI)</h1>
+                  <h2>Status of This Memo</h2>
+
+   This memo provides information for the Internet community.  It does
+   not specify an Internet standard of any kind.  Distribution of this
+   memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This document describes a URN (Uniform Resource Name) namespace that
+   is engineered by the Commission for the Management and Application of
+   Geoscience Information (CGI) for naming (i) persistent resources
+   published by the CGI and (ii) resources published by organizations
+   that wish them to be used in the context of services conforming to
+   protocols and agreements issued by CGI.  The formal Namespace
+   Identifier (NID) is "cgi".
+
+</p><p class="rfcparagraph">	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   CGI is a Commission of the International Union of Geological Sciences
+   (IUGS) concerned with developing best practices in the management and
+   application of geoscience information.  The active membership is
+   primarily drawn from organizations with statutory responsibility for
+   providing geoscience information to external users (e.g., Geologic
+   Surveys).  An important focus of activity is the development of
+   standards for networked data interchange to complement or supersede
+   the traditional map product.
+
+</p><p class="rfcparagraph">   A number of documents, definitions, and other artifacts, are required
+   to support this.  CGI wishes to provide persistent,
+   location-independent identifiers for these resources.  In addition,
+   organizations that subscribe to the interchange standards proposed by
+   CGI require external identifiers for data objects that are
+   transferred.  CGI wishes to provide a scheme to enable data providers
+   to uniquely identify data, which is consistent with the requirements
+   of the interchange framework.
+
+</p><p class="rfcparagraph">   Products and services that conform to CGI endorsed interchange
+   specifications enable users to exchange and process geoscience
+   information across networks, computing platforms, and products.
+   Interoperability in such an environment is facilitated by the use of
+   a system of identifiers that is global in scope.  CGI is the lead
+   forum for statutory organizations that act as primary providers of
+   technical data in this application domain.
+
+</p><p class="rfcparagraph">   Motivated by these concerns, CGI would like to assign formal URNs to
+   published resources in order to provide persistent,
+   location-independent identifiers for them.  The process for
+   registering a namespace identifier is documented in [RFC3406].
+
+</p><p class="rfcparagraph">   The official IANA registry of URN namespaces is available online at:
+
+</p><p class="rfcparagraph">   <http://www.iana.org/assignments/urn-namespaces>
+
+	<a name="section-2"><h2>2.   URN Specification for the "cgi" NID</h2></a>
+
+   Namespace ID:
+
+</p><p class="rfcparagraph">      cgi
+
+   Registration Information:
+
+</p><p class="rfcparagraph">      Registration Version Number: 1
+      Registration Date: 2007-10-04
+
+   Declared registrant of the namespace:
+
+</p><p class="rfcparagraph">      Commission for Geoscience Information (Secretariat)
+      c/o British Geological Survey
+      Kingsley Dunham Centre
+      Keyworth
+      Nottingham
+      Nottinghamshire
+      NG12 5GG
+      U K
+      Attn. Ian Jackson (ij@bgs.ac.uk)
+
+   Declaration of syntactic structure:
+
+</p><p class="rfcparagraph">      The Namespace Specific String (NSS) of all URNs that use the "cgi"
+      NID has the following structure:
+
+</p><p class="rfcparagraph">      urn:cgi:{CGIResource}:{ResourceSpecificString}
+
+      where the "CGIResource" is a US-ASCII string that conforms to the
+      URN syntax requirements [RFC2141] and defines a specific class of
+      resource type.  Each resource type has a specific labeling scheme
+      that is covered by "ResourceSpecificString", which also conforms
+      to the naming requirements of [RFC2141].
+      The CGI maintains a naming authority, the CGI Naming Authority
+      (CGINA), that manages the assignment of CGIResource classes and
+      the specific registration values assigned for each resource class.
+
+</p><p class="rfcparagraph">   Relevant ancillary documentation:
+
+</p><p class="rfcparagraph">      The CGI Naming Authority (CGINA) provides information on the
+      registered resources and the registrations for each.  More
+      information about CGINA and the registration activities and
+      procedures to be followed are available at:
+
+</p><p class="rfcparagraph">      <http://www.cgi-iugs.org/CGIIdentifierScheme>
+
+      A URN resolver is available at:
+
+</p><p class="rfcparagraph">      <http://www.cgi-iugs.org/uri>
+
+      The resolver provides a registry of CGI URNs used in CGI services.
+
+</p><p class="rfcparagraph">   Identifier uniqueness considerations:
+
+</p><p class="rfcparagraph">      The CGINA manages resources using the "cgi" NID and is the
+      authority for managing the resources and subsequent strings
+      associated.  In the associated procedures, CGINA ensures the
+      uniqueness of the strings themselves or permits secondary
+      responsibility for management of well-defined sub-trees.
+
+</p><p class="rfcparagraph">      CGI may permit use of experimental-type values that will not be
+      registered.  As a consequence, multiple users may end up using the
+      same value for separate uses.  As experimental usage is only
+      intended for testing purposes, this should not interfere with
+      operational services.
+
+</p><p class="rfcparagraph">   Identifier persistence considerations:
+
+</p><p class="rfcparagraph">      CGINA provides clear documentation of the registered uses of the
+      "cgi" NID.  This is structured such that each CGIResource has a
+      separate description and associated ResourceSpecificString with
+      separate registration tables for elements of the strings that are
+      separately maintained.
+
+</p><p class="rfcparagraph">      The registration tables and information are published and
+      maintained by CGINA on the CGI web site, indicated above.
+   Process of identifier assignment:
+
+</p><p class="rfcparagraph">      CGINA defines CGIResource classes used with the "cgi" NID, and
+      specifies the process for identifier assignment for each class.
+      These are described at:
+
+</p><p class="rfcparagraph">      <http://www.cgi-iugs.org/CGIIdentifierScheme>
+
+      and a set of registers is linked from there.  Each such resource
+      may have three types of registration activities:
+
+</p><p class="rfcparagraph">         1) Registered values associated with CGI resources
+         2) Registration of values or sub-trees to other entities
+         3) Name models for use in experimental purposes
+
+   Process for Identifier Resolution:
+
+</p><p class="rfcparagraph">      The namespace is not listed with a Resolution Discovery System
+      (RDS); this is not relevant.
+
+</p><p class="rfcparagraph">   Rules for Lexical Equivalence:
+
+</p><p class="rfcparagraph">      No special considerations; the rules for lexical equivalence of
+      [RFC2141] apply.
+
+</p><p class="rfcparagraph">   Conformance with URN Syntax:
+
+</p><p class="rfcparagraph">      No special considerations.
+
+</p><p class="rfcparagraph">   Validation mechanism:
+
+</p><p class="rfcparagraph">      None specified.  URN assignment will be handled by procedures
+      implemented in support of CGINA activities.
+
+</p><p class="rfcparagraph">   Scope:
+
+</p><p class="rfcparagraph">      Global
+
+	<a name="section-3"><h2>3.   Examples</h2></a>
+
+   The following examples are representative URNs that have been
+   assigned by CGINA:
+
+</p><p class="rfcparagraph">   urn:cgi:document:CGI:CGIIdentifierScheme
+
+      - identifies the document that describes the CGI Identifier
+        Scheme.
+   urn:cgi:register:CGI:CGIResourceClasses
+
+      - identifies the register of resource classes for which
+        identifiers from the CGI scheme may be provided.
+
+</p><p class="rfcparagraph">   urn:cgi:xmlns:CGI:GeoSciML:2.0
+
+      - is the XML namespace for version 2.0 of GeoSciML, which is owned
+        by CGI.
+
+</p><p class="rfcparagraph">   urn:cgi:schema:GGIC:MineralOccurences:1.0:XMI
+
+      - identifies the XML Metadata Interchange (XMI) representation of
+        version 1.0 of the Mineral Occurrences information model owned
+        by the (Australasian) Government Geoscience Information
+        Committee.
+
+</p><p class="rfcparagraph">   urn:cgi:featureType:CGI:GeoSciML:2.0:Fault
+
+      - identifies the Fault feature-type from version 2.0 of the
+        GeoSciML schema that is owned by CGI.
+
+</p><p class="rfcparagraph">   urn:ogc:serviceType:CGI:GSML-FS:1.0
+
+      - identifies version 1.0 of the "GSML-FS" service-type owned by
+        CGI.
+
+</p><p class="rfcparagraph">   urn:cgi:classifierScheme:ICS:StratChart:2004
+
+      - identifies the 2004 edition of the Stratigraphic Chart published
+        by the International Commission for Stratigraphy.
+
+</p><p class="rfcparagraph">   urn:cgi:classifier:ICS:StratChart:2004:Silurian
+
+      - identifies the geologic period designated Silurian from the 2004
+        edition of the Stratigraphic Chart published by the
+        International Commission for Stratigraphy.
+
+</p><p class="rfcparagraph">   urn:cgi:classifier:GSV:Lithology:UIUYG1245NN07
+
+      - identifies the concept given the designation UIUYG1245NN07 from
+        the lithology scheme published by Geoscience Victoria
+        (Australia).
+   urn:cgi:feature:USGS:2feb49bc-6755-11dc-8314-0800200c9a66
+
+      - identifies a feature instance given the designation
+        2feb49bc-6755-11dc-8314-0800200c9a66 by the US Geological
+        Survey.
+
+</p><p class="rfcparagraph">   urn:cgi:object:SGU:552cb080-6755-11dc-8314-0800200c9a66
+
+      - identifies an object given the designation
+        552cb080-6755-11dc-8314-0800200c9a66 by the Geological Survey of
+        Sweden.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   Namespace Considerations</h2></a>
+
+   There is currently no available namespace that will allow the CGI to
+   uniquely specify and access resources, such as schemas and
+   registries, that are required by organizations implementing CGI
+   standards.  There is also a need for other standards organizations,
+   such as the Open Geospatial Consortium (OGC) to be able to access
+   CGI-specific resources.
+
+</p><p class="rfcparagraph">   The CGI members considered use of other existing NIDs, such as those
+   for OGC.  However, these do not support the semantics required and in
+   particular do not allow for the delegation of identifier assignment
+   within the CGI community that is demonstrated here.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   Community Considerations</h2></a>
+
+   CGI standards require access to resources, such as schemas,
+   registries, catalogues, documents, and services.  In order for the
+   larger IT community to be able to implement applications that access
+   CGI resources effectively, a unique namespace is required.  We desire
+   these resources to be freely and openly available as a set of
+   community resources.
+
+</p><p class="rfcparagraph">   The design of the CGI namespace builds on the experience of the Open
+   Geospatial Consortium (OGC) which has defined the framework of
+   geospatial services within which CGI standards have been developed.
+   The OGC membership has expertise in using the OGC URN [OGC-URN]
+   [OGC-DEF], gained through implementation experiments and a variety of
+   operational testbeds.  The CGI namespace is compatible with this
+   experience.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.   Security Considerations</h2></a>
+
+   There are no additional security considerations other than those
+   normally associated with the use and resolution of URNs in general.
+	<a name="section-7"><h2>7.   IANA Considerations</h2></a>
+
+   This document defines a URN NID registration of "cgi", which has been
+   entered into the IANA registry located at:
+
+</p><p class="rfcparagraph">   <http://www.iana.org/assignments/urn-namespaces>
+
+	<a name="section-8"><h2>8.   References</h2></a>
+
+	<a name="section-8.1"><h3>8.1  Normative References</h3></a>
+
+   [RFC2141] Moats, R., "URN Syntax", RFC 2141, May 1997.
+
+</p><p class="rfcparagraph">   [RFC3406] Daigle, L., van Gulik, D., Iannella, R., and P. Faltstrom,
+             "Uniform Resource Names (URN) Namespace Definition
+             Mechanisms", BCP 66, RFC 3406, October 2002.
+
+</p><p class="rfcparagraph">	<a name="section-8.2"><h3>8.2  Informative References</h3></a>
+
+   [OGC-URN] Reed, C., "A URN namespace for the Open Geospatial
+             Consortium (OGC)", Work in Progress, October 2007.
+
+</p><p class="rfcparagraph">   [OGC-DEF] Whiteside, A., "Definition identifier URNs in OGC
+             namespace", OpenGIS Best Practice document, OGC 06-023r1,
+             August 2006.  Available [online]:
+             <http://portal.opengeospatial.org/files/?artifact_id=16339>
+
+	<a name="section-9"><h2>9.   Acknowledgement</h2></a>
+
+   Thanks to Carl Reed for preparing the document, "A URN Namespace for
+   the Open Geospatial Consortium", upon which this submission is based.
+
+</p><p class="rfcparagraph">Author's Address
+
+   S.J.D. Cox
+   Commonwealth Scientific and Industrial Research Organisation
+   PO Box 1130
+   Bentley, WA, 6102, Australia
+   EMail: Simon.Cox@csiro.au
+Full Copyright Statement
+
+   Copyright (C) The IETF Trust (2008).<br>
+
+</p><p class="rfcparagraph">   This document is subject to the rights, licenses and restrictions
+   contained in BCP 78, and except as set forth therein, the authors
+   retain all their rights.
+
+</p><p class="rfcparagraph">   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY, THE IETF TRUST AND
+   THE INTERNET ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS
+   OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF
+   THE INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED
+   WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Intellectual Property
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the procedures with respect to rights in RFC documents can be
+   found in BCP 78 and BCP 79.
+
+</p><p class="rfcparagraph">   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+</p><p class="rfcparagraph">   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at
+   ietf-ipr@ietf.org.
+
+</p>
+
+
+
+
+
+
+
+
+
+
+Cox                          Informational                      [Page 8]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

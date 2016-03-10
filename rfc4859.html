@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                          A. Farrel<br>Request for Comments: 4859                            Old Dog Consulting<br>Category: Informational                                       April 2007<br><br></p>
+                  <h1>
+               Codepoint Registry for the Flags Field in
+    the Resource Reservation Protocol-Traffic Engineering (RSVP-TE)
+                        Session Attribute Object</h1>
+                  <h2>Status of This Memo</h2>
+
+   This memo provides information for the Internet community.  It does
+   not specify an Internet standard of any kind.  Distribution of this
+   memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The IETF Trust (2007).<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This document provides instructions to IANA for the creation of a new
+   codepoint registry for the flags field in the Session Attribute
+   object of the Resource Reservation Protocol Traffic Engineering
+   (RSVP-TE) signaling messages used in Multiprotocol Label Switching
+   (MPLS) and Generalized MPLS (GMPLS) signaling.
+
+</p><p class="rfcparagraph">	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   The Resource Reservation Protocol (RSVP) [RFC2205] has been extended
+   as RSVP for Traffic Engineering (RSVP-TE) for use in Multiprotocol
+   Label Switching (MPLS) signaling [RFC3209] and Generalized MPLS
+   (GMPLS) [RFC3473].
+
+</p><p class="rfcparagraph">   [RFC3209] introduced a new signaling object, the Session Attribute
+   object, that is carried on the RSVP Path message.  The Session
+   Attribute object contains an eight-bit field of flags.
+
+</p><p class="rfcparagraph">   The original specification of RSVP-TE assigned uses to three of these
+   bit flags.  Subsequent MPLS and GMPLS RFCs have assigned further
+   flags.
+
+</p><p class="rfcparagraph">   There is a need for a codepoint registry to track the use of the bit
+   flags in this field, to ensure that bits are not assigned more than
+   once, and to define the procedures by which such bits may be
+   assigned.
+   This document lists the current bit usage and provides information
+   for IANA to create a new registry.  This document does not define the
+   uses of specific bits -- definitive procedures for the use of the
+   bits can be found in the referenced RFCs.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Existing Usage</h2></a>
+
+	<a name="section-2.1"><h3>2.1   RFC 3209</h3></a>
+
+   [RFC3209] defines the use of three bits as follows:
+
+</p><p class="rfcparagraph">   0x01  Local protection desired
+
+   0x02  Label recording desired
+
+   0x04  SE Style desired
+
+	<a name="section-2.2"><h3>2.2   RFC 4090</h3></a>
+
+   [RFC4090] defines the use of two bits as follows:
+
+</p><p class="rfcparagraph">   0x08  Bandwidth protection desired
+
+   0x10  Node protection desired
+
+	<a name="section-2.3"><h3>2.3   RFC 4736</h3></a>
+
+   [RFC4736] defines the use of one bit as follows:
+
+</p><p class="rfcparagraph">   0x20  Path re-evaluation request
+
+	<a name="section-3"><h2>3.   Security Considerations</h2></a>
+
+   This informational document exists purely to create an IANA registry.
+   Such registries help to protect the IETF process against denial-of-
+   service attacks.
+
+</p><p class="rfcparagraph">   Otherwise there are no security considerations for this document.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   IANA Considerations</h2></a>
+
+   IANA has created a new codepoint registry as follows.
+
+</p><p class="rfcparagraph">   The new registry has been placed under the "RSVP-TE Parameters"
+   branch of the tree.
+
+</p><p class="rfcparagraph">   The new registry has been termed "Session Attribute Object Flags."
+   Flags from this registry may only be assigned by IETF consensus
+   [RFC2434].
+
+</p><p class="rfcparagraph">   The registry references the flags already defined as described in
+   Section 2 of this document.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   Acknowledgements</h2></a>
+
+   Thanks to JP Vasseur, Bill Fenner, and Thomas Narten for reviewing
+   this document.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.   References</h2></a>
+
+	<a name="section-6.1"><h3>6.1   Normative References</h3></a>
+
+   [RFC2205]   Braden, R., Ed., Zhang, L., Berson, S., Herzog, S. and S.
+               Jamin, "Resource ReSerVation Protocol (RSVP) -- Version
+               1, Functional Specification", RFC 2205, September 1997.
+
+</p><p class="rfcparagraph">   [RFC2434]   Narten, T. and H. Alvestrand, "Guidelines for Writing an
+               IANA Considerations Section in RFCs", BCP 26, RFC 2434,
+               October 1998.
+
+</p><p class="rfcparagraph">   [RFC3209]   Awduche, D., Berger, L., Gan, D., Li, T., Srinivasan, V.
+               and G. Swallow, "RSVP-TE: Extensions to RSVP for LSP
+               Tunnels", RFC 3209, December 2001.
+
+</p><p class="rfcparagraph">   [RFC3473]   Berger, L., Ed., "Generalized Multi-Protocol Label
+               Switching (GMPLS) Signaling - Resource ReserVation
+               Protocol-Traffic Engineering (RSVP-TE) Extensions", RFC
+               3473, January 2003.
+
+</p><p class="rfcparagraph">	<a name="section-6.2"><h3>6.2   Informative References</h3></a>
+
+   [RFC4090]   Pan, P., Ed., Swallow, G., Ed., and A. Atlas, Ed., "Fast
+               Reroute Extensions to RSVP-TE for LSP Tunnels", RFC 4090,
+               May 2005.
+
+</p><p class="rfcparagraph">   [RFC4736]   Vasseur, JP., Ed., Ikejiri, Y., and R. Zhang,
+               "Reoptimization of Multiprotocol Label Switching (MPLS)
+               Traffic Engineering (TE) Loosely Routed Label Switched
+               Path (LSP)", RFC 4736, November 2006.
+Author's Address
+
+   Adrian Farrel
+   Old Dog Consulting
+
+   EMail: adrian@olddog.co.uk
+Full Copyright Statement
+
+   Copyright (C) The IETF Trust (2007).<br>
+
+</p><p class="rfcparagraph">   This document is subject to the rights, licenses and restrictions
+   contained in BCP 78, and except as set forth therein, the authors
+   retain all their rights.
+
+</p><p class="rfcparagraph">   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY, THE IETF TRUST AND
+   THE INTERNET ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS
+   OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF
+   THE INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED
+   WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Intellectual Property
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the procedures with respect to rights in RFC documents can be
+   found in BCP 78 and BCP 79.
+
+</p><p class="rfcparagraph">   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+</p><p class="rfcparagraph">   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at
+   ietf-ipr@ietf.org.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is currently provided by the
+   Internet Society.
+
+</p>
+
+
+
+
+
+Farrel                       Informational                      [Page 5]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

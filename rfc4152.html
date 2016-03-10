@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                          K. Tesink<br>Request for Comments: 4152                                        R. Fox<br>Category: Informational                           Telcordia Technologies<br>                                                             August 2005<br><br></p>
+                  <h1>
+                A Uniform Resource Name (URN) Namespace
+        for the Common Language Equipment Identifier (CLEI) Code</h1>
+                  <h2>Status of This Memo</h2>
+
+   This memo provides information for the Internet community.  It does
+   not specify an Internet standard of any kind.  Distribution of this
+   memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (2005).<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This document describes a Uniform Resource Name (URN) namespace
+   (RFC 3406) for the assignment of the Common Language Equipment
+   Identifier (CLEI) code, which is used in messages standardized by
+   ANSI.  The URN namespace is managed by Telcordia Technologies, Inc.,
+   as the maintenance agent for ANSI T1.213.  The CLEI code is a
+   globally unique, ten-character alphanumeric intelligent code assigned
+   by Telcordia Technologies at the request of equipment suppliers.  The
+   CLEI code identifies communications equipment by specifying product
+   type and features.  There is a one-to-one relationship between a CLEI
+   code and supplier's product ID (the manufacturer's name and the part
+   number along with its version number).
+
+</p><p class="rfcparagraph">Table of Contents
+<a href="#section-1" class="">1. Introduction ...................................................</a><br>
+<a href="#section-2" class="">2. Specification Template .........................................</a><br>
+<a href="#section-3" class="">3. Examples .......................................................</a><br>
+<a href="#section-4" class="">4. Namespace and Community Considerations .........................</a><br>
+<a href="#section-5" class="">5. Security Considerations ........................................</a><br>
+<a href="#section-6" class="">6. IANA Considerations ............................................</a><br>
+<a href="#section-7" class="">7. Acknowledgments ................................................</a><br>
+<a href="#section-8" class="">8. Normative References ...........................................</a><br>
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   Many circuit cards used in the global telecommunications network have
+   a CLEI code assigned and have a bar code or two-dimensional symbol on
+   a label affixed to the front.  Service providers utilize the CLEI
+   code to:
+
+</p><p class="rfcparagraph">   o  Track inventory, both working and spare
+
+   o  Handle logistics (movement of circuit cards, along with the serial
+      number)
+
+   o  Provision equipment
+
+   o  Maintain asset records (accounting information)
+
+   The goal of the CLEI namespace is to ensure the stability and
+   uniqueness of the names of various (specific) items that are used
+   within the messages exchanged between equipment of the global
+   telecommunications network.
+
+</p><p class="rfcparagraph">   The assigned maintenance agent for the CLEI code, Telcordia
+   Technologies, is responsible for assigning certain equipment and
+   other identifiers (e.g., location, manufacturer/supplier) for the
+   telecommunications industry.  The code assignment process identifies
+   the structure and intelligence of the CLEI code to identify the
+   circuit card's form, fit, functions, and features.  Equipment may
+   exist in multiple physical locations with the exact same form, fit,
+   functions, and features; such equipment will have the same CLEI code
+   if their product ID is the same.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Specification Template</h2></a>
+
+   Namespace ID:
+
+</p><p class="rfcparagraph">      "CLEI"
+
+   Registration information:
+
+</p><p class="rfcparagraph">      Version 1
+      Date: 2004-12-31
+
+   Declared registrant of the namespace:
+
+</p><p class="rfcparagraph">      Telcordia Technologies, Inc.
+      Customer Support Center
+      8 Corporate Place
+      Piscataway, NJ 08854
+      U.S.A.
+      +1.732.699.5577
+      http://www.commonlanguage.com
+
+   Declaration of syntactic structures:
+
+</p><p class="rfcparagraph">      The structure of the Namespace Specific String is a flat space of
+      10 characters, as defined in [T1.213][T1.213a].
+
+</p><p class="rfcparagraph">   Relevant ancillary documentation:
+
+</p><p class="rfcparagraph">      [T1.213] and [T1.213a].
+
+</p><p class="rfcparagraph">   Identifier uniqueness considerations:
+
+</p><p class="rfcparagraph">      Identifiers are assigned by Telcordia URN registration that
+      guarantees uniqueness for items with different form, fit,
+      functions, and features.  This is achieved simply by comparing all
+      new proposed names to the already assigned names contained in a
+      database.  If the name already exists, a new one is created per
+      the rules of the process.  See [T1.213][T1.213a] for assignment
+      examples.
+
+</p><p class="rfcparagraph">   Identifiers persistence considerations:
+
+</p><p class="rfcparagraph">      The process defined by ANSI and the CLEI maintenance agent ensure
+      that the binding between the name and its resource is permanent,
+      and that names are not reassigned.
+
+</p><p class="rfcparagraph">   Process of identifiers assignment:
+
+</p><p class="rfcparagraph">      A CLEI code is an intelligent code that consists of 10
+      alphanumeric characters with 4 data elements.  The first data
+      element is considered the basic code with the first 2 characters
+      indicating the technology or equipment type, and the third and
+      fourth characters denoting the functional sub-category.  The
+      second data element represents the features, and its three
+      characters denote functional capabilities or changes.  The third
+      data element has one character and denotes a reference to a
+      manufacturer, system ID, specification, or drawing.  The fourth
+      data element consists of two characters and contains complementary
+      data.  These two characters provide a means of differentiating or
+      providing uniqueness between the eight character CLEI codes by
+      identifying the manufacturing vintage of the product.  Names are
+      assigned via procedures defined in [GR485].
+   Process for identifier resolution:
+
+</p><p class="rfcparagraph">      Telcordia URNs are resolved via Telcordia resolvers run under
+      Telcordia responsibility.  For further information see
+      www.commonlanguage.com.
+
+</p><p class="rfcparagraph">   Rules for lexical equivalence:
+
+</p><p class="rfcparagraph">      Lexical equivalence of two CLEI URN namespace specific strings is
+      defined as an exact, case-insensitive string match.  CLEI codes
+      are assigned in a case-insensitive fashion, so that there will not
+      be two CLEI codes that differ only in case.  See [T1.213] and
+      [T1.213a] for further information.
+
+</p><p class="rfcparagraph">   Conformance with URN syntax:
+
+</p><p class="rfcparagraph">      No special consideration.
+
+</p><p class="rfcparagraph">   Validation mechanism:
+
+</p><p class="rfcparagraph">      None specified.
+
+</p><p class="rfcparagraph">   Scope:
+
+</p><p class="rfcparagraph">      Global.
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   Examples</h2></a>
+
+   The following three examples are based on the examples provided in
+   [T1.213a], and correspond with three different sets of features by
+   three different manufacturers (Nortel Networks, Lear, and Lucent
+   Technologies) producing "D4CE" (a particular D4 channel bank type)
+   equipment.  The fourth example refers to a SONET power unit convertor
+   of Alcatel.
+
+</p><p class="rfcparagraph">      URN:CLEI:D4CE18B7AA
+      URN:CLEI:D4CE4248AA
+      URN:CLEI:D4CE363PAB
+      URN:CLEI:SNPWBBC7AA
+
+	<a name="section-4"><h2>4.   Namespace and Community Considerations</h2></a>
+
+   CLEI codes have historically been used in a variety of communications
+   equipment (see examples above and [T1.213a]).  There are
+   circumstances in which entities with CLEI codes need to be managed or
+   exposed in a larger context, such as the general Internet.  In these
+   cases, the use of the CLEI URN namespace will provide general
+   interoperability benefits to the Internet at large, as well as to
+   specific internets.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   Security Considerations</h2></a>
+
+   There are no additional security considerations other than those
+   normally associated with the use and resolution of URNs in general.
+
+</p><p class="rfcparagraph">   However, note that attempting to resolve a Telcordia URN through a
+   resolver other than the one provided by Telcordia is not considered
+   authoritative.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.   IANA Considerations</h2></a>
+
+   The IANA has registered the formal URN namespace CLEI within the IANA
+   registry of URN NIDs.
+
+</p><p class="rfcparagraph">	<a name="section-7"><h2>7.   Acknowledgments</h2></a>
+
+   The contributions of the Entity MIB Working Group members are
+   gratefully acknowledged.  Special thanks go to Mike Heard, Juergen
+   Schoenwaelder, Dave Perkins, and Dan Romascanu.
+
+</p><p class="rfcparagraph">	<a name="section-8"><h2>8.   Normative References</h2></a>
+
+   [RFC3406]  Daigle, L., van Gulik, D., Iannella, R., and P. Faltstrom,
+              "Uniform Resource Names (URN) Namespace Definition
+              Mechanisms", RFC 3406, October 2002.
+
+</p><p class="rfcparagraph">   [T1.213]   ATIS T1.213-2001, Coded Identification of Equipment
+              Entities in the North American Telecommunications System
+              for Information Exchange, 2001, www.ansi.org.
+
+</p><p class="rfcparagraph">   [T1.213a]  ATIS T1.213a, Supplement to T1.213-2001, Coded
+              Identification of Equipment Entities in the North American
+              Telecommunications System for Information Exchange, to
+              correct the representation of the Basic Code in Figure
+              B.1, 2001, www.ansi.org.
+
+</p><p class="rfcparagraph">   [GR485]    GR-485-CORE, COMMON LANGUAGE Equipment Codes (CLEI Codes),
+              Generic Requirements for Processes And Guidelines, Issue
+              5, Telcordia Technologies, April 2004.
+Authors' Addresses
+
+   Kaj Tesink
+   One Telcordia Drive
+   Piscataway, NJ 08854
+   USA
+
+   Phone: +1 732 699-6068
+   EMail: kaj@research.telcordia.com
+
+
+   Robert H. Fox
+   3545 S.Ocean Blvd, #417
+   Palm Beach, FL 33480-5715
+   USA
+
+   Phone: +1 732 699-8968
+   EMail: rfox@telcordia.com
+Full Copyright Statement
+
+   Copyright (C) The Internet Society (2005).<br>
+
+</p><p class="rfcparagraph">   This document is subject to the rights, licenses and restrictions
+   contained in BCP 78, and except as set forth therein, the authors
+   retain all their rights.
+
+</p><p class="rfcparagraph">   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY AND THE INTERNET
+   ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED,
+   INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE
+   INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED
+   WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Intellectual Property
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the procedures with respect to rights in RFC documents can be
+   found in BCP 78 and BCP 79.
+
+</p><p class="rfcparagraph">   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+</p><p class="rfcparagraph">   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at ietf-
+   ipr@ietf.org.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is currently provided by the
+   Internet Society.
+
+</p>
+
+
+
+
+
+Tesink & Fox                 Informational                      [Page 7]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

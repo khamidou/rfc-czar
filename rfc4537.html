@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                             L. Zhu<br>Request for Comments: 4537                                      P. Leach<br>Updates: 4120                                              K. Jaganathan<br>Category: Standards Track                          Microsoft Corporation<br>                                                               June 2006<br><br></p>
+                  <h1>
+              Kerberos Cryptosystem Negotiation Extension</h1>
+                  <h2>Status of This Memo</h2>
+
+   This document specifies an Internet standards track protocol for the
+   Internet community, and requests discussion and suggestions for
+   improvements.  Please refer to the current edition of the "Internet
+   Official Protocol Standards" (STD 1) for the standardization state
+   and status of this protocol.  Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (2006).<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This document specifies an extension to the Kerberos protocol as
+   defined in RFC 4120, in which the client can send a list of supported
+   encryption types in decreasing preference order, and the server then
+   selects an encryption type that is supported by both the client and
+   the server.
+
+</p><p class="rfcparagraph">Table of Contents
+<a href="#section-1" class="">1. Introduction  . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2" class="">2. Conventions Used in This Document . . . . . . . . . . . . . . </a><br>
+<a href="#section-3" class="">3. Negotiation Extension . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4" class="">4. Security Considerations . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-5" class="">5. Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-6" class="">6. Normative References  . . . . . . . . . . . . . . . . . . . . </a><br>
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   Under the current mechanism [RFC4120], the Kerberos Distribution
+   Center (KDC) must limit the ticket session key encryption type
+   (enctype) chosen for a given server to one it believes is supported
+   by both the client and the server.  If both the client and server
+   understand a stronger enctype than the one selected by the KDC, they
+   cannot negotiate it.  As the result, the protection of application
+   traffic is often weaker than necessary when the server can support
+   different sets of enctypes depending on the server application
+   software being used.
+
+</p><p class="rfcparagraph">   This document specifies an extension to the Kerberos protocol to
+   allow clients and servers to negotiate use of a different and
+   possibly stronger cryptosystem in subsequent communication.
+
+</p><p class="rfcparagraph">   This extension utilizes an authorization data element in the
+   authenticator of the AP-REQ message [RFC4120].  The client sends the
+   list of enctypes that it supports to the server; the server then
+   informs the client of its choice.  The negotiated subkey is sent in
+   the AP-REP message [RFC4120].
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Conventions Used in This Document</h2></a>
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in [RFC2119].
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   Negotiation Extension</h2></a>
+
+   If the client prefers an enctype over that of the service ticket
+   session key, then it SHOULD send a list of enctypes in decreasing
+   preference order to the server.  Based on local policy, the client
+   selects enctypes out of all the enctypes available locally to be
+   included in this list, and it SHOULD NOT include enctypes that are
+   less preferable than that of the ticket session key in the service
+   ticket.  In addition, the client SHOULD NOT include negative (local-
+   use) enctype numbers unless it knows a priori that the server has
+   been configured to use the same negative enctype numbers for the same
+   enctypes.
+
+</p><p class="rfcparagraph">   The client sends the enctype list via the authorization-data of the
+   authenticator in the AP-REQ [RFC4120].  A new authorization data
+   element type AD-ETYPE-NEGOTIATION is defined.
+
+</p><p class="rfcparagraph">           AD-ETYPE-NEGOTIATION              129
+   This authorization data element itself is enclosed in the AD-IF-
+   RELEVANT container; thus, a correctly implemented server that does
+   not understand this element should ignore it [RFC4120].  The value of
+   this authorization element contains the DER [X680] [X690] encoding of
+   the following ASN.1 type:
+
+</p><p class="rfcparagraph">           EtypeList ::= SEQUENCE OF Int32
+              -- Specifies the enctypes supported by the client.
+              -- This enctype list is in decreasing preference order
+              -- (favorite choice first).
+              -- Int32 is defined in [RFC4120].
+
+</p><p class="rfcparagraph">   If the EtypeList is present and the server prefers an enctype from
+   the client's enctype list over that of the AP-REQ authenticator
+   subkey (if that is present) or the service ticket session key, the
+   server MUST create a subkey using that enctype.  This negotiated
+   subkey is sent in the subkey field of AP-REP message, and it is then
+   used as the protocol key or base key [RFC3961] for subsequent
+   communication.
+
+</p><p class="rfcparagraph">   If the enctype of the ticket session key is included in the enctype
+   list sent by the client, it SHOULD be the last on the list;
+   otherwise, this enctype MUST NOT be negotiated if it was not included
+   in the list.
+
+</p><p class="rfcparagraph">   This negotiation extension SHOULD NOT be used when the client does
+   not expect the subkey in the AP-REP message from the server.
+
+</p><p class="rfcparagraph">   A note on key generation: The KDC has a strong Pseudo-Random Number
+   Generator (PRNG); as such, the client can take advantage of the
+   randomness provided by the KDC by reusing the KDC key data when
+   generating keys.  Implementations SHOULD use the service ticket
+   session key value as a source of additional entropy when generating
+   the negotiated subkey.  If the AP-REQ authenticator subkey is
+   present, it MAY also be used as a source of entropy.
+
+</p><p class="rfcparagraph">   The server MAY ignore the preference order indicated by the client.
+   The policy by which the client or the server chooses an enctype
+   (i.e., how the preference order for the supported enctypes is
+   selected) is a local matter.
+	<a name="section-4"><h2>4.   Security Considerations</h2></a>
+
+   The client's enctype list and the server's reply enctype are part of
+   encrypted data; thus, the security considerations are the same as
+   those of the Kerberos encrypted data.
+
+</p><p class="rfcparagraph">   Both the EtypeList and the server's sub-session key are protected by
+   the session key or sub-session key used for the AP-REQ, and as a
+   result, if a key for a stronger enctype is negotiated underneath a
+   key for a weaker enctype, an attacker capable of breaking the weaker
+   enctype can also discover the key for the stronger enctype.  The
+   advantage of this extension is to minimize the amount of cipher text
+   encrypted under a weak enctype to which an attacker has access.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   Acknowledgements</h2></a>
+
+   The authors would like to thank the following individuals for their
+   comments and suggestions: Ken Raeburn, Luke Howard, Tom Yu, Love
+   Hornquist Astrand, Sam Hartman, and Martin Rex.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.   Normative References</h2></a>
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">   [RFC3961]  Raeburn, K., "Encryption and Checksum Specifications for
+              Kerberos 5", RFC 3961, February 2005.
+
+</p><p class="rfcparagraph">   [RFC4120]  Neuman, C., Yu, T., Hartman, S., and K. Raeburn, "The
+              Kerberos Network Authentication Service (V5)", RFC 4120,
+              July 2005.
+
+</p><p class="rfcparagraph">   [X680]     ITU-T Recommendation X.680 (2002) | ISO/IEC 8824-1:2002,<br>
+              Information technology - Abstract Syntax Notation One
+              (ASN.1): Specification of basic notation.
+
+</p><p class="rfcparagraph">   [X690]     ITU-T Recommendation X.690 (2002) | ISO/IEC 8825-1:2002,<br>
+              Information technology - ASN.1 encoding Rules:
+              Specification of Basic Encoding Rules (BER), Canonical
+              Encoding Rules (CER) and Distinguished Encoding Rules
+              (DER).
+Authors' Addresses
+
+   Larry Zhu
+   Microsoft Corporation
+   One Microsoft Way
+   Redmond, WA  98052
+   US
+
+   EMail: lzhu@microsoft.com
+
+
+   Paul Leach
+   Microsoft Corporation
+   One Microsoft Way
+   Redmond, WA  98052
+   US
+
+   EMail: paulle@microsoft.com
+
+
+   Karthik Jaganathan
+   Microsoft Corporation
+   One Microsoft Way
+   Redmond, WA  98052
+   US
+
+   EMail: karthikj@microsoft.com
+Full Copyright Statement
+
+   Copyright (C) The Internet Society (2006).<br>
+
+</p><p class="rfcparagraph">   This document is subject to the rights, licenses and restrictions
+   contained in BCP 78, and except as set forth therein, the authors
+   retain all their rights.
+
+</p><p class="rfcparagraph">   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY AND THE INTERNET
+   ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED,
+   INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE
+   INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED
+   WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Intellectual Property
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the procedures with respect to rights in RFC documents can be
+   found in BCP 78 and BCP 79.
+
+</p><p class="rfcparagraph">   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+</p><p class="rfcparagraph">   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at
+   ietf-ipr@ietf.org.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is provided by the IETF
+   Administrative Support Activity (IASA).
+
+</p>
+
+
+
+
+
+Zhu, et al.                 Standards Track                     [Page 6]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

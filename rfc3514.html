@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                        S. Bellovin<br>Request for Comments: 3514                            AT&T Labs Research<br>Category: Informational                                     1 April 2003<br><br></p>
+                  <h1>
+                  The Security Flag in the IPv4 Header</h1>
+                  <h2>Status of this Memo</h2>
+
+   This memo provides information for the Internet community.  It does
+   not specify an Internet standard of any kind.  Distribution of this
+   memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (2003).  All Rights Reserved.<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   Firewalls, packet filters, intrusion detection systems, and the like
+   often have difficulty distinguishing between packets that have
+   malicious intent and those that are merely unusual.  We define a
+   security flag in the IPv4 header as a means of distinguishing the two
+   cases.
+
+</p><p class="rfcparagraph">	<a name="section-1"><h2>1.  Introduction</h2></a>
+
+   Firewalls [CBR03], packet filters, intrusion detection systems, and
+   the like often have difficulty distinguishing between packets that
+   have malicious intent and those that are merely unusual.  The problem
+   is that making such determinations is hard.  To solve this problem,
+   we define a security flag, known as the "evil" bit, in the IPv4
+   [RFC791] header.  Benign packets have this bit set to 0; those that
+   are used for an attack will have the bit set to 1.
+
+</p><p class="rfcparagraph">	<a name="section-1.1"><h3>1.1  Terminology</h3></a>
+
+   The keywords MUST, MUST NOT, REQUIRED, SHALL, SHALL NOT, SHOULD,
+   SHOULD NOT, RECOMMENDED, MAY, and OPTIONAL, when they appear in this
+   document, are to be interpreted as described in [RFC2119].
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.  Syntax</h2></a>
+
+   The high-order bit of the IP fragment offset field is the only unused
+   bit in the IP header.  Accordingly, the selection of the bit position
+   is not left to IANA.
+   The bit field is laid out as follows:
+
+</p><p class="rfcparagraph">             0
+            +-+
+            |E|
+            +-+
+
+   Currently-assigned values are defined as follows:
+
+</p><p class="rfcparagraph">   0x0  If the bit is set to 0, the packet has no evil intent.  Hosts,
+        network elements, etc., SHOULD assume that the packet is
+        harmless, and SHOULD NOT take any defensive measures.  (We note
+        that this part of the spec is already implemented by many common
+        desktop operating systems.)
+
+   0x1  If the bit is set to 1, the packet has evil intent.  Secure
+        systems SHOULD try to defend themselves against such packets.
+        Insecure systems MAY chose to crash, be penetrated, etc.
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.  Setting the Evil Bit</h2></a>
+
+   There are a number of ways in which the evil bit may be set.  Attack
+   applications may use a suitable API to request that it be set.
+   Systems that do not have other mechanisms MUST provide such an API;
+   attack programs MUST use it.
+
+</p><p class="rfcparagraph">   Multi-level insecure operating systems may have special levels for
+   attack programs; the evil bit MUST be set by default on packets
+   emanating from programs running at such levels.  However, the system
+   MAY provide an API to allow it to be cleared for non-malicious
+   activity by users who normally engage in attack behavior.
+
+</p><p class="rfcparagraph">   Fragments that by themselves are dangerous MUST have the evil bit
+   set.  If a packet with the evil bit set is fragmented by an
+   intermediate router and the fragments themselves are not dangerous,
+   the evil bit MUST be cleared in the fragments, and MUST be turned
+   back on in the reassembled packet.
+
+</p><p class="rfcparagraph">   Intermediate systems are sometimes used to launder attack
+   connections.  Packets to such systems that are intended to be relayed
+   to a target SHOULD have the evil bit set.
+
+</p><p class="rfcparagraph">   Some applications hand-craft their own packets.  If these packets are
+   part of an attack, the application MUST set the evil bit by itself.
+
+</p><p class="rfcparagraph">   In networks protected by firewalls, it is axiomatic that all
+   attackers are on the outside of the firewall.  Therefore, hosts
+   inside the firewall MUST NOT set the evil bit on any packets.
+   Because NAT [RFC3022] boxes modify packets, they SHOULD set the evil
+   bit on such packets.  "Transparent" http and email proxies SHOULD set
+   the evil bit on their reply packets to the innocent client host.
+
+</p><p class="rfcparagraph">   Some hosts scan other hosts in a fashion that can alert intrusion
+   detection systems.  If the scanning is part of a benign research
+   project, the evil bit MUST NOT be set.  If the scanning per se is
+   innocent, but the ultimate intent is evil and the destination site
+   has such an intrusion detection system, the evil bit SHOULD be set.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.  Processing of the Evil Bit</h2></a>
+
+   Devices such as firewalls MUST drop all inbound packets that have the
+   evil bit set.  Packets with the evil bit off MUST NOT be dropped.
+   Dropped packets SHOULD be noted in the appropriate MIB variable.
+
+</p><p class="rfcparagraph">   Intrusion detection systems (IDSs) have a harder problem.  Because of
+   their known propensity for false negatives and false positives, IDSs
+   MUST apply a probabilistic correction factor when evaluating the evil
+   bit.  If the evil bit is set, a suitable random number generator
+   [RFC1750] must be consulted to determine if the attempt should be
+   logged.  Similarly, if the bit is off, another random number
+   generator must be consulted to determine if it should be logged
+   despite the setting.
+
+</p><p class="rfcparagraph">   The default probabilities for these tests depends on the type of IDS.
+   Thus, a signature-based IDS would have a low false positive value but
+   a high false negative value.  A suitable administrative interface
+   MUST be provided to permit operators to reset these values.
+
+</p><p class="rfcparagraph">   Routers that are not intended as as security devices SHOULD NOT
+   examine this bit.  This will allow them to pass packets at higher
+   speeds.
+
+</p><p class="rfcparagraph">   As outlined earlier, host processing of evil packets is operating-
+   system dependent; however, all hosts MUST react appropriately
+   according to their nature.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.  Related Work</h2></a>
+
+   Although this document only defines the IPv4 evil bit, there are
+   complementary mechanisms for other forms of evil.  We sketch some of
+   those here.
+
+</p><p class="rfcparagraph">   For IPv6 [RFC2460], evilness is conveyed by two options.  The first,
+   a hop-by-hop option, is used for packets that damage the network,
+   such as DDoS packets.  The second, an end-to-end option, is for
+   packets intended to damage destination hosts.  In either case, the
+   option contains a 128-bit strength indicator, which says how evil the
+   packet is, and a 128-bit type code that describes the particular type
+   of attack intended.
+
+</p><p class="rfcparagraph">   Some link layers, notably those based on optical switching, may
+   bypass routers (and hence firewalls) entirely.  Accordingly, some
+   link-layer scheme MUST be used to denote evil.  This may involve evil
+   lambdas, evil polarizations, etc.
+
+</p><p class="rfcparagraph">   DDoS attack packets are denoted by a special diffserv code point.
+
+</p><p class="rfcparagraph">   An application/evil MIME type is defined for Web- or email-carried
+   mischief.  Other MIME types can be embedded inside of evil sections;
+   this permit easy encoding of word processing documents with macro
+   viruses, etc.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.  IANA Considerations</h2></a>
+
+   This document defines the behavior of security elements for the 0x0
+   and 0x1 values of this bit.  Behavior for other values of the bit may
+   be defined only by IETF consensus [RFC2434].
+
+</p><p class="rfcparagraph">	<a name="section-7"><h2>7.  Security Considerations</h2></a>
+
+   Correct functioning of security mechanisms depend critically on the
+   evil bit being set properly.  If faulty components do not set the
+   evil bit to 1 when appropriate, firewalls will not be able to do
+   their jobs properly.  Similarly, if the bit is set to 1 when it
+   shouldn't be, a denial of service condition may occur.
+
+</p><p class="rfcparagraph">	<a name="section-8"><h2>8.  References</h2></a>
+
+   [CBR03]   W.R. Cheswick, S.M. Bellovin, and A.D. Rubin, "Firewalls
+             and Internet Security: Repelling the Wily Hacker", Second
+             Edition, Addison-Wesley, 2003.
+
+</p><p class="rfcparagraph">   [RFC791]  Postel, J., "Internet Protocol", STD 5, RFC 791, September
+             1981.
+
+</p><p class="rfcparagraph">   [RFC1750] Eastlake, D., 3rd, Crocker, S. and J. Schiller, "Randomness
+             Recommendations for Security", RFC 1750, December 1994.
+
+</p><p class="rfcparagraph">   [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate
+             Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">   [RFC2434] Narten, T. and H. Alvestrand, "Guidelines for Writing an
+             IANA Considerations Section in RFCs", BCP 26, RFC 2434,
+             October 1998.
+   [RFC2460] Deering, S. and R. Hinden, "Internet Protocol, Version 6
+             (IPv6) Specification", RFC 2460, December 1998.
+
+</p><p class="rfcparagraph">   [RFC3022] Srisuresh, P. and K. Egevang, "Traditional IP Network
+             Address Translator (Traditional NAT)", RFC 3022, January
+             2001.
+
+</p><p class="rfcparagraph">	<a name="section-9"><h2>9.  Author's Address</h2></a>
+
+   Steven M. Bellovin
+   AT&T Labs Research
+   Shannon Laboratory
+   180 Park Avenue
+   Florham Park, NJ 07932
+
+   Phone: +1 973-360-8656
+   EMail: bellovin@acm.org
+	<a name="section-10"><h2>10.  Full Copyright Statement</h2></a>
+
+   Copyright (C) The Internet Society (2003).  All Rights Reserved.<br>
+
+</p><p class="rfcparagraph">   This document and translations of it may be copied and furnished to
+   others, and derivative works that comment on or otherwise explain it
+   or assist in its implementation may be prepared, copied, published
+   and distributed, in whole or in part, without restriction of any
+   kind, provided that the above copyright notice and this paragraph are
+   included on all such copies and derivative works.  However, this
+   document itself may not be modified in any way, such as by removing
+   the copyright notice or references to the Internet Society or other
+   Internet organizations, except as needed for the purpose of
+   developing Internet standards in which case the procedures for
+   copyrights defined in the Internet Standards process must be
+   followed, or as required to translate it into languages other than
+   English.
+
+</p><p class="rfcparagraph">   The limited permissions granted above are perpetual and will not be
+   revoked by the Internet Society or its successors or assigns.
+
+</p><p class="rfcparagraph">   This document and the information contained herein is provided on an
+   "AS IS" basis and THE INTERNET SOCIETY AND THE INTERNET ENGINEERING
+   TASK FORCE DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING
+   BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION
+   HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED WARRANTIES OF
+   MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is currently provided by the
+   Internet Society.
+
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Bellovin                     Informational                      [Page 6]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

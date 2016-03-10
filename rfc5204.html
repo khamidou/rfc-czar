@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                        J. Laganier<br>Request for Comments: 5204                              DoCoMo Euro-Labs<br>Category: Experimental                                         L. Eggert<br>                                                                   Nokia<br>                                                              April 2008<br><br></p>
+                  <h1>
+           Host Identity Protocol (HIP) Rendezvous Extension</h1>
+                  <h2>Status of This Memo</h2>
+
+   This memo defines an Experimental Protocol for the Internet
+   community.  It does not specify an Internet standard of any kind.
+   Discussion and suggestions for improvement are requested.
+   Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This document defines a rendezvous extension for the Host Identity
+   Protocol (HIP).  The rendezvous extension extends HIP and the HIP
+   registration extension for initiating communication between HIP nodes
+   via HIP rendezvous servers.  Rendezvous servers improve reachability
+   and operation when HIP nodes are multi-homed or mobile.
+<h2>Table of Contents</h2>
+<a href="#section-1" class="">1. Introduction . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2" class="">2. Terminology  . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3" class="">3. Overview of Rendezvous Server Operation  . . . . . . . . . . </a><br>
+<a href="#section-3.1" class="indent-1">3.1. Diagram Notation . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.2" class="indent-1">3.2. Rendezvous Client Registration . . . . . . . . . . . . . </a><br>
+<a href="#section-3.3" class="indent-1">3.3. Relaying the Base Exchange . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4" class="">4. Rendezvous Server Extensions . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.1" class="indent-1">4.1. RENDEZVOUS Registration Type . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.2" class="indent-1">4.2. Parameter Formats and Processing . . . . . . . . . . . . </a><br>
+<a href="#section-4.2.1" class="indent-2">4.2.1. RVS_HMAC Parameter . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.2.2" class="indent-2">4.2.2. FROM Parameter . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.2.3" class="indent-2">4.2.3. VIA_RVS Parameter  . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.3" class="indent-1">4.3. Modified Packets Processing  . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.3.1" class="indent-2">4.3.1. Processing Outgoing I1 Packets . . . . . . . . . . . </a><br>
+<a href="#section-4.3.2" class="indent-2">4.3.2. Processing Incoming I1 Packets . . . . . . . . . . . </a><br>
+<a href="#section-4.3.3" class="indent-2">4.3.3. Processing Outgoing R1 Packets . . . . . . . . . . . </a><br>
+<a href="#section-4.3.4" class="indent-2">4.3.4. Processing Incoming R1 Packets . . . . . . . . . . . </a><br>
+<a href="#section-5" class="">5. Security Considerations  . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-6" class="">6. IANA Considerations  . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-7" class="">7. Acknowledgments  . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-8" class="">8. References . . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-8.1" class="indent-1">8.1. Normative References . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-8.2" class="indent-1">8.2. Informative References . . . . . . . . . . . . . . . . . </a><br>
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   The Host Identity Protocol (HIP) Architecture [RFC4423] introduces
+   the rendezvous mechanism to help a HIP node to contact a frequently
+   moving HIP node.  The rendezvous mechanism involves a third party,
+   the rendezvous server (RVS), which serves as an initial contact point
+   ("rendezvous point") for its clients.  The clients of an RVS are HIP
+   nodes that use the HIP Registration Extension [RFC5203] to register
+   their HIT->IP address mappings with the RVS.  After this
+   registration, other HIP nodes can initiate a base exchange using the
+   IP address of the RVS instead of the current IP address of the node
+   they attempt to contact.  Essentially, the clients of an RVS become
+   reachable at the RVS's IP address.  Peers can initiate a HIP base
+   exchange with the IP address of the RVS, which will relay this
+   initial communication such that the base exchange may successfully
+   complete.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Terminology</h2></a>
+
+   This section defines terms used throughout the remainder of this
+   specification.
+
+</p><p class="rfcparagraph">   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in RFC 2119 [RFC2119].
+
+</p><p class="rfcparagraph">   In addition to the terminology defined in the HIP specification
+   [RFC5201] and the HIP Registration Extension [RFC5203], this document
+   defines and uses the following terms:
+
+</p><p class="rfcparagraph">   Rendezvous Service
+      A HIP service provided by a rendezvous server to its rendezvous
+      clients.  The rendezvous server offers to relay some of the
+      arriving base exchange packets between the initiator and
+      responder.
+
+</p><p class="rfcparagraph">   Rendezvous Server (RVS)
+      A HIP registrar providing rendezvous service.
+
+</p><p class="rfcparagraph">   Rendezvous Client
+      A HIP requester that has registered for rendezvous service at a
+      rendezvous server.
+
+</p><p class="rfcparagraph">   Rendezvous Registration
+      A HIP registration for rendezvous service, established between a
+      rendezvous server and a rendezvous client.
+	<a name="section-3"><h2>3.   Overview of Rendezvous Server Operation</h2></a>
+
+   Figure 1 shows a simple HIP base exchange without a rendezvous
+   server, in which the initiator initiates the exchange directly with
+   the responder by sending an I1 packet to the responder's IP address,
+   as per the HIP specification [RFC5201].
+
+</p><p class="rfcparagraph"><pre>                       +-----+                +-----+
+                       |     |-------I1------>|     |
+                       |  I  |<------R1-------|  R  |
+                       |     |-------I2------>|     |
+                       |     |<------R2-------|     |
+                       +-----+                +-----+
+
+          Figure 1: HIP base exchange without rendezvous server.
+
+</p><p class="rfcparagraph">   The End-Host Mobility and Multihoming with the Host Identity Protocol
+   specification [RFC5206] allows a HIP node to notify its peers about
+   changes in its set of IP addresses.  This specification presumes
+   initial reachability of the two nodes with respect to each other.
+
+</p><p class="rfcparagraph">   However, such a HIP node MAY also want to be reachable to other
+   future correspondent peers that are unaware of its location change.
+   The HIP Architecture [RFC4423] introduces rendezvous servers with
+   whom a HIP node MAY register its host identity tags (HITs) and
+   current IP addresses.  An RVS relays HIP packets arriving for these
+   HITs to the node's registered IP addresses.  When a HIP node has
+   registered with an RVS, it SHOULD record the IP address of its RVS in
+   its DNS record, using the HIP DNS resource record type defined in the
+   HIP DNS Extension [RFC5205].
+
+</p><p class="rfcparagraph">                                   +-----+
+                          +--I1--->| RVS |---I1--+
+                          |        +-----+       |
+                          |                      v
+                       +-----+                +-----+
+                       |     |<------R1-------|     |
+                       |  I  |-------I2------>|  R  |
+                       |     |<------R2-------|     |
+                       +-----+                +-----+
+
+           Figure 2: HIP base exchange with a rendezvous server.
+
+</p><p class="rfcparagraph">   Figure 2 shows a HIP base exchange involving a rendezvous server.  It
+   is assumed that HIP node R previously registered its HITs and current
+   IP addresses with the RVS, using the HIP Registration Extension
+   [RFC5203].  When the initiator I tries to establish contact with the
+   responder R, it must send the I1 of the base exchange either to one
+   of R's IP addresses (if known via DNS or other means) or to one of
+   R's rendezvous servers.  Here, I obtains the IP address of R's
+   rendezvous server from R's DNS record and then sends the I1 packet of
+   the HIP base exchange to RVS.  RVS, noticing that the HIT contained
+   in the arriving I1 packet is not one of its own, MUST check its
+   current registrations to determine if it needs to relay the packets.
+   Here, it determines that the HIT belongs to R and then relays the I1
+   packet to the registered IP address.  R then completes the base
+   exchange without further assistance from RVS by sending an R1
+   directly to the I's IP address, as obtained from the I1 packet.  In
+   this specification, the client of the RVS is always the responder.
+   However, there might be reasons to allow a client to initiate a base
+   exchange through its own RVS, like NAT and firewall traversal.  This
+   specification does not address such scenarios, which should be
+   specified in other documents.
+
+</p><p class="rfcparagraph">	<a name="section-3.1"><h3>3.1   Diagram Notation</h3></a>
+
+  Notation       Significance
+  --------       ------------
+
+  I, R           I and R are the respective source and destination IP
+                 addresses in the IP header.
+
+</p><p class="rfcparagraph">  HIT-I, HIT-R   HIT-I and HIT-R are the initiator's and the
+                 responder's HITs in the packet, respectively.
+
+</p><p class="rfcparagraph">  REG_REQ        A REG_REQUEST parameter is present in the HIP header.
+
+</p><p class="rfcparagraph">  REG_RES        A REG_RESPONSE parameter is present in the HIP header.
+
+</p><p class="rfcparagraph">  FROM:I         A FROM parameter containing the IP address I is
+                 present in the HIP header.
+
+</p><p class="rfcparagraph">  RVS_HMAC       An RVS_HMAC parameter containing an HMAC keyed with the
+                 appropriate registration key is present in the HIP
+                 header.
+
+</p><p class="rfcparagraph">  VIA:RVS        A VIA_RVS parameter containing the IP address RVS of a
+                 rendezvous server is present in the HIP header.
+	<a name="section-3.2"><h3>3.2   Rendezvous Client Registration</h3></a>
+
+   Before a rendezvous server starts to relay HIP packets to a
+   rendezvous client, the rendezvous client needs to register with it to
+   receive rendezvous service by using the HIP Registration Extension
+   [RFC5203] as illustrated in the following schema:
+
+</p><p class="rfcparagraph">                 +-----+                            +-----+
+                 |     |            I1              |     |
+                 |     |--------------------------->|     |
+                 |     |<---------------------------|     |
+                 |  I  |         R1(REG_INFO)       | RVS |
+                 |     |         I2(REG_REQ)        |     |
+                 |     |--------------------------->|     |
+                 |     |<---------------------------|     |
+                 |     |         R2(REG_RES)        |     |
+                 +-----+                            +-----+
+
+          Rendezvous client registering with a rendezvous server.
+
+</p><p class="rfcparagraph">	<a name="section-3.3"><h3>3.3   Relaying the Base Exchange</h3></a>
+
+   If a HIP node and one of its rendezvous servers have a rendezvous
+   registration, the rendezvous servers relay inbound I1 packets (that
+   contain one of the client's HITs) by rewriting the IP header.  They
+   replace the destination IP address of the I1 packet with one of the
+   IP addresses of the owner of the HIT, i.e., the rendezvous client.
+   They MUST also recompute the IP checksum accordingly.
+
+</p><p class="rfcparagraph">   Because of egress filtering on the path from the RVS to the client
+   [RFC2827][RFC3013], a HIP rendezvous server SHOULD replace the source
+   IP address, i.e., the IP address of I, with one of its own IP
+   addresses.  The replacement IP address SHOULD be chosen according to
+   relevant IPv4 and IPv6 specifications [RFC1122][RFC3484].  Because
+   this replacement conceals the initiator's IP address, the RVS MUST
+   append a FROM parameter containing the original source IP address of
+   the packet.  This FROM parameter MUST be integrity protected by an
+   RVS_HMAC keyed with the corresponding rendezvous registration
+   integrity key [RFC5203].
+                                               I1(RVS, R, HIT-I, HIT-R
+         I1(I, RVS, HIT-I, HIT-R) +---------+     FROM:I, RVS_HMAC)
+         +----------------------->|         |--------------------+
+         |                        |   RVS   |                    |
+         |                        |         |                    |
+         |                        +---------+                    |
+         |                                                       V
+        +-----+        R1(R, I, HIT-R, HIT-I, VIA:RVS)       +-----+
+        |     |<---------------------------------------------|     |
+        |     |                                              |     |
+        |  I  |            I2(I, R, HIT-I, HIT-R)            |  R  |
+        |     |--------------------------------------------->|     |
+        |     |<---------------------------------------------|     |
+        +-----+             R2(R, I, HIT-R, HIT-I)           +-----+
+</pre>
+
+
+                 Rendezvous server rewriting IP addresses.
+
+</p><p class="rfcparagraph">   This modification of HIP packets at a rendezvous server can be
+   problematic because the HIP protocol uses integrity checks.  Because
+   the I1 does not include HMAC or SIGNATURE parameters, these two end-
+   to-end integrity checks are unaffected by the operation of rendezvous
+   servers.
+
+</p><p class="rfcparagraph">   The RVS SHOULD verify the checksum field of an I1 packet before doing
+   any modifications.  After modification, it MUST recompute the
+   checksum field using the updated HIP header, which possibly included
+   new FROM and RVS_HMAC parameters, and a pseudo-header containing the
+   updated source and destination IP addresses.  This enables the
+   responder to validate the checksum of the I1 packet "as is", without
+   having to parse any FROM parameters.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   Rendezvous Server Extensions</h2></a>
+
+   This section describes extensions to the HIP Registration Extension
+   [RFC5203], allowing a HIP node to register with a rendezvous server
+   for rendezvous service and notify the RVS aware of changes to its
+   current location.  It also describes an extension to the HIP
+   specification [RFC5201] itself, allowing establishment of HIP
+   associations via one or more HIP rendezvous server(s).
+
+</p><p class="rfcparagraph">	<a name="section-4.1"><h3>4.1   RENDEZVOUS Registration Type</h3></a>
+
+   This specification defines an additional registration for the HIP
+   Registration Extension [RFC5203] that allows registering with a
+   rendezvous server for rendezvous service.
+   Number   Registration Type
+   ------   -----------------
+   1        RENDEZVOUS
+
+	<a name="section-4.2"><h3>4.2   Parameter Formats and Processing</h3></a>
+
+	<a name="section-4.2.1"><h4>4.2.1   RVS_HMAC Parameter</h4></a>
+
+   The RVS_HMAC is a non-critical parameter whose only difference with
+   the HMAC parameter defined in the HIP specification [RFC5201] is its
+   "type" code.  This change causes it to be located after the FROM
+   parameter (as opposed to the HMAC):
+
+</p><p class="rfcparagraph"> Type        65500
+ Length      Variable.  Length in octets, excluding Type, Length, and
+             Padding.
+ HMAC        HMAC computed over the HIP packet, excluding the
+             RVS_HMAC parameter and any following parameters.  The
+             HMAC is keyed with the appropriate HIP integrity key
+             (HIP-lg or HIP-gl) established when rendezvous
+             registration happened.  The HIP "checksum" field MUST be set
+             to zero, and the HIP header length in the HIP common header
+             MUST be calculated not to cover any excluded parameter
+             when the HMAC is calculated.  The size of the
+             HMAC is the natural size of the hash computation
+             output depending on the used hash function.
+
+</p><p class="rfcparagraph">   To allow a rendezvous client and its RVS to verify the integrity of
+   packets flowing between them, both SHOULD protect packets with an
+   added RVS_HMAC parameter keyed with the HIP-lg or HIP-gl integrity
+   key established while registration occurred.  A valid RVS_HMAC SHOULD
+   be present on every packet flowing between a client and a server and
+   MUST be present when a FROM parameter is processed.
+	<a name="section-4.2.2"><h4>4.2.2   FROM Parameter</h4></a>
+
+     0                   1                   2                   3
+     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |             Type              |             Length            |
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |                                                               |
+    |                             Address                           |
+    |                                                               |
+    |                                                               |
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+    Type        65498
+    Length      16
+    Address     An IPv6 address or an IPv4-in-IPv6 format IPv4 address.
+
+</p><p class="rfcparagraph">   A rendezvous server MUST add a FROM parameter containing the original
+   source IP address of a HIP packet whenever the source IP address in
+   the IP header is rewritten.  If one or more FROM parameters are
+   already present, the new FROM parameter MUST be appended after the
+   existing ones.
+
+</p><p class="rfcparagraph">   Whenever an RVS inserts a FROM parameter, it MUST insert an RVS_HMAC
+   protecting the packet integrity, especially the IP address included
+   in the FROM parameter.
+	<a name="section-4.2.3"><h4>4.2.3   VIA_RVS Parameter</h4></a>
+
+     0                   1                   2                   3
+     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |             Type              |             Length            |
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |                                                               |
+    |                            Address                            |
+    |                                                               |
+    |                                                               |
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    .                               .                               .
+    .                               .                               .
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |                                                               |
+    |                            Address                            |
+    |                                                               |
+    |                                                               |
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+    Type        65502
+    Length      Variable
+    Address     An IPv6 address or an IPv4-in-IPv6 format IPv4 address.
+
+</p><p class="rfcparagraph">   After the responder receives a relayed I1 packet, it can begin to
+   send HIP packets addressed to the initiator's IP address, without
+   further assistance from an RVS.  For debugging purposes, it MAY
+   include a subset of the IP addresses of its RVSs in some of these
+   packets.  When a responder does so, it MUST append a newly created
+   VIA_RVS parameter at the end of the HIP packet.  The main goal of
+   using the VIA_RVS parameter is to allow operators to diagnose
+   possible issues encountered while establishing a HIP association via
+   an RVS.
+
+</p><p class="rfcparagraph">	<a name="section-4.3"><h3>4.3   Modified Packets Processing</h3></a>
+
+   The following subsections describe the differences of processing of
+   I1 and R1 while a rendezvous server is involved in the base exchange.
+
+</p><p class="rfcparagraph">	<a name="section-4.3.1"><h4>4.3.1   Processing Outgoing I1 Packets</h4></a>
+
+   An initiator SHOULD NOT send an opportunistic I1 with a NULL
+   destination HIT to an IP address that is known to be a rendezvous
+   server address, unless it wants to establish a HIP association with
+   the rendezvous server itself and does not know its HIT.
+   When an RVS rewrites the source IP address of an I1 packet due to
+   egress filtering, it MUST add a FROM parameter to the I1 that
+   contains the initiator's source IP address.  This FROM parameter MUST
+   be protected by an RVS_HMAC keyed with the integrity key established
+   at rendezvous registration.
+
+</p><p class="rfcparagraph">	<a name="section-4.3.2"><h4>4.3.2   Processing Incoming I1 Packets</h4></a>
+
+   When a rendezvous server receives an I1 whose destination HIT is not
+   its own, it consults its registration database to find a registration
+   for the rendezvous service established by the HIT owner.  If it finds
+   an appropriate registration, it relays the packet to the registered
+   IP address.  If it does not find an appropriate registration, it
+   drops the packet.
+
+</p><p class="rfcparagraph">   A rendezvous server SHOULD interpret any incoming opportunistic I1
+   (i.e., an I1 with a NULL destination HIT) as an I1 addressed to
+   itself and SHOULD NOT attempt to relay it to one of its clients.
+
+</p><p class="rfcparagraph">   When a rendezvous client receives an I1, it MUST validate any present
+   RVS_HMAC parameter.  If the RVS_HMAC cannot be verified, the packet
+   SHOULD be dropped.  If the RVS_HMAC cannot be verified and a FROM
+   parameter is present, the packet MUST be dropped.
+
+</p><p class="rfcparagraph">   A rendezvous client acting as responder SHOULD drop opportunistic I1s
+   that include a FROM parameter, because this indicates that the I1 has
+   been relayed.
+
+</p><p class="rfcparagraph">	<a name="section-4.3.3"><h4>4.3.3   Processing Outgoing R1 Packets</h4></a>
+
+   When a responder replies to an I1 relayed via an RVS, it MUST append
+   to the regular R1 header a VIA_RVS parameter containing the IP
+   addresses of the traversed RVSs.
+
+</p><p class="rfcparagraph">	<a name="section-4.3.4"><h4>4.3.4   Processing Incoming R1 Packets</h4></a>
+
+   The HIP specification [RFC5201] mandates that a system receiving an
+   R1 MUST first check to see if it has sent an I1 to the originator of
+   the R1 (i.e., the system is in state I1-SENT).  When the R1 is
+   replying to a relayed I1, this check SHOULD be based on HITs only.
+   In case the IP addresses are also checked, then the source IP address
+   MUST be checked against the IP address included in the VIA_RVS
+   parameter.
+	<a name="section-5"><h2>5.   Security Considerations</h2></a>
+
+   This section discusses the known threats introduced by these HIP
+   extensions and the implications on the overall security of HIP.  In
+   particular, it argues that the extensions described in this document
+   do not introduce additional threats to the Host Identity Protocol.
+
+</p><p class="rfcparagraph">   It is difficult to encompass the whole scope of threats introduced by
+   rendezvous servers because their presence has implications both at
+   the IP and HIP layers.  In particular, these extensions might allow
+   for redirection, amplification, and reflection attacks at the IP
+   layer, as well as attacks on the HIP layer itself, for example, man-
+   in-the-middle attacks against the HIP base exchange.
+
+</p><p class="rfcparagraph">   If an initiator has a priori knowledge of the responder's host
+   identity when it first contacts the responder via an RVS, it has a
+   means to verify the signatures in the HIP base exchange, which
+   protects against man-in-the-middle attacks.
+
+</p><p class="rfcparagraph">   If an initiator does not have a priori knowledge of the responder's
+   host identity (so-called "opportunistic initiators"), it is almost
+   impossible to defend the HIP exchange against these attacks, because
+   the public keys exchanged cannot be authenticated.  The only approach
+   would be to mitigate hijacking threats on HIP state by requiring an
+   R1 answering an opportunistic I1 to come from the same IP address
+   that originally sent the I1.  This procedure retains a level of
+   security that is equivalent to what exists in the Internet today.
+
+</p><p class="rfcparagraph">   However, for reasons of simplicity, this specification does not allow
+   the establishment of a HIP association via a rendezvous server in an
+   opportunistic manner.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.   IANA Considerations</h2></a>
+
+   This section is to be interpreted according to the Guidelines for
+   Writing an IANA Considerations Section in RFCs [RFC2434].
+
+</p><p class="rfcparagraph">   This document updates the IANA Registry for HIP Parameters Types by
+   assigning new HIP Parameter Types values for the new HIP Parameters
+   defined in Section 4.2:
+
+</p><p class="rfcparagraph">   o  RVS_HMAC (defined in Section 4.2.1)
+
+   o  FROM (defined in Section 4.2.2)
+
+   o  VIA_RVS (defined in Section 4.2.3)
+   This document defines an additional registration for the HIP
+   Registration Extension [RFC5203] that allows registering with a
+   rendezvous server for rendezvous service.
+
+</p><p class="rfcparagraph">   Number   Registration Type
+   ------   -----------------
+   1        RENDEZVOUS
+
+	<a name="section-7"><h2>7.   Acknowledgments</h2></a>
+
+   The following people have provided thoughtful and helpful discussions
+   and/or suggestions that have improved this document: Marcus Brunner,
+   Tom Henderson, Miika Komu, Mika Kousa, Pekka Nikander, Justino
+   Santos, Simon Schuetz, Tim Shepard, Kristian Slavov, Martin
+   Stiemerling, and Juergen Quittek.
+
+</p><p class="rfcparagraph">	<a name="section-8"><h2>8.   References</h2></a>
+
+	<a name="section-8.1"><h3>8.1   Normative References</h3></a>
+
+   [RFC1122]  Braden, R., "Requirements for Internet Hosts -
+              Communication Layers", STD 3, RFC 1122, October 1989.
+
+</p><p class="rfcparagraph">   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">   [RFC2434]  Narten, T. and H. Alvestrand, "Guidelines for Writing an
+              IANA Considerations Section in RFCs", BCP 26, RFC 2434,
+              October 1998.
+
+</p><p class="rfcparagraph">   [RFC3484]  Draves, R., "Default Address Selection for Internet
+              Protocol version 6 (IPv6)", RFC 3484, February 2003.
+
+</p><p class="rfcparagraph">   [RFC5201]  Moskowitz, R., Nikander, P., Jokela, P., Ed., and T.
+              Henderson, "Host Identity Protocol", RFC 5201, April 2008.
+
+</p><p class="rfcparagraph">   [RFC5203]  Laganier, J., Koponen, T., and L. Eggert, "Host Identity
+              Protocol (HIP) Registration Extension", RFC 5203,
+              April 2008.
+
+</p><p class="rfcparagraph">   [RFC5205]  Nikander, P. and J. Laganier, "Host Identity Protocol
+              (HIP) Domain Name System (DNS) Extensions", RFC 5205,
+              April 2008.
+	<a name="section-8.2"><h3>8.2   Informative References</h3></a>
+
+   [RFC2827]  Ferguson, P. and D. Senie, "Network Ingress Filtering:
+              Defeating Denial of Service Attacks which employ IP Source
+              Address Spoofing", BCP 38, RFC 2827, May 2000.
+
+</p><p class="rfcparagraph">   [RFC3013]  Killalea, T., "Recommended Internet Service Provider
+              Security Services and Procedures", BCP 46, RFC 3013,
+              November 2000.
+
+</p><p class="rfcparagraph">   [RFC4423]  Moskowitz, R. and P. Nikander, "Host Identity Protocol
+              (HIP) Architecture", RFC 4423, May 2006.
+
+</p><p class="rfcparagraph">   [RFC5206]  Henderson, T., Ed., "End-Host Mobility and Multihoming
+              with the Host Identity Protocol", RFC 5206, April 2008.
+
+</p><p class="rfcparagraph">Authors' Addresses
+
+   Julien Laganier
+   DoCoMo Communications Laboratories Europe GmbH
+   Landsberger Strasse 312
+   Munich  80687
+   Germany
+
+   Phone: +49 89 56824 231
+   EMail: julien.ietf@laposte.net
+   URI:   http://www.docomolab-euro.com/
+
+
+   Lars Eggert
+   Nokia Research Center
+   P.O. Box 407
+   Nokia Group  00045
+   Finland
+
+   Phone: +358 50 48 24461
+   EMail: lars.eggert@nokia.com
+   URI:   http://research.nokia.com/people/lars_eggert/
+Full Copyright Statement
+
+   Copyright (C) The IETF Trust (2008).<br>
+
+</p><p class="rfcparagraph">   This document is subject to the rights, licenses and restrictions
+   contained in BCP 78, and except as set forth therein, the authors
+   retain all their rights.
+
+</p><p class="rfcparagraph">   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY, THE IETF TRUST AND
+   THE INTERNET ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS
+   OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF
+   THE INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED
+   WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Intellectual Property
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the procedures with respect to rights in RFC documents can be
+   found in BCP 78 and BCP 79.
+
+</p><p class="rfcparagraph">   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+</p><p class="rfcparagraph">   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at
+   ietf-ipr@ietf.org.
+
+</p>
+
+
+
+
+
+
+
+
+
+
+Laganier & Eggert             Experimental                     [Page 15]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

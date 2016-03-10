@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph">Internet Engineering Task Force (IETF)                       R. Wakikawa
+Request for Comments: 7389                               Softbank Mobile
+Category: Standards Track                                  R. Pazhyannur
+ISSN: 2070-1721                                            S. Gundavelli
+                                                                   Cisco
+                                                              C. Perkins
+                                                          Futurewei Inc.
+                                                            October 2014
+
+
+       Separation of Control and User Plane for Proxy Mobile IPv6
+
+<h2>Abstract</h2>
+
+   This document specifies a method to split the control plane (CP) and
+   user plane (UP) for a network infrastructure based on Proxy Mobile
+   IPv6 (PMIPv6).  Existing specifications allow a mobile access gateway
+   (MAG) to separate its control and user plane using the Alternate
+   Care-of Address mobility option for IPv6 or Alternate IPv4 Care-of
+   Address option for IPv4.  However, the current specification does not
+   provide any mechanism allowing the local mobility anchor (LMA) to
+   perform an analogous functional split.  To remedy that shortcoming,
+   this document specifies a mobility option enabling an LMA to provide
+   an alternate LMA address to be used for the bidirectional user-plane
+   traffic between the MAG and LMA.  With this new option, an LMA will
+   be able to use an IP address for its user plane that is different
+   than the IP address used for the control plane.
+
+</p><p class="rfcparagraph">Status of This Memo
+
+   This is an Internet Standards Track document.
+
+</p><p class="rfcparagraph">   This document is a product of the Internet Engineering Task Force
+   (IETF).  It represents the consensus of the IETF community.  It has
+   received public review and has been approved for publication by the
+   Internet Engineering Steering Group (IESG).  Further information on
+   Internet Standards is available in Section 2 of RFC 5741.
+
+</p><p class="rfcparagraph">   Information about the current status of this document, any errata,
+   and how to provide feedback on it may be obtained at
+   http://www.rfc-editor.org/info/rfc7389.
+<h2>Copyright Notice</h2>
+
+   Copyright (c) 2014 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+</p><p class="rfcparagraph">   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (http://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
+   the Trust Legal Provisions and are provided without warranty as
+   described in the Simplified BSD License.
+
+</p><p class="rfcparagraph">Table of Contents
+<a href="#section-1" class="">1. Introduction ...................................................</a><br>
+<a href="#section-2" class="">2. Conventions and Terminology ....................................</a><br>
+<a href="#section-2.1" class="indent-1">2.1. Conventions ...............................................</a><br>
+<a href="#section-2.2" class="indent-1">2.2. Terminology ...............................................</a><br>
+<a href="#section-3" class="">3. Additional Fields in Conceptual Data Structures ................</a><br>
+<a href="#section-4" class="">4. LMA User-Plane Address Mobility Option .........................</a><br>
+<a href="#section-5" class="">5. Protocol Configuration Variable ................................</a><br>
+<a href="#section-6" class="">6. IANA Considerations ............................................</a><br>
+<a href="#section-7" class="">7. Security Considerations ........................................</a><br>
+<a href="#section-8" class="">8. References ....................................................</a><br>
+<a href="#section-8.1" class="indent-1">8.1. Normative References .....................................</a><br>
+<a href="#section-8.2" class="indent-1">8.2. Informative References ...................................</a><br>
+   Acknowledgements ..................................................12
+   Authors' Addresses ................................................12
+
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   A Proxy Mobile IPv6 (PMIPv6) infrastructure comprises two primary
+   entities: LMA (local mobility anchor) and MAG (mobile access
+   gateway).  The interface between the MAG and LMA consists of the
+   control plane and user plane.  The control plane is responsible for
+   signaling messages between the MAG and LMA, such as the Proxy Binding
+   Update (PBU) and Proxy Binding Acknowledgement (PBA) messages to
+   establish a mobility binding.  In addition, the control-plane
+   components in the MAG and LMA are also responsible for setting up and
+   tearing down a bidirectional tunnel between the MAG and LMA.  The
+   user plane is used for carrying the mobile node's IP traffic between
+   the MAG and the LMA over the bidirectional tunnel.
+   Widely deployed mobility management systems for wireless
+   communications require separation of IP transport for forwarding
+   user-plane and control-plane traffic.  This separation offers more
+   flexible deployment options for LMA and MAG entities in Proxy Mobile
+   IPv6, as described in [MOBILE-SEPARATION].  To meet this requirement
+   would also require that the control-plane functions of the LMA be
+   addressable at a different IP address than the IP address assigned
+   for the user plane.  However, PMIPv6 does not currently specify a
+   mechanism for allowing the LMA to separate the control plane from the
+   user plane.  The LMA is currently required to associate the IP
+   address of the tunnel source with the target IP address for the
+   control messages received from the MAG.
+
+</p><p class="rfcparagraph">   The control-plane and user-plane components of a MAG or LMA are
+   typically co-located in the same physical entity.  However, there are
+   situations where it is desirable to have the control and user plane
+   of a MAG or LMA in separate physical entities.  For example, in a
+   WLAN (Wireless LAN) network, it may be desirable to have the control-
+   plane component of the MAG reside on the Access Controller (also
+   sometimes referred to as Wireless LAN Controller (WLC)) while the
+   user-plane component of the MAG resides on the WLAN Access Point.
+   This enables all the control-plane messages to the LMA to be
+   centralized while the user plane would be distributed across the
+   multiple Access Points.  Similarly, there is a need for either the
+   control-plane or user-plane component of the LMA to be separated
+   according to different scaling requirements or, in other cases, the
+   need to centralize the control plane in one geographical location
+   while distributing the user-plane component across multiple
+   locations.  For example, as illustrated in Figure 1, the LMA and MAG
+   could have one control session established for PMIPv6 control
+   signaling while maintaining separate connectivity via Generic Routing
+   Encapsulation (GRE) or IP-in-IP tunneling for forwarding user-plane
+   traffic.
+                     MAG                    LMA<pre>
+                 +--------+              +--------+
+   +------+      | MAG-CP |--------------| LMA-CP |        _----_
+   |  MN  |      |        |    PMIPv6    |        |      _(      )_
+   |      |----  +--------+              +--------+  ===( Internet )
+   +------+          :                       :           (_      _)
+                 +--------+              +--------+        '----'
+                 | MAG-UP |--------------| LMA-UP |
+                 |        | GRE/IP-in-IP |        |
+                 +--------+    /UDP      +--------+
+</pre>
+
+
+   MN: Mobile Node
+   CP: Control Plane
+   UP: User Plane
+
+       Figure 1: Functional Separation of the Control and User Plane
+
+   [RFC6463] and [RFC6275] enable separating the control and user plane
+   in the MAG.  In particular, [RFC6463] defines the Alternate IPv4
+   Care-of Address option, and [RFC6275] defines an Alternate Care-of
+   Address option for IPv6.  The MAG may provide an Alternate Care-of
+   Address in the PBU, and if the LMA supports this option, then a
+   bidirectional tunnel is set up between the LMA address and the MAG's
+   Alternate Care-of Address.  However, these documents do not specify a
+   corresponding option for the LMA to provide an alternate tunnel
+   endpoint address to the MAG.
+
+</p><p class="rfcparagraph">   This specification therefore defines a new mobility option that
+   enables a local mobility anchor to provide an alternate LMA address
+   to be used for the bidirectional tunnel between the MAG and LMA, as
+   shown in Figure 1.
+
+</p><p class="rfcparagraph">   The LMA control-plane and the LMA user-plane functions are typically
+   deployed on the same IP node, and in such a scenario, the interface
+   between these functions is internal to the implementation.
+   Deployments may also choose to deploy the LMA control-plane and the
+   LMA user-plane functions on separate IP nodes.  In such deployment
+   models, there needs to be a protocol interface between these two
+   functions, but that is outside the scope of this document.  Possible
+   options for such an interface include OpenFlow
+   [OpenFlow-Spec-v1.4.0], Forwarding and Control Element Separation
+   (ForCES) [RFC5810], use of routing infrastructure [STATELESS-UPLANE],
+   and vendor-specific approaches.  This specification does not mandate
+   a specific protocol interface and views this interface as a generic
+   interface relevant more broadly for many other protocol systems in
+   addition to Proxy Mobile IPv6.  When the LMA control-plane and the
+   LMA user-plane functions are deployed on separate IP nodes, the
+   requirement related to user-plane address anchoring (specified in
+   Section 5.6.2 of [RFC5213] and Section 3.1.3 of [RFC5844]) must be
+   met by the node hosting the LMA user-plane functionality.  The LMA
+   user-plane node must be a topological anchor point for the IP
+   address/prefixes allocated to the mobile node.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Conventions and Terminology</h2></a>
+
+	<a name="section-2.1"><h3>2.1   Conventions</h3></a>
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in RFC 2119 [RFC2119].
+
+</p><p class="rfcparagraph">	<a name="section-2.2"><h3>2.2   Terminology</h3></a>
+
+   3GPP terms can be found in [RFC6459].  Other mobility-related terms
+   used in this document are to be interpreted as defined in [RFC5213]
+   and [RFC5844].  Additionally, this document uses the following terms:
+
+</p><p class="rfcparagraph">   IP-in-IP
+
+      IP-within-IP Encapsulation [RFC2473] [RFC4213].
+
+</p><p class="rfcparagraph">   GRE
+
+      Generic Routing Encapsulation [RFC1701].
+
+</p><p class="rfcparagraph">   UDP Encapsulation
+
+      Encapsulation mode based on UDP transport specified in [RFC5844].
+
+</p><p class="rfcparagraph">   LMA Control-Plane Address (LMA-CPA)
+
+      The IP address on the LMA that is used for sending and receiving
+      control-plane traffic from the MAG.
+
+</p><p class="rfcparagraph">   LMA User-Plane Address (LMA-UPA)
+
+      The IP address on the LMA that is used for sending and receiving
+      user-plane traffic from the MAG.
+
+</p><p class="rfcparagraph">   MAG Control-Plane Address (MAG-CPA)
+
+      The IP address on the MAG that is used for sending and receiving
+      control-plane traffic from the LMA.
+   MAG User-Plane Address (MAG-UPA)
+
+      The IP address on the MAG that is used for sending and receiving
+      user-plane traffic from the LMA.  This address is also referred to
+      as the Alternate Care-of Address.
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   Additional Fields in Conceptual Data Structures</h2></a>
+
+   To support the capability specified in this document, the conceptual
+   Binding Update List entry data structure maintained by the LMA and
+   the MAG is extended with the following additional fields:
+
+</p><p class="rfcparagraph">   o  The IP address of the LMA that carries user-plane traffic.
+
+</p><p class="rfcparagraph">   o  The IP address of the LMA that handles control-plane traffic.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   LMA User-Plane Address Mobility Option</h2></a>
+
+   The LMA User-Plane Address mobility option is a new mobility header
+   option defined for use with PBU and PBA messages exchanged between
+   the LMA and the MAG.  This option is used for notifying the MAG about
+   the LMA's user-plane IPv6 or IPv4 address.  There can be zero, one,
+   or two instances of the LMA User-Plane Address mobility option
+   present in the message.  When two instances of the option are
+   present, one instance of the option must be for IPv4 transport, and
+   the other instance must be for IPv6 transport.
+
+</p><p class="rfcparagraph">   The LMA User-Plane Address mobility option has an alignment
+   requirement of 8n+2.  Its format is as shown in Figure 2:
+
+</p><p class="rfcparagraph">   0                   1                   2                   3
+   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |      Type     |   Length      |           Reserved            |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                                                               |
+   +                                                               +
+   |                                                               |
+   .                                                               .
+   +                     LMA User-Plane Address                    +
+   |                                                               |
+   +                                                               +
+   |                                                               |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+          Figure 2: LMA User-Plane Address Mobility Option Format
+   Type
+
+      59
+
+   Length
+
+      An 8-bit, unsigned integer indicating the length of the option in
+      octets, excluding the Type and Length fields.
+
+</p><p class="rfcparagraph">   Reserved
+
+      This field is unused in this specification.  The value MUST be set
+      to zero (0) by the sender and MUST be ignored by the receiver.<br>
+
+</p><p class="rfcparagraph">   LMA User-Plane Address
+
+      Contains the 32-bit IPv4 address or the 128-bit IPv6 address of
+      the LMA user plane.  When the LMA User-Plane Address mobility
+      option is included in a PBU message, this field can be a zero-
+      length field, or it can have a value of ALL_ZERO, with all bits in
+      the 32-bit IPv4 address or the 128-bit IPv6 address set to zero.
+
+</p><p class="rfcparagraph">   When including the LMA User-Plane Address mobility option in the PBU,
+   the MAG must apply the following rules:
+
+</p><p class="rfcparagraph">   o  When using IPv4 transport for the user plane, the IP address field
+      in the option MUST be either a zero-length field or a 4-octet
+      field with ALL_ZERO value.
+
+</p><p class="rfcparagraph">   o  When using IPv6 transport for the user plane, the IP address field
+      in the option MUST be either a zero-length field or a 16-octet
+      field with ALL_ZERO value.
+
+</p><p class="rfcparagraph">   When the LMA includes the LMA User-Plane Address mobility option in
+   the PBA, the IP address field in the option MUST be set to the LMA's
+   IPv4 or IPv6 address carrying user-plane traffic.
+
+</p><p class="rfcparagraph">   o  When using IPv4 transport for the user plane, the IP address field
+      in the option is the IPv4 address carrying user-plane traffic.
+
+</p><p class="rfcparagraph">   o  When using IPv6 transport for the user plane, the IP address field
+      in the option is the IPv6 address carrying user-plane traffic.
+
+</p><p class="rfcparagraph">   The encapsulation mode that will be chosen for the user plane between
+   the MAG and the LMA has to based on the considerations specified in
+   [RFC5213] and [RFC5844].
+	<a name="section-5"><h2>5.   Protocol Configuration Variable</h2></a>
+
+   This specification defines the following configuration variable,
+   which must be configurable (e.g., by the system management) on the
+   LMA and MAG mobility entities.  The configured value for this
+   protocol variable MUST survive server reboots and service restarts
+   and MUST be the same for every LMA and MAG in the network domain
+   supporting PMIPv6.
+
+</p><p class="rfcparagraph">   Domain-wide-LMA-UPA-Support
+
+         This variable indicates whether or not all the mobility
+         entities in the PMIPv6 domain support the LMA User-Plane
+         Address mobility option.
+
+</p><p class="rfcparagraph">         When this variable on the MAG is set to zero (0), the MAG MUST<br>
+         indicate whether or not it supports this feature by including
+         the LMA User-Plane Address mobility option in the PBU.  If the
+         option is not present in the PBU, the LMA SHALL disable this
+         feature for the mobility session corresponding to the PBU.
+
+</p><p class="rfcparagraph">         Setting this variable to one (1) on the MAG indicates that<br>
+         there is domain-wide support for this feature and the MAG is
+         not required to include the LMA User-Plane Address mobility
+         option in the PBA.  In this case, the MAG MAY choose not to
+         include the LMA User-Plane Address mobility option in the PBU.
+
+</p><p class="rfcparagraph">         When this variable on the LMA is set to zero (0), the LMA MUST<br>
+         NOT include the LMA User-Plane Address mobility option in the
+         PBA unless the MAG has indicated support for this feature by
+         including the LMA User-Plane Address mobility option in the PBU
+         message.
+
+</p><p class="rfcparagraph">         Setting this variable to one (1) on the LMA indicates that<br>
+         there is domain-wide support for this feature and the LMA
+         SHOULD choose to include this LMA User-Plane Address mobility
+         option in the PBA even if the option is not present in the PBU
+         message.
+
+</p><p class="rfcparagraph">         On both the LMA and the MAG, the default value for this
+         variable is zero (0).  This implies that the default behavior<br>
+         of a MAG is to include this option in the PBU, and the default
+         behavior of an LMA is to include this option in a PBA only if
+         the option is present in the PBU.
+	<a name="section-6"><h2>6.   IANA Considerations</h2></a>
+
+   This specification defines a new mobility header option -- the LMA
+   User-Plane Address mobility option.  The format of this option is
+   described in Section 4.  The Type value 59 for this mobility option
+   has been allocated by IANA in the "Mobility Options" registry at
+   <http://www.iana.org/assignments/mobility-parameters>.
+
+</p><p class="rfcparagraph">	<a name="section-7"><h2>7.   Security Considerations</h2></a>
+
+   The Proxy Mobile IPv6 specification [RFC5213] requires the signaling
+   messages between the MAG and the LMA to be protected using end-to-end
+   security association(s) offering integrity and data origin
+   authentication.  The Proxy Mobile IPv6 specification also requires
+   IPsec [RFC4301] to be a mandatory-to-implement security mechanism.
+
+</p><p class="rfcparagraph">   This document specifies an approach where the control-plane and user-
+   plane functions of the MAG and LMA are separated and hosted on
+   different IP nodes.  In such deployment models, the nodes hosting
+   those respective control-plane functions still have to meet the
+   [RFC5213] security requirement listed above; specifically, the Proxy
+   Mobile IPv6 signaling messages exchanged between these entities MUST
+   be protected using end-to-end security association(s) offering
+   integrity and data origin authentication.  Furthermore, IPsec is a
+   mandatory-to-implement security mechanism for the nodes hosting the
+   control-plane function of the MAG and LMA.  Additional documents may
+   specify alternative security mechanisms for securing Proxy Mobile
+   IPv6 signaling messages.  The mobility entities in a Proxy Mobile
+   IPv6 domain can enable a specific security mechanism based on either
+   (1) static configuration or (2) dynamic negotiation (using any<br>
+   standard security negotiation protocols).
+
+</p><p class="rfcparagraph">   As per the Proxy Mobile IPv6 specification, the use of IPsec for
+   protecting the mobile node's user-plane traffic is optional.  This
+   specification keeps the same requirement and therefore requires the
+   nodes hosting the user-plane functions of the MAG and the LMA to have
+   IPsec as a mandatory-to-implement security mechanism but make the use
+   of IPsec optional for user-plane traffic protection.
+
+</p><p class="rfcparagraph">   The LMA User-Plane Address mobility option defined in this
+   specification is for use in PBU and PBA messages.  This option is
+   carried like any other mobility header option as specified in
+   [RFC5213].  Therefore, it inherits security guidelines from
+   [RFC5213].
+   The IP address of the LMA user plane (the LMA-UPA), provided within
+   the LMA User-Plane Address mobility option, MUST be a valid address
+   under the administrative control associated with the LMA functional
+   block.
+
+</p><p class="rfcparagraph">   If the LMA user-plane and the LMA control-plane functions are hosted
+   in different entities, any control messages between these two
+   entities containing the LMA User-Plane Address mobility option MUST
+   be protected using end-to-end security association(s) offering
+   integrity and data origin authentication.
+
+</p><p class="rfcparagraph">	<a name="section-8"><h2>8.   References</h2></a>
+
+	<a name="section-8.1"><h3>8.1   Normative References</h3></a>
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119, March 1997,
+              <http://www.rfc-editor.org/info/rfc2119>.
+
+</p><p class="rfcparagraph">   [RFC4301]  Kent, S. and K. Seo, "Security Architecture for the
+              Internet Protocol", RFC 4301, December 2005,
+              <http://www.rfc-editor.org/info/rfc4301>.
+
+</p><p class="rfcparagraph">   [RFC5213]  Gundavelli, S., Leung, K., Devarapalli, V., Chowdhury, K.,
+              and B. Patil, "Proxy Mobile IPv6", RFC 5213, August 2008,
+              <http://www.rfc-editor.org/info/rfc5213>.
+
+</p><p class="rfcparagraph">   [RFC5844]  Wakikawa, R. and S. Gundavelli, "IPv4 Support for Proxy
+              Mobile IPv6", RFC 5844, May 2010,
+              <http://www.rfc-editor.org/info/rfc5844>.
+
+</p><p class="rfcparagraph">	<a name="section-8.2"><h3>8.2   Informative References</h3></a>
+
+   [MOBILE-SEPARATION]
+              Wakikawa, R., Matsushima, S., Patil, B., Chen, B.,
+              Joachimpillai, D., and H. Deng, "Requirements and use
+              cases for separating control and user planes in mobile
+              network architectures", Work in Progress,
+              draft-wakikawa-req-mobile-cp-separation-00, November 2013.
+
+</p><p class="rfcparagraph">   [OpenFlow-Spec-v1.4.0]
+              Open Networking Foundation, "OpenFlow Switch
+              Specification, Version 1.4.0", October 2013.
+
+</p><p class="rfcparagraph">   [RFC1701]  Hanks, S., Li, T., Farinacci, D., and P. Traina, "Generic
+              Routing Encapsulation (GRE)", RFC 1701, October 1994,
+              <http://www.rfc-editor.org/info/rfc1701>.
+   [RFC2473]  Conta, A. and S. Deering, "Generic Packet Tunneling in
+              IPv6 Specification", RFC 2473, December 1998,
+              <http://www.rfc-editor.org/info/rfc2473>.
+
+</p><p class="rfcparagraph">   [RFC4213]  Nordmark, E. and R. Gilligan, "Basic Transition Mechanisms
+              for IPv6 Hosts and Routers", RFC 4213, October 2005,
+              <http://www.rfc-editor.org/info/rfc4213>.
+
+</p><p class="rfcparagraph">   [RFC5810]  Doria, A., Hadi Salim, J., Haas, R., Khosravi, H., Wang,
+              W., Dong, L., Gopal, R., and J. Halpern, "Forwarding and
+              Control Element Separation (ForCES) Protocol
+              Specification", RFC 5810, March 2010,
+              <http://www.rfc-editor.org/info/rfc5810>.
+
+</p><p class="rfcparagraph">   [RFC6275]  Perkins, C., Johnson, D., and J. Arkko, "Mobility Support
+              in IPv6", RFC 6275, July 2011,
+              <http://www.rfc-editor.org/info/rfc6275>.
+
+</p><p class="rfcparagraph">   [RFC6459]  Korhonen, J., Soininen, J., Patil, B., Savolainen, T.,
+              Bajko, G., and K. Iisakkila, "IPv6 in 3rd Generation
+              Partnership Project (3GPP) Evolved Packet System (EPS)",
+              RFC 6459, January 2012,
+              <http://www.rfc-editor.org/info/rfc6459>.
+
+</p><p class="rfcparagraph">   [RFC6463]  Korhonen, J., Gundavelli, S., Yokota, H., and X. Cui,
+              "Runtime Local Mobility Anchor (LMA) Assignment Support
+              for Proxy Mobile IPv6", RFC 6463, February 2012,
+              <http://www.rfc-editor.org/info/rfc6463>.
+
+</p><p class="rfcparagraph">   [STATELESS-UPLANE]
+              Matsushima, S. and R. Wakikawa, "Stateless user-plane
+              architecture for virtualized EPC (vEPC)", Work in
+              Progress, draft-matsushima-stateless-uplane-vepc-03,
+              July 2014.
+Acknowledgements
+
+   The authors of this document thank the NetExt Working Group for the
+   valuable feedback on different versions of this specification.  In
+   particular, the authors want to thank John Kaippallimalil, Sridhar
+   Bhaskaran, Nirav Salot, Bruno Landais, Brian Carpenter, Pete Resnick,
+   Stephen Farrell, and Brian Haberman for their valuable comments and
+   suggestions to improve this specification.
+
+</p>Authors' Addresses
+
+   Ryuji Wakikawa
+   Softbank Mobile
+   1-9-1, Higashi-Shimbashi, Minato-Ku
+   Tokyo  105-7322
+   Japan
+
+   EMail: ryuji.wakikawa@gmail.com
+
+
+   Rajesh S. Pazhyannur
+   Cisco
+   170 West Tasman Drive
+   San Jose, CA  95134
+   United States
+
+   EMail: rpazhyan@cisco.com
+
+
+   Sri Gundavelli
+   Cisco
+   170 West Tasman Drive
+   San Jose, CA  95134
+   United States
+
+   EMail: sgundave@cisco.com
+
+
+   Charles E. Perkins
+   Futurewei Inc.
+   2330 Central Expressway
+   Santa Clara, CA  95050
+   United States
+
+   EMail: charliep@computer.org
+
+
+
+
+
+
+Wakikawa, et al.             Standards Track                   [Page 12]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

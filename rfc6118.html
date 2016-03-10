@@ -1,0 +1,2728 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph">Internet Engineering Task Force (IETF)                      B. Hoeneisen
+Request for Comments: 6118                                       Ucom.ch
+Updates: 3762, 3764, 3953, 4143, 4002,                      A. Mayrhofer
+         4238, 4355, 4415, 4769, 4969,                           enum.at
+         4979, 5028, 5278, 5333                               March 2011
+Category: Standards Track
+ISSN: 2070-1721
+
+
+          Update of Legacy IANA Registrations of Enumservices
+
+<h2>Abstract</h2>
+
+   This document revises all Enumservices that were IANA registered
+   under the now obsolete specification of the Enumservice registry
+   defined in RFC 3761.
+
+</p><p class="rfcparagraph">Status of This Memo
+
+   This is an Internet Standards Track document.
+
+</p><p class="rfcparagraph">   This document is a product of the Internet Engineering Task Force
+   (IETF).  It represents the consensus of the IETF community.  It has
+   received public review and has been approved for publication by the
+   Internet Engineering Steering Group (IESG).  Further information on
+   Internet Standards is available in Section 2 of RFC 5741.
+
+</p><p class="rfcparagraph">   Information about the current status of this document, any errata,
+   and how to provide feedback on it may be obtained at
+   http://www.rfc-editor.org/info/rfc6118.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (c) 2011 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+</p><p class="rfcparagraph">   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (http://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
+   the Trust Legal Provisions and are provided without warranty as
+   described in the Simplified BSD License.
+   This document may contain material from IETF Documents or IETF
+   Contributions published or made publicly available before November
+   10, 2008.  The person(s) controlling the copyright in some of this
+   material may not have granted the IETF Trust the right to allow
+   modifications of such material outside the IETF Standards Process.
+   Without obtaining an adequate license from the person(s) controlling
+   the copyright in such materials, this document may not be modified
+   outside the IETF Standards Process, and derivative works of it may
+   not be created outside the IETF Standards Process, except to format
+   it for publication as an RFC or to translate it into languages other
+   than English.
+
+</p><p class="rfcparagraph">Table of Contents
+<a href="#section-1" class="">1. Introduction . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2" class="">2. Terminology  . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3" class="">3. IESG Action  . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4" class="">4. Legacy Enumservice Registrations Converted to XML Chunks . . </a><br>
+<a href="#section-4.1" class="indent-1">4.1. email:mailto . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.2" class="indent-1">4.2. ems:mailto . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.3" class="indent-1">4.3. ems:tel  . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.4" class="indent-1">4.4. fax:tel  . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.5" class="indent-1">4.5. ft:ftp . . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.6" class="indent-1">4.6. h323 . . . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.7" class="indent-1">4.7. ical-access:http . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.8" class="indent-1">4.8. ical-access:https  . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.9" class="indent-1">4.9. ical-sched:mailto  . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.10" class="indent-1">4.10. ifax:mailto  . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.11" class="indent-1">4.11. im . . . . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.12" class="indent-1">4.12. mms:mailto . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.13" class="indent-1">4.13. mms:tel  . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.14" class="indent-1">4.14. pres . . . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.15" class="indent-1">4.15. pstn:sip . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.16" class="indent-1">4.16. pstn:tel . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.17" class="indent-1">4.17. sip  . . . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.18" class="indent-1">4.18. sms:mailto . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.19" class="indent-1">4.19. sms:tel  . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.20" class="indent-1">4.20. unifmsg:http . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.21" class="indent-1">4.21. unifmsg:https  . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.22" class="indent-1">4.22. unifmsg:sip  . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.23" class="indent-1">4.23. unifmsg:sips . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.24" class="indent-1">4.24. vcard  . . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.25" class="indent-1">4.25. videomsg:http  . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.26" class="indent-1">4.26. videomsg:https . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.27" class="indent-1">4.27. videomsg:sip . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.28" class="indent-1">4.28. videomsg:sips  . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.29" class="indent-1">4.29. voice:tel  . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.30" class="indent-1">4.30. voicemsg:http  . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.31" class="indent-1">4.31. voicemsg:https . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.32" class="indent-1">4.32. voicemsg:sip . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.33" class="indent-1">4.33. voicemsg:sips  . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.34" class="indent-1">4.34. voicemsg:tel . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.35" class="indent-1">4.35. vpim:ldap  . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.36" class="indent-1">4.36. vpim:mailto  . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.37" class="indent-1">4.37. web:http . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.38" class="indent-1">4.38. web:https  . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.39" class="indent-1">4.39. xmpp . . . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-5" class="">5. IANA Considerations  . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-6" class="">6. Security Considerations  . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-7" class="">7. Acknowledgements . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-8" class="">8. References . . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-8.1" class="indent-1">8.1. Normative References . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-8.2" class="indent-1">8.2. Informative References . . . . . . . . . . . . . . . . . </a><br>
+   Appendix A.  Former Content of the IANA Repository . . . . . . . . 49
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   [RFC6117] has obsoleted the IANA registration section of [RFC3761].
+   Since the IANA Enumservice registry contains various Enumservices
+   registered under the regime of RFC 3761, those registrations do not
+   conform to the new guidelines as specified in [RFC6117].  To ensure
+   consistency among all Enumservice registrations at IANA, this
+   document adds the (nowadays) missing elements to those legacy
+   registrations.  Furthermore, all legacy Enumservice registrations are
+   converted to the new XML-chunk format, and, where deemed necessary,
+   minor editorial corrections are applied.
+
+</p><p class="rfcparagraph">   However, this document only adds the missing elements to the XML
+   chunks as specified in the IANA Considerations section of [RFC6117],
+   but it does not complete the (nowadays) missing sections of the
+   corresponding Enumservice Specifications.  In order to conform with
+   the new registration regime as specified in [RFC6117], those
+   Enumservice Specifications still have to be revised.
+
+</p><p class="rfcparagraph">   It is important to note that this document does not update the
+   functional specification of the concerned Enumservices.
+
+</p><p class="rfcparagraph">   The following RFCs are updated by this document:
+
+</p><p class="rfcparagraph">   o  [RFC3762]
+   o  [RFC3764]
+   o  [RFC3953]
+   o  [RFC4143]
+   o  [RFC4002]
+   o  [RFC4238]
+   o  [RFC4355]
+   o  [RFC4415]
+   o  [RFC4769]
+   o  [RFC4969]
+   o  [RFC4979]
+   o  [RFC5028]
+   o  [RFC5278]
+   o  [RFC5333]
+
+	<a name="section-2"><h2>2.   Terminology</h2></a>
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in RFC 2119 [RFC2119].
+	<a name="section-3"><h2>3.   IESG Action</h2></a>
+
+   According to [RFC3761], any Enumservice registration had to be
+   published as a Standards Track, Experimental, or BCP (Best Current
+   Practice) RFC.  [RFC6117] no longer has this requirement, i.e.,
+   "Specification Required", which implies the use of a Designated
+   Expert [RFC5226], is sufficient.
+
+</p><p class="rfcparagraph">   This document changes the approval requirement for updates to
+   Enumservice registrations to Specification Required, whereby the
+   specification and request are reviewed by a Designated Expert as
+   described in [RFC6117].
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   Legacy Enumservice Registrations Converted to XML Chunks</h2></a>
+
+   In the following, the legacy Enumservice Registrations are converted
+   to XML chunks that include the new elements introduced by [RFC6117].
+
+</p><p class="rfcparagraph">   (Note that references in Sections 4.1 - 4.39 refer to the references
+   section within the respective Enumservice Specification.)
+
+	<a name="section-4.1"><h3>4.1   email:mailto</h3></a>
+
+     <record>
+       <!-- email:mailto -->
+       <class>Application-Based, Common</class>
+       <type>email</type>
+       <subtype>mailto</subtype>
+       <urischeme>mailto</urischeme>
+       <functionalspec>
+         <paragraph>
+           This Enumservice indicates that the resource can be
+           addressed by the associated URI in order to send an
+           email.
+         </paragraph>
+       </functionalspec>
+       <security>
+         See <xref type="rfc" data="rfc4355"/>, Section 6.
+       </security>
+       <usage>COMMON</usage>
+       <registrationdocs>
+         <xref type="rfc" data="rfc4355"/> (updated by RFC 6118)
+         <xref type="rfc" data="RFC 6118"/>
+       </registrationdocs>
+       <requesters>
+         <xref type="person" data="Rudolf_Brandner"/>
+         <xref type="person" data="Lawrence_Conroy"/>
+         <xref type="person" data="Richard_Stastny"/>
+       </requesters>
+     </record>
+
+	<a name="section-4.2"><h3>4.2   ems:mailto</h3></a>
+
+    <record>
+      <!-- ems:mailto -->
+      <class>Application-Based, Common</class>
+      <type>ems</type>
+      <subtype>mailto</subtype>
+      <urischeme>mailto</urischeme>
+      <functionalspec>
+        <paragraph>
+          This Enumservice indicates that the resource
+          identified by the associated URI is capable
+          of receiving a message using an email protocol.
+        </paragraph>
+        <paragraph>
+          EMS content is sent over SMTP using the format
+          specified by TS 23.140 [15] Section 8.4.4 and TS
+          26.140 [16] Section 4, as an MMS message.  Within
+          such a message, EMS content is carried as either a
+          text or application/octet-stream MIME sub-part (see
+          TS 26.140 [16], Section 4.1).
+        </paragraph>
+        <paragraph>
+          References are contained in <xref type="rfc" data="rfc4355"/>.
+        </paragraph>
+      </functionalspec>
+      <security>
+        <paragraph>
+          There are no specific security issues with this
+          Enumservice.  However, the general considerations of
+          Section 6 of <xref type="rfc" data="rfc4355"/> apply.
+        </paragraph>
+      </security>
+      <usage>COMMON</usage>
+      <registrationdocs>
+        <xref type="rfc" data="rfc4355"/> (updated by RFC 6118)
+        <xref type="rfc" data="RFC 6118"/>
+      </registrationdocs>
+      <requesters>
+        <xref type="person" data="Rudolf_Brandner"/>
+        <xref type="person" data="Lawrence_Conroy"/>
+        <xref type="person" data="Richard_Stastny"/>
+      </requesters>
+    </record>
+	<a name="section-4.3"><h3>4.3   ems:tel</h3></a>
+
+    <record>
+      <!-- ems:tel -->
+      <class>Application-Based, Common</class>
+      <type>ems</type>
+      <subtype>tel</subtype>
+      <urischeme>tel</urischeme>
+      <functionalspec>
+        <paragraph>
+          This Enumservice indicates that the resource
+          identified by the associated URI is capable
+          of receiving a message using the Enhanced Message
+          Service (EMS) [14].
+        </paragraph>
+        <paragraph>
+          References are contained in <xref type="rfc" data="rfc4355"/>.
+        </paragraph>
+      </functionalspec>
+      <security>
+        <paragraph>
+          There are no specific security issues with this
+          Enumservice.  However, the general considerations of
+          Section 6 of <xref type="rfc" data="rfc4355"/> apply.
+        </paragraph>
+      </security>
+      <usage>COMMON</usage>
+      <registrationdocs>
+        <xref type="rfc" data="rfc4355"/> (updated by RFC 6118)
+        <xref type="rfc" data="RFC 6118"/>
+      </registrationdocs>
+      <requesters>
+        <xref type="person" data="Rudolf_Brandner"/>
+        <xref type="person" data="Lawrence_Conroy"/>
+        <xref type="person" data="Richard_Stastny"/>
+      </requesters>
+      <additionalinfo>
+        <paragraph>
+          Note that an indication of EMS can be taken as
+          implying that the recipient is capable of receiving
+          SMS messages at this address as well.
+        </paragraph>
+      </additionalinfo>
+    </record>
+	<a name="section-4.4"><h3>4.4   fax:tel</h3></a>
+
+    <record>
+      <!-- fax:tel -->
+      <class>Application-Based, Subset</class>
+      <type>fax</type>
+      <subtype>tel</subtype>
+      <urischeme>tel</urischeme>
+      <functionalspec>
+        <paragraph>
+          This Enumservice indicates that the resource
+          identified by the associated URI is capable
+          of being contacted to provide a communication
+          session during which facsimile documents can be
+          sent.
+        </paragraph>
+        <paragraph>
+          A client selecting this NAPTR will have support
+          for generating and sending facsimile documents to
+          the recipient using the PSTN session and transfer
+          protocols specified in [12] and [13] in
+          <xref type="rfc" data="rfc4355"/> -
+          in short, they will have a fax program with a local
+          or shared PSTN access over which they can send
+          faxes.
+        </paragraph>
+        <paragraph>
+          References are contained in <xref type="rfc" data="rfc4355"/>.
+        </paragraph>
+      </functionalspec>
+      <security>
+        See <xref type="rfc" data="rfc4355"/>, Section 6.
+      </security>
+      <usage>COMMON</usage>
+      <registrationdocs>
+        <xref type="rfc" data="rfc4355"/> (updated by RFC 6118)
+        <xref type="rfc" data="RFC 6118"/>
+      </registrationdocs>
+      <requesters>
+        <xref type="person" data="Rudolf_Brandner"/>
+        <xref type="person" data="Lawrence_Conroy"/>
+        <xref type="person" data="Richard_Stastny"/>
+      </requesters>
+    </record>
+	<a name="section-4.5"><h3>4.5   ft:ftp</h3></a>
+
+     <record>
+       <!-- ft:ftp -->
+       <class>Application-Based, Subset</class>
+       <type>ft</type>
+       <subtype>ftp</subtype>
+       <urischeme>ftp</urischeme>
+       <functionalspec>
+         <paragraph>
+           This Enumservice indicates that the resource
+           identified by the associated URI is a file
+           service from which a file or file listing can be
+           retrieved.
+         </paragraph>
+       </functionalspec>
+       <security>
+         See <xref type="rfc" data="rfc4002"/>, Section 5.
+       </security>
+       <usage>COMMON</usage>
+       <registrationdocs>
+         <xref type="rfc" data="rfc4002"/> (updated by RFC 6118)
+         <xref type="rfc" data="RFC 6118"/>
+       </registrationdocs>
+       <requesters>
+         <xref type="person" data="Rudolf_Brandner"/>
+         <xref type="person" data="Lawrence_Conroy"/>
+         <xref type="person" data="Richard_Stastny"/>
+       </requesters>
+     </record>
+	<a name="section-4.6"><h3>4.6   h323</h3></a>
+
+     <record>
+       <!-- h323 -->
+       <class>Protocol-Based</class>
+       <type>h323</type>
+       <!-- No subtype -->
+       <urischeme>h323</urischeme>
+       <functionalspec>
+         See <xref type="rfc" data="rfc3762"/>, Section 3.
+       </functionalspec>
+       <security>
+         See <xref type="rfc" data="rfc3762"/>, Section 5.
+       </security>
+       <usage>COMMON</usage>
+       <registrationdocs>
+         <xref type="rfc" data="rfc3762"/> (updated by RFC 6118)
+         <xref type="rfc" data="RFC 6118"/>
+       </registrationdocs>
+       <requesters>
+         <xref type="person" data="Orit_Levin"/>
+       </requesters>
+     </record>
+	<a name="section-4.7"><h3>4.7   ical-access:http</h3></a>
+
+    <record>
+      <!-- ical-access:http -->
+      <class>Application-Based, Common</class>
+      <type>ical-access</type>
+      <subtype>http</subtype>
+      <urischeme>http</urischeme>
+      <functionalspec>
+        <paragraph>
+          This Enumservice indicates that the resource identified
+          can be addressed by the associated URI in order to access
+          a user's calendar (for example free/busy status) using
+          the CalDAV [7] protocol for Internet calendaring.
+        </paragraph>
+        <paragraph>
+          References are contained in <xref type="rfc" data="rfc5333"/>.
+        </paragraph>
+      </functionalspec>
+      <security>
+        See <xref type="rfc" data="rfc5333"/>, Section 4.
+      </security>
+      <usage>COMMON</usage>
+      <registrationdocs>
+        <xref type="rfc" data="rfc5333"/> (updated by RFC 6118)
+        <xref type="rfc" data="RFC 6118"/>
+      </registrationdocs>
+      <requesters>
+        <xref type="person" data="Rohan_Mahy"/>
+      </requesters>
+    </record>
+	<a name="section-4.8"><h3>4.8   ical-access:https</h3></a>
+
+    <record>
+      <!-- ical-access:https -->
+      <class>Application-Based, Common</class>
+      <type>ical-access</type>
+      <subtype>https</subtype>
+      <urischeme>https</urischeme>
+      <functionalspec>
+        <paragraph>
+          This Enumservice indicates that the resource identified
+          can be addressed by the associated URI in order to access
+          a user's calendar (for example free/busy status) using
+          the CalDAV [7] protocol for Internet calendaring.
+        </paragraph>
+        <paragraph>
+          References are contained in <xref type="rfc" data="rfc5333"/>.
+        </paragraph>
+      </functionalspec>
+      <security>
+        See <xref type="rfc" data="rfc5333"/>, Section 4.
+      </security>
+      <usage>COMMON</usage>
+      <registrationdocs>
+        <xref type="rfc" data="rfc5333"/> (updated by RFC 6118)
+        <xref type="rfc" data="RFC 6118"/>
+      </registrationdocs>
+      <requesters>
+        <xref type="person" data="Rohan_Mahy"/>
+      </requesters>
+    </record>
+	<a name="section-4.9"><h3>4.9   ical-sched:mailto</h3></a>
+
+    <record>
+      <!-- ical-sched:mailto -->
+      <class>Application-Based, Common</class>
+      <type>ical-sched</type>
+      <subtype>mailto</subtype>
+      <urischeme>mailto</urischeme>
+      <functionalspec>
+        <paragraph>
+          This Enumservice indicates that the resource identified
+          can be addressed by the associated URI used for
+          scheduling using Internet calendaring via Internet mail
+          with the iMIP [6] protocol.
+        </paragraph>
+        <paragraph>
+          References are contained in <xref type="rfc" data="rfc5333"/>.
+        </paragraph>
+      </functionalspec>
+      <security>
+        See <xref type="rfc" data="rfc5333"/>, Section 4.
+      </security>
+      <usage>COMMON</usage>
+      <registrationdocs>
+        <xref type="rfc" data="rfc5333"/> (updated by RFC 6118)
+        <xref type="rfc" data="RFC 6118"/>
+      </registrationdocs>
+      <requesters>
+        <xref type="person" data="Rohan_Mahy"/>
+      </requesters>
+    </record>
+	<a name="section-4.10"><h3>4.10   ifax:mailto</h3></a>
+
+     <record>
+       <!-- ifax:mailto -->
+       <class>Application-Based, Subset</class>
+       <type>ifax</type>
+       <subtype>mailto</subtype>
+       <urischeme>mailto</urischeme>
+       <functionalspec>
+         See <xref type="rfc" data="rfc4143"/>, Section 1.
+       </functionalspec>
+       <security>
+         See <xref type="rfc" data="rfc4143"/>, Section 3.
+       </security>
+       <usage>COMMON</usage>
+       <registrationdocs>
+         <xref type="rfc" data="rfc4143"/> (updated by RFC 6118)
+         <xref type="rfc" data="RFC 6118"/>
+       </registrationdocs>
+       <requesters>
+         <xref type="person" data="Kiyoshi_Toyoda"/>
+         <xref type="person" data="Dave_Crocker"/>
+       </requesters>
+       <additionalinfo>
+         <paragraph>
+           The URI Scheme is 'mailto' because facsimile is a
+           profile of standard Internet mail and uses standard
+           Internet mail addressing.
+         </paragraph>
+       </additionalinfo>
+     </record>
+	<a name="section-4.11"><h3>4.11   im</h3></a>
+
+    <record>
+      <!-- im -->
+      <class>Application-Based, Common</class>
+      <type>im</type>
+      <!-- No subtype -->
+      <urischeme>im</urischeme>
+      <functionalspec>
+        <paragraph>
+          This Enumservice indicates that the resource
+          identified is an 'im:' URI.  The 'im:' URI scheme
+          does not identify any particular protocol that will
+          be used to handle instant messaging receipt or
+          delivery, rather the mechanism in RFC 3861 [4] is
+          used to discover whether an IM protocol supported by
+          the party querying ENUM is also supported by the
+          target resource.
+        </paragraph>
+        <paragraph>
+          References are contained in <xref type="rfc" data="rfc5028"/>.
+        </paragraph>
+      </functionalspec>
+      <security>
+        See <xref type="rfc" data="rfc5028"/>, Section 3.
+      </security>
+      <usage>COMMON</usage>
+      <registrationdocs>
+        <xref type="rfc" data="rfc5028"/> (updated by RFC 6118)
+        <xref type="rfc" data="RFC 6118"/>
+      </registrationdocs>
+      <requesters>
+        <xref type="person" data="Rohan_Mahy"/>
+      </requesters>
+    </record>
+	<a name="section-4.12"><h3>4.12   mms:mailto</h3></a>
+
+    <record>
+      <!-- mms:mailto -->
+      <class>Application-Based, Common</class>
+      <type>mms</type>
+      <subtype>mailto</subtype>
+      <urischeme>mailto</urischeme>
+      <functionalspec>
+        <paragraph>
+          This Enumservice indicates that the resource
+          identified by the associated URI is capable
+          of receiving a message using an email protocol.
+        </paragraph>
+        <paragraph>
+          MMS messages are sent over SMTP using the format
+          specified by TS 23.140 [15] Section 8.4.4 and TS
+          26.140 [16] Section 4.
+        </paragraph>
+        <paragraph>
+          Within and between MMS Environments (MMSE,
+          network infrastructures that support the MultiMedia
+          Service), other pieces of state data (for example,
+          charging-significant information) are exchanged
+          between MMS Relay Servers.  Thus, although these
+          servers use SMTP as the "bearer" for their
+          application exchanges, they map their internal state
+          to specialized header fields carried in the SMTP message
+          exchanges.  The header fields used in such MMSE are
+          described in detail in [17].
+        </paragraph>
+        <paragraph>
+          References are contained in <xref type="rfc" data="rfc4355"/>.
+        </paragraph>
+      </functionalspec>
+      <security>
+        <paragraph>
+          There are no specific security issues with this
+          Enumservice.  However, the general considerations of
+          Section 6 of <xref type="rfc" data="rfc4355"/> apply.
+        </paragraph>
+      </security>
+      <usage>COMMON</usage>
+      <registrationdocs>
+        <xref type="rfc" data="rfc4355"/> (updated by RFC 6118)
+        <xref type="rfc" data="RFC 6118"/>
+      </registrationdocs>
+      <requesters>
+        <xref type="person" data="Rudolf_Brandner"/>
+        <xref type="person" data="Lawrence_Conroy"/>
+        <xref type="person" data="Richard_Stastny"/>
+      </requesters>
+      <additionalinfo>
+        <paragraph>
+          The MMS Architecture describes an interface
+          between the MMSE and "legacy messaging systems"
+          (labelled as MM3) that accepts "standard" SMTP
+          messages.  Thus, although the MMS Relay Server that
+          supports this interface appears as a standard SMTP
+          server from the perspective of an Internet-based
+          mail server, it acts as a gateway and translator,
+          adding the internal state data that is used within
+          and between the MMS Environments.  This mechanism is
+          described in [17], which also includes references to
+          the specifications agreed by those bodies
+          responsible for the design of the MMS.
+        </paragraph>
+        <paragraph>
+          References are contained in <xref type="rfc" data="rfc4355"/>.
+        </paragraph>
+      </additionalinfo>
+    </record>
+	<a name="section-4.13"><h3>4.13   mms:tel</h3></a>
+
+    <record>
+      <!-- mms:tel -->
+      <class>Application-Based, Common</class>
+      <type>mms</type>
+      <subtype>tel</subtype>
+      <urischeme>tel</urischeme>
+      <functionalspec>
+        <paragraph>
+          This Enumservice indicates that the resource
+          identified by the associated URI is capable
+          of receiving a message using the Multimedia
+          Messaging Service (MMS) [15].
+        </paragraph>
+        <paragraph>
+          References are contained in <xref type="rfc" data="rfc4355"/>.
+        </paragraph>
+      </functionalspec>
+      <security>
+        <paragraph>
+          There are no specific security issues with this
+          Enumservice.  However, the general considerations of
+          Section 6 of <xref type="rfc" data="rfc4355"/> apply.
+        </paragraph>
+      </security>
+      <usage>COMMON</usage>
+      <registrationdocs>
+        <xref type="rfc" data="rfc4355"/> (updated by RFC 6118)
+        <xref type="rfc" data="RFC 6118"/>
+      </registrationdocs>
+      <requesters>
+        <xref type="person" data="Rudolf_Brandner"/>
+        <xref type="person" data="Lawrence_Conroy"/>
+        <xref type="person" data="Richard_Stastny"/>
+      </requesters>
+      <additionalinfo>
+        <paragraph>
+          Note that MMS can be used as an alternative to
+          deliver an SMS RP-DATA RPDU if, for example, the
+          SMS bearer is not supported.  If an entry includes
+          this Enumservice, then in effect this can be taken
+          as implying that the recipient is capable of
+          receiving EMS or SMS messages at this address.  Such
+          choices on the end system design do have two small
+          caveats; whilst in practice all terminals supporting
+          MMS today support SMS as well, it might not
+          necessarily be the case in the future, and there may
+          be tariff differences in using the MMS rather than
+          using the SMS or EMS.
+        </paragraph>
+      </additionalinfo>
+    </record>
+
+	<a name="section-4.14"><h3>4.14   pres</h3></a>
+
+     <record>
+       <!-- pres -->
+       <class>Application-Based, Common</class>
+       <type>pres</type>
+       <!-- No subtype -->
+       <urischeme>pres</urischeme>
+       <functionalspec>
+         See <xref type="rfc" data="rfc3953"/>, Section 4.
+       </functionalspec>
+       <security>
+         See <xref type="rfc" data="rfc3953"/>, Section 6.
+       </security>
+       <usage>COMMON</usage>
+       <registrationdocs>
+         <xref type="rfc" data="rfc3953"/> (updated by RFC 6118)
+         <xref type="rfc" data="RFC 6118"/>
+       </registrationdocs>
+       <requesters>
+         <xref type="person" data="Jon_Peterson"/>
+       </requesters>
+       <additionalinfo>
+         <paragraph>
+           See <xref type="rfc" data="rfc3953"/>, Section 3.
+         </paragraph>
+       </additionalinfo>
+     </record>
+	<a name="section-4.15"><h3>4.15   pstn:sip</h3></a>
+
+     <record>
+       <!-- pstn:sip -->
+       <class>Application-Based, Common</class>
+       <type>pstn</type>
+       <subtype>sip</subtype>
+       <urischeme>sip</urischeme>
+       <functionalspec>
+         <paragraph>
+           These Enumservices indicate that the
+           resource identified can be addressed by the
+           associated URI in order to initiate a
+           telecommunication session, which may include two-way
+           voice or other communications, to the PSTN.
+         </paragraph>
+       </functionalspec>
+       <security>
+         See <xref type="rfc" data="rfc4769"/>, Section 7.
+       </security>
+       <usage>COMMON</usage>
+       <registrationdocs>
+         <xref type="rfc" data="rfc4769"/> (updated by RFC 6118)
+         <xref type="rfc" data="RFC 6118"/>
+       </registrationdocs>
+       <requesters>
+         <xref type="person" data="Jason_Livingood"/>
+        <xref type="person" data="Richard_Shockey"/>
+       </requesters>
+       <additionalinfo>
+         <paragraph>
+           A Number Portability Dip Indicator (npdi) should
+           be used in practice
+           (see <xref type="rfc" data="rfc4769"/>, Section 4).
+         </paragraph>
+       </additionalinfo>
+     </record>
+	<a name="section-4.16"><h3>4.16   pstn:tel</h3></a>
+
+    <record>
+      <!-- pstn:tel -->
+      <class>Application-Based, Ancillary</class>
+      <type>pstn</type>
+      <subtype>tel</subtype>
+      <urischeme>tel</urischeme>
+      <functionalspec>
+        <paragraph>
+          These Enumservices indicate that the
+          resource identified can be addressed by the
+          associated URI in order to initiate a
+          telecommunication session, which may include two-way
+          voice or other communications, to the PSTN.  These
+          URIs may contain number portability data as
+          specified in RFC4694 [10].
+        </paragraph>
+        <paragraph>
+          References are contained in <xref type="rfc" data="rfc4769"/>.
+        </paragraph>
+      </functionalspec>
+      <security>
+        See <xref type="rfc" data="rfc4769"/>, Section 7.
+      </security>
+      <usage>COMMON</usage>
+      <registrationdocs>
+        <xref type="rfc" data="rfc4769"/> (updated by RFC 6118)
+        <xref type="rfc" data="RFC 6118"/>
+      </registrationdocs>
+      <requesters>
+        <xref type="person" data="Jason_Livingood"/>
+        <xref type="person" data="Richard_Shockey"/>
+      </requesters>
+      <additionalinfo>
+        <paragraph>
+          A Number Portability Dip Indicator (npdi) should
+          be used in practice
+          (see <xref type="rfc" data="rfc4769"/>, Section 4).
+        </paragraph>
+      </additionalinfo>
+    </record>
+	<a name="section-4.17"><h3>4.17   sip</h3></a>
+
+     <record>
+       <!-- sip -->
+       <class>Protocol-Based</class>
+       <type>sip</type>
+       <!-- No subtype -->
+       <urischeme>sip</urischeme>
+       <urischeme>sips</urischeme>
+       <functionalspec>
+         See <xref type="rfc" data="rfc3764"/>, Section 4.
+       </functionalspec>
+       <security>
+         See <xref type="rfc" data="rfc3764"/>, Section 6.
+       </security>
+       <usage>COMMON</usage>
+       <registrationdocs>
+         <xref type="rfc" data="rfc3764"/> (updated by RFC 6118)
+         <xref type="rfc" data="RFC 6118"/>
+       </registrationdocs>
+       <requesters>
+         <xref type="person" data="Jon_Peterson"/>
+       </requesters>
+       <additionalinfo>
+         <paragraph>
+           See <xref type="rfc" data="rfc3764"/>, Section 3.
+         </paragraph>
+       </additionalinfo>
+     </record>
+	<a name="section-4.18"><h3>4.18   sms:mailto</h3></a>
+
+    <record>
+      <!-- sms:mailto -->
+      <class>Application-Based, Common</class>
+      <type>sms</type>
+      <subtype>mailto</subtype>
+      <urischeme>mailto</urischeme>
+      <functionalspec>
+        <paragraph>
+          This Enumservice indicates that the resource
+          identified by the associated URI is capable
+          of receiving a message using an email protocol.
+        </paragraph>
+        <paragraph>
+          SMS content is sent over SMTP using the format
+          specified by TS 23.140 [15] Section 8.4.4 and TS
+          26.140 [16] Section 4, as an MMS message.  Within
+          such a message, SMS content is carried as either a
+          text or application/octet-stream MIME sub-part (see
+          TS 26.140 [16], Section 4.1)
+        </paragraph>
+        <paragraph>
+          References are contained in <xref type="rfc" data="rfc4355"/>.
+        </paragraph>
+      </functionalspec>
+      <security>
+        <paragraph>
+          There are no specific security issues with this
+          Enumservice.  However, the general considerations of
+          Section 6 of <xref type="rfc" data="rfc4355"/> apply.
+        </paragraph>
+      </security>
+      <usage>COMMON</usage>
+      <registrationdocs>
+        <xref type="rfc" data="rfc4355"/> (updated by RFC 6118)
+        <xref type="rfc" data="RFC 6118"/>
+      </registrationdocs>
+      <requesters>
+        <xref type="person" data="Rudolf_Brandner"/>
+        <xref type="person" data="Lawrence_Conroy"/>
+        <xref type="person" data="Richard_Stastny"/>
+      </requesters>
+    </record>
+	<a name="section-4.19"><h3>4.19   sms:tel</h3></a>
+
+    <record>
+      <!-- sms:tel -->
+      <class>Application-Based, Common</class>
+      <type>sms</type>
+      <subtype>tel</subtype>
+      <urischeme>tel</urischeme>
+      <functionalspec>
+        <paragraph>
+          This Enumservice indicates that the resource
+          identified by the associated URI is capable
+          of receiving a message using the Short Message
+          Service (SMS) [14].
+        </paragraph>
+        <paragraph>
+          References are contained in <xref type="rfc" data="rfc4355"/>.
+        </paragraph>
+      </functionalspec>
+      <security>
+        <paragraph>
+          There are no specific security issues with this
+          Enumservice.  However, the general considerations of
+          Section 6 of <xref type="rfc" data="rfc4355"/> apply.
+        </paragraph>
+      </security>
+      <usage>COMMON</usage>
+      <registrationdocs>
+        <xref type="rfc" data="rfc4355"/> (updated by RFC 6118)
+        <xref type="rfc" data="RFC 6118"/>
+      </registrationdocs>
+      <requesters>
+        <xref type="person" data="Rudolf_Brandner"/>
+        <xref type="person" data="Lawrence_Conroy"/>
+        <xref type="person" data="Richard_Stastny"/>
+      </requesters>
+    </record>
+	<a name="section-4.20"><h3>4.20   unifmsg:http</h3></a>
+
+    <record>
+      <!-- unifmsg:http -->
+      <class>Application-Based, Common</class>
+      <type>unifmsg</type>
+      <subtype>http</subtype>
+      <urischeme>http</urischeme>
+      <functionalspec>
+        <paragraph>
+          This Enumservice indicates that the resource identified by
+          the associated URI scheme is capable of being a source of
+          information.
+        </paragraph>
+        <paragraph>
+          Note that the kind of information retrieved can be manifold.
+          Usually, contacting a resource by an 'http:' [11] URI
+          provides a document.  This document can contain references
+          that will trigger the download of many different kinds of
+          information, such as text, audio, video, executable code, or
+          even video message files.  Thus, one cannot be more specific
+          about the kind of information expected when contacting the
+          resource.
+        </paragraph>
+        <paragraph>
+          References are contained in <xref type="rfc" data="rfc5278"/>.
+        </paragraph>
+      </functionalspec>
+      <security>
+        See <xref type="rfc" data="rfc5278"/>, Section 3.
+      </security>
+      <usage>COMMON</usage>
+      <registrationdocs>
+        <xref type="rfc" data="rfc5278"/> (updated by RFC 6118)
+        <xref type="rfc" data="RFC 6118"/>
+      </registrationdocs>
+      <requesters>
+        <xref type="person" data="Jason_Livingood"/>
+        <xref type="person" data="Don_Troshynski"/>
+      </requesters>
+      <additionalinfo>
+        <paragraph>
+          Implementers should review a non-exclusive list of examples
+          in Section 7 of <xref type="rfc" data="rfc5278"/>.
+        </paragraph>
+      </additionalinfo>
+    </record>
+	<a name="section-4.21"><h3>4.21   unifmsg:https</h3></a>
+
+    <record>
+      <!-- unifmsg:https -->
+      <class>Application-Based, Common</class>
+      <type>unifmsg</type>
+      <subtype>https</subtype>
+      <urischeme>https</urischeme>
+      <functionalspec>
+        <paragraph>
+          This Enumservice indicates that the resource identified by
+          the associated URI scheme is capable of being a source of
+          information, which can be contacted using TLS or the Secure
+          Socket Layer protocol.
+        </paragraph>
+        <paragraph>
+          Note that the kind of information retrieved can be manifold.
+          Usually, contacting a resource by an 'https:' [12] URI
+          provides a document.  This document can contain references
+          that will trigger the download of many different kinds of
+          information, such as text, audio, video, executable code, or
+          even video message files.  Thus, one cannot be more specific
+          about the kind of information expected when contacting the
+          resource.
+        </paragraph>
+        <paragraph>
+          References are contained in <xref type="rfc" data="rfc5278"/>.
+        </paragraph>
+      </functionalspec>
+      <security>
+        See <xref type="rfc" data="rfc5278"/>, Section 3.
+      </security>
+      <usage>COMMON</usage>
+      <registrationdocs>
+        <xref type="rfc" data="rfc5278"/> (updated by RFC 6118)
+        <xref type="rfc" data="RFC 6118"/>
+      </registrationdocs>
+      <requesters>
+        <xref type="person" data="Jason_Livingood"/>
+        <xref type="person" data="Don_Troshynski"/>
+      </requesters>
+      <additionalinfo>
+        <paragraph>
+          Implementers should review a non-exclusive list of examples
+          in Section 7 of <xref type="rfc" data="rfc5278"/>.
+        </paragraph>
+      </additionalinfo>
+    </record>
+	<a name="section-4.22"><h3>4.22   unifmsg:sip</h3></a>
+
+     <record>
+       <!-- unifmsg:sip -->
+       <class>Application-Based, Common</class>
+       <type>unifmsg</type>
+       <subtype>sip</subtype>
+       <urischeme>sip</urischeme>
+       <functionalspec>
+         <paragraph>
+           This Enumservice indicates that the resource identified can
+           be addressed by the associated URI scheme in order to
+           initiate a unified communication session to a unified
+           messaging system.
+         </paragraph>
+       </functionalspec>
+       <security>
+         See <xref type="rfc" data="rfc5278"/>, Section 3.
+       </security>
+       <usage>COMMON</usage>
+       <registrationdocs>
+         <xref type="rfc" data="rfc5278"/> (updated by RFC 6118)
+         <xref type="rfc" data="RFC 6118"/>
+       </registrationdocs>
+       <requesters>
+         <xref type="person" data="Jason_Livingood"/>
+         <xref type="person" data="Don_Troshynski"/>
+       </requesters>
+       <additionalinfo>
+         <paragraph>
+           Implementers should review a non-exclusive list of examples
+           in Section 7 of <xref type="rfc" data="rfc5278"/>.
+         </paragraph>
+       </additionalinfo>
+     </record>
+	<a name="section-4.23"><h3>4.23   unifmsg:sips</h3></a>
+
+     <record>
+       <!-- unifmsg:sips -->
+       <class>Application-Based, Common</class>
+       <type>unifmsg</type>
+       <subtype>sips</subtype>
+       <urischeme>sips</urischeme>
+       <functionalspec>
+         <paragraph>
+           This Enumservice indicates that the resource identified can
+           be addressed by the associated URI scheme in order to
+           initiate a unified communication session to a unified
+           messaging system.
+         </paragraph>
+       </functionalspec>
+       <security>
+         See <xref type="rfc" data="rfc5278"/>, Section 3.
+       </security>
+       <usage>COMMON</usage>
+       <registrationdocs>
+         <xref type="rfc" data="rfc5278"/> (updated by RFC 6118)
+         <xref type="rfc" data="RFC 6118"/>
+       </registrationdocs>
+       <requesters>
+         <xref type="person" data="Jason_Livingood"/>
+         <xref type="person" data="Don_Troshynski"/>
+       </requesters>
+       <additionalinfo>
+         <paragraph>
+           Implementers should review a non-exclusive list of examples
+           in Section 7 of <xref type="rfc" data="rfc5278"/>.
+         </paragraph>
+       </additionalinfo>
+     </record>
+	<a name="section-4.24"><h3>4.24   vcard</h3></a>
+
+    <record>
+      <!-- vcard -->
+      <class>Data Type-Based</class>
+      <type>vcard</type>
+      <!-- No subtype -->
+      <urischeme>http</urischeme>
+      <urischeme>https</urischeme>
+      <functionalspec>
+        <paragraph>
+          This Enumservice indicates that the resource
+          identified is a plain vCard, according to RFC2426,
+          which may be accessed using HTTP / HTTPS [7].
+        </paragraph>
+        <paragraph>
+          Clients fetching the vCard from the resource
+          indicated should expect access to be
+          restricted.  Additionally, the comprehension of the
+          data provided may vary depending on the client's
+          identity.
+        </paragraph>
+        <paragraph>
+          References are contained in <xref type="rfc" data="rfc4969"/>.
+        </paragraph>
+      </functionalspec>
+      <security>
+        See <xref type="rfc" data="rfc4969"/>, Section 5.
+      </security>
+      <usage>COMMON</usage>
+      <registrationdocs>
+        <xref type="rfc" data="rfc4969"/> (updated by RFC 6118)
+        <xref type="rfc" data="RFC 6118"/>
+      </registrationdocs>
+      <requesters>
+        <xref type="person" data="Alexander_Mayrhofer"/>
+      </requesters>
+    </record>
+	<a name="section-4.25"><h3>4.25   videomsg:http</h3></a>
+
+    <record>
+      <!-- videomsg:http -->
+      <class>Application-Based, Common</class>
+      <type>videomsg</type>
+      <subtype>http</subtype>
+      <urischeme>http</urischeme>
+      <functionalspec>
+        <paragraph>
+          This Enumservice indicates that the resource identified by
+          the associated URI scheme is capable of being a source of
+          information.
+        </paragraph>
+        <paragraph>
+          Note that the kind of information retrieved can be manifold.
+          Usually, contacting a resource by an 'http:' [11] URI
+          provides a document.  This document can contain references
+          that will trigger the download of many different kinds of
+          information, such as text, audio, video, executable code, or
+          even video message files.  Thus, one cannot be more specific
+          about the kind of information expected when contacting the
+          resource.
+        </paragraph>
+        <paragraph>
+          References are contained in <xref type="rfc" data="rfc5278"/>.
+        </paragraph>
+      </functionalspec>
+      <security>
+        See <xref type="rfc" data="rfc5278"/>, Section 3.
+      </security>
+      <usage>COMMON</usage>
+      <registrationdocs>
+        <xref type="rfc" data="rfc5278"/> (updated by RFC 6118)
+        <xref type="rfc" data="RFC 6118"/>
+      </registrationdocs>
+      <requesters>
+        <xref type="person" data="Jason_Livingood"/>
+        <xref type="person" data="Don_Troshynski"/>
+      </requesters>
+      <additionalinfo>
+        <paragraph>
+          Implementers should review a non-exclusive list of examples
+          in Section 7 of <xref type="rfc" data="rfc5278"/>.
+        </paragraph>
+      </additionalinfo>
+    </record>
+	<a name="section-4.26"><h3>4.26   videomsg:https</h3></a>
+
+    <record>
+      <!-- videomsg:https -->
+      <class>Application-Based, Common</class>
+      <type>videomsg</type>
+      <subtype>https</subtype>
+      <urischeme>https</urischeme>
+      <functionalspec>
+        <paragraph>
+          This Enumservice indicates that the resource identified by
+          the associated URI scheme is capable of being a source of
+          information, which can be contacted using TLS or the Secure
+          Socket Layer protocol.
+        </paragraph>
+        <paragraph>
+          Note that the kind of information retrieved can be manifold.
+          Usually, contacting a resource by an 'https:' [12] URI
+          provides a document.  This document can contain references
+          that will trigger the download of many different kinds of
+          information, such as text, audio, video, executable code, or
+          even video message files.  Thus, one cannot be more specific
+          about the kind of information expected when contacting the
+          resource.
+        </paragraph>
+        <paragraph>
+          References are contained in <xref type="rfc" data="rfc5278"/>.
+        </paragraph>
+      </functionalspec>
+      <security>
+        See <xref type="rfc" data="rfc5278"/>, Section 3.
+      </security>
+      <usage>COMMON</usage>
+      <registrationdocs>
+        <xref type="rfc" data="rfc5278"/> (updated by RFC 6118)
+        <xref type="rfc" data="RFC 6118"/>
+      </registrationdocs>
+      <requesters>
+        <xref type="person" data="Jason_Livingood"/>
+        <xref type="person" data="Don_Troshynski"/>
+      </requesters>
+      <additionalinfo>
+        <paragraph>
+          Implementers should review a non-exclusive list of examples
+          in Section 7 of <xref type="rfc" data="rfc5278"/>.
+        </paragraph>
+      </additionalinfo>
+    </record>
+	<a name="section-4.27"><h3>4.27   videomsg:sip</h3></a>
+
+     <record>
+       <!-- videomsg:sip -->
+       <class>Application-Based, Common</class>
+       <type>videomsg</type>
+       <subtype>sip</subtype>
+       <urischeme>sip</urischeme>
+       <functionalspec>
+         <paragraph>
+           This Enumservice indicates that the resource identified can
+           be addressed by the associated URI scheme in order to
+           initiate a video communication session to a video messaging
+           system.
+         </paragraph>
+       </functionalspec>
+       <security>
+         See <xref type="rfc" data="rfc5278"/>, Section 3.
+       </security>
+       <usage>COMMON</usage>
+       <registrationdocs>
+         <xref type="rfc" data="rfc5278"/> (updated by RFC 6118)
+         <xref type="rfc" data="RFC 6118"/>
+       </registrationdocs>
+       <requesters>
+         <xref type="person" data="Jason_Livingood"/>
+         <xref type="person" data="Don_Troshynski"/>
+       </requesters>
+       <additionalinfo>
+         <paragraph>
+           Implementers should review a non-exclusive list of examples
+           in Section 7 of <xref type="rfc" data="rfc5278"/>.
+         </paragraph>
+       </additionalinfo>
+     </record>
+	<a name="section-4.28"><h3>4.28   videomsg:sips</h3></a>
+
+     <record>
+       <!-- videomsg:sips -->
+       <class>Application-Based, Common</class>
+       <type>videomsg</type>
+       <subtype>sips</subtype>
+       <urischeme>sips</urischeme>
+       <functionalspec>
+         <paragraph>
+           This Enumservice indicates that the resource identified can
+           be addressed by the associated URI scheme in order to
+           initiate a video communication session to a video messaging
+           system.
+         </paragraph>
+       </functionalspec>
+       <security>
+         See <xref type="rfc" data="rfc5278"/>, Section 3.
+       </security>
+       <usage>COMMON</usage>
+       <registrationdocs>
+         <xref type="rfc" data="rfc5278"/> (updated by RFC 6118)
+         <xref type="rfc" data="RFC 6118"/>
+       </registrationdocs>
+       <requesters>
+         <xref type="person" data="Jason_Livingood"/>
+         <xref type="person" data="Don_Troshynski"/>
+       </requesters>
+       <additionalinfo>
+         <paragraph>
+           Implementers should review a non-exclusive list of examples
+           in Section 7 of <xref type="rfc" data="rfc5278"/>.
+         </paragraph>
+       </additionalinfo>
+     </record>
+	<a name="section-4.29"><h3>4.29   voice:tel</h3></a>
+
+    <record>
+      <!-- voice:tel -->
+      <class>Application-Based, Common</class>
+      <type>voice</type>
+      <subtype>tel</subtype>
+      <urischeme>tel</urischeme>
+      <functionalspec>
+        <paragraph>
+          The kind of communication indicated by this
+          Enumservice is "Interactive Voice".  From a protocol
+          perspective, this communication is expected to
+          involve bidirectional media streams carrying audio
+          data.
+        </paragraph>
+        <paragraph>
+          A client may imply that the person controlling
+          population of a NAPTR holding this Enumservice
+          indicates their capability to engage in an
+          interactive voice session when contacted using the
+          URI generated by this NAPTR.
+        </paragraph>
+      </functionalspec>
+      <security>
+        See <xref type="rfc" data="rfc4415"/>, Section 5.
+      </security>
+      <usage>COMMON</usage>
+      <registrationdocs>
+        <xref type="rfc" data="rfc4415"/> (updated by RFC 6118)
+        <xref type="rfc" data="RFC 6118"/>
+      </registrationdocs>
+      <requesters>
+        <xref type="person" data="Rudolf_Brandner"/>
+        <xref type="person" data="Lawrence_Conroy"/>
+        <xref type="person" data="Richard_Stastny"/>
+      </requesters>
+      <additionalinfo>
+        <paragraph>
+          This Enumservice indicates that the person
+          responsible for the NAPTR is accessible via the PSTN
+          (Public Switched Telephone Network) or PLMN (Public
+          Land Mobile Network) using the value of the
+          generated URI.
+        </paragraph>
+        <paragraph>The kind of subsystem required to initiate a
+          Voice Enumservice with this Subtype is a "Dialler".
+          This is a subsystem that either provides a local
+          connection to the PSTN or PLMN, or that provides an
+          indirect connection to those networks.  The
+          subsystem will use the telephone number held in the
+          generated URI to place a voice call.  The voice call
+          is placed to a network that uses E.164 numbers to
+          route calls to an appropriate destination.
+        </paragraph>
+        <paragraph>
+          Note that the PSTN/PLMN connection may be
+          indirect.  The end user receiving this NAPTR may
+          have a relationship with a Communications Service
+          Provider that accepts call initiation requests from
+          that subsystem using an IP-based protocol such as
+          SIP or H.323, and places the call to the PSTN using
+          a remote gateway service.  In this case, the Provider
+          may either accept requests using "tel:" URIs or has
+          a defined mechanism to convert "tel:" URI values
+          into a "protocol-native" form.
+        </paragraph>
+        <paragraph>
+          The "tel:" URI value SHOULD be fully qualified
+          (using the "global phone number" form of RFC 3966
+          [10]).  A "local phone number" as defined in that
+          document SHOULD NOT be used unless the controller of
+          the zone in which the NAPTR appears is sure that it
+          can be distinguished unambiguously by all clients
+          that can access the resource record and that a call
+          from their network access points can be routed to
+          that destination.
+        </paragraph>
+        <paragraph>
+          References are contained in <xref type="rfc" data="rfc4415"/>.
+        </paragraph>
+      </additionalinfo>
+    </record>
+	<a name="section-4.30"><h3>4.30   voicemsg:http</h3></a>
+
+    <record>
+      <!-- voicemsg:http -->
+      <class>Application-Based, Common</class>
+      <type>voicemsg</type>
+      <subtype>http</subtype>
+      <urischeme>http</urischeme>
+      <functionalspec>
+        <paragraph>
+          This Enumservice indicates that the resource identified by
+          the associated URI scheme is capable of being a source of
+          information.
+        </paragraph>
+        <paragraph>
+          Note that the kind of information retrieved can be manifold.
+          Usually, contacting a resource by an 'http:' [11] URI
+          provides a document.  This document can contain references
+          that will trigger the download of many different kinds of
+          information, such as text, audio, video, executable code, or
+          even voice message files.  Thus, one cannot be more specific
+          about the kind of information expected when contacting the
+          resource.
+        </paragraph>
+        <paragraph>
+          References are contained in <xref type="rfc" data="rfc5278"/>.
+        </paragraph>
+      </functionalspec>
+      <security>
+        See <xref type="rfc" data="rfc5278"/>, Section 3.
+      </security>
+      <usage>COMMON</usage>
+      <registrationdocs>
+        <xref type="rfc" data="rfc5278"/> (updated by RFC 6118)
+        <xref type="rfc" data="RFC 6118"/>
+      </registrationdocs>
+      <requesters>
+        <xref type="person" data="Jason_Livingood"/>
+        <xref type="person" data="Don_Troshynski"/>
+      </requesters>
+      <additionalinfo>
+        <paragraph>
+          Implementers should review a non-exclusive list of examples
+          in Section 7 of <xref type="rfc" data="rfc5278"/>.
+        </paragraph>
+      </additionalinfo>
+    </record>
+	<a name="section-4.31"><h3>4.31   voicemsg:https</h3></a>
+
+    <record>
+      <!-- voicemsg:https -->
+      <class>Application-Based, Common</class>
+      <type>voicemsg</type>
+      <subtype>https</subtype>
+      <urischeme>https</urischeme>
+      <functionalspec>
+        <paragraph>
+          This Enumservice indicates that the resource identified by
+          the associated URI scheme is capable of being a source of
+          information, which can be contacted using TLS or the Secure
+          Socket Layer protocol.
+        </paragraph>
+        <paragraph>
+          Note that the kind of information retrieved can be manifold.
+          Usually, contacting a resource by an 'https:' [12] URI
+          provides a document.  This document can contain references
+          that will trigger the download of many different kinds of
+          information, such as text, audio, video, executable code, or
+          even voice message files.  Thus, one cannot be more specific
+          about the kind of information expected when contacting the
+          resource.
+        </paragraph>
+        <paragraph>
+          References are contained in <xref type="rfc" data="rfc5278"/>.
+        </paragraph>
+      </functionalspec>
+      <security>
+        See <xref type="rfc" data="rfc5278"/>, Section 3.
+      </security>
+      <usage>COMMON</usage>
+      <registrationdocs>
+        <xref type="rfc" data="rfc5278"/> (updated by RFC 6118)
+        <xref type="rfc" data="RFC 6118"/>
+      </registrationdocs>
+      <requesters>
+        <xref type="person" data="Jason_Livingood"/>
+        <xref type="person" data="Don_Troshynski"/>
+      </requesters>
+      <additionalinfo>
+        <paragraph>
+          Implementers should review a non-exclusive list of examples
+          in Section 7 of <xref type="rfc" data="rfc5278"/>.
+        </paragraph>
+      </additionalinfo>
+    </record>
+	<a name="section-4.32"><h3>4.32   voicemsg:sip</h3></a>
+
+     <record>
+       <!-- voicemsg:sip -->
+       <class>Application-Based, Common</class>
+       <type>voicemsg</type>
+       <subtype>sip</subtype>
+       <urischeme>sip</urischeme>
+       <functionalspec>
+         <paragraph>
+           This Enumservice indicates that the resource identified can
+           be addressed by the associated URI scheme in order to
+           initiate a voice communication session to a voice messaging
+           system.
+         </paragraph>
+       </functionalspec>
+       <security>
+         See <xref type="rfc" data="rfc5278"/>, Section 3.
+       </security>
+       <usage>COMMON</usage>
+       <registrationdocs>
+         <xref type="rfc" data="rfc5278"/> (updated by RFC 6118)
+         <xref type="rfc" data="RFC 6118"/>
+       </registrationdocs>
+       <requesters>
+         <xref type="person" data="Jason_Livingood"/>
+         <xref type="person" data="Don_Troshynski"/>
+       </requesters>
+       <additionalinfo>
+         <paragraph>
+           Implementers should review a non-exclusive list of examples
+           in Section 7 of <xref type="rfc" data="rfc5278"/>.
+         </paragraph>
+       </additionalinfo>
+     </record>
+	<a name="section-4.33"><h3>4.33   voicemsg:sips</h3></a>
+
+     <record>
+       <!-- voicemsg:sips -->
+       <class>Application-Based, Common</class>
+       <type>voicemsg</type>
+       <subtype>sips</subtype>
+       <urischeme>sips</urischeme>
+       <functionalspec>
+         <paragraph>
+           This Enumservice indicates that the resource identified can
+           be addressed by the associated URI scheme in order to
+           initiate a voice communication session to a voice messaging
+           system.
+         </paragraph>
+       </functionalspec>
+       <security>
+         See <xref type="rfc" data="rfc5278"/>, Section 3.
+       </security>
+       <usage>COMMON</usage>
+       <registrationdocs>
+         <xref type="rfc" data="rfc5278"/> (updated by RFC 6118)
+         <xref type="rfc" data="RFC 6118"/>
+       </registrationdocs>
+       <requesters>
+         <xref type="person" data="Jason_Livingood"/>
+         <xref type="person" data="Don_Troshynski"/>
+       </requesters>
+       <additionalinfo>
+         <paragraph>
+           Implementers should review a non-exclusive list of examples
+           in Section 7 of <xref type="rfc" data="rfc5278"/>.
+         </paragraph>
+       </additionalinfo>
+     </record>
+	<a name="section-4.34"><h3>4.34   voicemsg:tel</h3></a>
+
+     <record>
+       <!-- voicemsg:tel -->
+       <class>Application-Based, Common</class>
+       <type>voicemsg</type>
+       <subtype>tel</subtype>
+       <urischeme>tel</urischeme>
+       <functionalspec>
+         <paragraph>
+           This Enumservice indicates that the resource identified can
+           be addressed by the associated URI scheme in order to
+           initiate a voice communication session to a voice messaging
+           system.
+         </paragraph>
+       </functionalspec>
+       <security>
+         See <xref type="rfc" data="rfc5278"/>, Section 3.
+       </security>
+       <usage>COMMON</usage>
+       <registrationdocs>
+         <xref type="rfc" data="rfc5278"/> (updated by RFC 6118)
+         <xref type="rfc" data="RFC 6118"/>
+       </registrationdocs>
+       <requesters>
+         <xref type="person" data="Jason_Livingood"/>
+         <xref type="person" data="Don_Troshynski"/>
+       </requesters>
+       <additionalinfo>
+         <paragraph>
+           Implementers should review a non-exclusive list of examples
+           in Section 7 of <xref type="rfc" data="rfc5278"/>.
+         </paragraph>
+       </additionalinfo>
+     </record>
+	<a name="section-4.35"><h3>4.35   vpim:ldap</h3></a>
+
+     <record>
+       <!-- vpim:ldap -->
+       <class>Data Type-Based</class>
+       <type>vpim</type>
+       <subtype>ldap</subtype>
+       <urischeme>ldap</urischeme>
+       <functionalspec>
+         See <xref type="rfc" data="rfc4238"/>, Section 3.2 - 3.3.
+       </functionalspec>
+       <security>
+         <paragraph>
+           Malicious Redirection:
+           One of the fundamental dangers related to any
+           service such as this is that a malicious entry in a
+           resolver's database will cause clients to resolve
+           the E.164 into the wrong LDAP URI.  The possible
+           intent may be to cause the client to connect to a
+           rogue LDAP server and retrieve (or fail to retrieve)
+           a resource containing fraudulent or damaging
+           information.
+         </paragraph>
+         <paragraph>
+           Denial of Service:
+           By removing the URI to which the E.164 maps, a
+           malicious intruder may remove the client's ability
+           to access the LDAP directory server.
+         </paragraph>
+       </security>
+       <usage>COMMON</usage>
+       <registrationdocs>
+         <xref type="rfc" data="rfc4238"/> (updated by RFC 6118)
+         <xref type="rfc" data="RFC 6118"/>
+       </registrationdocs>
+       <requesters>
+         <xref type="person" data="Greg_Vaudreuil"/>
+       </requesters>
+     </record>
+	<a name="section-4.36"><h3>4.36   vpim:mailto</h3></a>
+
+     <record>
+       <!-- vpim:mailto -->
+       <class>Data Type-Based</class>
+       <type>vpim</type>
+       <subtype>mailto</subtype>
+       <urischeme>mailto</urischeme>
+       <functionalspec>
+         See <xref type="rfc" data="rfc4238"/>, Section 4.2 - 4.4.
+       </functionalspec>
+       <security>
+         <paragraph>
+           Malicious Redirection:
+           One of the fundamental dangers related to any
+           service such as this is that a malicious entry in a
+           resolver's database will cause clients to resolve
+           the E.164 into the wrong email URI.  The possible
+           intent may be to cause the client to send the
+           information to an incorrect destination.
+         </paragraph>
+         <paragraph>
+           Denial of Service:
+           By removing the URI to which the E.164 maps, a
+           malicious intruder may remove the client's ability
+           to access the resource.
+         </paragraph>
+         <paragraph>
+           Unsolicited Bulk Email:
+           The exposure of email addresses through the ENUM
+           service provides a bulk mailer access to large
+           numbers of email addresses where only the telephone
+           number was previously known.
+         </paragraph>
+       </security>
+       <usage>COMMON</usage>
+       <registrationdocs>
+         <xref type="rfc" data="rfc4238"/> (updated by RFC 6118)
+         <xref type="rfc" data="RFC 6118"/>
+       </registrationdocs>
+       <requesters>
+         <xref type="person" data="Greg_Vaudreuil"/>
+       </requesters>
+       <additionalinfo>
+         <paragraph>
+           Error Conditions:
+         </paragraph>
+         <paragraph>
+           E.164 number not in the numbering plan
+         </paragraph>
+         <paragraph>
+           E.164 number in the numbering plan, but no
+           URIs exist for that number
+         </paragraph>
+         <paragraph>
+           E2U+vpim:mailto Service unavailable of email
+           addresses where only the telephone number was
+           previously known.
+         </paragraph>
+       </additionalinfo>
+     </record>
+	<a name="section-4.37"><h3>4.37   web:http</h3></a>
+
+     <record>
+       <!-- web:http -->
+       <class>Application-Based, Common</class>
+       <type>web</type>
+       <subtype>http</subtype>
+       <urischeme>http</urischeme>
+       <functionalspec>
+         <paragraph>
+           This Enumservice indicates that the resource
+           identified by the associated URI is capable
+           of being a source of information.  It has to be
+           noted that the kind of information retrieved can be
+           manifold.  Usually, contacting a resource by an
+           "http:" URI provides a document.  This document can
+           contain references that will trigger download of
+           many different kinds of information, like audio or
+           video or executable code.  Thus, one cannot be more
+           specific about the kind of information that can be
+           expected when contacting the resource.
+         </paragraph>
+       </functionalspec>
+       <security>
+         See <xref type="rfc" data="rfc4002"/>, Section 5.
+       </security>
+       <usage>COMMON</usage>
+       <registrationdocs>
+         <xref type="rfc" data="rfc4002"/> (updated by RFC 6118)
+         <xref type="rfc" data="RFC 6118"/>
+       </registrationdocs>
+       <requesters>
+         <xref type="person" data="Rudolf_Brandner"/>
+         <xref type="person" data="Lawrence_Conroy"/>
+         <xref type="person" data="Richard_Stastny"/>
+       </requesters>
+     </record>
+	<a name="section-4.38"><h3>4.38   web:https</h3></a>
+
+     <record>
+       <!-- web:https -->
+       <class>Application-Based, Common</class>
+       <type>web</type>
+       <subtype>https</subtype>
+       <urischeme>https</urischeme>
+       <functionalspec>
+         <paragraph>
+           This Enumservice indicates that the resource
+           identified by the associated URI is capable
+           of being a source of information, which can be
+           contacted by using TLS or the Secure Socket Layer
+           protocol.  It has to be noted that the kind of
+           information retrieved can be manifold.  Usually,
+           contacting a resource by an "https:" URI provides a
+           document.  This document can contain all different
+           kinds of information, like audio or video or
+           executable code.  Thus, one cannot be more specific
+           what information to expect when contacting the
+           resource.
+         </paragraph>
+       </functionalspec>
+       <security>
+         See <xref type="rfc" data="rfc4002"/>, Section 5.
+       </security>
+       <usage>COMMON</usage>
+       <registrationdocs>
+         <xref type="rfc" data="rfc4002"/> (updated by RFC 6118)
+         <xref type="rfc" data="RFC 6118"/>
+       </registrationdocs>
+       <requesters>
+         <xref type="person" data="Rudolf_Brandner"/>
+         <xref type="person" data="Lawrence_Conroy"/>
+         <xref type="person" data="Richard_Stastny"/>
+       </requesters>
+     </record>
+	<a name="section-4.39"><h3>4.39   xmpp</h3></a>
+
+     <record>
+       <!-- xmpp -->
+       <class>Protocol-Based</class>
+       <type>xmpp</type>
+       <!-- No subtype -->
+       <urischeme>xmpp</urischeme>
+       <functionalspec>
+         <paragraph>
+           This Enumservice indicates that the resource
+           identified is an XMPP entity.
+         </paragraph>
+       </functionalspec>
+       <security>
+         See <xref type="rfc" data="rfc4979"/>, Section 6.
+       </security>
+       <usage>COMMON</usage>
+       <registrationdocs>
+         <xref type="rfc" data="rfc4979"/> (updated by RFC 6118)
+         <xref type="rfc" data="RFC 6118"/>
+       </registrationdocs>
+       <requesters>
+         <xref type="person" data="Alexander_Mayrhofer"/>
+       </requesters>
+     </record>
+
+	<a name="section-5"><h2>5.   IANA Considerations</h2></a>
+
+   IANA replaced all legacy Enumservice Registrations as per Section 4.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.   Security Considerations</h2></a>
+
+   Since this document does not introduce any technology or protocol,
+   there are no security issues to be considered for this document
+   itself.
+
+</p><p class="rfcparagraph">	<a name="section-7"><h2>7.   Acknowledgements</h2></a>
+
+   The authors would like to thank the following people who have
+   provided feedback or significant contributions to the development of
+   this document: Jari Arkko, Scott Bradner, Gonzalo Camarillo, Alfred
+   Hoenes, Ari Keranen, and Alexey Melnikov.
+	<a name="section-8"><h2>8.   References</h2></a>
+
+	<a name="section-8.1"><h3>8.1   Normative References</h3></a>
+
+   [RFC2026]  Bradner, S., "The Internet Standards Process -- Revision
+              3", BCP 9, RFC 2026, October 1996.
+
+</p><p class="rfcparagraph">   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">   [RFC3761]  Faltstrom, P. and M. Mealling, "The E.164 to Uniform
+              Resource Identifiers (URI) Dynamic Delegation Discovery
+              System (DDDS) Application (ENUM)", RFC 3761, April 2004.
+
+</p><p class="rfcparagraph">   [RFC3762]  Levin, O., "Telephone Number Mapping (ENUM) Service
+              Registration for H.323", RFC 3762, April 2004.
+
+</p><p class="rfcparagraph">   [RFC3764]  Peterson, J., "enumservice registration for Session
+              Initiation Protocol (SIP) Addresses-of-Record", RFC 3764,
+              April 2004.
+
+</p><p class="rfcparagraph">   [RFC3953]  Peterson, J., "Telephone Number Mapping (ENUM) Service
+              Registration for Presence Services", RFC 3953,
+              January 2005.
+
+</p><p class="rfcparagraph">   [RFC4002]  Brandner, R., Conroy, L., and R. Stastny, "IANA
+              Registration for Enumservice 'web' and 'ft'", RFC 4002,
+              February 2005.
+
+</p><p class="rfcparagraph">   [RFC4143]  Toyoda, K. and D. Crocker, "Facsimile Using Internet Mail
+              (IFAX) Service of ENUM", RFC 4143, November 2005.
+
+</p><p class="rfcparagraph">   [RFC4238]  Vaudreuil, G., "Voice Message Routing Service", RFC 4238,
+              October 2005.
+
+</p><p class="rfcparagraph">   [RFC4355]  Brandner, R., Conroy, L., and R. Stastny, "IANA
+              Registration for Enumservices email, fax, mms, ems, and
+              sms", RFC 4355, January 2006.
+
+</p><p class="rfcparagraph">   [RFC4415]  Brandner, R., Conroy, L., and R. Stastny, "IANA
+              Registration for Enumservice Voice", RFC 4415,
+              February 2006.
+
+</p><p class="rfcparagraph">   [RFC4769]  Livingood, J. and R. Shockey, "IANA Registration for an
+              Enumservice Containing Public Switched Telephone Network
+              (PSTN) Signaling Information", RFC 4769, November 2006.
+   [RFC4969]  Mayrhofer, A., "IANA Registration for vCard Enumservice",
+              RFC 4969, August 2007.
+
+</p><p class="rfcparagraph">   [RFC4979]  Mayrhofer, A., "IANA Registration for Enumservice 'XMPP'",
+              RFC 4979, August 2007.
+
+</p><p class="rfcparagraph">   [RFC5028]  Mahy, R., "A Telephone Number Mapping (ENUM) Service
+              Registration for Instant Messaging (IM) Services",
+              RFC 5028, October 2007.
+
+</p><p class="rfcparagraph">   [RFC5278]  Livingood, J. and D. Troshynski, "IANA Registration of
+              Enumservices for Voice and Video Messaging", RFC 5278,
+              July 2008.
+
+</p><p class="rfcparagraph">   [RFC5333]  Mahy, R. and B. Hoeneisen, "IANA Registration of
+              Enumservices for Internet Calendaring", RFC 5333,
+              October 2009.
+
+</p><p class="rfcparagraph">   [RFC6117]  Hoeneisen, B., Mayrhofer, A., and J. Livingood, "IANA
+              Registration of Enumservices: Guide, Template, and IANA
+              Considerations", RFC 6117, March 2011.
+
+</p><p class="rfcparagraph">	<a name="section-8.2"><h3>8.2   Informative References</h3></a>
+
+   [RFC5226]  Narten, T. and H. Alvestrand, "Guidelines for Writing an
+              IANA Considerations Section in RFCs", BCP 26, RFC 5226,
+              May 2008.
+Appendix A.  Former Content of the IANA Repository
+
+ Enumservice Registrations
+
+ (last updated 2009-10-13)
+
+ Registries included below:
+ - Enumservice Registrations
+
+ Registry Name: Enumservice Registrations
+ Reference: [RFC3761]
+ Registration Procedures: Require an RFC approved by the IESG
+
+ Note:
+ Enumservice specifications contain the functional specification (i.e.
+ what it can be used for), the valid protocols, and the URI schemes
+ that may be returned.
+
+</p><p class="rfcparagraph"> Registry:
+ Service Name: "H323"
+      URI Scheme(s): "h323:"
+      Functional Specification:
+         See Section "3. The E2U+H323 ENUM Service" of [RFC3762]
+      Security considerations:
+         see section "5. Security Considerations" of [RFC3762]
+      Intended usage: COMMON
+      Author: Orit Levin
+      [RFC3762]
+
+ Service Name: "SIP"
+      Type(s): "SIP"
+      Subtype(s): N/A
+      URI Scheme(s): "sip", "sips:"
+      Functional Specification: see Section 4 of [RFC3764]
+      Security considerations: see Section 6 of [RFC3764]
+      Intended usage: COMMON
+      Author: Jon Peterson (jon.peterson&neustar.biz)
+      Any other information that the author deems interesting:
+         see Section 3 of [RFC3764]
+      [RFC3764]
+ Service Name: "ifax"
+     Type: "ifax"
+     Subtype: "mailto"
+     URI Scheme: "mailto"
+        The URI Scheme is "mailto" because facsimile is a profile of
+        standard Internet mail and uses standard Internet mail
+        addressing.
+     Functional Specification: see section 1 of [RFC4143]
+     Security Considerations: see section 3 of [RFC4143]
+     Intended usage: COMMON
+     Author: Kiyoshi Toyoda(toyoda.kiyoshi&jp.panasonic.com)
+             Dave Crocker(dcrocker&brandenburg.com)
+     [RFC4143]
+
+ Service Name: "pres"
+     URI Scheme(s): "pres:"
+     Functional Specification: see Section 4 of [RFC3953]
+     Security considerations: see Section 6 of [RFC3953]
+     Intended usage: COMMON
+     Author: Jon Peterson (jon.peterson&neustar.biz)
+     Any other information that the author deems interesting:
+        See Section 3 of [RFC3953]
+     [RFC3953]
+
+ Service Name: "web"
+     Type: "web"
+     Subtype: "http"
+     URI Scheme: 'http:'
+     Functional Specification:
+        This ENUMservice indicates that the resource identified by the
+        associated URI scheme is capable of being a source of
+        information.  It has to be noted that the kind of information
+        retrieved can be manifold.  Usually, contacting a resource by an
+        'http:' URI provides a document.  This document can contain
+        references that will trigger download of many different kinds
+        of information, like audio or video or executable code.  Thus,
+        one can not be more specific about the kind of information that
+        can be expected when contacting the resource.
+     Security Considerations:
+        See section 5 of [RFC4002].
+     Intended Usage: COMMON
+     Authors:
+        Rudolf Brandner (rudolf.brandner&siemens.com)
+        Lawrence Conroy (lwc&roke.co.uk)
+        Richard Stastny (richard.stastny&oefeg.at)
+     Any other information the author deems interesting:  None
+     [RFC4002]
+ Service Name: "web"
+     Type: "web"
+     Subtype: "https"
+     URI Scheme: 'https:'
+     Functional Specification:
+        This ENUMservice indicates that the resource identified by the
+        associated URI scheme is capable of being a source of
+        information, which can be contacted by using TLS or Secure
+        Socket Layer protocol.  It has to be noted that the kind of
+        information retrieved can be manifold.  Usually, contacting a
+        resource by an 'https:' URI provides a document.  This document
+        can contain all different kind of information, like audio or
+        video or executable code.  Thus, one can not be more specific
+        what information to expect when contacting the resource.
+     Security Considerations:
+        See section 5 of [RFC4002].
+     Intended Usage: COMMON
+     Authors:
+        Rudolf Brandner (rudolf.brandner&siemens.com)
+        Lawrence Conroy (lwc&roke.co.uk)
+        Richard Stastny (richard.stastny&oefeg.at)
+     Any other information the author deems interesting:  None
+     [RFC4002]
+
+ Service Name: "ft"
+     Type: "ft"
+     Subtype: "ftp"
+     URI Scheme: 'ftp:'
+     Functional Specification:
+        This ENUMservice indicates that the resource identified by the
+        associated URI scheme is a file service from which a file or
+        file listing can be retrieved.
+     Security Considerations:
+        See section 5 of [RFC4002].
+     Intended Usage: COMMON
+     Authors:
+        Rudolf Brandner (rudolf.brandner&siemens.com)
+        Lawrence Conroy (lwc&roke.co.uk)
+        Richard Stastny (richard.stastny&oefeg.at)
+     Any other information the author deems interesting: None
+     [RFC4002]
+ Enumservice Name: "email"
+    Enumservice Type: "email"
+    Enumservice Subtype: "mailto"
+    URI Scheme: 'mailto:'
+    Functional Specification:
+       This Enumservice indicates that the remote resource can be
+       addressed by the associated URI scheme in order to send an
+       email.
+    Security Considerations:
+       See Section 6 of [RFC4355]
+    Intended Usage: COMMON
+    Authors:
+       Rudolf Brandner, Lawrence Conroy, Richard Stastny (for author
+       contact detail see [RFC4355])
+    Any other information the author deems interesting:
+       None
+
+ Enumservice Name: "fax"
+    Enumservice Type: "fax"
+    Enumservice Subtype: "tel"
+    URI Scheme: 'tel:'
+    Functional Specification:
+       This Enumservice indicates that the resource identified by the
+       associated URI scheme is capable of being contacted to provide
+       a communication session during which facsimile documents can be
+       sent.
+       A client selecting this NAPTR will have support for generating
+       and sending facsimile documents to the recipient using the PSTN
+       session and transfer protocols specified in [12] and [13] in
+       [RFC4355]  - in short, they will have a fax
+       program with a local or shared PSTN access over which they can
+       send faxes.
+    Security Considerations:
+       See Section 6 of [RFC4355]
+    Intended Usage: COMMON
+    Authors:
+       Rudolf Brandner, Lawrence Conroy, Richard Stastny (for author
+       contact detail see  [RFC4355])
+    Any other information the author deems interesting:
+       None
+ Enumservice Name: "sms"
+    Enumservice Type: "sms"
+    Enumservice Subtypes: "tel"
+    URI Scheme: 'tel:'
+    Functional Specification:
+       This Enumservice indicates that the resource identified by the
+       associated URI scheme is capable of receiving a message using
+       the Short Message Service (SMS) [14] in [RFC4355].
+    Security Considerations:
+       There are no specific security issues with this Enumservice.
+       However, the general considerations of Section 6 apply.
+    Intended Usage: COMMON
+    Authors:
+       Rudolf Brandner, Lawrence Conroy, Richard Stastny (for author
+       contact detail see [RFC4355])
+    Any other information the author deems interesting:
+       None
+
+ Enumservice Name: "sms"
+    Enumservice Type: "sms"
+    Enumservice Subtypes: "mailto"
+    URI Scheme: 'mailto:'
+    Functional Specification:
+       This Enumservice indicates that the resource identified by the
+       associated URI scheme is capable of receiving a message using
+       an email protocol.
+       SMS content is sent over SMTP using the format specified by TS
+       23.140 [15] section 8.4.4 and TS 26.140 [16] section 4 (for
+       references see [RFC4355]), as an MMS message.  Within such a
+       message, SMS content is carried as either a text or
+       application/octet-stream MIME sub-part (see TS 26.140 [16] ,
+       section 4.1)
+       For references see [RFC4355].
+    Security Considerations:
+       There are no specific security issues with this Enumservice.
+       However, the general considerations of Section 6 apply, see
+       [RFC4355].
+    Intended Usage: COMMON
+    Authors:
+       Rudolf Brandner, Lawrence Conroy, Richard Stastny (for author
+       contact detail see [RFC4355])
+    Any other information the author deems interesting:
+       None
+ Enumservice Name: "ems"
+    Enumservice Type: "ems"
+    Enumservice Subtype: "tel"
+    URI Scheme: 'tel:'
+    Functional Specification:
+       This Enumservice indicates that the resource identified by the
+       associated URI scheme is capable of receiving a message using
+       the Enhanced Message Service (EMS) [14] (For reference see
+       [RFC4355]).
+    Security Considerations:
+       There are no specific security issues with this Enumservice.
+       However, the general considerations of Section 6 apply.
+       See [RFC4355]
+    Intended Usage: COMMON
+    Authors:
+       Rudolf Brandner, Lawrence Conroy, Richard Stastny (for author
+       contact detail see [RFC4355])
+    Any other information the author deems interesting:
+       Note that an indication of EMS can be taken as implying that
+       the recipient is capable of receiving SMS messages at this
+       address as well.
+
+</p><p class="rfcparagraph"> Enumservice Name: "ems"
+    Enumservice Type: "ems"
+    Enumservice Subtypes: "mailto"
+    URI Scheme: 'mailto:'
+    Functional Specification:
+       This Enumservice indicates that the resource identified by the
+       associated URI scheme is capable of receiving a message using
+       an email protocol.
+       EMS content is sent over SMTP using the format specified by TS
+       23.140 [15] section 8.4.4 and TS 26.140 [16] section 4, as an
+       MMS message.  Within such a message, EMS content is carried as
+       either a text or application/octet-stream MIME sub-part (see
+       TS 26.140 [16] , section 4.1).
+       For references see [RFC4355]
+    Security Considerations:
+       There are no specific security issues with this Enumservice.
+       However, the general considerations of Section 6 of [RFC4355]
+       apply.
+    Intended Usage: COMMON
+    Authors:
+       Rudolf Brandner, Lawrence Conroy, Richard Stastny (for author
+       contact detail see [RFC4355])
+    Any other information the author deems interesting:
+       None
+ Enumservice Name: "mms"
+    Enumservice Type: "mms"
+    Enumservice Subtype: "tel"
+    URI Scheme: 'tel:'
+    Functional Specification:
+       This Enumservice indicates that the resource identified by the
+       associated URI scheme is capable of receiving a message using
+       the Multimedia Messaging Service (MMS) [15].
+       For references see [RFC4355]
+    Security Considerations:
+       There are no specific security issues with this Enumservice.
+       However, the general considerations of Section 6 of [RFC4355]
+       apply.
+    Intended Usage: COMMON
+    Authors:
+       Rudolf Brandner, Lawrence Conroy, Richard Stastny (for author
+       contact detail see [RFC4355])
+    Any other information the author deems interesting:
+       Note that MMS can be used as an alternative to deliver an SMS
+       RP-DATA RPDU if, for example, the SMS bearer is not supported.
+       If an entry includes this Enumservice, then in effect this can
+       be taken as implying that the recipient is capable of receiving
+       EMS or SMS messages at this address.  Such choices on the end
+       system design do have two small caveats; whilst in practice all
+       terminals supporting MMS today support SMS as well, it might
+       not necessarily be the case in the future, and there may be
+       tariff differences in using the MMS rather than using the SMS
+       or EMS.
+
+</p><p class="rfcparagraph"> Enumservice Name: "mms"
+    Enumservice Type: "mms"
+    Enumservice Subtypes: "mailto"
+    URI Scheme: 'mailto:'
+    Functional Specification:
+       This Enumservice indicates that the resource identified by the
+       associated URI scheme is capable of receiving a message using
+       an email protocol.
+       MMS messages are sent over SMTP using the format specified by
+       TS 23.140 [15] section 8.4.4 and TS 26.140 [16] section 4.
+       Within and between MMS Environments (MMSE, network
+       infrastructures that support the MultiMedia Service), other
+       pieces of state data (for example, charging-significant
+       information) are exchanged between MMS Relay Servers.  Thus,
+       although these servers use SMTP as the "bearer" for their
+       application exchanges, they map their internal state to
+       specialised headers carried in the SMTP message exchanges.
+       The headers used in such MMSE are described in detail in [17].
+       For references see [RFC4355]
+    Security Considerations:
+       There are no specific security issues with this Enumservice.
+       However, the general considerations of Section 6 of [RFC4355]
+       apply.
+    Intended Usage: COMMON
+    Authors:
+       Rudolf Brandner, Lawrence Conroy, Richard Stastny (for author
+       contact detail see [RFC4355])
+    Any other information the author deems interesting:
+       The MMS Architecture describes an interface between the MMSE and
+       "legacy messaging systems" (labelled as MM3) which accepts
+       "standard" SMTP messages.  Thus although the MMS Relay Server
+       that supports this interface appears as a standard SMTP server
+       from the perspective of an Internet-based mail server, it acts
+       as a gateway and translator, adding the internal state data that
+       is used within and between the MMS Environments.  This mechanism
+       is described in [17], which also includes references to the
+       specifications agreed by those bodies responsible for the design
+       of the MMS.
+
+</p><p class="rfcparagraph"> Service Name: E.164 to VPIM MailTo: URL
+    URI Type: "Mailto:"
+    Type: VPIM
+    Subtype: MAILTO
+    Functional Specification: See section 4.2 through 4.4 of [RFC4238]
+    Intended Usage: COMMON
+    Author: Greg Vaudreuil (gregv&ieee.org)
+    Error Conditions:
+       o E.164 number not in the numbering plan
+       o E.164 number in the numbering plan, but no URLs exist for that
+         number
+       o E2U+VPIM:Mailto Service unavailable
+    Security Considerations:
+       o Malicious Redirection
+         One of the fundamental dangers related to any service such as
+         this is that a malicious entry in a resolver's database will
+         cause clients to resolve the E.164 into the wrong email URL.
+         The possible intent may be to cause the client to send the
+         information to an incorrect destination.
+       o Denial of Service
+         By removing the URL to which the E.164 maps, a malicious
+         intruder may remove the client's ability to access the
+         resource.
+       o Unsolicited Bulk Email
+         The exposure of email addresses through the ENUM
+         service provides a bulk mailer access to large numbers
+         of email addresses where only the telephone number was
+         previously known.
+ Service Name: E.164 to VPIM LDAP URL
+    URI Type: "LDAP:"
+    Type: VPIM
+    Subtype: LDAP
+    Functional Specification: See section 3.2 through 3.3 of [RFC4238]
+    Intended Usage: COMMON
+    Author: Greg Vaudreuil (gregv&ieee.org)
+    Security Considerations:
+       o Malicious Redirection
+         One of the fundamental dangers related to any service
+         such as this is that a malicious entry in a resolver's
+         database will cause clients to resolve the E.164 into
+         the wrong LDAP URL.  The possible intent may be to cause
+         the client to connect to a rogue LDAP server and
+         retrieve (or fail to retrieve) a resource containing
+         fraudulent or damaging information.
+       o Denial of Service
+         By removing the URL to which the E.164 maps, a
+         malicious intruder may remove the client's ability to
+         access the LDAP directory server.
+
+</p><p class="rfcparagraph"> Enumservice Name: "voice"
+    Enumservice Type: "voice"
+    Enumservice Subtype: "tel"
+    URI Scheme: 'tel:'
+    Functional Specification:
+       The kind of communication indicated by this Enumservice is
+       "Interactive Voice".  From a protocol perspective, this
+       communication is expected to involve bidirectional media streams
+       carrying audio data.
+       A client may imply that the person controlling population of a
+       NAPTR holding this Enumservice indicates their capability to
+       engage in an interactive voice session when contacted using the
+       URI generated by this NAPTR.
+    Security Considerations:
+       See Section 5 of [RFC4415]
+    Intended Usage: COMMON
+    Authors:  Rudolf Brandner, Lawrence Conroy, Richard Stastny (for
+              author contact detail see Authors' Addresses section)
+    Any other information the author deems interesting:
+     o This Enumservice indicates that the person responsible for the
+       NAPTR is accessible via the PSTN (Public Switched Telephone
+       Network) or PLMN (Public Land Mobile Network) using the value of
+       the generated URI.
+     o The kind of subsystem required to initiate a Voice Enumservice
+       with this sub-type is a "Dialler".  This is a subsystem that
+       either provides a local connection to the PSTN or PLMN, or that
+       provides an indirect connection to those networks.  The
+       subsystem will use the telephone number held in the generated
+       URI to place a voice call.  The voice call is placed to a
+       network that uses E.164 numbers to route calls to an appropriate
+       destination.
+     o Note that the PSTN/PLMN connection may be indirect.  The end
+       user receiving this NAPTR may have a relationship with a
+       Communications Service Provider that accepts call initiation
+       requests from that subsystem using an IP-based protocol such as
+       SIP or H.323, and places the call to the PSTN using a remote
+       gateway service.  In this case the Provider may either accept
+       requests using "tel:" URIs or has a defined mechanism to convert
+       "tel:" URI values into a "protocol-native" form.
+     o The "tel:" URI value SHOULD be fully qualified (using the
+       "global phone number" form of RFC3966 [10]).  A "local phone
+       number" as defined in that document SHOULD NOT be used unless
+       the controller of the zone in which the NAPTR appears is sure
+       that it can be distinguished unambiguously by all clients that
+       can access the resource record and that a call from their
+       network access points can be routed to that destination.
+
+</p><p class="rfcparagraph"> Enumservice Name: "pstn"
+    Enumservice Type: "pstn"
+    Enumservice Subtype: "tel"
+    URI Scheme: 'tel:'
+    Functional Specification:
+       These Enumservices indicate that the remote resource identified
+       can be addressed by the associated URI scheme in order to
+       initiate a telecommunication session, which may include two-way
+       voice or other communications, to the PSTN.  These URIs may
+       contain number portability data as specified in RFC 4694 [10].
+    Security Considerations: See Section 7 of [RFC4769].
+    Intended Usage: COMMON
+    Authors:
+       Jason Livingood (jason_livingood&cable.comcast.com)
+       Richard Shockey (richard.shockey&neustar.biz)
+    Any other information the author deems interesting:
+       A Number Portability Dip Indicator (npdi) should be used in
+       practice (see examples below in Section 4 of [RFC4769]).
+ Enumservice Name: "pstn"
+    Enumservice Type: "pstn"
+    Enumservice Subtype: "sip"
+    URI Scheme: 'sip:'
+    Functional Specification:
+       These Enumservices indicate that the remote resource identified
+       can be addressed by the associated URI scheme in order to
+       initiate a telecommunication session, which may include two-way
+       voice or other communications, to the PSTN.
+    Security Considerations: See Section 7 of [RFC4769].
+    Intended Usage: COMMON
+    Authors:
+       Jason Livingood (jason_livingood&cable.comcast.com)
+       Richard Shockey (richard.shockey&neustar.biz)
+    Any other information the author deems interesting:
+       A Number Portability Dip Indicator (npdi) should be used in
+       practice (see examples below in Section 4 of [RFC4769]).
+
+</p> Enumservice Name: "vCard"
+    Enumservice Name: "vCard"
+    Enumservice Type: "vcard"
+    Enumservice Subtype: n/a
+    URI Schemes: "http", "https"
+    Functional Specification:
+       This Enumservice indicates that the resource identified is a
+       plain vCard, according to RFC 2426, which may be accessed using
+       HTTP/ HTTPS [7].
+       Clients fetching the vCard from the resource indicated should
+       expect access to be restricted.  Additionally, the comprehension
+       of the data provided may vary depending on the client's
+       identity.
+    Security Considerations: see Section 5 [RFC4969]
+    Intended Usage: COMMON
+    Author: Alexander Mayrhofer <alexander.mayrhofer&enum.at>
+
+ Enumservice Name: "XMPP"
+    Enumservice Type: "xmpp"
+    Enumservice Subtype: n/a
+    URI Schemes: "xmpp"
+    Functional Specification:
+       This Enumservice indicates that the resource identified is an
+       XMPP entity.
+    Security Considerations: see Section 6 of [RFC4979]
+    Intended Usage: COMMON
+    Author: Alexander Mayrhofer <alexander.mayrhofer&enum.at>
+ Enumservice Name: "im"
+    Enumservice Type: "im"
+    Enumservice Subtypes: N/A
+    URI scheme(s): "im:"
+    Functional Specification:
+       This Enumservice indicates that the resource identified
+       is an 'im:' URI.  The 'im:' URI scheme does not identify
+       any particular protocol that will be used to handle
+       instant messaging receipt or delivery, rather the mechanism
+       in RFC 3861 [4] is used to discover whether an IM protocol
+       supported by the party querying ENUM is also supported by
+       the target resource.
+    Security considerations: See section 3 of [RFC5028]
+    Intended usage: COMMON
+    Author: Rohan Mahy (rohan&ekabal.com)
+
+ Enumservice Name: "voicemsg"
+    Enumservice Type: "voicemsg"
+    Enumservice Subtypes: "sip"
+    URI Schemes: 'sip:'
+    Functional Specification:
+       This Enumservice indicates that the remote resource identified
+       can be addressed by the associated URI scheme in order to
+       initiate a voice communication session to a voice messaging
+       system.
+    Security Considerations: See Section 3 of [RFC5278]
+    Intended Usage: COMMON
+    Authors:
+       Jason Livingood (jason_livingood&cable.comcast.com)
+       Don Troshynski (dtroshynski&acmepacket.com)
+    Any other information the author deems interesting:
+       Implementers should review a non-exclusive list of examples
+       below in Section 7 of [RFC5278]
+
+ Enumservice Name: "voicemsg"
+    Enumservice Type: "voicemsg"
+    Enumservice Subtypes: "sips"
+    URI Schemes: 'sips:'
+    Functional Specification:
+       This Enumservice indicates that the remote resource identified
+       can be addressed by the associated URI scheme in order to
+       initiate a voice communication session to a voice messaging
+       system.
+    Security Considerations: See Section 3 of [RFC5278]
+    Intended Usage: COMMON
+    Authors:
+       Jason Livingood (jason_livingood&cable.comcast.com)
+       Don Troshynski (dtroshynski&acmepacket.com)
+    Any other information the author deems interesting:
+       Implementers should review a non-exclusive list of examples
+       below in Section 7 of [RFC5278]
+
+ Enumservice Name: "voicemsg"
+    Enumservice Type: "voicemsg"
+    Enumservice Subtype: "tel"
+    URI Schemes: 'tel:'
+    Functional Specification:
+       This Enumservice indicates that the remote resource identified
+       can be addressed by the associated URI scheme in order to
+       initiate a voice communication session to a voice messaging
+       system.
+    Security Considerations: See Section 3 of [RFC5278]
+    Intended Usage: COMMON
+    Authors:
+       Jason Livingood (jason_livingood&cable.comcast.com)
+       Don Troshynski (dtroshynski&acmepacket.com)
+    Any other information the author deems interesting:
+       Implementers should review a non-exclusive list of examples
+       below in Section 7 of [RFC5278]
+
+ Enumservice Name: "voicemsg"
+    Enumservice Type: "voicemsg"
+    Enumservice Subtype: "http"
+    URI Schemes: 'http:'
+    Functional Specification:
+       This Enumservice indicates that the remote resource identified
+       by the associated URI scheme is capable of being a source of
+       information.
+       Note that the kind of information retrieved can be manifold.
+       Usually, contacting a resource by an 'http:' [11] URI provides a
+       document.  This document can contain references that will trigger
+       the download of many different kinds of information, such as
+       text, audio, video, executable code, or even voice message
+       files.  Thus, one cannot be more specific about the kind of
+       information expected when contacting the resource.
+    Security Considerations: See Section 3 of [RFC5278]
+    Intended Usage: COMMON
+    Authors:
+       Jason Livingood (jason_livingood&cable.comcast.com)
+       Don Troshynski (dtroshynski&acmepacket.com)
+    Any other information the author deems interesting:
+       Implementers should review a non-exclusive list of examples
+       below in Section 7 of [RFC5278]
+ Enumservice Name: "voicemsg"
+    Enumservice Type: "voicemsg"
+    Enumservice Subtype: "https"
+    URI Schemes: 'https:'
+    Functional Specification:
+       This Enumservice indicates that the remote resource identified
+       by the associated URI scheme is capable of being a source of
+       information, which can be contacted using TLS or the Secure
+       Socket Layer protocol.
+       Note that the kind of information retrieved can be manifold.
+       Usually, contacting a resource by an 'https:' [12] URI provides
+       a document.  This document can contain references that will
+       trigger the download of many different kinds of information,
+       such as text, audio, video, executable code, or even voice
+       message files.  Thus, one cannot be more specific about the kind
+       of information expected when contacting the resource.
+    Security Considerations: See Section 3 of [RFC5278]
+    Intended Usage: COMMON
+    Authors:
+       Jason Livingood (jason_livingood&cable.comcast.com)
+       Don Troshynski (dtroshynski&acmepacket.com)
+    Any other information the author deems interesting:
+       Implementers should review a non-exclusive list of examples
+       below in Section 7 of [RFC5278]
+
+ Enumservice Name: "videomsg"
+    Enumservice Type: "videomsg"
+    Enumservice Subtypes: "sip"
+    URI Schemes: 'sip:'
+    Functional Specification:
+       This Enumservice indicates that the remote resource identified
+       can be addressed by the associated URI scheme in order to
+       initiate a video communication session to a video messaging
+       system.
+    Security Considerations: See Section 3 of [RFC5278]
+    Intended Usage: COMMON
+    Authors:
+       Jason Livingood (jason_livingood&cable.comcast.com)
+       Don Troshynski (dtroshynski&acmepacket.com)
+    Any other information the author deems interesting:
+       Implementers should review a non-exclusive list of examples
+       below in Section 7 of [RFC5278]
+ Enumservice Name: "videomsg"
+    Enumservice Type: "videomsg"
+    Enumservice Subtypes: "sips"
+    URI Schemes: 'sips:'
+    Functional Specification:
+       This Enumservice indicates that the remote resource identified
+       can be addressed by the associated URI scheme in order to
+       initiate a video communication session to a video messaging
+       system.
+    Security Considerations: See Section 3 of [RFC5278]
+    Intended Usage: COMMON
+    Authors:
+       Jason Livingood (jason_livingood&cable.comcast.com)
+       Don Troshynski (dtroshynski&acmepacket.com)
+    Any other information the author deems interesting:
+       Implementers should review a non-exclusive list of examples
+       below in Section 7 of [RFC5278]
+
+ Enumservice Name: "videomsg"
+    Enumservice Type: "videomsg"
+    Enumservice Subtype: "http"
+    URI Schemes: 'http:'
+    Functional Specification:
+       This Enumservice indicates that the remote resource identified
+       by the associated URI scheme is capable of being a source of
+       information.
+       Note that the kind of information retrieved can be manifold.
+       Usually, contacting a resource by an 'http:' [11] URI provides a
+       document.  This document can contain references that will trigger
+       the download of many different kinds of information, such as
+       text, audio, video, executable code, or even video message
+       files.  Thus, one cannot be more specific about the kind of
+       information expected when contacting the resource.
+    Security Considerations: See Section 3 of [RFC5278]
+    Intended Usage: COMMON
+    Authors:
+       Jason Livingood (jason_livingood&cable.comcast.com)
+       Don Troshynski (dtroshynski&acmepacket.com)
+    Any other information the author deems interesting:
+       Implementers should review a non-exclusive list of examples
+       below in Section 7 of [RFC5278]
+ Enumservice Name: "videomsg"
+    Enumservice Type: "videomsg"
+    Enumservice Subtype: "https"
+    URI Schemes: 'https:'
+    Functional Specification:
+       This Enumservice indicates that the remote resource identified
+       by the associated URI scheme is capable of being a source of
+       information, which can be contacted using TLS or the Secure
+       Socket Layer protocol.
+       Note that the kind of information retrieved can be manifold.
+       Usually, contacting a resource by an 'https:' [12] URI provides
+       a document.  This document can contain references that will
+       trigger the download of many different kinds of information,
+       such as text, audio, video, executable code, or even video
+       message files.  Thus, one cannot be more specific about the kind
+       of information expected when contacting the resource.
+    Security Considerations: See Section 3 of [RFC5278]
+    Intended Usage: COMMON
+    Authors:
+       Jason Livingood (jason_livingood&cable.comcast.com)
+       Don Troshynski (dtroshynski&acmepacket.com)
+    Any other information the author deems interesting:
+       Implementers should review a non-exclusive list of examples
+       below in Section 7 of [RFC5278]
+
+ Enumservice Name: "unifmsg"
+    Enumservice Type: "unifmsg"
+    Enumservice Subtypes: "sip"
+    URI Schemes: 'sip:'
+    Functional Specification:
+       This Enumservice indicates that the remote resource identified
+       can be addressed by the associated URI scheme in order to
+       initiate a unified communication session to a unified messaging
+       system.
+    Security Considerations: See Section 3 of [RFC5278]
+    Intended Usage: COMMON
+    Authors:
+       Jason Livingood (jason_livingood&cable.comcast.com)
+       Don Troshynski (dtroshynski&acmepacket.com)
+    Any other information the author deems interesting:
+       Implementers should review a non-exclusive list of examples
+       below in Section 7 of [RFC5278]
+ Enumservice Name: "unifmsg"
+    Enumservice Type: "unifmsg"
+    Enumservice Subtypes: "sips"
+    URI Schemes: 'sips:'
+    Functional Specification:
+       This Enumservice indicates that the remote resource identified
+       can be addressed by the associated URI scheme in order to
+       initiate a unified communication session to a unified messaging
+       system.
+    Security Considerations: See Section 3 of [RFC5278]
+    Intended Usage: COMMON
+    Authors:
+       Jason Livingood (jason_livingood&cable.comcast.com)
+    Any other information the author deems interesting:
+       Implementers should review a non-exclusive list of examples
+       below in Section 7 of [RFC5278]
+
+ Enumservice Name: "unifmsg"
+    Enumservice Type: "unifmsg"
+    Enumservice Subtype: "http"
+    URI Schemes: 'http:'
+    Functional Specification:
+       This Enumservice indicates that the remote resource identified
+       by the associated URI scheme is capable of being a source of
+       information.
+       Note that the kind of information retrieved can be manifold.
+       Usually, contacting a resource by an 'http:' [11] URI provides a
+       document.  This document can contain references that will trigger
+       the download of many different kinds of information, such as
+       text, audio, video, executable code, or even video message
+       files.  Thus, one cannot be more specific about the kind of
+       information expected when contacting the resource.
+    Security Considerations: See Section 3 of [RFC5278]
+    Intended Usage: COMMON
+    Authors:
+       Jason Livingood (jason_livingood&cable.comcast.com)
+       Don Troshynski (dtroshynski&acmepacket.com)
+    Any other information the author deems interesting:
+       Implementers should review a non-exclusive list of examples
+       below in Section 7 of [RFC5278]
+ Enumservice Name: "unifmsg"
+    Enumservice Type: "unifmsg"
+    Enumservice Subtype: "https"
+    URI Schemes: 'https:'
+    Functional Specification:
+       This Enumservice indicates that the remote resource identified
+       by the associated URI scheme is capable of being a source of
+       information, which can be contacted using TLS or the Secure
+       Socket Layer protocol.
+       Note that the kind of information retrieved can be manifold.
+       Usually, contacting a resource by an 'https:' [12] URI provides
+       a document.  This document can contain references that will
+       trigger the download of many different kinds of information,
+       such as text, audio, video, executable code, or even video
+       message files.  Thus, one cannot be more specific about the kind
+       of information expected when contacting the resource.
+    Security Considerations: See Section 3 of [RFC5278]
+    Intended Usage: COMMON
+    Authors:
+       Jason Livingood (jason_livingood&cable.comcast.com)
+       Don Troshynski (dtroshynski&acmepacket.com)
+    Any other information the author deems interesting:
+       Implementers should review a non-exclusive list of examples
+       below in Section 7 of [RFC5278]
+
+ Enumservice Name: "ical-sched"
+    Enumservice Type: "ical-sched"
+    Enumservice Subtypes: "mailto"
+    URI scheme(s): 'mailto:'
+    Functional Specification:
+       This Enumservice indicates that the resource identified can be
+       addressed by the associated URI used for scheduling using
+       Internet calendaring via Internet mail with the iMIP [6]
+       protocol.
+    Security considerations: See Section 4 of [RFC5333].
+    Intended usage: COMMON
+    Author:
+       Rohan Mahy (rohan&ekabal.com)
+ Enumservice Name: "ical-access"
+    Enumservice Type: "ical-access"
+    Enumservice Subtypes: "http"
+    URI scheme(s): 'http:'
+    Functional Specification:
+       This Enumservice indicates that the resource identified can be
+       addressed by the associated URI in order to access a user's
+       calendar (for example free/busy status) using the CalDAV [7]
+       protocol for Internet calendaring.
+    Security considerations: See Section 4 of [RFC5333].
+    Intended usage: COMMON
+    Author:
+       Rohan Mahy (rohan&ekabal.com)
+
+ Enumservice Name: "ical-access"
+    Enumservice Type: "ical-access"
+    Enumservice Subtypes: "https"
+    URI scheme(s): 'https:'
+    Functional Specification:
+       This Enumservice indicates that the resource identified can be
+       addressed by the associated URI in order to access a user's
+       calendar (for example free/busy status) using the CalDAV [7]
+       protocol for Internet calendaring.
+    Security considerations: See Section 4 of [RFC5333].
+    Intended usage: COMMON
+    Author:
+       Rohan Mahy (rohan&ekabal.com)
+Authors' Addresses
+
+   Bernie Hoeneisen
+   Ucom Standards Track Solutions GmbH
+   CH-8000 Zuerich
+   Switzerland
+
+   Phone: +41 44 500 52 44
+   EMail: bernie@ietf.hoeneisen.ch (bernhard.hoeneisen AT ucom.ch)
+   URI:   http://www.ucom.ch/
+
+
+   Alexander Mayrhofer
+   enum.at GmbH
+   Karlsplatz 1/9
+   Wien  A-1010
+   Austria
+
+   Phone: +43 1 5056416 34
+   EMail: alexander.mayrhofer@enum.at
+   URI:   http://www.enum.at/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Hoeneisen & Mayrhofer        Standards Track                   [Page 68]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

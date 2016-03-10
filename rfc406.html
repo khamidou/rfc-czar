@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph">Network Working Group                        John M. McQuillan
+Request for Comments # 406                   Bolt Beranek and Newman
+NIC # 12111                                  10 October 1972
+Categories B.1
+Updates RFC # 381
+
+
+                    Scheduled IMP Software Releases
+                    -------------------------------
+
+
+     This note is a reminder that the procedures suggested in
+RFC # 381 for scheduling IMP software maintenance have now
+been in effect for a period of about two months.  Two points
+apparently require re-emphasis:
+
+</p><p class="rfcparagraph">
+     1)   We reserve the hour from 7 to 8 a.m. eastern time
+every Tuesday as the time when IMPs can be reloaded.  We will
+probably not use this period every Tuesday, but we do reserve
+this period every Tuesday.  The software maintenance time period
+is in addition to the hardware preventive maintenance scheduled
+at each site.
+
+</p><p class="rfcparagraph">
+     2)   We now send an IMP - Going - Down message to all
+the Hosts at the site which contains information on the time
+that the IMP is going down, the expected duration, and the
+reason.  We try to send out this message an hour before soft-
+ware releases, and five to ten minutes before scheduled pre-
+ventive maintenance.  Further, we will also notify the Hosts
+at a site, whenever possible, when it is necessary to stop the
+IMP on an unscheduled basis.  Finally, 30 seconds before the
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                [Page 1]
+
+IMP goes down, a second IMP - Going - Down message will be
+sent to the Hosts informing them that the IMP is going down
+immediately.  The format of the IMP - Going - Down message
+is as follows:
+
+</p><p class="rfcparagraph">bits 1 - 4  -  all zero
+
+bits 5 - 8  -  0010
+
+bits 9 - 16 -  all zero
+
+bits 17 - 32 -  coded as follows:
+
+</p><p class="rfcparagraph">
+          All bits zero - going down in 30 seconds
+
+
+
+          Bits 17, 18 = 01 - scheduled hardware PM
+
+          Bits 17, 18 = 10 - scheduled software reload
+
+          Bits 17, 18 = 11 - emergency reload on restart
+
+
+
+          Bits 19 - 22 - how soon the IMP is going down,
+                         in 5 minute units.
+
+</p><p class="rfcparagraph">
+
+          Bits 23 - 32 - how long the IMP will be down, in
+                         5 minute units.
+
+</p>
+
+
+
+    [ This RFC was put into machine readable form for entry ]
+    [ into the online RFC archives by BBN Corp. under the   ]
+    [ direction of Alex McKenzie.                      1/97 ]
+
+
+
+
+
+
+
+
+
+
+                                                                [Page 2]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

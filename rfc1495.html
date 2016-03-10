@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                      H. Alvestrand<br>Request for Comments: 1495                                  SINTEF DELAB<br>Updates: 1327                                                   S. Kille<br>                                                        ISODE Consortium<br>                                                                R. Miles<br>                                                       Soft*Switch, Inc.<br>                                                                 M. Rose<br>                                            Dover Beach Consulting, Inc.<br>                                                             S. Thompson<br>                                                       Soft*Switch, Inc.<br>                                                             August 1993<br><br></p>
+                  <h1>            Mapping between X.400 and RFC-822 Message Bodies</h1>
+                  <h2>Status of this Memo</h2>
+
+   This RFC specifies an IAB standards track protocol for the Internet
+   community, and requests discussion and suggestions for improvements.
+   Please refer to the current edition of the "IAB Official Protocol
+   Standards" for the standardization state and status of this protocol.
+   Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph">Table of Contents
+<a href="#section-1" class="">1. Introduction ............................................</a><br>
+<a href="#section-2" class="">2. Approach ................................................</a><br>
+<a href="#section-3" class="">3. Mapping between X.400 and RFC-822 Message Bodies ........</a><br>
+<a href="#section-3.1" class="indent-1">3.1 Mapping from X.400 to RFC-822 ..........................</a><br>
+<a href="#section-3.2" class="indent-1">3.2 Mapping from RFC-822 to X.400 ..........................</a><br>
+<a href="#section-3.2.1" class="indent-2">3.2.1 Asymmetric Mappings ...................................</a><br>
+<a href="#section-3.2.1.1" class="">3.2.1.1 Message/External-Body ...............................</a><br>
+<a href="#section-3.2.1.2" class="">3.2.1.2 Message/Partial .....................................</a><br>
+<a href="#section-3.2.1.3" class="">3.2.1.3 Nested Multipart Content-types ......................</a><br>
+<a href="#section-3.2.2" class="indent-2">3.2.2 Multipart IPMS Heading Extension ......................</a><br>
+<a href="#section-4" class="">4. Mapping between X.400 and RFC-822 Message Headers .......</a><br>
+<a href="#section-5" class="">5. OID Assignments .........................................</a><br>
+<a href="#section-6" class="">6. Security Considerations .................................</a><br>
+<a href="#section-7" class="">7. Authors' Addresses ......................................</a><br>
+<a href="#section-8" class="">8. References ..............................................</a><br>
+
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   The Internet community is a large collection of networks under
+   autonomous administration, but sharing a core set of protocols.
+   These are known as the Internet suite of protocols (or simply
+   "TCP/IP").
+
+</p><p class="rfcparagraph">   Use of electronic-mail in the Internet is defined primarily by one
+   document, STD-11, RFC-822 [1], which defines the standard format for
+   the exchange of messages.  RFC-822 has proven immensely popular; in
+   fact, the 822-connected Internet, is larger than the scope of the
+   IP-connected Internet.
+
+</p><p class="rfcparagraph">   The framework provided by RFC-822 allows for memo-based textual
+   messages.  Each message consists of two parts:  the headers and the
+   body.  The headers are analogous to the structured fields found in an
+   inter-office memo, whilst the body is free-form.  Both parts are
+   encoded using ASCII.
+
+</p><p class="rfcparagraph">   Recently, the Internet Engineering Task Force (IETF) has developed an
+   document called,
+
+      Multipurpose Internet Mail Extensions
+
+   or MIME RFC-1341.  The title is actually misleading.  MIME defines
+   structure for Internet message bodies.  It is not an extension to
+   RFC-822.
+
+</p><p class="rfcparagraph">   Independently of this, the International standards community
+   developed a different framework in 1984 (some say that's the
+   problem).  This framework is known as the OSI Message Handling System
+   (MHS) or sometimes X.400.
+
+</p><p class="rfcparagraph">   Since the introduction of X.400(84), there has been work ongoing for<br>
+   defining mappings between MHS and RFC-822.  The most recent work in
+   this area is RFC-1327 [3], which focuses primarily on translation of
+   envelope and headers.  This document is complimentary to RFC-1327 as
+   it focuses on translation of the message body.  The mappings defined
+   are largely symmetrical with respect to MIME and MHS structuring
+   semantics, although the MIME semantics are somewhat richer.  In order
+   to provide for reversible transformations, MHS heading extensions are
+   used to carry the additional MIME semantics.
+
+</p><p class="rfcparagraph">   Please send comments to the MIME-MHS mailing list:
+   <mime-mhs@surfnet.nl>.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Approach</h2></a>
+
+   The mappings have been specifically designed to provide optimal
+   behavior for three different scenarios:
+
+</p><p class="rfcparagraph">   (1) Allow a MIME user and an MHS user to exchange an arbitrary binary<br>
+       content;
+
+</p><p class="rfcparagraph">   (2) Allow MIME content-types to "tunnel" through an MHS relay that<br>
+       is, two MIME users can exchange content-types without loss
+       through an MHS relay); and,
+
+   (3) Allow MHS body parts to "tunnel" through a MIME relay that is,<br>
+       two MHS users can exchange body parts without loss through a MIME
+       relay).
+
+</p><p class="rfcparagraph">   Other, related, scenarios can also be easily accommodated.
+
+</p><p class="rfcparagraph">   To facilitate the mapping process, the Internet Assigned Numbers
+   Authority (IANA) maintains a table termed the "IANA MHS/MIME
+   Equivalence Table".  Once an enterprise has registered an OID to
+   describe an MHS body part, it should complete a corresponding
+   registry with the IANA for a MIME content-type/subtype.  In practice,
+   the corresponding content-type will be "application", with an
+   appropriate choice of sub-type and possible parameters.  If a new
+   MIME content-type/subtype is registered with the IANA without a
+   corresponding entry in the Equivalence Table, the IANA will assign it
+   an OID, from the arc defined in this memo. See [4], section 5 for
+   details.
+
+</p><p class="rfcparagraph">   The companion document, "Equivalences between 1988 X.400 and RFC-822
+   Message Bodies"[4], defines the initial configuration of this table.
+   The mappings described in both this document and the companion
+   document use the notational conventions of RFC-1327.
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   Mapping between X.400 and RFC-822 Message Bodies</h2></a>
+
+   MHS messages are comprised of an IPMS.heading and an IPMS.body.  The
+   IPMS.Body is a sequence of IPMS.BodyParts.  An IPMS.BodyPart may be a
+   nested message (IPMS.MessageBodyPart).
+
+</p><p class="rfcparagraph">   A MIME message consists of headers and a content.  For the purpose of
+   discussion, the content may be structured (multipart or message), or
+   atomic (otherwise).  An element of a structured content may be a
+   message or a content.  Both message and structured content have
+   subtypes which do not have direct analogies in MHS.
+
+</p><p class="rfcparagraph">   The mapping between X.400 and RFC-822 message bodies which this
+   document defines is symmetrical for the following cases:
+
+</p><p class="rfcparagraph">          (1) any atomic body part<br>
+
+          (2) multipart: digest and mixed subtypes<br>
+
+          (3) message/rfc822<br>
+
+   RFC-1327 specifies the mappings for headers.  Section 4 describes how
+   those mappings are modified by this document.  When mapping between
+   an MHS body and a MIME content, the following algorithm is used:
+
+</p><p class="rfcparagraph">	<a name="section-3.1"><h3>3.1   Mapping from X.400 to RFC-822</h3></a>
+
+   This section replaces the text in RFC-1327 starting at the bottom of
+   page 84,
+
+       The IPMS.Body is mapped into the RFC-822 message body.  Each
+       IPMS.BodyPart is converted to ASCII as follows:
+
+</p><p class="rfcparagraph">   and continuing up to and including page 86 of Section 5.3.4 of RFC-
+   1327.
+
+</p><p class="rfcparagraph">             If the IPMS.Body
+
+                  Body ::=
+                      SEQUENCE OF
+                          BodyPart
+
+   consists of a single body part, then the RFC-822 message body is
+   constructed as the MIME content corresponding to that body part.
+
+</p><p class="rfcparagraph">   If the body part is an IPMS.MessageBodyPart (forwarded IPM), the
+   mapping is applied recursively.  Otherwise, to map a specific MHS
+   body part to a MIME content-type, the IANA MHS/MIME Equivalence table
+   is consulted.  If the MHS body part is not identified in this table,
+   then the body-part is mapped onto an "application/x400-bp" content,
+   as specified in [4].
+
+</p><p class="rfcparagraph">   If the IPMS.Body consists of more than one body part, then the RFC-
+   822 message body is constructed as a
+
+          multipart/mixed
+
+   content-type, unless all of the body parts are messages, in which
+   case it is mapped to a
+
+          multipart/digest
+
+   content-type.  Each component of the multipart content-type
+   corresponds to a IPMS.BodyPart, preserving the ordering of the body
+   parts in the IPMS.Body.
+
+</p><p class="rfcparagraph">   There is one case which gets special treatement.  If the IPMS.Body
+   consists solely of a single IA5Text body part, then the RFC822
+   message body is NOT marked as a MIME content.  This prevents RFC822
+   mailers from invoking MIME function unnecessarily.
+	<a name="section-3.2"><h3>3.2   Mapping from RFC-822 to X.400</h3></a>
+
+   First, replace the first paragraph of Section 5.1.3 on page 72 of
+   RFC-1327 to read as:
+
+</p><p class="rfcparagraph">       The IPM (IPMS Service Request) is generated according to the
+       rules of this section.  The IPMS.body usually consists of one
+       IPMS.BodyPart of type
+
+                           IPMS.IA5TextBodyPart
+
+                      with
+                           IPMS.IA5TextBodyPart.parameters.repertoire
+
+       set to the default (ia5), which contains the body of the RFC-822
+       message.  However, if the 822.MIME-Version header field is
+       present, a special algorithm is used to generate the IPMS.body.
+
+</p><p class="rfcparagraph">
+       Second, replace the "Comments:" paragraph on page 74 to reads as:
+
+</p><p class="rfcparagraph">       Comments:
+
+</p><p class="rfcparagraph">          If an 822.MIME-Version header field is not present,
+          generate an IPMS.Bodypart of type
+
+              IPMS.IA5TextBodyPart
+
+          with
+
+              IPMS.IA5TextBodyPart.parameters.repertoire
+
+          set to the default (ia5), containing the value of
+          the fields, preceded by the string "Comments: ".
+          This body part shall preceed the other one.
+
+</p><p class="rfcparagraph">   Third, add the remainder of this section to the end of Section 5.1.3
+   of RFC-1327.
+
+</p><p class="rfcparagraph">   If the 822.MIME-Version header field is present, the following
+   mapping rules are used to generate the IPMS.body.
+
+</p><p class="rfcparagraph">   If the MIME content-type is one of:
+
+</p><p class="rfcparagraph">   (1)  any atomic body part<br>
+
+   (2)  multipart: digest and mixed subtypes<br>
+   (3)  message/rfc822<br>
+
+   then the symmetric mapping applies as described in Section 6.1.  Note
+   that the multipart content-types should be marked with the
+   IPMS.HeadingExtension described below.
+
+</p><p class="rfcparagraph">   Otherwise, three cases remain, which are discussed in turn.
+
+</p><p class="rfcparagraph">	<a name="section-3.2.1"><h4>3.2.1   Asymmetric Mappings</h4></a>
+
+<a name="section-3.2.1.1"><h4>3.2.1.1   Message/External-Body</h4></a>
+                        <a href="raw/text/rfc1495.txt" class="rawLink">raw</a>
+                    
+
+   This is mapped into a mime-body-part, as specified in [4].
+
+</p><p class="rfcparagraph"><a name="section-3.2.1.2"><h4>3.2.1.2   Message/Partial</h4></a>
+                        <a href="raw/text/rfc1495.txt" class="rawLink">raw</a>
+                    
+
+   This is mapped onto a message, and the following heading extension is
+   used.  The extension is derived from the message/partial parameters:
+
+</p><p class="rfcparagraph">                  partial-message  HEADING-EXTENSION
+                      VALUE PartialMessage
+                      ::= id-hex-partial-message
+
+                  PartialMessage ::=
+                      SEQUENCE {
+                          number INTEGER,
+                          total  INTEGER,
+                          id     IA5String
+                      }
+
+   If this heading is present when mapping from MHS to MIME, then a
+   message/partial should be generated.
+
+</p><p class="rfcparagraph"><a name="section-3.2.1.3"><h4>3.2.1.3   Nested Multipart Content-types</h4></a>
+                        <a href="raw/text/rfc1495.txt" class="rawLink">raw</a>
+                    
+
+   In MIME, a multipart content refers to a set of content-types, not a
+   message with a set of content-types. However, a nested multipart
+   content will always be mapped to an IPMS.MessageBodyPart, with an
+   IPMS.BodyPart for each contained content-type.
+
+</p><p class="rfcparagraph">   The only mandatory field in the heading is the IPMS.this-IPM, which
+   must always be generated (by the gateway). A IPMS.subject field
+   should also be generated where there is no "real" heading. This will
+   present useful information to the non-MIME capable X.400(88) and to<br>
+   all X.400(84) UAs.<br>
+   The IPM.subject fields for the various types are:
+
+</p><p class="rfcparagraph">   mixed:        "Multipart Message"
+   alternative:  "Alternate Body Parts containing the same information"
+   digest:       "Message Digest"
+   parallel:     "Body Parts to be interpreted in parallel"
+
+	<a name="section-3.2.2"><h4>3.2.2   Multipart IPMS Heading Extension</h4></a>
+
+   The following IPMS.HeadingExtension should be generated for all
+   multipart content-types, with the enumerated value set according to
+   the subtype:
+
+</p><p class="rfcparagraph">                  multipart-message HEADING-EXTENSION
+                      VALUE MultipartType
+                      ::= id-hex-multipart-message
+
+                  MultipartType ::=
+                      ENUMERATED {
+                          mixed(1),<br>
+                          alternative(2),<br>
+                          digest(3),<br>
+                          parallel(4)
+                      }
+
+   If this heading is present when mapping from MHS to MIME, then the
+   appropriate multipart content-type should be generated.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   Mapping between X.400 and RFC-822 Message Headers</h2></a>
+
+   Replace the first paragraph of Section 3.3.4 on page 26 of RFC-1327
+   to read as:
+        In cases where T.61 strings are used only for conveying human-
+        interpreted information, the aim of this mapping is to render
+        the characters appropriately in the remote character set, rather
+        than to maximize reversibility.  For these cases, the following
+        steps are followed to find an appropriate encoding:
+
+</p><p class="rfcparagraph">        1) If all the characters in the string are contained within the
+        ASCII repertoire, the string is simply copied.
+
+</p><p class="rfcparagraph">        2) If all the characters in the string are from an IANA-
+        registered character set, then the appropriate encoded-word(s)
+        according to [5] are generated instead.
+
+</p><p class="rfcparagraph">        3) If the characters in the string are from a character set
+        which is not registered with the IANA, then the mappings to IA5
+        defined in CCITT Recommendation X.408 (1988) shall be used<br>
+        [CCITT/ISO88a].  These will then be encoded in ASCII.
+
+</p><p class="rfcparagraph">        This approach will only be used for human-readable information
+        (Subject and FreeForm Name).
+
+</p><p class="rfcparagraph">        When mapping from an RFC-822 header, when an encoded-word (as
+        defined in [5]) is encountered:
+
+</p><p class="rfcparagraph">        1) If all the characters contained therein are mappable to T.61,
+        the string content shall be converted into T.61.
+
+</p><p class="rfcparagraph">        2) Otherwise, the encoded-word shall be copied directly into the
+        T.61 string.
+
+</p><p class="rfcparagraph">   Modify procedure "2a" on page 56 of RFC-1327 to read as:
+        If the IPMS.ORDescriptor.free-form-name is present, convert it
+        to ASCII or T.61 (Section 3.3.4), and use this as the 822.phrase
+        component of the 822.mailbox construct.
+
+</p><p class="rfcparagraph">   Modify the final paragraph of procedure "2" on page 55 of RFC-1327 to
+   read as:
+        The string is then encoded into T.61 or ASCII using a human-
+        oriented mapping (as described in Section 3.3.4).  If the string
+        is not null, it is assigned to IPMS.ORDescriptor.free-form.name.
+
+</p><p class="rfcparagraph">   Modify the second paragraph of procedure "3" on page 55 of RFC-1327
+   to read as:
+        If the 822.group construct is present, any included 822.mailbox
+        is encoded as above to generate a separate IPMS.ORDescriptor.
+        The 822.group is mapped to T.61 or ASCII (as described in
+        Section 3.3.4), and an IPMS.ORDescriptor with only an free-
+        form-name component is built from it.
+
+</p><p class="rfcparagraph">   Modify procedure "822.Subject" on page 62 of RFC-1327 to read as:
+
+</p><p class="rfcparagraph">        Mapped to IMPS.Heading.subject.  The field-body uses the human-
+        oriented mapping referenceed in Section 3.3.4.
+
+</p><p class="rfcparagraph">   Modify procedure "IPMS.Heading.subject" on page 71 of RFC-1327 to
+   read as:
+        Mapped to "Subject:".  The contents are converted to ASCII or
+        T.61 (Section 3.3.4).  Any CRLF are not mapped, but are used as
+        points at which the subject field must be folded.
+	<a name="section-5"><h2>5.   OID Assignments</h2></a>
+
+   MIME-MHS DEFINITIONS ::= BEGIN
+
+
+   mail OBJECT IDENTIFIER ::= { internet 7 }
+
+   mime-mhs OBJECT IDENTIFIER ::= { mail 1 }
+
+   mime-mhs-headings OBJECT IDENTIFIER ::= { mime-mhs 1 }
+
+   id-hex-partial-message OBJECT IDENTIFIER ::=
+           { mime-mhs-headings 1 }
+
+   id-hex-multipart-message OBJECT IDENTIFIER ::=
+           { mime-mhs-headings 2 }
+
+
+   mime-mhs-bodies OBJECT IDENTIFIER ::= { mime-mhs 2 }
+
+
+   END
+
+	<a name="section-6"><h2>6.   Security Considerations</h2></a>
+
+   There are no explicit security provisions in this document.  However,
+   a warning is in order.  This document maps two mechanisms between
+   RFC822 and X.400 that could cause problems.  The first is the
+   transfer of binary files.  The inherent risks are well known and
+   won't be reiterated here.  The second is the propagation of strong
+   content typing.  The typing can be used to automatically "launch" or
+   initiate applications against those contents.  Any such launching
+   leaves the invoker vulnerable to application-specific viruses; for
+   example, a spreadsheet macro or Postscript command that deletes
+   files.  See [2], Section 7.4.2 for a Postscript-specific discussion
+   of this issue.
+	<a name="section-7"><h2>7.   Authors' Addresses</h2></a>
+
+   Harald Tveit Alvestrand
+   SINTEF DELAB
+   N-7034 Trondheim
+   NORWAY
+
+   EMail: Harald.Alvestrand@delab.sintef.no
+
+
+   Steve Kille
+   ISODE Consortium
+   P.O. Box 505
+   London
+   SW11 1DX
+   England
+
+   Phone: +44-71-223-4062
+   EMail: S.Kille@ISODE.COM
+
+
+   Robert S. Miles
+   Soft*Switch, Inc.
+   640 Lee Road
+   Wayne, PA 19087
+
+   Phone: (215) 640-7556<br>
+   EMail: rsm@spyder.ssw.com
+
+
+   Marshall T. Rose
+   Dover Beach Consulting, Inc.
+   420 Whisman Court
+   Mountain View, CA  94043-2186
+   US
+
+   Phone: +1 415 968 1052
+   Fax:   +1 415 968 2510
+   EMail: mrose@dbc.mtview.ca.us
+
+
+   Steven J. Thompson
+   Soft*Switch, Inc.
+   640 Lee Road
+   Wayne, PA 19087
+
+   Phone: (215) 640-7556<br>
+   EMail: sjt@gateway.ssw.com
+	<a name="section-8"><h2>8.   References</h2></a>
+
+   [1] Crocker, D., "Standard for the Format of ARPA Internet Text
+       Messages", STD 11, RFC 822, UDEL, August 1982.
+
+</p><p class="rfcparagraph">   [2] Borenstein, N., and N. Freed, "MIME: Mechanisms for Specifying
+       and Describing the Format of Internet Message Bodies", RFC 1341,
+       Bellcore, Innosoft, June 1992.
+
+</p><p class="rfcparagraph">   [3] Hardcastle-Kille, S., "Mapping between X.400(1988) / ISO 10021<br>
+       and RFC-822", RFC 1327, University College London, May 1992.
+
+</p><p class="rfcparagraph">   [4] Alvestrand, H., and S. Thompson, "Equivalences between 1988 X.400
+       and RFC-822 Message Bodies", RFC 1494, SINTEF DELAB, Soft*Switch,
+       Inc., August 1993.
+
+</p><p class="rfcparagraph">   [5] Moore, K., "Representation of Non-ASCII Text in Internet Message
+       Headers Message Bodies", RFC 1342, University of Tennesse, June
+       1992.
+
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Alvestrand, Kille, Miles, Rose & Thompson                      [Page 11]
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

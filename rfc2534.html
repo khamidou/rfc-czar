@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                      L. Masinter<br>Request for Comments: 2534                           Xerox Corporation<br>Category: Standards Track                                      D. Wing<br>                                                   Cisco Systems, Inc.<br>                                                               A. Mutz<br>                                                 Jutvision Corporation<br>                                                            K. Holtman<br>                                                                   TUE<br>                                                            March 1999<br><br></p>
+                  <h1>
+               Media Features for Display, Print, and Fax</h1>
+                  <h2>Status of this Memo</h2>
+
+   This document specifies an Internet standards track protocol for the
+   Internet community, and requests discussion and suggestions for
+   improvements.  Please refer to the current edition of the "Internet
+   Official Protocol Standards" (STD 1) for the standardization state
+   and status of this protocol.  Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (1999).  All Rights Reserved.<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This specification defines some common media features for describing
+   image resolution, size, color, and image representation methods that
+   are common to web browsing, printing, and facsimile applications.
+   These features are registered for use within the framework of [REG].
+
+</p><p class="rfcparagraph">	<a name="section-1"><h2>1.  Introduction</h2></a>
+
+   This work was originally motivated by the requirements from web
+   browsers to send the browser's display characteristics to the web
+   server to allow the server to choose an appropriate representation.
+
+</p><p class="rfcparagraph">   This specification defines some common media features [REG] by which
+   a recipient may inform a sender as to the characteristics of its
+   message handling.  The sender may then provide the variant of the
+   message that is most suitable for the recipient.
+
+</p><p class="rfcparagraph">   Different variants would typically be higher or lower resolution
+   images (for example) as appropriate.  In the case of a sending to a
+   printer, the result would be higher quality output.  In the case of a
+   small screen device (cellphone, portable digital assistant), the
+   result would be faster transmission.
+   Media features may be used in many different protocol situations.
+   Those defined in this specification can indicate the display or
+   printer dimensions, resolution, color capability.  The physical
+   dimensions of a display may be inferred from the display size and
+   display resolution. In the case of paper output, the paper size may
+   be expressed as a token from a list of standard paper sizes.  These
+   are presented formally in the Notation section.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.  Media Feature Registrations</h2></a>
+
+   This section defines several media features, using the form specified
+   in [REG].
+
+</p><p class="rfcparagraph">	<a name="section-2.1"><h3>2.1  Image Size</h3></a>
+
+   - Media Feature tag name(s):
+
+</p><p class="rfcparagraph">     pix-x
+     pix-y
+
+   - ASN.1 identifier associated with this feature tag:
+
+</p><p class="rfcparagraph">     1.3.6.1.8.1.1
+     1.3.6.1.8.1.2
+
+   - Summary of the media features indicated by this feature tag:
+
+</p><p class="rfcparagraph">     These features indicate the display size of the recipient for
+     display or print, measured in pixels; they indicate horizontal
+     (pix-x) and vertical (pix-y) dimensions.
+
+</p><p class="rfcparagraph">   - Values appropriate for use with this feature tag:
+
+</p><p class="rfcparagraph">     Signed Integer
+
+   - The feature tag is intended primarily for use in the following
+     applications, protocols, services, or negotiation mechanisms:
+
+</p><p class="rfcparagraph">     Display and print applications where different media choices will
+     be made depending on the size of the recipient device. For
+     example, a web application for use on a 240x480 display might use
+     different HTML pages than one intended for use on a 1024x768
+     display.
+	<a name="section-2.2"><h3>2.2  Resolution</h3></a>
+
+   - Media Feature tag name:
+
+</p><p class="rfcparagraph">     dpi
+
+   - ASN.1 identifier associated with this feature tag:
+
+</p><p class="rfcparagraph">     1.3.6.1.8.1.3
+
+   - Summary of the media features indicated by this feature tag:
+
+</p><p class="rfcparagraph">     This feature indicates the resolution that the recipient can
+     display or print without loss, measured in pixels per inch.
+     Typically resolution capability is represented as dots-per-inch
+     rather than in SI units [SI]. Values for dpi may be expressed as a
+     rational to accomodate resolution of SI-based devices; for example
+     dpi=19558/100 can be used to represent a resolution of 77 dots per
+     centimeter.
+
+</p><p class="rfcparagraph">   - Values appropriate for use with this feature tag:
+
+</p><p class="rfcparagraph">     Rational
+
+   - The feature tag is intended primarily for use in the following
+     applications, protocols, services, or negotiation mechanisms:
+
+</p><p class="rfcparagraph">     Printing and fax applications typically choose representations of
+     a transmitted document depending on the resolution of the
+     recipient rather than pixel size.
+
+</p><p class="rfcparagraph">   - Examples of typical use:
+
+</p><p class="rfcparagraph">     Choosing a version of a printable document to send to a printer.
+
+</p><p class="rfcparagraph">   - Considerations particular to use in individual applications,
+     protocols, services, or negotiation mechanisms:
+
+</p><p class="rfcparagraph">     Software applications are typically unaware of the resolution of
+     the display. Note that there exist devices with different
+     resolution in different directions, i.e., individual pixels are
+     not square. However, this feature only encompasses the
+     uniform resolution.
+	<a name="section-2.3"><h3>2.3  Registration of 'ua-media'</h3></a>
+
+   - Media Feature tag name(s):
+
+</p><p class="rfcparagraph">     ua-media
+
+   - ASN.1 identifier associated with this feature tag:
+
+</p><p class="rfcparagraph">     1.3.6.1.8.1.4
+
+     - Summary of the media features indicated by this feature tag:
+
+</p><p class="rfcparagraph">     This feature indicates the recipients device media, indicated with
+     an simple token.
+
+</p><p class="rfcparagraph">   - Values appropriate for use with this feature tag:
+
+</p><p class="rfcparagraph">     Token with an equality relationship. Values include:
+
+</p><p class="rfcparagraph">     screen           A refreshable display
+     screen-paged     a refreshable display which cannot scroll
+     stationery       Separately cut sheets of an opaque material
+     transparency     Separately cut sheets of a transparent material
+     envelope         Envelopes that can be used for conventional
+                      mailing purposes
+     envelope-plain   Envelopes that are not preprinted and have no
+                      windows
+     continuous       Continuously connected sheets of an opaque
+                      material
+
+   - The feature tag is intended primarily for use in the following
+     applications, protocols, services, or negotiation mechanisms:
+
+</p><p class="rfcparagraph">     Most of the feature values are useful for printing applications, or
+     to distinguish printing from display.
+
+</p><p class="rfcparagraph">   - Examples of typical use:
+
+</p><p class="rfcparagraph">     This might typically be used for selecting between a rendition that
+     is intended to be printed and one that is intended to be displayed.
+
+</p><p class="rfcparagraph">   - Considerations particular to use in individual applications,
+     protocols, services, or negotiation mechanisms:
+
+</p><p class="rfcparagraph">     Other media values were not included because their utility seemed
+     relative.
+   - Interoperability considerations:
+
+</p><p class="rfcparagraph">     Interoperability with the Internet Print Protocol means that some
+     additional feature values may need to be registered.
+
+</p><p class="rfcparagraph">	<a name="section-2.4"><h3>2.4  Paper Size</h3></a>
+
+   - Media Feature tag name(s):
+
+</p><p class="rfcparagraph">     paper-size
+
+   - ASN.1 identifier associated with this feature tag:
+
+</p><p class="rfcparagraph">     1.3.6.1.8.1.5
+
+   - Summary of the media features indicated by this feature tag:
+
+</p><p class="rfcparagraph">     For stationery, it is often useful to have information about the
+     size of display used.  While it is more precise and predictable to
+     use absolute resolution and pixel sizes, some applications find it
+     useful to provide paper size in addition to this information. Note
+     that not all of the paper may have a printable area.
+
+</p><p class="rfcparagraph">   - Values appropriate for use with this feature tag:
+
+</p><p class="rfcparagraph">     Token with an equality relationship. Typical values include:
+
+</p><p class="rfcparagraph">      letter        8.5x11.0 inches
+      a4            210x297 mm
+      b4            250x353 mm
+      a3            297x420 mm
+      legal         8.5x14 inches
+
+   - The feature tag is intended primarily for use in the following
+     applications, protocols, services, or negotiation mechanisms:
+
+</p><p class="rfcparagraph">     This feature tag seems most useful for the printing application.
+
+</p><p class="rfcparagraph">   - Examples of typical use:
+
+</p><p class="rfcparagraph">     Choosing between a4 and letter size renditions of the same
+     printable document.
+	<a name="section-2.5"><h3>2.5  Color and greyscale</h3></a>
+
+   - Media Feature tag name(s):
+
+</p><p class="rfcparagraph">   color
+
+   - ASN.1 identifier associated with this feature tag:
+
+</p><p class="rfcparagraph">     1.3.6.1.8.1.6
+
+   - Summary of the media features indicated by this feature tag:
+
+</p><p class="rfcparagraph">     This feature indicates a gross level of capability to represent (or
+     need for) for handling of color, out of a limited set of choices.
+
+</p><p class="rfcparagraph">   - Values appropriate for use with this feature tag:
+
+</p><p class="rfcparagraph">     Token with an equality relationship. Values include:
+
+</p><p class="rfcparagraph">     binary      black-and-white, or other bi-level capability.
+
+</p><p class="rfcparagraph">     grey        more than two levels of intensity; for example,
+                 at least two bits of grey-scale data
+
+     limited     availability of a small number of colors, such as
+                 might be provided by a highlight printer, pen plotter,
+                 or limited color display. Such capability is useful
+                 for business graphics. At the lowest level of
+                 capability, this implies at least one color other than
+                 black ("highlight color"). At the high end, a small
+                 number (less than 32) colors. No implication is made
+                 that any particular color is available.
+
+</p><p class="rfcparagraph">     mapped      pixel color values are mapped in some specifable way
+                 to a multi-component color space. Sufficient levels of
+                 display are available to represent a continuous tone
+                 photographic image, but the result will be mapped into
+                 a more limited space.
+
+</p><p class="rfcparagraph">     full        ability (or at least willingness) to represent a full
+                 color image and present it. Full continuous tone color
+                 capability.
+
+</p><p class="rfcparagraph">   - The feature tag is intended primarily for use in the following
+     applications, protocols, services, or negotiation mechanisms:
+     Web applications may choose between color, grey, or binary
+     representations. Fax or printing applications might choose between
+     color and non-color renditions, for example.
+
+</p><p class="rfcparagraph">   - Examples of typical use:
+
+</p><p class="rfcparagraph">     Someone preparing a map of directions to a restaurant might prepare
+     different maps for each kind of value.
+
+</p><p class="rfcparagraph">   - Intended usage:
+
+</p><p class="rfcparagraph">     COMMON
+
+	<a name="section-3"><h2>3.  Examples of use of features</h2></a>
+
+   The following examples of feature comparison show how these features
+   can be used to describe various capabilities. The syntax used to
+   express combinations of features is purely illustrative and not
+   normative:
+
+</p><p class="rfcparagraph">   pix-x<=1024, pix-y<=768
+      might be used for a 1024x768 display.
+
+</p><p class="rfcparagraph">   dpi=300
+      might be used for a 300 dpi printer.
+
+</p><p class="rfcparagraph">   paper-size=a4
+      indicates the display size is 210x297mm.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.  IANA considerations</h2></a>
+
+   This document calls for registration of the following feature tags,
+   as per [REG]: pix-x, pix-y, dpi, ua-media, paper-size, color.  ASN.1
+   identifiers should be assigned to each of these and replaced in the
+   body of the registration.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.  Security Considerations</h2></a>
+
+   Inaccurate media feature information ascribed to a recipient might
+   cause a sender to subsequently send content that the recipient is not
+   actually able to process, thus causing a denial of service.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.  Acknowledgments</h2></a>
+
+   This document is based on a previous memo co-authored with Lou
+   Montoulli. It had benefited from the comments of Graham Klyne, Ho
+   John Lee, Brian Behlendorf, Jeff Mogul, Ted Hardie, and Dan Wing.
+	<a name="section-7"><h2>7.  References</h2></a>
+
+   [REG] Holtman, K., Mutz, A. and T. Hardie. "Feature Tag Registration
+         Procedures", BCP 31, RFC 2506, March 1999.
+
+</p><p class="rfcparagraph">   [SI]  ISO 1000:1992 "SI units and recommendations for the use of
+         their multiples and of certain other units", International
+         Organization for Standardization, 1992.
+
+</p><p class="rfcparagraph">Authors' Addresses
+
+   Larry Masinter
+   Xerox Corporation
+   Palo Alto Research Center
+   3333 Coyote Hill Road
+   Palo Alto CA 94304
+
+   Fax +1 650 812 4333
+   EMail: masinter@parc.xerox.com
+
+
+   Dan Wing
+   Cisco Systems, Inc.
+   101 Cooper Street
+   Santa Cruz, CA 95060  USA
+
+   Phone: +1 831 457 5200
+   Fax:   +1 831 457 5208
+   EMail: dwing@cisco.com
+
+
+   Andrew H. Mutz
+   Jutvision Corporation
+   124 University Avenue Suite 202
+   Palo Alto CA 94301
+
+   Phone: +1 650 325 6787
+   Fax:   +1 650 325 9337
+   Email: mutz@alum.mit.edu
+
+
+   Koen Holtman
+   Technische Universiteit Eindhoven
+   Postbus 513
+   Kamer HG 6.57
+   5600 MB Eindhoven (The Netherlands)
+
+   EMail: koen@win.tue.nl
+Full Copyright Statement
+
+   Copyright (C) The Internet Society (1999).  All Rights Reserved.<br>
+
+</p><p class="rfcparagraph">   This document and translations of it may be copied and furnished to
+   others, and derivative works that comment on or otherwise explain it
+   or assist in its implementation may be prepared, copied, published
+   and distributed, in whole or in part, without restriction of any
+   kind, provided that the above copyright notice and this paragraph are
+   included on all such copies and derivative works.  However, this
+   document itself may not be modified in any way, such as by removing
+   the copyright notice or references to the Internet Society or other
+   Internet organizations, except as needed for the purpose of
+   developing Internet standards in which case the procedures for
+   copyrights defined in the Internet Standards process must be
+   followed, or as required to translate it into languages other than
+   English.
+
+</p><p class="rfcparagraph">   The limited permissions granted above are perpetual and will not be
+   revoked by the Internet Society or its successors or assigns.
+
+</p><p class="rfcparagraph">   This document and the information contained herein is provided on an
+   "AS IS" basis and THE INTERNET SOCIETY AND THE INTERNET ENGINEERING
+   TASK FORCE DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING
+   BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION
+   HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED WARRANTIES OF
+   MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Masinter, et al.            Standards Track                     [Page 9]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                        C. Jennings<br>Request for Comments: 4770                                 Cisco Systems<br>Category: Standards Track                                J. Reschke, Ed.<br>                                                              greenbytes<br>                                                            January 2007<br><br></p>
+                  <h1>
+              vCard Extensions for Instant Messaging (IM)</h1>
+                  <h2>Status of This Memo</h2>
+
+   This document specifies an Internet standards track protocol for the
+   Internet community, and requests discussion and suggestions for
+   improvements.  Please refer to the current edition of the "Internet
+   Official Protocol Standards" (STD 1) for the standardization state
+   and status of this protocol.  Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The IETF Trust (2007).<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This document describes an extension to vCard to support Instant
+   Messaging (IM) and Presence Protocol (PP) applications.  IM and PP
+   are becoming increasingly common ways of communicating, and users
+   want to save this contact information in their address books.  It
+   allows a URI that is associated with IM or PP to be specified inside
+   a vCard.
+
+</p><p class="rfcparagraph">Table of Contents
+<a href="#section-1" class="">1. Overview .......................................................</a><br>
+<a href="#section-2" class="">2. IANA Considerations ............................................</a><br>
+<a href="#section-3" class="">3. Formal Grammar .................................................</a><br>
+<a href="#section-4" class="">4. Example ........................................................</a><br>
+<a href="#section-5" class="">5. Security Considerations ........................................</a><br>
+<a href="#section-6" class="">6. Acknowledgments ................................................</a><br>
+<a href="#section-7" class="">7. References .....................................................</a><br>
+<a href="#section-7.1" class="indent-1">7.1. Normative References ......................................</a><br>
+<a href="#section-7.2" class="indent-1">7.2. Informational References ..................................</a><br>
+	<a name="section-1"><h2>1.   Overview</h2></a>
+
+   As more and more people use various instant messaging (IM) and
+   presence protocol (PP) applications, it becomes important for them to
+   be able to share this contact address information, along with the
+   rest of their contact information.  RFC 2425 [1] and RFC 2426 [2]
+   define a standard format for this information, which is referred to
+   as vCard.  This document defines a new type in a vCard for
+   representing instant IM and PP URIs.  It is very similar to existing
+   types for representing email address and telephone contact
+   information.
+
+</p><p class="rfcparagraph">   The type entry to hold this new contact information is an IMPP type.
+   The IMPP entry has a single URI (see RFC 3986 [3]) that indicates the
+   address of a service that provides IM, PP, or both.  Also defined are
+   some parameters that give hints as to when certain URIs would be
+   appropriate.  A given vCard can have multiple IMPP entries, but each
+   entry can contain only one URI.  Each IMPP entry can contain multiple
+   parameters.  Any combination of parameters is valid, although a
+   parameter should occur, at most, once in a given IMPP entry.
+
+</p><p class="rfcparagraph">   The type of URI indicates what protocols might be usable for
+   accessing it, but this document does not define any of the types.
+   For example, a URI type of
+
+   o  "sip" [5] indicates to use SIP/SIMPLE,
+   o  "xmpp" [6] indicates to use XMPP,
+   o  "irc" indicates to use IRC,
+   o  "ymsgr" indicates to use yahoo,
+   o  "msn" might indicate to use Microsoft messenger,
+   o  "aim" indicates to use AOL, and
+   o  "im" [7] or "pres" [8] indicates that a CPIM or CPP gateway should
+      be used.
+
+</p><p class="rfcparagraph">   The normative definition of this new vCard type is given in Section
+   2, and an informational ABNF is provided in Section 3.
+	<a name="section-2"><h2>2.   IANA Considerations</h2></a>
+
+   The required email to define this extension (as defined in RFC 2425
+   [1]) was sent on October 29, 2004, to the ietf-mime-direct@imc.org
+   mailing list with the subject "Registration of text/directory MIME
+   type IMPP" (see <http://www.imc.org/ietf-mime-direct/mail-
+   archive/msg00068.html>).
+
+</p><p class="rfcparagraph">   This specification updates the "text/directory MIME Types"
+   subregistry in the "text/directory MIME Registrations" registry at
+   http://www.iana.org/assignments/text-directory-registrations with the
+   following information:
+
+</p><p class="rfcparagraph">   Type name: IMPP
+
+   Type purpose: To specify the URI for instant messaging and presence
+   protocol communications with the object the vCard represents.
+
+</p><p class="rfcparagraph">   Type encoding: 8bit
+
+   Type value: A single URI.  The type of the URI indicates the protocol
+   that can be used for this contact.
+
+</p><p class="rfcparagraph">   Type special notes: The type may include the type parameter "TYPE" to
+   specify an intended use for the URI.  The TYPE parameter values
+   include one or more of the following:
+
+</p><p class="rfcparagraph">   o  An indication of the type of communication for which this URI is
+      appropriate.  This can be a value of PERSONAL or BUSINESS.
+
+</p><p class="rfcparagraph">   o  An indication of the location of a device associated with this
+      URI.  Values can be HOME, WORK, or MOBILE.
+
+</p><p class="rfcparagraph">   o  The value PREF indicates this is a preferred address and has the
+      same semantics as the PREF value in a TEL type.
+
+</p><p class="rfcparagraph">   Additional information can be found in RFC 4770.
+
+</p><p class="rfcparagraph">   Intended usage: COMMON
+	<a name="section-3"><h2>3.   Formal Grammar</h2></a>
+
+   The following ABNF grammar [4] extends the grammar found in RFC 2425
+   [1] (Section 5.8.2) and RFC 2426 [2] (Section 4).
+
+</p><p class="rfcparagraph">   ;For name="IMPP"
+    param      = impp-param ; Only impp parameters are allowed
+
+    value      = URI
+                 ; URI defined in Section 3 of [3]
+
+    impp-param = "TYPE" "=" impp-type *("," impp-type)
+
+    impp-type  = "PERSONAL" / "BUSINESS" / ; purpose of communications
+                 "HOME" / "WORK" / "MOBILE" /
+                 "PREF" /
+                 iana-token / x-name;
+                 ; Values are case insensitive
+
+	<a name="section-4"><h2>4.   Example</h2></a>
+
+   BEGIN:vCard
+   VERSION:3.0
+   FN:Alice Doe
+   IMPP;TYPE=personal,pref:im:alice@example.com
+   END:vCard
+
+	<a name="section-5"><h2>5.   Security Considerations</h2></a>
+
+   This does not introduce additional security issues beyond the current
+   vCard specification.  It is worth noting that many people consider
+   their presence information more sensitive than other address
+   information.  Any system that stores or transfers vCards needs to
+   carefully consider the privacy issues around this information.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.   Acknowledgments</h2></a>
+
+   Thanks to Brian Carpenter, Lars Eggert, Ted Hardie, Paul Hoffman, Sam
+   Roberts, and Pekka Pessi for their comments.
+	<a name="section-7"><h2>7.   References</h2></a>
+
+	<a name="section-7.1"><h3>7.1   Normative References</h3></a>
+
+
+   [1]  Howes, T., Smith, M., and F. Dawson, "A MIME Content-Type for
+        Directory Information", RFC 2425, September 1998.
+
+</p><p class="rfcparagraph">   [2]  Dawson, F. and T. Howes, "vCard MIME Directory Profile", RFC
+        2426, September 1998.
+
+</p><p class="rfcparagraph">   [3]  Berners-Lee, T., Fielding, R., and L. Masinter, "Uniform
+        Resource Identifier (URI): Generic Syntax", STD 66, RFC 3986,
+        January 2005.
+
+</p><p class="rfcparagraph">   [4]  Crocker, D., Ed. and P. Overell, "Augmented BNF for Syntax
+        Specifications: ABNF", RFC 4234, October 2005.
+
+</p><p class="rfcparagraph">	<a name="section-7.2"><h3>7.2   Informational References</h3></a>
+
+   [5]  Rosenberg, J., Schulzrinne, H., Camarillo, G., Johnston, A.,
+        Peterson, J., Sparks, R., Handley, M., and E. Schooler, "SIP:
+        Session Initiation Protocol", RFC 3261, June 2002.
+
+</p><p class="rfcparagraph">   [6]  Saint-Andre, P., "Internationalized Resource Identifiers (IRIs)
+        and Uniform Resource Identifiers (URIs) for the Extensible
+        Messaging and Presence Protocol (XMPP)", RFC 4622, July 2006.
+
+</p><p class="rfcparagraph">   [7]  Peterson, J., "Common Profile for Instant Messaging (CPIM)", RFC
+        3860, August 2004.
+
+</p><p class="rfcparagraph">   [8]  Peterson, J., "Common Profile for Presence (CPP)", RFC 3859,
+        August 2004.
+Authors' Addresses
+
+   Cullen Jennings
+   Cisco Systems
+   170 West Tasman Drive
+   MS: SJC-21/2
+   San Jose, CA  95134
+   USA
+
+   Phone: +1 408 902-3341
+   EMail: fluffy@cisco.com
+
+
+   Julian F. Reschke (editor)
+   greenbytes GmbH
+   Hafenweg 16
+   Muenster, NW  48155
+   Germany
+
+   Phone: +49 251 2807760
+   EMail: julian.reschke@greenbytes.de
+Full Copyright Statement
+
+   Copyright (C) The IETF Trust (2007).<br>
+
+</p><p class="rfcparagraph">   This document is subject to the rights, licenses and restrictions
+   contained in BCP 78, and except as set forth therein, the authors
+   retain all their rights.
+
+</p><p class="rfcparagraph">   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY, THE IETF TRUST,
+   AND THE INTERNET ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES,
+   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT
+   THE USE OF THE INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY
+   IMPLIED WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR
+   PURPOSE.
+
+</p><p class="rfcparagraph">Intellectual Property
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the procedures with respect to rights in RFC documents can be
+   found in BCP 78 and BCP 79.
+
+</p><p class="rfcparagraph">   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+</p><p class="rfcparagraph">   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at
+   ietf-ipr@ietf.org.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is currently provided by the
+   Internet Society.
+
+</p>
+
+
+
+
+Jennings & Reschke          Standards Track                     [Page 7]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

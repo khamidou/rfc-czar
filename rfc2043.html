@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                           A. Fuqua<br>Request for Comments: 2043                                           IBM<br>Category: Standards Track                                   October 1996<br><br></p>
+                  <h1>
+                  The PPP SNA Control Protocol (SNACP)</h1>
+                  <h2>Status of this Memo</h2>
+
+   This document specifies an Internet standards track protocol for the
+   Internet community, and requests discussion and suggestions for
+   improvements.  Please refer to the current edition of the "Internet
+   Official Protocol Standards" (STD 1) for the standardization state
+   and status of this protocol.  Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   The Point-to-Point Protocol (PPP) [1] provides a standard method for
+   transporting multi-protocol datagrams over point-to-point links.  PPP
+   defines an extensible Link Control Protocol, and proposes a family of
+   Network Control Protocols for establishing and configuring different
+   network-layer protocols.
+
+</p><p class="rfcparagraph">   This document defines the Network Control Protocols for establishing
+   and configuring Systems Network Architecture (SNA) over PPP and SNA
+   over LLC 802.2 over PPP.
+
+</p><p class="rfcparagraph">Table of Contents
+<a href="#section-1" class="">1. Introduction .........................................</a><br>
+<a href="#section-1.1" class="indent-1">1.1 Specification of Requirements ..................</a><br>
+<a href="#section-1.2" class="indent-1">1.2 Terminology ....................................</a><br>
+<a href="#section-2" class="">2. A PPP Network Control Protocol for SNA ...............</a><br>
+<a href="#section-3" class="">3. Sending SNA PIUs and NLPs. ...........................</a><br>
+<a href="#section-3.1" class="indent-1">3.1 Sending SNA XID or FID2 PIUs over LLC ..........</a><br>
+<a href="#section-3.2" class="indent-1">3.2 Sending HPR Network Layer Packets (NLPs) .......</a><br>
+<a href="#section-3.3" class="indent-1">3.3 Other Considerations ...........................</a><br>
+   SECURITY CONSIDERATIONS ......................................    6
+   REFERENCES ...................................................    6
+   ACKNOWLEDGEMENTS... ..........................................    7
+   CHAIR'S ADDRESS ..............................................    7
+   AUTHOR'S ADDRESS .............................................    7
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   PPP has three main components:
+
+</p><p class="rfcparagraph">   1. A method for encapsulating multi-protocol datagrams.
+
+</p><p class="rfcparagraph">   2. A Link Control Protocol (LCP) for establishing, configuring,
+      and testing the data-link connection.
+
+</p><p class="rfcparagraph">   3. A family of Network Control Protocols for establishing and
+      configuring different network-layer protocols.
+
+</p><p class="rfcparagraph">   In order to establish communications over a point-to-point link, each
+   end of the PPP link must first send LCP packets to configure and test
+   the data link.  After the link has been established and optional
+   facilities have been negotiated as needed by the LCP, PPP must send
+   SNACP packets to choose and configure the SNA network-layer protocol.
+   Once SNACP has reached the Opened state, SNA datagrams can be sent
+   over the link.
+
+</p><p class="rfcparagraph">   The link will remain configured for communications until explicit LCP
+   or SNACP packets close the link down, or until some external event
+   occurs (an inactivity timer expires or network administrator
+   intervention).
+
+</p><p class="rfcparagraph">	<a name="section-1.1"><h3>1.1   Specification of Requirements</h3></a>
+
+   In this document, several words are used to signify the requirements
+   of the specification.  These words are often capitalized.
+
+</p><p class="rfcparagraph">   MUST      This word, or the adjective "required", means that the
+             definition is an absolute requirement of the specification.
+
+</p><p class="rfcparagraph">   MUST NOT  This phrase means that the definition is an absolute
+             prohibition of the specification.
+
+</p><p class="rfcparagraph">   SHOULD    This word, or the adjective "recommended", means that there
+             may exist valid reasons in particular circumstances to
+             ignore this item, but the full implications must be
+             understood and carefully weighed before choosing a
+             different course.
+
+</p><p class="rfcparagraph">   MAY       This word, or the adjective "optional", means that this
+             item is one of an allowed set of alternatives.  An
+             implementation which does not include this option MUST be
+             prepared to interoperate with another implementation which
+             does include the option.
+	<a name="section-1.2"><h3>1.2   Terminology</h3></a>
+
+   This document frequently uses the following terms:
+
+</p><p class="rfcparagraph">   datagram  The unit of transmission in the network layer (such as IP).
+             A datagram may be encapsulated in one or more packets
+             passed to the data link layer.
+
+</p><p class="rfcparagraph">   frame     The unit of transmission at the data link layer.  A frame
+             may include a header and/or a trailer, along with some
+             number of units of data.
+
+</p><p class="rfcparagraph">   packet    The basic unit of encapsulation, which is passed across the
+             interface between the network layer and the data link
+             layer.  A packet is usually mapped to a frame; the
+             exceptions are when data link layer fragmentation is being
+             performed, or when multiple packets are incorporated into a
+             single frame.
+
+</p><p class="rfcparagraph">   peer      The other end of the point-to-point link.
+
+</p><p class="rfcparagraph">   silently discard
+             This means the implementation discards the packet without
+             further processing.  The implementation SHOULD provide the
+             capability of logging the error, including the contents of
+             the silently discarded packet, and SHOULD record the event
+             in a statistics counter.
+
+</p><p class="rfcparagraph">   PIU       Path information unit.  A message unit consisting of a
+             transmission header (TH) alone, or a TH followed by a basic
+             information unit (BIU) or a BIU segment.  PIU is analogous
+             to datagram.
+
+</p><p class="rfcparagraph">   TH        Transmission header.  Control information, optionally
+             followed by a basic information unit (BIU) or a BIU
+             segment, that is created and used by path control to route
+             message units and to control their flow within the network.
+
+</p><p class="rfcparagraph">   BIU       Basic information unit.  In SNA, the unit of data and
+             control information passed between half-sessions.  It
+             consists of a request/response header (RH) followed by a
+             request/response unit (RU).
+
+</p><p class="rfcparagraph">   message unit
+             In SNA, the unit of data processed by any layer; for
+             example, a basic information unit (BIU), a path information
+             unit (PIU), or a request/response unit (RU).
+   NLP       Network Layer Packet.  In High Performance Routing (HPR),
+             the message unit used to carry data over the route.
+             Network Layer Packet is analogous to datagram.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   A PPP Network Control Protocol for SNA</h2></a>
+
+   The SNA Control Protocol (SNACP) is responsible for configuring,
+   enabling, and disabling SNA on both ends of the point-to-point link.
+   SNACP uses the same packet exchange mechanism as the Link Control
+   Protocol (LCP). SNACP packets may not be exchanged until PPP has
+   reached the Network-Layer Protocol phase.  SNACP packets received
+   before this phase is reached should be silently discarded.
+
+</p><p class="rfcparagraph">   Note that there are actually two SNA Network Control Protocols; one
+   for SNA over LLC 802.2 and another for SNA without LLC 802.2.  These
+   SNA NCPs are negotiated separately and independently of each other.
+
+</p><p class="rfcparagraph">   The SNA Control Protocol is exactly the same as the Link Control
+   Protocol [1] with the following exceptions:
+
+</p><p class="rfcparagraph">   Frame Modifications
+
+      The packet may utilize any modifications to the basic frame format
+      which have been negotiated during the Link Establishment phase.
+
+</p><p class="rfcparagraph">   Data Link Layer Protocol Field
+
+      Exactly one SNACP packet is encapsulated in the PPP Information
+      field, where the PPP Protocol field indicates type hex 804B (SNA
+      over LLC 802.2) or hex 804D (SNA).
+
+</p><p class="rfcparagraph">   Code field
+
+      Only Codes 1 through 7 (Configure-Request, Configure-Ack,
+      Configure-Nak, Configure-Reject, Terminate-Request, Terminate-Ack
+      and Code-Reject) are used.  Other Codes should be treated as
+      unrecognized and should result in Code-Rejects.
+
+</p><p class="rfcparagraph">   Timeouts
+
+      SNACP packets may not be exchanged until PPP has reached the
+      Network-Layer Protocol phase. An implementation should be prepared
+      to wait for Authentication and Link Quality Determination to
+      finish before timing out waiting for a Configure-Ack or other
+      response.  It is suggested that an implementation give up only
+      after user intervention or a configurable amount of time.
+   Configuration Option Types
+
+      There are no Configuration Options for SNA or for SNA over LLC
+      802.2.
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   Sending SNA PIUs and NLPs.</h2></a>
+
+   Before any SNA packets may be communicated, PPP must reach the
+   Network-Layer Protocol phase, and the appropriate SNA Control
+   Protocol must reach the Opened state.
+
+</p><p class="rfcparagraph">   The maximum length of a SNA packet transmitted over a PPP link is the
+   same as the maximum length of the Information field of a PPP
+   encapsulated packet.
+
+</p><p class="rfcparagraph">   The format of the PPP Information field itself is the same as that
+   defined in [1].  Detailed information on SNA and APPN can be found in
+   [3], [4], [5], [6], and [7].
+
+</p><p class="rfcparagraph">	<a name="section-3.1"><h3>3.1   Sending SNA XID or FID2 PIUs over LLC</h3></a>
+
+   Exactly one SNA XID or FID2 PIU over LLC 802.2 is encapsulated in the
+   PPP Information field, where the PPP Protocol field indicates type
+   hex 004B (SNA over LLC 802.2).
+
+</p><p class="rfcparagraph">   A summary of this frame structure, beginning with the PPP Protocol
+   field, is shown below. The fields are transmitted from left to right.
+
+</p><p class="rfcparagraph">                -- LLC portion (PPP Information Field) -------------
+               |                                                    |
+   -<pre>+----------+----------+----------+----------+-------------------+-
+    | Protocol | DSAP     | SSAP     | Control  | LLC Information   |
+    | 0x004B   | Address  | Address  | Field    | Field             |
+   -+----------+----------+----------+----------+-------------------+-
+
+   The LLC information field contains the XID or FID2 PIU. LLC(2) is<br>
+   included in this format for link-level error recovery.  Error
+   recovery is done by the routers at each end of the PPP link.
+
+</p><p class="rfcparagraph">	<a name="section-3.2"><h3>3.2   Sending HPR Network Layer Packets (NLPs)</h3></a>
+
+   Exactly one HPR Network Layer Packet (NLP) is encapsulated in the PPP
+   Information field, where the PPP Protocol field indicates type hex
+   004D (SNA).
+   A summary of this frame structure, beginning with the PPP Protocol
+   field, is shown below. The fields are transmitted from left to right.
+
+</p><p class="rfcparagraph">                -- HPR Network Layer Packet (NLP) --
+                  |   (PPP Information Field)          |
+      -+----------+--------+--------+------------------+-
+       | Protocol | NHDR   | THDR   | data             |
+       | 0x004D   |        |        |                  |
+      -+----------+--------+--------+------------------+
+</pre>
+-
+
+	<a name="section-3.3"><h3>3.3   Other Considerations</h3></a>
+
+   It is architecturally possible to transport HPR NLPs over LLC over
+   PPP using PPP Protocol field type hex 004B (SNA over LLC 802.2) if
+   the optional HPR link-level error recover tower is included in the
+   implementation.
+
+</p><p class="rfcparagraph">Security Considerations
+
+   Security issues are not discussed in this memo.
+
+</p><p class="rfcparagraph">References
+
+   [1]   Simpson, W., "The Point-to-Point Protocol (PPP)", STD 51,
+         RFC 1661, Daydreamer, July 1994.
+
+</p><p class="rfcparagraph">   [2]   Reynolds, J., and J. Postel, "Assigned Numbers", STD 2, RFC
+         1700, USC/Information Sciences Institute, October 1994.
+
+</p><p class="rfcparagraph">   [3]   "SNA Formats", GA27-3136, IBM.
+
+</p><p class="rfcparagraph">   [4]   "SNA APPN Architecture Reference", SC30-3422, IBM.
+
+</p><p class="rfcparagraph">   [5]   "APPN Architecture and Product Implementations Tutorial",
+          GG24-3669-02, IBM.
+
+</p><p class="rfcparagraph">   [6]   APPN Implementers Workshop homepage,
+         http://www.raleigh.ibm.com/app/aiwhome.htm
+
+   [7]   "APPN High Performance Routing (HPR) Architecture",
+         ftp://networking.raleigh.ibm.com/pub/standards/aiw/appn/hpr
+
+
+   IBM documents are orderable through 1-800-879-2755.
+Acknowledgements
+
+   Some of the text in this document is taken from previous documents
+   produced by the Point-to-Point Protocol Working Group of the Internet
+   Engineering Task Force (IETF).
+
+</p><p class="rfcparagraph">   Some of the text in this document is taken from miscellaneous IBM
+   documents.
+
+</p><p class="rfcparagraph">   Many people provided suggestions and portions of text for this
+   document.  Special thanks to Allen Carriker, Marcia Peters, and Scott
+   G. Wasson.
+
+</p><p class="rfcparagraph">Chair's Address
+
+   The working group can be contacted via the current chair:
+
+</p><p class="rfcparagraph">   Karl F. Fox
+   Ascend Communications
+   3518 Riverside Dr., Suite 101
+   Columbus, Ohio  4322
+
+   EMail: karl@ascend.com
+
+Author's Address
+
+   Questions about this memo can also be directed to:
+
+</p>   Andrew M. Fuqua
+   International Business Machines Corporation
+   P. O. Box 12195
+   Research Triangle Park, NC  27709
+
+   EMail: fuqua@vnet.ibm.com
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Fuqua                       Standards Track                     [Page 7]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

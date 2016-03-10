@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph">Network Working Group                           Jonathan B. Postel
+RFC # 516                                          UCLA-NMC
+NIC # 16683                                         May 18, 1973
+
+
+                         LOST MESSAGE DETECTION
+
+I have three suggestions for detecting the loss of messages by the
+communications subsystem.  The first of these is perhaps the more
+powerful and simpler to implement since it uses no new concepts and has
+the power to retransmit the message detected as lost.
+
+</p><p class="rfcparagraph">The first scheme:
+
+</p><p class="rfcparagraph">    If upon sending a message the host saved a copy of that message and
+    waited until either:
+
+</p><p class="rfcparagraph">        a RFNM was returned, in which case everything is ok and the next
+        message is processed.
+
+</p><p class="rfcparagraph">        a INCOMPLETE TRANSMISSION is returned, in which case the copy of
+        the message is retransmitted (this could be a loop so put a
+        finite upper bound on the number of times to retransmit the same
+        message).
+
+</p><p class="rfcparagraph">        a DESTINATION DEAD is returned, in which case mark the
+        destination down and require the exchange of reset commands
+        before further communication is allowed.
+
+</p><p class="rfcparagraph">        something else is received indicating an error in the network or
+        local IMP, in which case at least log the error, and probably
+        close the conversation.
+
+</p><p class="rfcparagraph">    Following the above procedures either on a per host basis or a per
+    link basis should prevent a lost message problem from
+    developing.
+
+</p><p class="rfcparagraph">The second scheme:
+
+</p><p class="rfcparagraph">    If on a per host basis, message numbers are included in the host to
+    host header of messages,, and messages are delivered in order (this
+    is currently the case in the network, except for priority messages
+    so this proposal requires that each host either send everything as
+    priority or nothing as priority) then each receiving host can detect
+    a missing message by comparing the message number of the received
+    message with the previously received message.
+
+</p><p class="rfcparagraph">        On exchanging resets the sequence numbers between that pair of
+        hosts is set to zero.
+
+</p><p class="rfcparagraph">        Each time a message is sent the current send message number is
+        entered into a field in the message header, and the current send
+        message number is incremented (modulo N, say N=256)
+
+        Each time a message is received the message number from the
+        message is compared to the current receive message number and:
+
+</p><p class="rfcparagraph">            if the received message is the expected one then the message
+            is acceptable and current receive message number is
+            incremented (modulo N);
+
+</p><p class="rfcparagraph">            if the received message is not the expected one then a
+            message has been lost.
+
+</p><p class="rfcparagraph">    What to do when a missing message is detected, not clear, but at
+    least can be logged and reported to the network control center.  A
+    missing message may not be fatal to an interactive conversation, but
+    it is critical in a file transfer, thus I suggest that missing
+    messages which are not recovered be cause to close the conversation.
+
+</p><p class="rfcparagraph">The third scheme:
+
+</p><p class="rfcparagraph">    Host to host acknowledgements could be required.  Such an
+    acknowledgement scheme could be implemented similarly to the IMP to
+    IMP scheme.  This is a serious change to the current protocols so I
+    will not elaborate on it here, feeling that deeper study will be
+    necessary to fully specify a reasonable host to host acknowledgement
+    strategy.
+
+</p><p class="rfcparagraph">
+Of these three suggestions the first is the most immediately practical
+and implementable;  in fact several hosts all ready do this.  These
+schemes also are non-conflicting, they could be implemented and used
+simultaneously.
+
+</p>
+
+
+
+
+
+
+       [ This RFC was put into machine readable form for entry ]
+       [ into the online RFC archives by Alex McKenzie with    ]
+       [ support from GTE, formerly BBN Corp.             9/99 ]
+
+
+
+
+Postel                                                          [Page 2]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

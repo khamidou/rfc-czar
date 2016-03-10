@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                        K. Zeilenga<br>Request for Comments: 4525                           OpenLDAP Foundation<br>Category: Informational                                        June 2006<br><br></p>
+                  <h1>
+              Lightweight Directory Access Protocol (LDAP)
+                       Modify-Increment Extension
+</h1>
+                  <h2>Status of This Memo</h2>
+
+   This memo provides information for the Internet community.  It does
+   not specify an Internet standard of any kind.  Distribution of this
+   memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (2006).<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This document describes an extension to the Lightweight Directory
+   Access Protocol (LDAP) Modify operation to support an increment
+   capability.  This extension is useful in provisioning applications,
+   especially when combined with the assertion control and/or the pre-
+   read or post-read control extension.
+
+</p><p class="rfcparagraph">Table of Contents
+<a href="#section-1" class="">1. Background and Intended Use ....................................</a><br>
+<a href="#section-2" class="">2. The Modify-Increment Extension .................................</a><br>
+<a href="#section-3" class="">3. LDIF Support ...................................................</a><br>
+<a href="#section-4" class="">4. Security Considerations ........................................</a><br>
+<a href="#section-5" class="">5. IANA Considerations ............................................</a><br>
+<a href="#section-5.1" class="indent-1">5.1. Object Identifier .........................................</a><br>
+<a href="#section-5.2" class="indent-1">5.2. LDAP Protocol Mechanism ...................................</a><br>
+<a href="#section-5.3" class="indent-1">5.3. LDAP Protocol Mechanism ...................................</a><br>
+<a href="#section-6" class="">6. References .....................................................</a><br>
+<a href="#section-6.1" class="indent-1">6.1. Normative References ......................................</a><br>
+<a href="#section-6.2" class="indent-1">6.2. Informative References ....................................</a><br>
+
+	<a name="section-1"><h2>1.   Background and Intended Use</h2></a>
+
+   The Lightweight Directory Access Protocol (LDAP) [RFC4510] does not
+   currently provide an operation to increment values of an attribute.
+   A client must read the values of the attribute and then modify those
+   values to increment them by the desired amount.  As the values may be
+   updated by other clients between this add and modify, the client must
+   be careful to construct the modify request so that it fails in this
+   case, and upon failure, to re-read the values and construct a new
+   modify request.
+
+</p><p class="rfcparagraph">   This document extends the LDAP Modify Operation [RFC4511] to support
+   an increment values capability.  This feature is intended to be used
+   with either the LDAP pre-read or post-read control extensions
+   [RFC4527].  This feature may also be used with the LDAP assertion
+   control extension [RFC4528] to provide test-and-increment
+   functionality.
+
+</p><p class="rfcparagraph">   In this document key words "MUST", "MUST NOT", "REQUIRED", "SHALL",
+   "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and
+   "OPTIONAL" are to be interpreted as described in BCP 14 [RFC2119].
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   The Modify-Increment Extension</h2></a>
+
+   This document extends the LDAP Modify request to support a increment
+   values capability.  Implementations of this extension SHALL support
+   an additional ModifyRequest operation enumeration value increment
+   (3), as described herein.  Implementations not supporting this<br>
+   extension will treat this value as they would an unlisted value,
+   e.g., as a protocol error.
+
+</p><p class="rfcparagraph">   The increment (3) operation value specifies that an increment values<br>
+   modification is requested.  All existing values of the modification
+   attribute are to be incremented by the listed value.  The
+   modification attribute must be appropriate for the request (e.g., it
+   must have INTEGER or other increment-able values), and the
+   modification must provide one and only one value.  If the attribute
+   is not appropriate for the request, a constraintViolation or other
+   appropriate error is to be returned.  If multiple values are
+   provided, a protocolError is to be returned.
+
+</p><p class="rfcparagraph">   Servers supporting this feature SHOULD publish the object identifier
+   (OID) 1.3.6.1.1.14  as a value of the 'supportedFeatures' [RFC4512]
+   attribute in the root DSE.  Clients supporting this feature SHOULD
+   NOT use the feature unless they know the server supports it.
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.  LDIF Support</h2></a>
+
+   To represent Modify-Increment requests in LDAP Data Interchange
+   Format [RFC2849], the ABNF [RFC4234] production <mod-spec> is
+   extended as follows:
+
+</p><p class="rfcparagraph">       mod-spec =/ "increment:" FILL AttributeDescription SEP
+            attrval-spec "-" SEP
+   For example,
+
+       # Increment uidNumber
+       dn: cn=max-assigned uidNumber,dc=example,dc=com
+       changetype: modify
+       increment: uidNumber
+       uidNumber: 1
+       -
+
+   This LDIF fragment represents a Modify request to increment the
+   value(s) of uidNumber by 1.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   Security Considerations</h2></a>
+
+   General LDAP security considerations [RFC4510], as well as those
+   specific to the LDAP Modify [RFC4511], apply to this Modify-Increment
+   extension.  Beyond these considerations, it is noted that
+   introduction of this extension should reduce application complexity
+   (by providing one operation for what presently requires multiple
+   operations) and, hence, it may aid in the production of correct and
+   secure implementations.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   IANA Considerations</h2></a>
+
+   Registration of the following values [RFC4520] have been completed.
+
+</p><p class="rfcparagraph">	<a name="section-5.1"><h3>5.1   Object Identifier</h3></a>
+
+   The IANA has assigned an LDAP Object Identifier to identify the LDAP
+   Modify-Increment feature, as defined in this document.
+
+</p><p class="rfcparagraph">       Subject: Request for LDAP Object Identifier Registration
+       Person & email address to contact for further information:
+           Kurt Zeilenga <kurt@OpenLDAP.org>
+       Specification: RFC 4525
+       Author/Change Controller: Author
+       Comments:
+           Identifies the LDAP Modify-Increment feature
+
+	<a name="section-5.2"><h3>5.2   LDAP Protocol Mechanism</h3></a>
+
+   The following LDAP Protocol Mechanism has been registered.
+
+</p><p class="rfcparagraph">       Subject: Request for LDAP Protocol Mechanism Registration
+       Object Identifier: 1.3.6.1.1.14
+       Description: Modify-Increment
+       Person & email address to contact for further information:
+           Kurt Zeilenga <kurt@openldap.org>
+       Usage: Feature
+       Specification: RFC 4525
+       Author/Change Controller: Kurt Zeilenga <kurt@openldap.org>
+       Comments: none
+
+	<a name="section-5.3"><h3>5.3   LDAP Protocol Mechanism</h3></a>
+
+   The IANA has assigned an LDAP ModifyRequest Operation Type (3)
+   [RFC4520] for use in this document.
+
+</p><p class="rfcparagraph">       Subject: Request for LDAP Protocol Mechanism Registration
+       ModifyRequest Operation Name: increment
+       Description: Modify-Increment
+       Person & email address to contact for further information:
+           Kurt Zeilenga <kurt@openldap.org>
+       Usage: Feature
+       Specification: RFC 4525
+       Author/Change Controller: Kurt Zeilenga <kurt@openldap.org>
+       Comments: none
+
+	<a name="section-6"><h2>6.   References</h2></a>
+
+	<a name="section-6.1"><h3>6.1   Normative References</h3></a>
+
+   [RFC2119]     Bradner, S., "Key words for use in RFCs to Indicate
+                 Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">   [RFC4234]     Crocker, D. and P. Overell, "Augmented BNF for Syntax
+                 Specifications: ABNF", RFC 4234, October 2005.
+
+</p><p class="rfcparagraph">   [RFC2849]     Good, G., "The LDAP Data Interchange Format (LDIF) -
+                 Technical Specification", RFC 2849, June 2000.
+
+</p><p class="rfcparagraph">   [RFC4510]     Zeilenga, K., Ed., "Lightweight Directory Access
+                 Protocol (LDAP): Technical Specification Road Map", RFC
+                 4510, June 2006.
+
+</p><p class="rfcparagraph">   [RFC4511]     Sermersheim, J., Ed., "Lightweight Directory Access
+                 Protocol (LDAP): The Protocol", RFC 4511, June 2006.
+
+</p><p class="rfcparagraph">   [RFC4512]     Zeilenga, K., "Lightweight Directory Access Protocol
+                 (LDAP): Directory Information Models", RFC 4512, June
+                 2006.
+	<a name="section-6.2"><h3>6.2   Informative References</h3></a>
+
+   [RFC4520]     Zeilenga, K., "Internet Assigned Numbers Authority
+                 (IANA) Considerations for the Lightweight Directory
+                 Access Protocol (LDAP)", BCP 64, RFC 4520, June 2006.
+
+</p><p class="rfcparagraph">   [RFC4527]     Zeilenga, K., "Lightweight Directory Access Protocol
+                 (LDAP) Read Entry Controls", RFC 4527, June 2006.
+
+</p><p class="rfcparagraph">   [RFC4528]     Zeilenga, K., "Lightweight Directory Access Protocol
+                 (LDAP) Assertion Control", RFC 4528, June 2006.
+
+</p><p class="rfcparagraph">Author's Address
+
+   Kurt D. Zeilenga
+   OpenLDAP Foundation
+
+   EMail: Kurt@OpenLDAP.org
+Full Copyright Statement
+
+   Copyright (C) The Internet Society (2006).<br>
+
+</p><p class="rfcparagraph">   This document is subject to the rights, licenses and restrictions
+   contained in BCP 78, and except as set forth therein, the authors
+   retain all their rights.
+
+</p><p class="rfcparagraph">   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY AND THE INTERNET
+   ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED,
+   INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE
+   INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED
+   WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Intellectual Property
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the procedures with respect to rights in RFC documents can be
+   found in BCP 78 and BCP 79.
+
+</p><p class="rfcparagraph">   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+</p><p class="rfcparagraph">   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at
+   ietf-ipr@ietf.org.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is provided by the IETF
+   Administrative Support Activity (IASA).
+
+</p>
+
+
+
+
+
+Zeilenga                     Informational                      [Page 6]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

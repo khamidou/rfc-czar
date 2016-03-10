@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph">Independent Submission                                          J. Snell
+Request for Comments: 6903                                    March 2013
+Category: Informational
+ISSN: 2070-1721
+
+
+                     Additional Link Relation Types
+
+<h2>Abstract</h2>
+
+   This specification defines a number of additional link relation types
+   that can used for a range of purposes in a variety of applications
+   types.
+
+</p><p class="rfcparagraph">Status of This Memo
+
+   This document is not an Internet Standards Track specification; it is
+   published for informational purposes.
+
+</p><p class="rfcparagraph">   This is a contribution to the RFC Series, independently of any other
+   RFC stream.  The RFC Editor has chosen to publish this document at
+   its discretion and makes no statement about its value for
+   implementation or deployment.  Documents approved for publication by
+   the RFC Editor are not a candidate for any level of Internet
+   Standard; see Section 2 of RFC 5741.
+
+</p><p class="rfcparagraph">   Information about the current status of this document, any errata,
+   and how to provide feedback on it may be obtained at
+   http://www.rfc-editor.org/info/rfc6903.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (c) 2013 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+</p><p class="rfcparagraph">   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (http://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document.
+<h2>Table of Contents</h2>
+<a href="#section-1" class="">1. Introduction  . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2" class="">2. "about" . . . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3" class="">3. "preview" . . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4" class="">4. "privacy-policy"  . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.1" class="indent-1">4.1. The "privacy-policy" Link Relation and P3P  . . . . . . </a><br>
+<a href="#section-5" class="">5. "terms-of-service"  . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-6" class="">6. "type"  . . . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-7" class="">7. IANA Considerations . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-8" class="">8. Security Considerations . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-9" class="">9. References  . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-9.1" class="indent-1">9.1. Normative References  . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-9.2" class="indent-1">9.2. Informative References  . . . . . . . . . . . . . . . . </a><br>
+
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   The fundamental model for web links and the "Link Relations" registry
+   are established by [RFC5988].  This specification defines and adds
+   the following additional link relation types to the registry:
+   "about", "preview", "privacy-policy", "terms-of-service", and "type".
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   "about"</h2></a>
+
+   The "about" link relation can be used to refer to a resource that is
+   the subject or topic of the link's context.  Multiple subjects can be
+   indicated through the use of multiple "about" link relations.
+
+</p><p class="rfcparagraph">   For example, if the context resource is a review about a particular
+   product, the "about" link can be used to reference the URL of the
+   product:
+
+</p><p class="rfcparagraph">     HTTP/1.1 200 OK
+     Content-Type: application/json
+     Link: <http://store.example.org/product/abc>; rel="about"
+
+     {...}
+
+	<a name="section-3"><h2>3.   "preview"</h2></a>
+
+   The "preview" link relation can be used to refer to a resource that
+   serves as a preview of the link's context, likely with reduced
+   quality or limited content.  For instance, the preview link might
+   reference a screen capture of a video, a brief snippet of audio from
+   a song, or a thumbnail representation of an image.
+   For example, issuing an HTTP HEAD request to a URI representing a
+   large video or image file might return a link to a short or lower-
+   quality preview of the original:
+
+</p><p class="rfcparagraph">     HTTP/1.1 200 OK
+     Content-Text: video/mpeg
+     Link: <http://example.org/preview/10-second-preview.mpg>;
+       rel="preview"; type="video/mpeg"
+
+	<a name="section-4"><h2>4.   "privacy-policy"</h2></a>
+
+   The "privacy-policy" link relation can be used to refer to a resource
+   describing the privacy policy associated with the link's context.
+   The privacy policy can be any resource that discloses what personal
+   information about the user is collected and how that personal
+   information is stored, used, managed, and disclosed to other parties.
+
+</p><p class="rfcparagraph">   For example, an HTTP server that collects personal information about
+   a user throughout the course of the user's interaction with the
+   service can include "privacy-policy" links within all HTTP responses
+   using any combination of Link headers or links embedded in the
+   response payload:
+
+</p><p class="rfcparagraph">     HTTP/1.1 200 OK
+     Content-Type: text/html
+
+     <html>
+       <head>
+         ...
+         <link rel="privacy-policy" href="/privacy-policy.html" />
+         ...
+       </head>
+       <body>
+         ...
+       </body>
+     </html>
+
+
+   Note that in the absence of clear legal obligations placed on an
+   entity, either through contract or law, the presence of a "privacy-
+   policy" link does not constitute a legally binding obligation on the
+   part of the service.  The linked resource can only be interpreted as
+   a description of the expected practice.
+
+</p><p class="rfcparagraph">   It is recommended that publishers of privacy-policy resources linked
+   to using the "privacy-policy" link relation provide a clear and
+   simple mechanism for signaling when changes to the privacy-policy
+   resource have been made, such as generating a new Entity Tag for the
+   resource or generating a hash over the privacy policy's content.  The
+   extent to which mechanisms are utilized is out of the scope of this
+   specification, however.
+
+</p><p class="rfcparagraph">	<a name="section-4.1"><h3>4.1   The "privacy-policy" Link Relation and P3P</h3></a>
+
+   The Platform for Privacy Preferences [P3P] is a W3C Recommendation
+   that defines a data format for the expression of privacy policy
+   information.  While the "privacy-policy" link relation can be used to
+   reference P3P documents, there is no intended relationship, normative
+   or otherwise, between this specification and the P3P Recommendation.
+   As far as this specification is concerned, P3P documents are just one
+   possible type of resource that "privacy-policy" links can reference.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   "terms-of-service"</h2></a>
+
+   The "terms-of-service" link relation can be used to refer to a
+   resource describing the terms of service associated with the link's
+   context.  The terms of service can be any resource that describes the
+   rules to which a consumer of the service must agree to follow when
+   using the service provided by the link's context.
+
+</p><p class="rfcparagraph">   For example, an HTTP server can include "terms-of-service" links
+   within all HTTP responses using any combination of Link headers or
+   links embedded in the response payload:
+
+</p><p class="rfcparagraph">     HTTP/1.1 200 OK
+     Content-Type: text/html
+
+     <html>
+       <head>
+         ...
+         <link rel="terms-of-service" href="/tos.html">
+         ...
+       </head>
+       <body>
+         ...
+       </body>
+     </html>
+
+   It must be noted that the terms of service linked to using this link
+   relation carry no legal weight and can be ignored with impunity in
+   the absence of an explicit, legally enforceable contract.  The linked
+   terms of service are simply a notice of the terms that may be
+   expected to apply once a contract is established.
+	<a name="section-6"><h2>6.   "type"</h2></a>
+
+   The "type" link relation can be used to indicate that the context
+   resource is an instance of the resource identified by the target
+   Internationalized Resource Identifier (IRI).
+
+</p><p class="rfcparagraph">     HTTP/1.1 200 OK
+     Content-Type: text/plain
+     Link: <http://example.org/Person/givenName>; rel="type"
+
+     Sally
+
+   When used within the header of an HTTP message, the type specified by
+   the "type" link relation cannot be confused with the content type of
+   the payload as given by the Content-Type header.  The "type" link
+   relation references the payload's abstract semantic type, whereas the
+   Content-Type header identifies the specific serialization format of
+   the payload.
+
+</p><p class="rfcparagraph">   If the context can be considered to be an instance of multiple
+   semantic types, multiple "type" link relations can be used.
+
+</p><p class="rfcparagraph">	<a name="section-7"><h2>7.   IANA Considerations</h2></a>
+
+   The "Link Relation Types" registry has been updated with the
+   following entries:
+
+</p><p class="rfcparagraph">   o  Relation Name: about
+   o  Description: Refers to a resource that is the subject of the
+      link's context.
+   o  Reference: This specification, Section 2
+
+   o  Relation Name: preview
+   o  Description: Refers to a resource that provides a preview of the
+      link's context.
+   o  Reference: This specification, Section 3
+
+   o  Relation Name: privacy-policy
+   o  Description: Refers to a privacy policy associated with the link's
+      context.
+   o  Reference: This specification, Section 4
+
+   o  Relation Name: terms-of-service
+   o  Description: Refers to the terms of service associated with the
+      link's context.
+   o  Reference: This specification, Section 5
+   o  Relation Name: type
+   o  Description: Refers to a resource identifying the abstract
+      semantic type of which the link's context is considered to be an
+      instance.
+   o  Reference: This specification, Section 6
+
+	<a name="section-8"><h2>8.   Security Considerations</h2></a>
+
+   There are no additional security concerns introduced by this
+   document.
+
+</p><p class="rfcparagraph">	<a name="section-9"><h2>9.   References</h2></a>
+
+	<a name="section-9.1"><h3>9.1   Normative References</h3></a>
+
+   [RFC5988]  Nottingham, M., "Web Linking", RFC 5988, October 2010.
+
+</p><p class="rfcparagraph">	<a name="section-9.2"><h3>9.2   Informative References</h3></a>
+
+   [P3P]      W3C, "P3P: The Platform for Privacy Preferences", November
+              2007, <http://www.w3.org/P3P/>.
+
+</p>Author's Address
+
+   James M Snell
+
+   EMail: jasnell@gmail.com
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Snell                         Informational                     [Page 6]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

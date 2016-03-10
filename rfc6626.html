@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph">Internet Engineering Task Force (IETF)                       G. Tsirtsis
+Request for Comments: 6626                                       V. Park
+Updates: 5177                                               V. Narayanan
+Category: Standards Track                                       Qualcomm
+ISSN: 2070-1721                                                 K. Leung
+                                                                   Cisco
+                                                                May 2012
+
+
+                     Dynamic Prefix Allocation for
+               Network Mobility for Mobile IPv4 (NEMOv4)
+
+<h2>Abstract</h2>
+
+   The base Network Mobility for Mobile IPv4 (NEMOv4) specification
+   defines extensions to Mobile IPv4 for mobile networks.  This
+   specification defines a dynamic prefix allocation mechanism for
+   NEMOv4.
+
+</p><p class="rfcparagraph">Status of This Memo
+
+   This is an Internet Standards Track document.
+
+</p><p class="rfcparagraph">   This document is a product of the Internet Engineering Task Force
+   (IETF).  It represents the consensus of the IETF community.  It has
+   received public review and has been approved for publication by the
+   Internet Engineering Steering Group (IESG).  Further information on
+   Internet Standards is available in Section 2 of RFC 5741.
+
+</p><p class="rfcparagraph">   Information about the current status of this document, any errata,
+   and how to provide feedback on it may be obtained at
+   http://www.rfc-editor.org/info/rfc6626.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (c) 2012 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+</p><p class="rfcparagraph">   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (http://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
+   the Trust Legal Provisions and are provided without warranty as
+   described in the Simplified BSD License.
+<h2>Table of Contents</h2>
+<a href="#section-1" class="">1. Introduction ...................................................</a><br>
+<a href="#section-2" class="">2. Requirements Notation ..........................................</a><br>
+<a href="#section-3" class="">3. Dynamic Mobile Prefix Allocation ...............................</a><br>
+<a href="#section-3.1" class="indent-1">3.1. Mobile Client Considerations ..............................</a><br>
+<a href="#section-3.2" class="indent-1">3.2. Home Agent Considerations .................................</a><br>
+<a href="#section-4" class="">4. Security Considerations ........................................</a><br>
+<a href="#section-5" class="">5. IANA Considerations ............................................</a><br>
+<a href="#section-6" class="">6. Acknowledgements ...............................................</a><br>
+<a href="#section-7" class="">7. Normative References ...........................................</a><br>
+
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   The base NEMOv4 specification [RFC5177] defines extensions to Mobile
+   IPv4 [RFC5944] for mobile networks.  This specification adds support
+   for dynamic allocation of mobile prefixes by the home agent.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Requirements Notation</h2></a>
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in [RFC2119].
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   Dynamic Mobile Prefix Allocation</h2></a>
+
+   The following extension is defined according to this specification.
+
+</p><p class="rfcparagraph">	<a name="section-3.1"><h3>3.1   Mobile Client Considerations</h3></a>
+
+   According to this specification, the Prefix field of the Mobile
+   Network Request extension MUST be set to zero to indicate that the
+   Mobile Router requests mobile network prefix(es) be assigned to it by
+   the home agent.  In this case, the Mobile Router MAY set the prefix
+   length field of such extensions to zero or to a length of its choice
+   as a hint to the home agent.  According to this specification, Mobile
+   Network Request extensions with the Prefix field set to zero MAY be
+   included in a registration request message either during initial
+   registration or during a subsequent registration.
+
+</p><p class="rfcparagraph">   When a Mobile Router receives a registration reply, it MUST process
+   it as defined in Mobile IPv4 [RFC5944] and [RFC5177].  If one or more
+   network acknowledgement extensions are included with the Code field
+   set to "Success", the Mobile Router SHOULD treat the prefixes in the
+   corresponding Prefix fields as allocated prefixes and create the
+   appropriate bindings as defined in [RFC5177].
+   In response to a registration request with a Mobile Network Request
+   extension with the Prefix field set to zero, if a Mobile Router
+   receives a registration reply with a network acknowledgement
+   extension including Code field set to 1 "invalid prefix", it may use
+   it as a hint that the home agent does not support dynamic prefix
+   allocation.
+
+</p><p class="rfcparagraph">	<a name="section-3.2"><h3>3.2   Home Agent Considerations</h3></a>
+
+   A home agent receiving a Mobile Network Request extension with the
+   Prefix field set to zero MAY return a Mobile Network Acknowledgement
+   extension [RFC5177] with the Prefix field set to the prefix allocated
+   to the Mobile Router.  The length of that prefix is at the discretion
+   of the home agent.  The home agent MAY take into account the prefix
+   length hint if one is included in the Mobile Network Request
+   extension.  Once the home agent allocates a prefix, it MUST maintain
+   the prefix registration table as defined in [RFC5177].
+   Alternatively, the home agent MAY return a Mobile Network
+   Acknowledgement extension with the Code field set to one of the
+   negative codes defined in [RFC5177].
+
+</p><p class="rfcparagraph">   Dynamic mobile prefix allocation, as defined in this specification,
+   MAY be combined with dynamic home address allocation, as defined in
+   [RFC5177].  In other words, the home address field of the
+   registration request message MAY be set to zero while the message
+   also includes one or more Mobile Network Request extensions with the
+   Prefix field also set to zero.
+
+</p><p class="rfcparagraph">   Once the home agent allocates a prefix, it MUST maintain the prefix
+   registration table as defined in [RFC5177].  The lifetime of the
+   allocated prefix will be equal to the lifetime of the binding cache
+   entry.  The Mobile Router may request for multiple mobile network
+   prefixes to be assigned by the home agent.  For a Mobile Network
+   Prefix for which the assignment was unsuccessful, the Code field in
+   the corresponding Mobile Network Acknowledgement extension should be
+   set to 4 (MOBNET_UNASSIGNED).
+
+</p><p class="rfcparagraph">   For dynamic prefix allocation, the Mobile Router's home address MAY
+   be used to identify the client if it is not set to zero.  Otherwise,
+   as defined in the Network Access Identifier (NAI) extension [RFC2794]
+   of Mobile IPv4 [RFC2794], the NAI extension needs to be included in
+   the registration request, in which case the same extension SHOULD be
+   used to identify the Mobile Router for prefix allocation purposes.
+	<a name="section-4"><h2>4.   Security Considerations</h2></a>
+
+   This specification operates in the security constraints and
+   requirements of Mobile IPv4 [RFC5944], NAI [RFC2794], and [RFC5177].
+
+</p><p class="rfcparagraph">   Home agent implementations SHOULD take steps to prevent address
+   exhaustion attacks.  One way to limit the effectiveness of such an
+   attack is to limit the number and size of prefixes any one Mobile
+   Router can be allocated.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   IANA Considerations</h2></a>
+
+   A new value has been assigned in the Mobile Network Acknowledgement
+   Extension registry: 4 - Home Agent cannot assign a mobile network
+   prefix (MOBNET_UNASSIGNED).
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.   Acknowledgements</h2></a>
+
+   The authors would like to thank Pete McCann, Alexandru Petrescu,
+   Ralph Droms, and Jari Arkko for their reviews and comments.
+
+</p><p class="rfcparagraph">	<a name="section-7"><h2>7.   Normative References</h2></a>
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">   [RFC2794]  Calhoun, P. and C. Perkins, "Mobile IP Network Access
+              Identifier Extension for IPv4", RFC 2794, March 2000.
+
+</p><p class="rfcparagraph">   [RFC5177]  Leung, K., Dommety, G., Narayanan, V., and A. Petrescu,
+              "Network Mobility (NEMO) Extensions for Mobile IPv4",
+              RFC 5177, April 2008.
+
+</p>   [RFC5944]  Perkins, C., "IP Mobility Support for IPv4, Revised",
+              RFC 5944, November 2010.
+Authors' Addresses
+
+   George Tsirtsis
+   Qualcomm
+
+   EMail: tsirtsis@googlemail.com
+
+
+   Vincent Park
+   Qualcomm
+
+   Phone: +908-443-8141
+   EMail: vpark@qualcomm.com
+
+
+   Vidya Narayana
+   Qualcomm
+
+   Phone: +858-845-2483
+   EMail: vidyan@qualcomm.com
+
+
+   Kent Leung
+   Cisco
+
+   Phone: +408-526-5030
+   EMail: kleung@cisco.com
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Tsirtsis, et al.             Standards Track                    [Page 5]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

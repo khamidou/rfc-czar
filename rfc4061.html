@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                          V. Manral<br>Request for Comments: 4061                                  SiNett Corp.<br>Category: Informational                                         R. White<br>                                                           Cisco Systems<br>                                                               A. Shaikh<br>                                                    AT&T Labs (Research)<br>                                                              April 2005<br><br></p>
+                  <h1>
+    Benchmarking Basic OSPF Single Router Control Plane Convergence</h1>
+                  <h2>Status of This Memo</h2>
+
+   This memo provides information for the Internet community.  It does
+   not specify an Internet standard of any kind.  Distribution of this
+   memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (2005).<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This document provides suggestions for measuring OSPF single router
+   control plane convergence.  Its initial emphasis is on the control
+   plane of a single OSPF router.  We do not address forwarding plane
+   performance.
+
+</p><p class="rfcparagraph">   NOTE: In this document, the word "convergence" relates to single
+   router control plane convergence only.
+
+</p><p class="rfcparagraph">Table of Contents
+<a href="#section-1" class="">1. Introduction...................................................</a><br>
+<a href="#section-2" class="">2. Specification of Requirements..................................</a><br>
+<a href="#section-3" class="">3. Overview and Scope.............................................</a><br>
+<a href="#section-4" class="">4. Reference Topologies...........................................</a><br>
+<a href="#section-5" class="">5. Basic Performance Tests........................................</a><br>
+<a href="#section-5.1" class="indent-1">5.1. Time Required to Process an LSA..........................</a><br>
+<a href="#section-5.2" class="indent-1">5.2. Flooding Time............................................</a><br>
+<a href="#section-5.3" class="indent-1">5.3. Shortest Path First Computation Time.....................</a><br>
+<a href="#section-6" class="">6. Basic Intra-area OSPF Tests....................................</a><br>
+       6.1.  Forming Adjacencies on Point-to-Point Links
+             (Initialization)..........................................9
+<a href="#section-6.2" class="indent-1">6.2. Forming Adjacencies on Point-to-Point Links..............</a><br>
+       6.3.  Forming Adjacencies with Information Already in the
+             Database.................................................10
+<a href="#section-6.4" class="indent-1">6.4. Designated Router Election Time on a Broadcast Network..</a><br>
+       6.5.  Initial Convergence Time on a Broadcast Network,
+             Test 1...................................................11
+       6.6.  Initial Convergence Time on a Broadcast Network,
+             Test 2...................................................12
+<a href="#section-6.7" class="indent-1">6.7. Link Down with Layer Two Detection......................</a><br>
+<a href="#section-6.8" class="indent-1">6.8. Link Down with Layer Three Detection....................</a><br>
+<a href="#section-7" class="">7. Security Considerations.......................................</a><br>
+<a href="#section-8" class="">8. Acknowledgements..............................................</a><br>
+<a href="#section-9" class="">9. Normative References..........................................</a><br>
+<a href="#section-10" class="">10. Informative References........................................</a><br>
+   Authors' Addresses.................................................15
+   Full Copyright Statement...........................................16
+
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   There is a growing interest in routing protocol convergence testing,
+   with many people looking at various tests to determine how long it
+   takes for a network to converge after various conditions occur.  The
+   major problem with this sort of testing is that the framework of the
+   tests has a major impact on the results; for instance, determining
+   when a network is converged, what parts of the router's operation are
+   considered within the testing, and other such things will have a
+   major impact on the apparent performance that routing protocols
+   provide.
+
+</p><p class="rfcparagraph">   This document attempts to provide a framework for Open Shortest Path
+   First [OSPF] performance testing, and to provide some tests for
+   measuring some aspects of OSPF performance.  The motivation of the
+   document is to provide a set of tests that can provide the user
+   comparable data from various vendors with which to evaluate the OSPF
+   protocol performance on the devices.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Specification of Requirements</h2></a>
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in [RFC2119].  RFC 2119
+   key words in this document are used to ensure methodological control,
+   which is very important in the specification of benchmarks.  This
+   document does not specify a network-related protocol.
+	<a name="section-3"><h2>3.   Overview and Scope</h2></a>
+
+   Although this document describes a specific set of tests aimed at
+   characterizing the single router control plane convergence
+   performance of OSPF processes in routers or other boxes that
+   incorporate OSPF functionality, a key objective is to propose
+   methodologies that produce directly comparable convergence-related
+   measurements.
+
+</p><p class="rfcparagraph">   The following considerations are outside the scope of this document:
+
+</p><p class="rfcparagraph">   o  The interactions of convergence and forwarding; testing is
+      restricted to events occurring within the control plane.
+      Forwarding performance is the primary focus in [INTERCONNECT], and
+      it is expected to be dealt with in work that ensues from [FIB-
+      TERM].
+
+</p><p class="rfcparagraph">   o  Inter-area route generation, AS-external route generation, and
+      simultaneous traffic on the control and data paths within the DUT.
+      Although the tests outlined in this document measure SPF time,
+      flooding times, and other aspects of OSPF convergence performance,
+      this document does not provide tests for measuring external or
+      summary route generation, route translation, or other OSPF inter-
+      area and external routing performance.  These areas are expected
+      to be dealt with in a later document.
+
+</p><p class="rfcparagraph">      The tests should be run more than once, since a single test run
+      cannot be relied on to produce statistically sound results.  The
+      number of test runs and any variations between the tests should be
+      recorded in the test results (see [TERM] for more information on
+      what items should be recorded in the test results).
+	<a name="section-4"><h2>4.   Reference Topologies</h2></a>
+
+   Several reference topologies that are used throughout the tests are
+   described in the remaining sections of this document.  All of the
+   topologies have been collectively placed in one section to avoid
+   repetition.
+
+</p><p class="rfcparagraph">   o  Reference Topology 1 (Emulated Topology)
+
+                           (                   )
+      DUT----Generator----(  emulated topology  )
+                           (                   )
+
+      A simple back-to-back configuration.  It's assumed that the link
+      between the generator and the DUT is a point-to-point link, while
+      the connections within the generator represent some emulated
+      topology.
+
+</p><p class="rfcparagraph">   o  Reference Topology 2 (Generator and Collector)
+
+                                        (                   )
+      Collector-----DUT-----Generator--(  emulated topology  )
+             \              /           (                   )
+              \------------/
+
+      All routers are connected through point-to-point links.  The cost
+      of all links is assumed to be the same unless otherwise noted.
+
+</p><p class="rfcparagraph">   o  Reference Topology 3 (Broadcast Network)
+
+      DUT     R1     R2
+       |      |      |
+      -<pre>+------+------+
+</pre>
+-----.....
+
+</p><p class="rfcparagraph">      Any number of routers could be included on the common broadcast
+      network.
+
+</p><p class="rfcparagraph">   o  Reference Topology 4 (Parallel Links)
+
+        /--(link 1)-----\           (                   )
+      DUT               Generator--(  emulated topology  )
+        \--(link 2)-----/           (                   )
+
+   In all cases the tests and topologies are designed to allow
+   performance measurements to be taken all on a single device, whether
+   this is the DUT or some other device in the network.  This eliminates
+   the need for synchronized clocks within the test networks.
+	<a name="section-5"><h2>5.   Basic Performance Tests</h2></a>
+
+   These tests will measure aspects of the OSPF implementation as a
+   process on the device under test, including
+
+   o  time required to process an LSA,
+
+   o  flooding time, and
+
+   o  Shortest Path First computation.
+
+</p><p class="rfcparagraph">	<a name="section-5.1"><h3>5.1   Time Required to Process an LSA</h3></a>
+
+   o  Using reference topology 1 (Emulated Topology), begin with all
+      links up and a full adjacency established between the DUT and the
+      generator.
+
+</p><p class="rfcparagraph">      Note: The generator does not have direct knowledge of the state of
+      the adjacency on the DUT.  The fact that the adjacency may be in
+      Full state on the generator does not mean that the DUT is ready.
+      It may still (and is likely to) be requesting LSAs from the
+      generator.  This process, involving processing of requested LSAs,
+      will affect the results of the test.  The generator should either
+      wait until it sees the DUT's router-LSA listing the adjacency with
+      the generator or introduce a configurable delay before starting
+      the test.
+
+</p><p class="rfcparagraph">   o  Send an LSA that is already in the DUT (a duplicate LSA), note the
+      time difference between when the LSA is sent and when the ack is
+      received.  This measures the time taken to propagate the LSA and
+      the ack, as well as the processing time of the duplicate LSA.
+      This is dupLSAprocTime.
+
+</p><p class="rfcparagraph">   o  Send a new LSA from the generator to the DUT, followed immediately
+      by a duplicate LSA (LSA that already resides in the database of
+      DUT, but not the same as the one just sent).
+
+</p><p class="rfcparagraph">   o  The DUT will acknowledge this second LSA immediately; note the
+      time of this acknowledgement.  This is newLSAprocTime.
+
+</p><p class="rfcparagraph">      The amount of time required for an OSPF implementation to process
+      the new LSA can be computed by subtracting dupLSAprocTime from
+      newLSAprocTime.
+
+</p><p class="rfcparagraph">      Note: The duplicate LSA cannot be the same as the one just sent
+      because of the MinLSInterval restriction [OSPF].  This test is
+      taken from [BLACKBOX].
+      Note: This time may or may not include the time required to
+      perform flooding-related operations, depending on when the
+      implementation sends the ack: before it floods the LSA further, or
+      after it does, or anywhere in between.  In other words, this
+      measurement may not mean the same thing in all implementations.
+
+</p><p class="rfcparagraph">	<a name="section-5.2"><h3>5.2   Flooding Time</h3></a>
+
+   o  Using reference topology 2 (Generator and Collector), enable OSPF
+      on all links and allow the devices to build full adjacencies.
+      Configure the collector so that it will block all flooding toward
+      the DUT (but so that it continues receiving advertisements from
+      the DUT).
+
+</p><p class="rfcparagraph">   o  Inject a new set of LSAs from the generator toward the collector
+      and the DUT.
+
+</p><p class="rfcparagraph">   o  On the collector, note the time the flooding is complete across
+      the link to the generator.  Also note the time the flooding is
+      complete across the link from the DUT.
+
+</p><p class="rfcparagraph">   The time from when the last LSA is received on the collector from the
+   generator to when the last LSA is received on the collector from the
+   DUT should be measured during this test.  This time is important in
+   link state protocols, since the loop-free nature of the network is
+   reliant on the speed at which revised topology information is
+   flooded.
+
+</p><p class="rfcparagraph">   Depending on the number of LSAs flooded, the sizes of the LSAs, the
+   number of LSUs, and the rate of flooding, these numbers could vary by
+   some amount.  The settings and variances of these numbers should be
+   reported with the test results.
+
+</p><p class="rfcparagraph">	<a name="section-5.3"><h3>5.3   Shortest Path First Computation Time</h3></a>
+
+   o  Use reference topology 1 (Emulated Topology), beginning with the
+      DUT and the generator fully adjacent.
+
+</p><p class="rfcparagraph">   o  The default SPF timer on the DUT should be set to 0 so that any
+      new LSA that arrives immediately results in the SPF calculation
+      [BLACKBOX].
+
+</p><p class="rfcparagraph">   o  The generator should inject a set of LSAs toward the DUT; the DUT
+      should be allowed to converge and install all best paths in the
+      local routing table, etc.
+   o  Send an LSA that is already in the DUT (a duplicate LSA), note the
+      time difference between when the LSA is sent and when the ack is
+      received.  This measures the time taken to propagate the LSA and
+      the ack, as well as the processing time of the duplicate LSA.
+      This is dupLSAprocTime.
+
+</p><p class="rfcparagraph">   o  Change the link cost between the generator and the emulated
+      network it is advertising, and transmit the new LSA to the DUT.
+
+</p><p class="rfcparagraph">   o  Immediately inject another LSA that is a duplicate of some other
+      LSA the generator has previously injected (preferably a stub
+      network someplace within the emulated network).
+
+</p><p class="rfcparagraph">      Note: The generator should make sure that outbound LSA packing is
+      not performed for the duplicate LSAs and that they are always sent
+      in a separate Link-state Update packet.  Otherwise, if the LSA
+      carrying the topology change and the duplicate LSA are in the same
+      packet, the SPF starts after the duplicate LSA is acked.
+
+</p><p class="rfcparagraph">   o  Measure the time between transmitting the second (duplicate) LSA
+      and the acknowledgement for that LSA; this is the totalSPFtime.
+      The total time required to run SPF can be computed by subtracting
+      dupLSAprocTime from totalSPFtime.
+
+</p><p class="rfcparagraph">   The accuracy of this test is crucially dependent on the amount of
+   time between the transmissions of the first and second LSAs.  If too
+   much time elapsed, the test is meaningless because the SPF run will
+   complete before the second (duplicate) LSA is received.  If the time
+   elapsed is less, then both LSAs will be handled before the SPF run is
+   scheduled and started, and thus the measurement would only be for the
+   handling of the duplicate LSA.
+
+</p><p class="rfcparagraph">   This test is also specified in [BLACKBOX].
+
+</p><p class="rfcparagraph">   Note: This test may not be accurate on systems that implement OSPF as
+   a multithreaded process, where the flooding takes place in a separate
+   process (or on a different processor) than shortest path first
+   computations.
+
+</p><p class="rfcparagraph">   It is also possible to measure the SPF time using white box tests
+   (using output supplied by the OSPF software implementer), such as the
+   following:
+
+</p><p class="rfcparagraph">   o  Using reference topology 1 (Emulated Topology), establish a full
+      adjacency between the generator and the DUT.
+   o  Inject a set of LSAs from the generator toward the DUT.  Allow the
+      DUT to stabilize and install all best paths in the routing table,
+      etc.
+
+</p><p class="rfcparagraph">   o  Change the link cost between the DUT and the generator (or the
+      link between the generator and the emulated network it is
+      advertising), such that a full SPF is required to run, although
+      only one piece of information is changed.
+
+</p><p class="rfcparagraph">   o  Measure the amount of time required for the DUT to compute a new
+      shortest path tree as a result of the topology changes injected by
+      the generator.  These measurements should be taken using available
+      show and debug information on the DUT.
+
+</p><p class="rfcparagraph">   Several caveats MUST be mentioned when a white box method of
+   measuring SPF time is used.  For instance, such white box tests are
+   only applicable when testing various versions or variations within a
+   single implementation of the OSPF protocol.  Further, the same set of
+   commands MUST be used in each iteration of such a test to ensure
+   consistent results.
+
+</p><p class="rfcparagraph">   There is an interesting relationship between the SPF times reported
+   by white box (internal) testing and black box (external) testing;
+   each of these two types of tests may be used as a "sanity check" on
+   the other by comparing results.
+
+</p><p class="rfcparagraph">   See [CONSIDERATIONS] for further discussion.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.   Basic Intra-area OSPF Tests</h2></a>
+
+   These tests measure the performance of an OSPF implementation for
+   basic intra-area tasks, including:
+
+</p><p class="rfcparagraph">   o  Forming Adjacencies on Point-to-Point Link (Initialization)
+
+   o  Forming Adjacencies on Point-to-Point Links
+
+   o  Link Up with Information Already in the Database
+
+   o  Initial convergence Time on a Designated Router Electing
+      (Broadcast) Network
+
+   o  Link Down with Layer 2 Detection
+
+   o  Link Down with Layer 3 Detection
+
+   o  Designated Router Election Time on A Broadcast Network
+	<a name="section-6.1"><h3>6.1   Forming Adjacencies on Point-to-Point Link (Initialization)</h3></a>
+
+   This test measures the time required to form an OSPF adjacency from
+   the time a layer two (data link) connection is formed between two
+   devices running OSPF.
+
+</p><p class="rfcparagraph">   o  Use reference topology 1 (Emulated Topology), beginning with the
+      link between the generator and DUT disabled on the DUT.  OSPF
+      should be configured and operating on both devices.
+
+</p><p class="rfcparagraph">   o  Inject a set of LSAs from the generator toward the DUT.
+
+</p><p class="rfcparagraph">   o  Bring the link up at the DUT, noting the time when the link
+      carrier is established on the generator.
+
+</p><p class="rfcparagraph">   o  Note the time when the acknowledgement for the last LSA
+      transmitted from the DUT is received on the generator.
+
+</p><p class="rfcparagraph">   The time between the carrier establishment and the acknowledgement
+   for the last LSA transmitted by the generator should be taken as the
+   total amount of time required for the OSPF process on the DUT to
+   react to a link up event with the set of LSAs injected, including the
+   time required for the operating system to notify the OSPF process
+   about the link up, etc.  The acknowledgement for the last LSA
+   transmitted is used instead of the last acknowledgement received in
+   order to prevent timing skews due to retransmitted acknowledgements
+   or LSAs.
+
+</p><p class="rfcparagraph">	<a name="section-6.2"><h3>6.2   Forming Adjacencies on Point-to-Point Links</h3></a>
+
+   This test measures the time required to form an adjacency from the
+   time the first communication occurs between two devices running OSPF.
+
+</p><p class="rfcparagraph">   o  Using reference topology 1 (Emulated Topology), configure the DUT
+      and the generator so that traffic can be passed along the link
+      between them.
+
+</p><p class="rfcparagraph">   o  Configure the generator so that OSPF is running on the point-to-
+      point link toward the DUT, and inject a set of LSAs.
+
+</p><p class="rfcparagraph">   o  Configure the DUT so that OSPF is initialized, but not running on
+      the point-to-point link between the DUT and the generator.
+
+</p><p class="rfcparagraph">   o  Enable OSPF on the interface between the DUT and the generator on
+      the DUT.
+
+</p><p class="rfcparagraph">   o  Note the time of the first hello received from the DUT on the
+      generator.
+   o  Note the time of the acknowledgement from the DUT for the last LSA
+      transmitted on the generator.
+
+</p><p class="rfcparagraph">   The time between the first hello received and the acknowledgement for
+   the last LSA transmitted by the generator should be taken as the
+   total amount of time required for the OSPF process on the DUT to
+   build a FULL neighbor adjacency with the set of LSAs injected.  The
+   acknowledgement for the last LSA transmitted is used instead of the
+   last acknowledgement received in order to prevent timing skews due to
+   retransmitted acknowledgements or LSAs.
+
+</p><p class="rfcparagraph">	<a name="section-6.3"><h3>6.3   Forming Adjacencies with Information Already in the Database</h3></a>
+
+   o  Using reference topology 2 (Generator and Collector), configure
+      all three devices to run OSPF.
+
+</p><p class="rfcparagraph">   o  Configure the DUT so that the link between the DUT and the
+      generator is disabled.
+
+</p><p class="rfcparagraph">   o  Inject a set of LSAs into the network from the generator; the DUT
+      should receive these LSAs through normal flooding from the
+      collector.
+
+</p><p class="rfcparagraph">   o  Enable the link between the DUT and the generator.
+
+</p><p class="rfcparagraph">   o  Note the time of the first hello received from the DUT on the
+      generator.
+
+</p><p class="rfcparagraph">   o  Note the time of the last DBD (Database Description) received on
+      the generator.
+
+</p><p class="rfcparagraph">   o  Note the time of the acknowledgement from the DUT for the last LSA
+      transmitted on the generator.
+
+</p><p class="rfcparagraph">   The time between the hello received by the generator from the DUT and
+   the acknowledgement for the last LSA transmitted by the generator
+   should be taken as the total amount of time required for the OSPF
+   process on the DUT to build a FULL neighbor adjacency with the set of
+   LSAs injected.  In this test, the DUT is already aware of the entire
+   network topology, so the time required should only include the
+   processing of DBDs exchanged when in EXCHANGE state, the time to
+   build a new router LSA containing the new connection information, and
+   the time required to flood and acknowledge this new router LSA.
+
+</p><p class="rfcparagraph">   The acknowledgement for the last LSA transmitted is used instead of
+   the last acknowledgement received in order to prevent timing skews
+   due to retransmitted acknowledgements or LSAs.
+	<a name="section-6.4"><h3>6.4   Designated Router Election Time on a Broadcast Network</h3></a>
+
+   o  Using reference topology 3 (Broadcast Network), configure R1 to be
+      the designated router on the link, and the DUT to be the backup
+      designated router.
+
+</p><p class="rfcparagraph">   o  Enable OSPF on the common broadcast link on all the routers in the
+      test bed.
+
+</p><p class="rfcparagraph">   o  Disable the broadcast link on R1.
+
+</p><p class="rfcparagraph">   o  Note the time of the last hello received from R1 on R2.
+
+</p><p class="rfcparagraph">   o  Note the time of the first network LSA generated by the DUT as
+      received on R2.
+
+</p><p class="rfcparagraph">   The time between the last hello received on R2 and the first network
+   LSA generated by the DUT should be taken as the amount of time
+   required for the DUT to complete a designated router election
+   computation.  Note that this test includes the dead interval timer at
+   the DUT, so this time may be factored out, or the hello and dead
+   intervals may be reduced to lessen these timers' impact on the
+   overall test times.  All changed timers, the number of routers
+   connected to the link, and other variable factors should be noted in
+   the test results.
+
+</p><p class="rfcparagraph">   Note: If R1 sends a "goodbye hello", typically a hello with its
+   neighbor list empty, in the process of shutting down its interface,
+   using the time when this hello is received instead of the time when
+   the last one was would provide a more accurate measurement.
+
+</p><p class="rfcparagraph">	<a name="section-6.5"><h3>6.5   Initial Convergence Time on a Broadcast Network, Test 1</h3></a>
+
+   o  Using reference topology 3 (Broadcast Network), begin with the DUT
+      connected to the network with OSPF enabled.  OSPF should be
+      enabled on R1, but the broadcast link should be disabled.
+
+</p><p class="rfcparagraph">   o  Enable the broadcast link between R1 and the DUT.  Note the time
+      of the first hello received by R1.
+
+</p><p class="rfcparagraph">   o  Note the time when the first network LSA is flooded by the DUT at
+      R1.
+
+</p><p class="rfcparagraph">   o  The difference between the first hello and the first network LSA
+      is the time required by the DUT to converge on this new topology.
+   This test assumes that the DUT will be the designated router on the
+   broadcast link.  A similar test could be designed to test the
+   convergence time when the DUT is not the designated router.
+
+</p><p class="rfcparagraph">   This test maybe performed with a varying number of devices attached
+   to the broadcast network, and with varying sets of LSAs being
+   advertised to the DUT from the routers attached to the broadcast
+   network.  Variations in the LSA sets and other factors should be
+   noted in the test results.
+
+</p><p class="rfcparagraph">   The time required to elect a designated router, as measured in
+   Section 6.4, above, may be subtracted from the results of this test
+   to provide just the convergence time across a broadcast network.
+
+</p><p class="rfcparagraph">   Note that although all the other tests in this document include route
+   calculation time in the convergence time, as described in [TERM],
+   this test may not include route calculation time in the resulting
+   measured convergence time, because initial route calculation may
+   occur after the first network LSA is flooded.
+
+</p><p class="rfcparagraph">	<a name="section-6.6"><h3>6.6   Initial Convergence Time on a Broadcast Network, Test 2</h3></a>
+
+   o  Using reference topology 3 (Broadcast Network), begin with the DUT
+      connected to the network with OSPF enabled.  OSPF should be
+      enabled on R1, but the broadcast link should be disabled.
+
+</p><p class="rfcparagraph">   o  Enable the broadcast link between R1 and the DUT.  Note the time
+      of the first hello transmitted by the DUT with a designated router
+      listed.
+
+</p><p class="rfcparagraph">   o  Note the time when the first network LSA is flooded by the DUT at
+      R1.
+
+</p><p class="rfcparagraph">   o  The time difference between the first hello with a designated
+      router lists and the first network LSA is the period required by
+      the DUT to converge on this new topology.
+
+</p><p class="rfcparagraph">	<a name="section-6.7"><h3>6.7   Link Down with Layer 2 Detection</h3></a>
+
+   o  Using reference topology 4 (Parallel Links), begin with OSPF in
+      the Full state between the generator and the DUT.  Both links
+      should be point-to-point links with the ability to notify the
+      operating system immediately upon link failure.
+
+</p><p class="rfcparagraph">   o  Disable link 1; this should be done in such a way that the
+      keepalive timers at the data link layer will have no impact on the
+      DUT recognizing the link failure (the operating system in the DUT
+      should recognize this link failure immediately).  Disconnecting
+      the cable on the generator end would be one possibility; shutting
+      the link down would be another.
+
+</p><p class="rfcparagraph">   o  Note the time of the link failure on the generator.
+
+</p><p class="rfcparagraph">   o  At the generator, note the time of the receipt of the new router
+      LSA from the DUT notifying the generator of the link 2 failure.
+
+</p><p class="rfcparagraph">      The difference in the time between the initial link failure and
+      the receipt of the LSA on the generator across link 2 should be
+      taken as the time required for an OSPF implementation to recognize
+      and process a link failure, including the time required to
+      generate and flood an LSA describing the link down event to an
+      adjacent neighbor.
+
+</p><p class="rfcparagraph">	<a name="section-6.8"><h3>6.8   Link Down with Layer 3 Detection</h3></a>
+
+   o  Using reference topology 4 (Parallel Links), begin with OSPF in
+      the Full state between the generator and the DUT.
+
+</p><p class="rfcparagraph">   o  Disable OSPF processing on link 1 from the generator.  This should
+      be done in such a way that it does not affect link status; the DUT
+      MUST note the failure of the adjacency through the dead interval.
+
+</p><p class="rfcparagraph">   o  At the generator, note the time of the receipt of the new router
+      LSA from the DUT notifying the generator of the link 2 failure.
+
+</p><p class="rfcparagraph">   The difference in the time between the initial link failure and the
+   receipt of the LSA on the generator across link 2 should be taken as
+   the time required for an OSPF implementation to recognize and process
+   an adjacency failure.
+
+</p><p class="rfcparagraph">	<a name="section-7"><h2>7.   Security Considerations</h2></a>
+
+   This document does not modify the underlying security considerations
+   in [OSPF].
+
+</p><p class="rfcparagraph">	<a name="section-8"><h2>8.   Acknowledgements</h2></a>
+
+   Thanks to Howard Berkowitz (hcb@clark.net) for his encouragement and
+   support.  Thanks also to Alex Zinin (zinin@psg.net), Gurpreet Singh
+   (Gurpreet.Singh@SpirentCom.com), and Yasuhiro Ohara
+   (yasu@sfc.wide.ad.jp) for their comments.
+	<a name="section-9"><h2>9.   Normative References</h2></a>
+
+   [OSPF]           Moy, J., "OSPF Version 2", STD 54, RFC 2328, April
+                    1998.
+
+</p><p class="rfcparagraph">   [TERM]           Manral, V., White, R., and A. Shaikh, "OSPF
+                    Benchmarking Terminology and Concepts", RFC 4062,
+                    April 2005.
+
+</p><p class="rfcparagraph">   [CONSIDERATIONS] Manral, V., White, R., and A. Shaikh,
+                    "Considerations When Using Basic OSPF Convergence
+                    Benchmarks", RFC 4063, April 2005.
+
+</p><p class="rfcparagraph">   [RFC2119]        Bradner, S., "Key words for use in RFCs to Indicate
+                    Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">	<a name="section-10"><h2>10.   Informative References</h2></a>
+
+   [INTERCONNECT]   Bradner, S. and J. McQuaid, "Benchmarking
+                    Methodology for Network Interconnect Devices", RFC
+                    2544, March 1999.
+
+</p><p class="rfcparagraph">   [FIB-TERM]       Trotter, G., "Terminology for Forwarding Information
+                    Base (FIB) based Router Performance", RFC 3222,
+                    December 2001.
+
+</p><p class="rfcparagraph">   [BLACKBOX]       Shaikh, A. and Greenberg, A., "Experience in Black-
+                    box OSPF measurement", Proc. ACM SIGCOMM Internet
+                    Measurement Workshop (IMW), November 2001
+Authors' Addresses
+
+   Vishwas Manral
+   SiNett Corp,
+   Ground Floor,
+   Embassy Icon Annexe,
+   2/1, Infantry Road,
+   Bangalore, India
+
+   EMail: vishwas@sinett.com
+
+
+   Russ White
+   Cisco Systems, Inc.
+   7025 Kit Creek Rd.
+   Research Triangle Park, NC 27709
+
+   EMail: riw@cisco.com
+
+
+   Aman Shaikh
+   AT&T Labs (Research)
+   180 Park Av, PO Box 971
+   Florham Park, NJ 07932
+
+   EMail: ashaikh@research.att.com
+Full Copyright Statement
+
+   Copyright (C) The Internet Society (2005).<br>
+
+</p><p class="rfcparagraph">   This document is subject to the rights, licenses and restrictions
+   contained in BCP 78, and except as set forth therein, the authors
+   retain all their rights.
+
+</p><p class="rfcparagraph">   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY AND THE INTERNET
+   ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED,
+   INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE
+   INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED
+   WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Intellectual Property
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the procedures with respect to rights in RFC documents can be
+   found in BCP 78 and BCP 79.
+
+</p><p class="rfcparagraph">   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+</p><p class="rfcparagraph">   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at ietf-
+   ipr@ietf.org.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is currently provided by the
+   Internet Society.
+
+</p>
+
+
+
+
+
+Manral, et al.               Informational                     [Page 16]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

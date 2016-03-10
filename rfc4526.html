@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                        K. Zeilenga<br>Request for Comments: 4526                           OpenLDAP Foundation<br>Category: Standards Track                                      June 2006<br><br></p>
+                  <h1>
+              Lightweight Directory Access Protocol (LDAP)
+                    Absolute True and False Filters</h1>
+                  <h2>Status of This Memo</h2>
+
+   This document specifies an Internet standards track protocol for the
+   Internet community, and requests discussion and suggestions for
+   improvements.  Please refer to the current edition of the "Internet
+   Official Protocol Standards" (STD 1) for the standardization state
+   and status of this protocol.  Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (2006).<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This document extends the Lightweight Directory Access Protocol
+   (LDAP) to support absolute True and False filters based upon similar
+   capabilities found in X.500 directory systems.  The document also
+   extends the String Representation of LDAP Search Filters to support
+   these filters.
+
+</p><p class="rfcparagraph">Table of Contents
+<a href="#section-1" class="">1. Background .....................................................</a><br>
+<a href="#section-2" class="">2. Absolute True and False Filters ................................</a><br>
+<a href="#section-3" class="">3. Security Considerations ........................................</a><br>
+<a href="#section-4" class="">4. IANA Considerations ............................................</a><br>
+<a href="#section-5" class="">5. References .....................................................</a><br>
+<a href="#section-5.1" class="indent-1">5.1. Normative References ......................................</a><br>
+<a href="#section-5.2" class="indent-1">5.2. Informative References ....................................</a><br>
+
+	<a name="section-1"><h2>1.   Background</h2></a>
+
+   The X.500 Directory Access Protocol (DAP) [X.511] supports absolute
+   True and False assertions.  An 'and' filter with zero elements always
+   evaluates to True.  An 'or' filter with zero elements always
+   evaluates to False.  These filters are commonly used when requesting
+   DSA-specific Entries (DSEs) that do not necessarily have
+   'objectClass' attributes; that is, where "(objectClass=*)" may
+   evaluate to False.
+   Although LDAPv2 [RFC1777][RFC3494] placed no restriction on the
+   number of elements in 'and' and 'or' filter sets, the LDAPv2 string
+   representation [RFC1960][RFC3494] could not represent empty 'and' and
+   'or' filter sets.  Due to this, absolute True or False filters were
+   (unfortunately) eliminated from LDAPv3 [RFC4510].
+
+</p><p class="rfcparagraph">   This documents extends LDAPv3 to support absolute True and False
+   assertions by allowing empty 'and' and 'or' in Search filters
+   [RFC4511] and extends the filter string representation [RFC4515] to
+   allow empty filter lists.
+
+</p><p class="rfcparagraph">   It is noted that certain search operations, such as those used to
+   retrieve subschema information [RFC4512], require use of particular
+   filters.  This document does not change these requirements.
+
+</p><p class="rfcparagraph">   This feature is intended to allow a more direct mapping between DAP
+   and LDAP (as needed to implement DAP-to-LDAP gateways).
+
+</p><p class="rfcparagraph">   In this document, the key words "MUST", "MUST NOT", "REQUIRED",
+   "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY",
+   and "OPTIONAL" are to be interpreted as described in BCP 14
+   [RFC2119].
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Absolute True and False Filters</h2></a>
+
+   Implementations of this extension SHALL allow 'and' and 'or' choices
+   with zero filter elements.
+
+</p><p class="rfcparagraph">   An 'and' filter consisting of an empty set of filters SHALL evaluate
+   to True.  This filter is represented by the string "(&)".
+
+</p><p class="rfcparagraph">   An 'or' filter consisting of an empty set of filters SHALL evaluate
+   to False.  This filter is represented by the string "(|)".
+
+</p><p class="rfcparagraph">   Servers supporting this feature SHOULD publish the Object Identifier
+   1.3.6.1.4.1.4203.1.5.3 as a value of the 'supportedFeatures'
+   [RFC4512] attribute in the root DSE.
+
+</p><p class="rfcparagraph">   Clients supporting this feature SHOULD NOT use the feature unless
+   they know that the server supports it.
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   Security Considerations</h2></a>
+
+   The (re)introduction of absolute True and False filters is not
+   believed to raise any new security considerations.
+
+</p><p class="rfcparagraph">   Implementors of this (or any) LDAPv3 extension should be familiar
+   with general LDAPv3 security considerations [RFC4510].
+	<a name="section-4"><h2>4.   IANA Considerations</h2></a>
+
+   Registration of this feature has been completed by the IANA
+   [RFC4520].
+
+</p><p class="rfcparagraph">   Subject: Request for LDAP Protocol Mechanism Registration Object
+   Identifier: 1.3.6.1.4.1.4203.1.5.3 Description: True/False filters
+   Person & email address to contact for further information:
+        Kurt Zeilenga <kurt@openldap.org> Usage: Feature Specification:
+   RFC 4526 Author/Change Controller: IESG Comments: none
+
+   This OID was assigned [ASSIGN] by OpenLDAP Foundation, under its
+   IANA-assigned private enterprise allocation [PRIVATE], for use in
+   this specification.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   References</h2></a>
+
+	<a name="section-5.1"><h3>5.1   Normative References</h3></a>
+
+   [RFC2119]     Bradner, S., "Key words for use in RFCs to Indicate
+                 Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">   [RFC4510]     Zeilenga, K., Ed, "Lightweight Directory Access
+                 Protocol (LDAP): Technical Specification Road Map", RFC
+                 4510, June 2006.
+
+</p><p class="rfcparagraph">   [RFC4511]     Sermersheim, J., Ed., "Lightweight Directory Access
+                 Protocol (LDAP): The Protocol", RFC 4511, June 2006.
+
+</p><p class="rfcparagraph">   [RFC4512]     Zeilenga, K., "Lightweight Directory Access Protocol
+                 (LDAP): Directory Information Models", RFC 4512, June
+                 2006.
+
+</p><p class="rfcparagraph">   [RFC4515]     Smith, M., Ed. and T. Howes, "Lightweight Directory
+                 Access Protocol (LDAP): String Representation of Search
+                 Filters", RFC 4515, June 2006.
+
+</p><p class="rfcparagraph">	<a name="section-5.2"><h3>5.2   Informative References</h3></a>
+
+   [RFC1777]     Yeong, W., Howes, T., and S. Kille, "Lightweight
+                 Directory Access Protocol", RFC 1777, March 1995.
+
+</p><p class="rfcparagraph">   [RFC1960]     Howes, T., "A String Representation of LDAP Search
+                 Filters", RFC 1960, June 1996.
+
+</p><p class="rfcparagraph">   [RFC3494]     Zeilenga, K., "Lightweight Directory Access Protocol
+                 version 2 (LDAPv2) to Historic Status", RFC 3494, March
+                 2003.
+   [RFC4520]     Zeilenga, K., "Internet Assigned Numbers Authority
+                 (IANA) Considerations for the Lightweight Directory
+                 Access Protocol (LDAP)", BCP 64, RFC 4520, June 2006.
+
+</p><p class="rfcparagraph">   [X.500]       International Telecommunication Union -
+                 Telecommunication Standardization Sector, "The
+                 Directory -- Overview of concepts, models and
+                 services," X.500(1993) (also ISO/IEC 9594-1:1994).<br>
+
+</p><p class="rfcparagraph">   [X.501]       International Telecommunication Union -
+                 Telecommunication Standardization Sector, "The
+                 Directory -- Models," X.501(1993) (also ISO/IEC 9594-<br>
+                 2:1994).
+
+</p><p class="rfcparagraph">   [X.511]       International Telecommunication Union -
+                 Telecommunication Standardization Sector, "The
+                 Directory: Abstract Service Definition", X.511(1993)
+                 (also ISO/IEC 9594-3:1993).
+
+</p><p class="rfcparagraph">   [ASSIGN]      OpenLDAP Foundation, "OpenLDAP OID Delegations",
+                 http://www.openldap.org/foundation/oid-delegate.txt.
+
+</p><p class="rfcparagraph">   [PRIVATE]     IANA, "Private Enterprise Numbers",
+                 http://www.iana.org/assignments/enterprise-numbers.
+
+</p><p class="rfcparagraph">Author's Address
+
+   Kurt D. Zeilenga
+   OpenLDAP Foundation
+
+   EMail: Kurt@OpenLDAP.org
+Full Copyright Statement
+
+   Copyright (C) The Internet Society (2006).<br>
+
+</p><p class="rfcparagraph">   This document is subject to the rights, licenses and restrictions
+   contained in BCP 78, and except as set forth therein, the authors
+   retain all their rights.
+
+</p><p class="rfcparagraph">   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY AND THE INTERNET
+   ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED,
+   INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE
+   INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED
+   WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Intellectual Property
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the procedures with respect to rights in RFC documents can be
+   found in BCP 78 and BCP 79.
+
+</p><p class="rfcparagraph">   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+</p><p class="rfcparagraph">   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at
+   ietf-ipr@ietf.org.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is provided by the IETF
+   Administrative Support Activity (IASA).
+
+</p>
+
+
+
+
+
+Zeilenga                    Standards Track                     [Page 5]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

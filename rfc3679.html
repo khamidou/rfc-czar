@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                           R. Droms<br>Request for Comments: 3679                                 Cisco Systems<br>Category: Informational                                     January 2004<br><br></p>
+                  <h1>
+     Unused Dynamic Host Configuration Protocol (DHCP) Option Codes</h1>
+                  <h2>Status of this Memo</h2>
+
+   This memo provides information for the Internet community.  It does
+   not specify an Internet standard of any kind.  Distribution of this
+   memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (2004).  All Rights Reserved.<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   Prior to the publication of RFC 2489 (which was updated by RFC 2939),
+   several option codes were assigned to proposed Dynamic Host
+   Configuration Protocol (DHCP) options that were subsequently never
+   used.  This document lists those unused option codes and directs IANA
+   to make these option codes available for assignment to other DHCP
+   options in the future.
+
+</p><p class="rfcparagraph">   The document also lists several option codes that are not currently
+   documented in an RFC but should not be made available for
+   reassignment to future DHCP options.
+
+</p><p class="rfcparagraph">	<a name="section-1"><h2>1.  Introduction</h2></a>
+
+   Section 2 of this document lists the unused DHCP option codes from
+   the IANA list of BOOTP and DHCP option codes [1].  Each option code
+   includes any known documentation and contact information from the
+   IANA list.  IANA will make these option codes available for
+   assignment to other DHCP options in the future.
+
+</p><p class="rfcparagraph">   Section 3 lists several DHCP option codes that are not currently
+   documented in an RFC but should not be made available for
+   reassignment to future DHCP options.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.  Unused DHCP Option Codes to be Reassigned to Future DHCP Options</h2></a>
+
+   The option codes listed in this section are to be returned to IANA
+   for reassignment to new options.  Responses from associated contact
+   persons are noted where they have been received.
+	<a name="section-2.1"><h3>2.1  Service Location Protocol Naming Authority</h3></a>
+
+   Code:              80
+   Name:              Service Location Protocol Naming Authority
+   Defined in:        (expired Internet-Draft)
+   Contact:           Charlie Perkins
+   Reason to recover: Never published as standard and not in general use
+
+	<a name="section-2.2"><h3>2.2  Relay Agent Options</h3></a>
+
+   Codes:             83, 84
+   Name:              Relay Agent Options
+   Defined in:        Early draft of RFC 3046 [2]
+   Contact:           (none)
+   Reason to recover: Not defined in RFC 3046 as published
+
+	<a name="section-2.3"><h3>2.3  IEEE 1003.1 POSIX Timezone</h3></a>
+
+   Code:              88
+   Name:              IEEE 1003.1 POSIX Timezone
+   Defined in:        (expired Internet-Draft)
+   Contact:           Mike Carney
+   Reason to recover: Never published as standard and not in general use
+
+	<a name="section-2.4"><h3>2.4  FQDNs in DHCP Options</h3></a>
+
+   Code:              89
+   Name:              FQDNs in DHCP Options
+   Defined in:        (expired Internet-Draft)
+   Contact:           Ralph Droms; agrees that option code should be
+                      reassigned
+   Reason to recover: Never published as standard and not in general use
+
+	<a name="section-2.5"><h3>2.5  VINES TCP/IP Server</h3></a>
+
+   Code:              91
+   Name:              VINES TCP/IP Server
+   Defined in:        (none)
+   Contact:           (none)
+   Reason to recover: Never published as Internet-Draft
+
+	<a name="section-2.6"><h3>2.6  Server Selection</h3></a>
+
+   Code:              92
+   Name:              Server Selection
+   Defined in:        (none)
+   Contact:           (none)
+   Reason to recover: Never published as Internet-Draft
+	<a name="section-2.7"><h3>2.7  IPv6 Transition</h3></a>
+
+   Code:              96
+   Name:              IPv6 Transition
+   Defined in:        (expired Internet-Draft)
+   Contact:           Dan Harrington; agrees that option code should be
+                      reassigned
+   Reason to recover: Never published as standard and not in general use
+
+	<a name="section-2.8"><h3>2.8  Printer Name</h3></a>
+
+   Code:              100
+   Name:              Printer Name
+   Defined in:        (none)
+   Contact:           (none)
+   Reason to recover: Never published as Internet-Draft
+
+	<a name="section-2.9"><h3>2.9  Multicast Assignment through DHCP</h3></a>
+
+   Code:              101
+   Name:              Multicast Assignment through DHCP
+   Defined in:        (expired Internet-Draft)
+   Contact:           Baiju Patel, Munil Shah
+   Reason to recover: Never published as standard and not in general use
+
+	<a name="section-2.10"><h3>2.10  Swap Path</h3></a>
+
+   Code:              108
+   Name:              Swap Path
+   Defined in:        (none)
+   Contact:           (none)
+   Reason to recover: Never published as Internet-Draft
+
+	<a name="section-2.11"><h3>2.11  IPX Compatibility</h3></a>
+
+   Code:              110
+   Name:              IPX Compatibility
+   Defined in:        (none)
+   Contact:           Juan Luciani; agrees that option code should be
+                      reassigned
+   Reason to recover: Never published as Internet-Draft
+	<a name="section-2.12"><h3>2.12  Failover</h3></a>
+
+   Code:              115
+   Name:              Failover
+   Defined in:        Early revisions of "DHCP Failover Protocol" [3]
+   Contact:           Kim Kinnear
+   Reason to recover: Current version of "DHCP Failover Protocol" does
+                      not use a DHCP option
+
+	<a name="section-3"><h2>3.  Option codes to be reserved by IANA</h2></a>
+
+   The option codes listed in this section are the subject of ongoing
+   work in the DHC Working Group (WG).  These option codes should remain
+   on the IANA list of assigned option codes [1] until the DHC WG has
+   made a final decision about their disposition.
+
+</p><p class="rfcparagraph">	<a name="section-3.1"><h3>3.1  Option codes used in PXE Specification</h3></a>
+
+   The following option codes are used in the "Preboot Execution
+   Environment (PXE) Specification, Version 2.1" [4].  However, although
+   these options are in widespread use by devices that use PXE, none of
+   these option codes have been described in a published RFC.
+
+</p><p class="rfcparagraph">   The DHC WG will endeavor to have specifications for these options
+   published.
+
+</p><p class="rfcparagraph">	<a name="section-3.1.1"><h4>3.1.1  Client System</h4></a>
+
+   Code:              93
+   Name:              Client System
+   Defined in:        "Preboot Execution Environment (PXE)
+                      Specification, Version 2.1" [4]
+   Contact:           Michael Johnston
+                      (frenchy@quiet-like-a-panther.org)
+
+	<a name="section-3.1.2"><h4>3.1.2  Client NDI</h4></a>
+
+   Code:              94
+   Name:              Client NDI
+   Defined in:        "Preboot Execution Environment (PXE)
+                      Specification, Version 2.1" [4]
+   Contact:           Michael Johnston
+                      (frenchy@quiet-like-a-panther.org)
+	<a name="section-3.1.3"><h4>3.1.3  UUID/GUID Client Identifier</h4></a>
+
+   Code:              97
+   Name:              UUID/GUID Client Identifier
+   Defined in:        "Preboot Execution Environment (PXE)
+                      Specification, Version 2.1" [4] (and an expired
+                      Internet-Draft)
+   Contact:           Dan Harrington, Michael Johnston
+                      (frenchy@quiet-like-a-panther.org)
+
+	<a name="section-3.2"><h3>3.2  In Use by Apple</h3></a>
+
+   The following option codes are used by devices from Apple Computer.
+   However, none of these option codes have been described in a
+   published RFC.
+
+</p><p class="rfcparagraph">   The DHC WG will endeavor to have specifications for these options
+   published.
+
+</p><p class="rfcparagraph">	<a name="section-3.2.1"><h4>3.2.1  LDAP Servers</h4></a>
+
+   Code:              95
+   Name:              LDAP Servers
+   Defined in:        (none)
+   Contact:           Dieter Siegmund, dieter@apple.com
+   Reason to recover: Never published in an RFC
+
+	<a name="section-3.2.2"><h4>3.2.2  Netinfo Parameters</h4></a>
+
+   Codes:             112, 113
+   Name:              Netinfo Address, Netinfo Tag
+   Defined in:        (none)
+   Contact:           Dieter Siegmund, dieter@apple.com
+   Reason to recover: Never published in an RFC
+
+	<a name="section-3.2.3"><h4>3.2.3  URL</h4></a>
+
+   Code:              114
+   Name:              URL
+   Defined in:        (none)
+   Contact:           Dieter Siegmund, dieter@apple.com
+   Reason to recover: Never published in an RFC
+	<a name="section-3.3"><h3>3.3  Option Code Extensions</h3></a>
+
+   Note that these option codes are identified in "Extending DHCP
+   Options Codes" [5] as part of a mechanism for extending the set of
+   option codes available to DHCP.  If these option codes are not used
+   for DHCP option code extension, they will be returned to IANA for
+   reassignment to other DHCP options.
+
+</p><p class="rfcparagraph">   Codes:             126, 127
+   Name:              Option Code Extensions
+   Defined in:        (expired Internet-Draft)
+   Contact:           Ralph Droms
+
+	<a name="section-4"><h2>4.  Already Returned for Reassignment</h2></a>
+
+   The option codes 99, 102-107, 109 and 111 have already been returned
+   for reassignment to future DHCP options.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.  Security Considerations</h2></a>
+
+   This document has no known security implications, as none of the
+   reclaimed options are known to be in use.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.  IANA Considerations</h2></a>
+
+   IANA has returned the DHCP option codes listed in Section 2 to the
+   list of available option codes.  These option codes may be reassigned
+   to new DHCP options, according to the procedures in RFC 2939 [6].
+   IANA is requested to reassign these option codes after the list of
+   option codes that have never been assigned or have previously been
+   returned has been exhausted.
+
+</p><p class="rfcparagraph">Informative References
+
+   [1]  Assigned Numbers Editor, IANA., "BOOTP and DHCP Parameters",
+        http://www.iana.org/assignments/bootp-dhcp-parameters, February
+        2003.
+
+</p><p class="rfcparagraph">   [2]  Patrick, M., "DHCP Relay Agent Information Option", RFC 3046,
+        January 2001.
+
+</p><p class="rfcparagraph">   [3]  Droms, R., Kinnear, K., Stapp, M., Volz, B., Gonczi, S., Rabil,
+        G., Dooley, M. and A. Kapur, "DHCP Failover Protocol", Work in
+        Progress.
+
+</p><p class="rfcparagraph">   [4]  Intel Corporation, "Preboot Execution Environment (PXE)
+        Specification Version 2.1", http://www.pix.net/software/pxeboot/
+        archive/pxespec.pdf, September 1999.
+   [5]  Volz, B., Droms, R. and T. Lemon, "Extending DHCP Options
+        Codes", Work in Progress.
+
+</p><p class="rfcparagraph">   [6]  Droms, R., "Procedures and IANA Guidelines for Definition of New
+        DHCP Options and Message Types", BCP 43, RFC 2939, September
+        2000.
+
+</p><p class="rfcparagraph">Intellectual Property Statement
+
+   The IETF takes no position regarding the validity or scope of any
+   intellectual property or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; neither does it represent that it
+   has made any effort to identify any such rights.  Information on the
+   IETF's procedures with respect to rights in standards-track and
+   standards-related documentation can be found in BCP-11.  Copies of
+   claims of rights made available for publication and any assurances of
+   licenses to be made available, or the result of an attempt made to
+   obtain a general license or permission for the use of such
+   proprietary rights by implementors or users of this specification can
+   be obtained from the IETF Secretariat.
+
+</p><p class="rfcparagraph">   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights which may cover technology that may be required to practice
+   this standard.  Please address the information to the IETF Executive
+   Director.
+
+</p><p class="rfcparagraph">Author's Address
+
+   Ralph Droms
+   Cisco Systems
+   1414 Massachusetts Avenue
+   Boxborough, MA  01719
+   USA
+
+   Phone: +1 978 936 1674
+   EMail: rdroms@cisco.com
+Full Copyright Statement
+
+   Copyright (C) The Internet Society (2004).  All Rights Reserved.<br>
+
+</p><p class="rfcparagraph">   This document and translations of it may be copied and furnished to
+   others, and derivative works that comment on or otherwise explain it
+   or assist in its implementation may be prepared, copied, published
+   and distributed, in whole or in part, without restriction of any
+   kind, provided that the above copyright notice and this paragraph are
+   included on all such copies and derivative works.  However, this
+   document itself may not be modified in any way, such as by removing
+   the copyright notice or references to the Internet Society or other
+   Internet organizations, except as needed for the purpose of
+   developing Internet standards in which case the procedures for
+   copyrights defined in the Internet Standards process must be
+   followed, or as required to translate it into languages other than
+   English.
+
+</p><p class="rfcparagraph">   The limited permissions granted above are perpetual and will not be
+   revoked by the Internet Society or its successors or assignees.
+
+</p><p class="rfcparagraph">   This document and the information contained herein is provided on an
+   "AS IS" basis and THE INTERNET SOCIETY AND THE INTERNET ENGINEERING
+   TASK FORCE DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING
+   BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION
+   HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED WARRANTIES OF
+   MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is currently provided by the
+   Internet Society.
+
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Droms                        Informational                      [Page 8]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

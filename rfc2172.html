@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                        M. Maruyama<br>Request for Comments: 2172                                   K. Murakami<br>Category: Informational                                 NTT Laboratories<br>                                                               June 1997<br><br></p>
+                  <h1>
+                    MAPOS Version 1 Assigned Numbers
+</h1>
+                  <h2>Status of this Memo</h2>
+
+   This memo provides information for the Internet community.  This memo
+   does not specify an Internet standard of any kind.  Distribution of
+   this memo is unlimited.
+
+</p><p class="rfcparagraph">Authors' Note
+
+   This memo documents the parameters used in the Multiple Access
+   Protocol over SONET/SDH Version 1.  This document is NOT the product
+   of an IETF working group nor is it a standards track document.  It
+   has not necessarily benefited from the widespread and in-depth
+   community review that standards track documents receive.
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This document describes the protocol parameters used in the Multiple
+   Access Over SONET/SDH (MAPOS) version 1. MAPOS is a link layer
+   protocol and provides multiple access capability over SONET/SDH
+   links.
+
+</p><p class="rfcparagraph">	<a name="section-1"><h2>1.  Introduction</h2></a>
+
+   Multiple Access Protocol over SONET/SDH (MAPOS) [1] is a high-speed
+   link-layer protocol that provides multiple access capability over
+   SONET(Synchronous Optical Network)/SDH(Synchronous Digital
+   Hierarchy)[2][3][4][5]. Its frame format is based on the HDLC-like
+   framing [6] for PPP.  A component called "Frame Switch" [1] allows
+   multiple nodes to be connected together in a star topology to form a
+   LAN. Using long haul SONET/SDH links, the nodes on such a "SONET-LAN"
+   can span over a wide geographical area. The Internet Protocol (IP)
+   [7] datagrams are transmitted in MAPOS HDLC frames [8].
+
+</p><p class="rfcparagraph">   This document describes the protocol parameters used in MAPOS version
+   1 [1].
+	<a name="section-2"><h2>2.  Protocol Field Assignments</h2></a>
+
+   The MAPOS Version 1 Data Link Layer [1] contains a 16 bit Protocol
+   field to identify the the encapsulated protocol.  The Protocol field
+   is consistent with the ISO 3309 (HDLC) extension mechanism for
+   address fields.  All protocol numbers MUST be assigned such that the
+   least significant bit of the most significant octet equals "0", and
+   the least significant bit of the least significant octet equals "1".
+
+</p><p class="rfcparagraph">   Assigned MAPOS Protocol Numbers
+
+      Value (in hex)  Protocol Name
+
+      0001-001F       Not Used - reserved
+      0021            MAPOS Version 1 Internet Protocol Version 4 [8]
+      0023-FCFF       Not Used - reserved
+      FE01            MAPOS Version 1 Address Resolution Protocol (ARP[8])
+      FE03            MAPOS Version 1 Node Switch Protocol (NSP[9])
+      FE05            MAPOS Version 1 Switch Switch Protocol (SSP[10])
+      FE07-FEFF       Not Used - reserved
+
+
+References
+
+   [1]   Murakami, K. and M. Maruyama, "MAPOS - Multiple Access Protocol
+         over SONET/SDH, Version 1," RFC-2171, June 1997.
+
+</p><p class="rfcparagraph">   [2]   CCITT Recommendation G.707: Synchronous Digital Hierarchy Bit
+         Rates (1990).<br>
+
+</p><p class="rfcparagraph">   [3]   CCITT Recommendation G.708: Network Node Interface for
+         Synchronous Digital Hierarchy (1990).<br>
+
+</p><p class="rfcparagraph">   [4]   CCITT Recommendation G.709: Synchronous Multiplexing Structure
+         (1990).<br>
+
+</p><p class="rfcparagraph">   [5]   American National Standard for Telecommunications - Digital
+         Hierarchy - Optical Interface Rates and Formats Specification,
+         ANSI T1.105-1991.
+
+</p><p class="rfcparagraph">   [6]   Simpson, W., editor, "PPP in HDLC-like Framing," RFC-1662,
+         July 1994.
+
+</p><p class="rfcparagraph">   [7]   Postel, J., "Internet Protocol (IP)," RFC-791, September 1981.
+
+</p><p class="rfcparagraph">   [8]   Murakami, K. and M. Maruyama, "IPv4 over MAPOS Version 1,"
+         RFC-2176, June, 1997.
+   [9]   Murakami, K. and M. Maruyama, "A MAPOS version 1 Extension -
+         Node Switch Protocol," RFC-2173, June, 1997.
+
+</p><p class="rfcparagraph">   [10]  Murakami, K. and M. Maruyama, "A MAPOS version 1 Extension -
+         Switch Switch Protocol," RFC-2174, June, 1997.
+
+</p><p class="rfcparagraph">Acknowledgements
+
+   The authors would like to acknowledge the contributions and
+   thoughtful suggestions of John P. Mullaney, Clark Bremer, Masayuki
+   Kobayashi, Paul Francis, Toshiaki Yoshida, and Takahiro Sajima.
+
+</p>Author's Address
+
+     Mitsuru Maruyama
+     NTT Software Laboratories
+     3-9-11, Midori-cho
+     Musashino-shi
+     Tokyo-180, Japan
+     E-mail: mitsuru@ntt-20.ecl.net
+
+     Ken Murakami
+     NTT Software Laboratories
+     3-9-11, Midori-cho
+     Musashino-shi
+     Tokyo-180, Japan
+     E-mail: murakami@ntt-20.ecl.net
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Maruyama &  Murakami         Informational                      [Page 3]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

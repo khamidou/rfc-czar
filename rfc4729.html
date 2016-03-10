@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                            M. Abel<br>Request for Comments: 4729                                     NFC Forum<br>Category: Informational                                    November 2006<br><br></p>
+                  <h1>
+              A Uniform Resource Name (URN) Namespace for
+               the Near Field Communication (NFC) Forum</h1>
+                  <h2>Status of This Memo</h2>
+
+   This memo provides information for the Internet community.  It does
+   not specify an Internet standard of any kind.  Distribution of this
+   memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The IETF Trust (2006).<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This document describes the Namespace Identifier (NID) for Uniform
+   Resource Name (URN) resources published by the Near Field
+   Communication (NFC) Forum.  The NFC Forum defines and manages
+   resources that utilize this URN identification model.  Management
+   activities for these and other resource types are provided by the NFC
+   Forum Technical Committee.
+
+</p><p class="rfcparagraph">Table of Contents
+<a href="#section-1" class="">1. Introduction ...................................................</a><br>
+<a href="#section-2" class="">2. URN Specification for "nfc" NID ................................</a><br>
+<a href="#section-3" class="">3. Examples .......................................................</a><br>
+<a href="#section-4" class="">4. Namespace Considerations .......................................</a><br>
+<a href="#section-5" class="">5. Community Considerations .......................................</a><br>
+<a href="#section-6" class="">6. Security Considerations ........................................</a><br>
+<a href="#section-7" class="">7. IANA Considerations ............................................</a><br>
+<a href="#section-8" class="">8. Informative References .........................................</a><br>
+   Acknowledgments ....................................................6
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   The NFC Forum is a specification development body developing
+   technologies related to near-field communications.  This activity is
+   supported by a membership comprised of chip vendors, smart card
+   vendors, equipment vendors, software developers, finance and banking
+   service providers, content providers, and other interested companies.
+
+</p><p class="rfcparagraph">   Some of the technologies being developed by the NFC Forum need
+   namespaces that are managed so that they are unique and persistent.
+   To ensure that the uniqueness is absolute, the registration of a
+   specific NID for use by the NFC Forum was deemed appropriate.
+   Therefore, a full and complete registration will follow the namespace
+   specification process as defined in [RFC3406].
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   URN Specification for "nfc" NID</h2></a>
+
+   Namespace ID:
+
+</p><p class="rfcparagraph">      nfc
+
+   Registration Information:
+
+</p><p class="rfcparagraph">      Registration version number:  1
+      Registration date:            2006-05-17
+
+   Declared registrant of the namespace:
+
+</p><p class="rfcparagraph">      Registering organization
+         Name:    Near Field Communication Forum, Inc.
+         Address: 401 Edgewater Place, Suite 600
+                  Wakefield, MA  01880
+
+      Designated contact
+         Role:    Technical Program Manager
+         Email:   TPM@nfc-forum.org
+
+   Declaration of syntactic structure:
+
+</p><p class="rfcparagraph">      The Namespace Specific String (NSS) of all URNs that use the "nfc"
+      NID will have the following structure:
+
+</p><p class="rfcparagraph">      urn:nfc:{NFCresource}:{ResourceSpecificString}
+
+      Where the "{NFCresource}" is a US-ASCII string that conforms to
+      the URN syntax requirements [RFC2141] and defines a specific class
+      of resource.  Each resource class has a specific labeling scheme
+      that is covered by "{ResourceSpecificString}" which also conforms
+      to the naming requirements of [RFC2141].
+
+</p><p class="rfcparagraph">      NFC Forum working groups will manage the assignment of NFC
+      resources and the specific registration values assigned for each
+      resource class.  The Technical Committee will coordinate creation
+      of new resource class assignments based on community need.
+
+</p><p class="rfcparagraph">   Relevant ancillary documentation:
+
+</p><p class="rfcparagraph">      The NFC Forum publishes specifications describing the use of
+      near-field communication for interoperable exchange of information
+      between devices in close proximity.  Among these specifications
+      are the designation of new data types, schema, XML elements and
+      attributes, protocols, and other formally named items intended for
+      machine parsing.  Interested parties are referred to the NFC Forum
+      web site where these publications will be made available to the
+      community:
+
+</p><p class="rfcparagraph">      http://www.nfc-forum.org/
+
+   Identifier uniqueness considerations:
+
+</p><p class="rfcparagraph">      The NFC Forum working groups and Technical Committee will ensure
+      uniqueness of resource names assigned by the NFC Forum within the
+      resource classes for which they are responsible.
+
+</p><p class="rfcparagraph">      When authority and responsibility for assignment of names with a
+      resource class are delegated to an external organization,
+      commitment to adhere to the uniqueness requirements of the
+      assigned resource names will be a pre-condition of such
+      delegation.
+
+</p><p class="rfcparagraph">      The structure of the NFC Forum namespace into resource classes
+      will further ensure isolation of names in each class from names in
+      other classes.
+
+</p><p class="rfcparagraph">      It is anticipated that some resource classes may be open to self-
+      assignment by any interested individual or organization.  To
+      ensure a degree of uniqueness for these self-assigned resource
+      names, fully-qualified domain names will be factored into the name
+      to distinguish the naming authorities.
+
+</p><p class="rfcparagraph">      It should be understood that due to the flexibility of the domain
+      name system and the underlying market-based forces that allow for
+      ownership transfer and abandonment of domain names, no guarantee
+      of long-term uniqueness or persistence can be made for this class
+      of resource names beyond that made for the domain names
+      themselves.
+
+</p><p class="rfcparagraph">   Identifier persistence considerations:
+
+</p><p class="rfcparagraph">      The NFC Forum will not reassign names and will thus guarantee the
+      persistence of names beyond the expected lifetime of the named
+      resource.  NFC Forum does not anticipate operating a name
+      resolution service for the assigned names and does not anticipate
+      any other usability issues of the assigned names beyond those for
+      any other naturally aging technology.
+
+</p><p class="rfcparagraph">   Process of identifier assignment:
+
+</p><p class="rfcparagraph">      The NFC Forum will provide procedures for registration of each
+      class of resource that it maintains.  Each such resource may have
+      three types of registration activities:
+
+</p><p class="rfcparagraph">      1) Registered names associated with NFC Forum specifications or
+         services;
+      2) Registration of names or resource classes for other entities;
+      3) Name models for use in experimental purposes.
+
+</p><p class="rfcparagraph">   Process for identifier resolution:
+
+</p><p class="rfcparagraph">      The namespace is not listed with a Resolution Discovery System
+      (RDS); this is not relevant.
+
+</p><p class="rfcparagraph">   Rules for Lexical Equivalence:
+
+</p><p class="rfcparagraph">      No special considerations; the rules for lexical equivalence of
+      [RFC2141] apply.
+
+</p><p class="rfcparagraph">   Conformance with URN Syntax:
+
+</p><p class="rfcparagraph">      No special considerations.
+
+</p><p class="rfcparagraph">   Validation mechanism:
+
+</p><p class="rfcparagraph">      None specified.  URN assignment and registration will be handled
+      by procedures implemented in support of NFC Forum activities.
+
+</p><p class="rfcparagraph">   Scope:
+
+</p><p class="rfcparagraph">      Global
+	<a name="section-3"><h2>3.     Examples</h2></a>
+
+   The following examples are representative URNs that could be assigned
+   by the NFC Forum.  They may not be the actual strings that would be
+   assigned:
+
+</p><p class="rfcparagraph">      urn:nfc:wkt:Uri
+         Defines the well-known type identifier used to identify URI
+         bookmark data objects defined by the NFC Forum and exchanged by
+         NFC devices.
+
+</p><p class="rfcparagraph">      urn:nfc:schema:manifest
+         Declares an XML namespace for elements and attributes, used in
+         an XML schema to describe an NFC Forum data transfer manifest.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.     Namespace Considerations</h2></a>
+
+   The NFC Forum is developing a variety of communication protocol and
+   data exchange specifications.  Some of these specifications depend
+   upon supporting information (e.g., data descriptions, attributes,
+   schema, etc.) to be fully specified.  For proper operation,
+   descriptions of the needed supporting information must exist and be
+   available in a unique, reliable, and persistent manner.  These
+   dependencies provide the basis of need for namespaces, in one form or
+   another.
+
+</p><p class="rfcparagraph">   As type information is relayed across NFC Forum protocols, the need
+   for compact, machine-parsed type identification of data and meta-
+   content, with the attributes of uniqueness and reliability mentioned
+   above, becomes imperative for proper interoperation across widely
+   varied implementations.
+
+</p><p class="rfcparagraph">   As the NFC Forum work is ongoing and covers many technical areas, the
+   possibility of using various other namespace repositories has been
+   deemed impractical.  Each data object, description, or schema as
+   defined in the NFC Forum could possibly be related to multiple
+   different other namespaces, so further conflicts of association might
+   occur.  Thus, the intent is to utilize the requested URN namespace to
+   manage NFC Forum-defined objects, descriptions, and schema.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   Community Considerations</h2></a>
+
+   The objects and descriptions required for specifications produced and
+   published by the NFC Forum are generally available for use by other
+   organizations.  The NFC Forum will provide access and support for
+   name requests by these external organizations.  This support can be
+   enabled in a timely and responsive fashion as new objects and
+   descriptions are produced.
+	<a name="section-6"><h2>6.   Security Considerations</h2></a>
+
+   There are no additional security considerations other than those
+   normally associated with the use and resolution of URNs in general.
+
+</p><p class="rfcparagraph">	<a name="section-7"><h2>7.   IANA Considerations</h2></a>
+
+   The requested NID (nfc) has been entered into the IANA registry for
+   URN NIDs.
+
+</p><p class="rfcparagraph">	<a name="section-8"><h2>8.   Informative References</h2></a>
+
+   [RFC2141]   Moats, R., "URN Syntax", RFC 2141, May 1997.
+
+</p><p class="rfcparagraph">   [RFC3406]   Daigle, L., van Gulik, D., Iannella, R., and P.
+               Faltstrom, "Uniform Resource Names (URN) Namespace
+               Definition Mechanisms", BCP 66, RFC 3406, October 2002.
+
+</p><p class="rfcparagraph">Acknowledgments
+
+   The author wishes to express thanks to Dwight Smith (Motorola) for
+   his guidance on the URN registration process and for providing, by
+   example, a registration that was worthy of emulation.
+
+</p><p class="rfcparagraph">Author's Address
+
+   Miller Abel
+   Technical Committee Delegate, NFC Forum
+   Microsoft Corporation
+   One Microsoft Way
+   Redmond, WA  98052
+
+   EMail: TPM@nfc-forum.org
+Full Copyright Statement
+
+   Copyright (C) The IETF Trust (2006).<br>
+
+</p><p class="rfcparagraph">   This document is subject to the rights, licenses and restrictions
+   contained in BCP 78, and except as set forth therein, the authors
+   retain all their rights.
+
+</p><p class="rfcparagraph">   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY, THE IETF TRUST,
+   AND THE INTERNET ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES,
+   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT
+   THE USE OF THE INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY
+   IMPLIED WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR
+   PURPOSE.
+
+</p><p class="rfcparagraph">Intellectual Property
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the procedures with respect to rights in RFC documents can be
+   found in BCP 78 and BCP 79.
+
+</p><p class="rfcparagraph">   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+</p><p class="rfcparagraph">   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at
+   ietf-ipr@ietf.org.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is currently provided by the
+   Internet Society.
+
+</p>
+
+
+
+
+Abel                        Informational                       [Page 7]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

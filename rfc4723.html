@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                         T. Kosonen<br>Request for Comments: 4723                                         Nokia<br>Category: Informational                                         T. White<br>                                                                     MMA<br>                                                           December 2006<br><br></p>
+                  <h1>
+              Registration of Media Type audio/mobile-xmf</h1>
+                  <h2>Status of This Memo</h2>
+
+   This memo provides information for the Internet community.  It does
+   not specify an Internet standard of any kind.  Distribution of this
+   memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The IETF Trust (2006).<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   The MIDI Manufacturers Association (MMA) and the Association of
+   Musical Electronics Industry (AMEI) have produced the Mobile XMF
+   standard, which was developed particularly for mobile MIDI
+   applications.  Mobile XMF is a very compact media type providing
+   high-quality synthetic audio content for music downloading and
+   messaging applications that require MIME registration.  This document
+   registers the media type audio/mobile-xmf.
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   MIDI content is used commonly in the Internet.  Typically, MIDI data
+   is stored in the Standard MIDI File (SMF) format [8].  This MIME type
+   registration uses the Mobile XMF file format for the encapsulation of
+   SP-MIDI [3,4] and Mobile DLS (Downloadable Sounds) [2] data.
+
+</p><p class="rfcparagraph">   The MIDI Manufacturers Association (MMA) and the Association of
+   Musical Electronics Industry (AMEI) have produced the Mobile XMF
+   standard [1], which was developed particularly for mobile MIDI [7]
+   applications.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Registration of audio/mobile-xmf</h2></a>
+
+   Type name: audio
+
+   Subtype name: mobile-xmf
+
+   Required parameters: none
+
+   Optional parameters:
+
+</p><p class="rfcparagraph">      revision: Mobile XMF file type revision ID
+
+         revision is the Mobile XMF file type revision ID number from
+         the XmfFileTypeRevisionID field of the XMF Meta File format
+         2.00. revision is encoded in hex in US-ASCII.
+
+</p><p class="rfcparagraph">      prl: Playback resource list
+
+         prl contains the playback resources included in all Content
+         Description MetaDataItems of the Mobile XMF file.  prl contains
+         two-digit hexadecimal numbers representing data bytes from the
+         Content Description Meta Data.  Each resource is listed exactly
+         once.  A playback resource contains two parts: a prefix and
+         data.  prl is a sequence of two-digit hexadecimal numbers
+         encoded in US-ASCII.  Thus, prl has an even number of
+         hexadecimal digits.
+
+</p><p class="rfcparagraph">         Example: If the file includes Playback Resource Lists such as
+         [00h 01h 00h 02h] and [00h 01h 00h 03h], the corresponding prl
+         is 000100020003 containing playback resources 01, 02, and 03
+         each with the prefix 00.
+      minimum-pr: Minimum playback requirements
+
+         minimum-pr contains the Maximum Instantaneous Resource (MIR)
+         values from the first row of all MIR Count Tables corresponding
+         to the playback resources listed in prl.  Only the largest
+         value from the values of the same resource is chosen.
+         minimum-prl is a sequence of two-digit hexadecimal numbers
+         encoded in US-ASCII.  Thus, minimum-prl has an even number of
+         hexadecimal digits.
+
+</p><p class="rfcparagraph">         minimum-pr requires the use of prl, and the values in
+         minimum-pr must be in the same order as the resources in prl.
+         minimum-pr is the more important of minimum-pr and total-pr,
+         because it defines the minimum playback requirements.
+
+</p><p class="rfcparagraph">         Example: If the file includes the first rows of MIR Count
+         Tables such as [02h 00h] and [01h 01h] corresponding to the
+         above Playback Resource Lists, the corresponding minimum-pr is
+         020001.  (02 is the largest of 2 and 1, 00 is the largest of 0,
+         and 01 is the largest of 1.)
+
+      total-pr: Total playback requirements
+
+         total-pr contains the MIR values from the last row of all MIR
+         Count Tables corresponding to the playback resources listed in
+         prl.  Only the largest value from the values of the same
+         resource is chosen.  total-pr is a sequence of two-digit
+         hexadecimal numbers encoded in US-ASCII.  Thus, total-pr has an
+         even number of hexadecimal digits.
+
+</p><p class="rfcparagraph">         total-pr requires the use of prl, and the values in total-pr
+         must be in the same order as the resources in prl.
+
+</p><p class="rfcparagraph">         Example: If the file includes the last rows of MIR Count Tables
+         such as [05h 02h] and [06h 01h] corresponding to the above
+         Playback Resource Lists, the corresponding total-pr is 060201.
+         (06 is the largest of 5 and 6, 02 is the largest of 2, and 01
+         is the largest of 1.)
+
+   Encoding considerations:
+
+</p><p class="rfcparagraph">      mobile-xmf data is binary data and must be encoded for non-binary
+      transport; Base64 [9] is suitable for Email.
+   Security considerations:
+
+</p><p class="rfcparagraph">      Many synthetic audio compositions have associated intellectual
+      property rights.  It is conceivable that the rights owners of
+      mobile-xmf content will want to protect their rights by applying
+      security mechanisms that prohibit the rendering of the content
+      without a legally acquired license to do so.  These mechanisms
+      would be applied externally to the Content-Type defined here;
+      mobile-xmf content itself is not encrypted internally.  mobile-xmf
+      streams do not contain executable content.  Mobile XMF players are
+      robust against corrupted mobile-xmf content, because Mobile XMF
+      players ignore unidentified content.  prl, minimum-pr, and
+      total-pr parameters can be used to represent Mobile DLS playback
+      memory requirements for protecting against the excessive usage of
+      playback memory.
+
+</p><p class="rfcparagraph">   Interoperability considerations:
+
+</p><p class="rfcparagraph">      Mobile XMF is a Musical Instrument Digital Interface (MIDI)
+      specification developed by MMA and AMEI.  Mobile XMF is based on
+      the XMF Meta File Format Specification v2.00 [5,6], which
+      standardizes a meta file format for the electronic distribution of
+      music.  mobile-xmf data is stored in XMF file format [5,6].
+
+</p><p class="rfcparagraph">   Published specification:
+
+</p><p class="rfcparagraph">      Mobile XMF Content Format Specification, MMA specification v1.0.,
+        RP-42, Los Angeles, CA, USA.  2004.
+
+</p><p class="rfcparagraph">      Specification is available from:
+        http://www.midi.org/about-midi/specshome.shtml
+
+   Applications which use this media type:
+
+</p><p class="rfcparagraph">      mobile-xmf is a synthetic audio format for the flexible
+      presentation of SP-MIDI and Mobile DLS instrument data on a wide
+      range of playback devices, particularly portable appliances such
+      as mobile phones, PDAs, and palmtop computers.
+
+</p><p class="rfcparagraph">   Additional information:
+
+</p><p class="rfcparagraph">      Magic number(s):
+
+</p><p class="rfcparagraph">      First twelve bytes:
+      \130\115\106\137\062\056\060\060\000\000\000\002
+      File extension(s): mxmf
+
+      Macintosh File Type Code(s): mxmf
+
+   Person & email address to contact for further information:
+
+</p><p class="rfcparagraph">      Timo Kosonen
+      Email: timo.kosonen@nokia.com
+
+   Intended usage: COMMON
+
+   Restrictions on usage: none
+
+   Authors:
+
+</p><p class="rfcparagraph">      Timo Kosonen
+      Email: timo.Kosonen@nokia.com
+
+      Tom White
+      Email: twhite@midi.org
+
+   Change controller:
+
+</p><p class="rfcparagraph">      MIDI Manufacturers Association
+      P.O. Box 3173
+      La Habra, CA  90632-3173
+      Tel (714) 736-9774<br>
+      Fax (714) 736-9775<br>
+      Point of contact:
+      Tom White
+      Email: twhite@midi.org
+
+	<a name="section-3"><h2>3.   Security Considerations</h2></a>
+
+   Security considerations are specified in the MIME subtype
+   registration contained in Section 2.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   IANA Considerations</h2></a>
+
+   Section 2 of this document registers one MIME subtype.
+	<a name="section-5"><h2>5.   Normative References</h2></a>
+
+   [1] Mobile XMF Content Format Specification, MMA specification v1.0.,
+       RP-42, Los Angeles, CA, USA.  2004.
+
+</p><p class="rfcparagraph">   [2] Mobile DLS, MMA specification v1.0., RP-41, Los Angeles, CA, USA.
+       2004.
+
+</p><p class="rfcparagraph">   [3] Scalable Polyphony MIDI Specification.  December 2001, RP-034,
+       The MIDI Manufacturers Association, Los Angeles, CA, USA.
+
+</p><p class="rfcparagraph">   [4] Scalable Polyphony MIDI Device 5-24 Note Profile for 3GPP,
+       December 2001, RP-035, The MIDI Manufacturers Association, Los
+       Angeles, CA, USA.
+
+</p><p class="rfcparagraph">   [5] Specification for XMF Meta File Format, Version 1.00b.  The MIDI
+       Manufacturers Association, Los Angeles, CA, USA, 2001.
+
+</p><p class="rfcparagraph">   [6] XMF Meta File Format 2.00, RP-043, MIDI Manufacturers
+       Association, Los Angeles, CA, USA, 2004
+
+   [7] MIDI 1.0 Detailed Specification, Document Version 4.2.  February
+       1996, In 'The Complete MIDI 1.0 Detailed Specification, Document
+       Version 96.1.'  The MIDI Manufacturers Association., Los Angeles,
+       CA, USA.
+
+</p><p class="rfcparagraph">   [8] Standard MIDI Files 1.0, In 'The Complete MIDI 1.0 Detailed
+       Specification, Document Version 96.1.'  The MIDI Manufacturers
+       Association., Los Angeles, CA, USA.
+
+</p><p class="rfcparagraph">   [9] Josefsson, S., "The Base16, Base32, and Base64 Data Encodings",
+       RFC 4648, October 2006.
+Authors' Addresses
+
+   Timo Kosonen
+   Nokia
+   P.O. Box 100
+   33721 Tampere
+   Finland
+
+   Tel: +358 5048 35206
+   Fax: +358 7180 35899
+   EMail: timo.kosonen@nokia.com
+
+
+   Tom White
+   MIDI Manufacturers Association
+   P.O. Box 3173
+   La Habra, CA  90632-3173
+   USA
+
+   Tel: (714) 736-9774<br>
+   Fax: (714) 736-9775<br>
+   EMail: twhite@midi.org
+Full Copyright Statement
+
+   Copyright (C) The IETF Trust (2006).<br>
+
+</p><p class="rfcparagraph">   This document is subject to the rights, licenses and restrictions
+   contained in BCP 78, and except as set forth therein, the authors
+   retain all their rights.
+
+</p><p class="rfcparagraph">   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY, THE IETF TRUST,
+   AND THE INTERNET ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES,
+   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT
+   THE USE OF THE INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY
+   IMPLIED WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR
+   PURPOSE.
+
+</p><p class="rfcparagraph">Intellectual Property
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the procedures with respect to rights in RFC documents can be
+   found in BCP 78 and BCP 79.
+
+</p><p class="rfcparagraph">   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+</p><p class="rfcparagraph">   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at
+   ietf-ipr@ietf.org.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is currently provided by the
+   Internet Society.
+
+</p>
+
+
+
+
+Kosonen & White              Informational                      [Page 8]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

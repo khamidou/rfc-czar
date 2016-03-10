@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                           A. Houri<br>Request for Comments: 5344                                           IBM<br>Category: Informational                                          E. Aoki<br>                                                                 AOL LLC<br>                                                           S. Parameswar<br>                                                  Microsoft  Corporation<br>                                                            October 2008<br><br></p>
+                  <h1>
+            Presence and Instant Messaging Peering Use Cases</h1>
+                  <h2>Status of This Memo</h2>
+
+   This memo provides information for the Internet community.  It does
+   not specify an Internet standard of any kind.  Distribution of this
+   memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This document describes several use cases of peering of non-VoIP
+   (Voice over IP) services between two or more Service Providers.
+   These Service Providers create a peering relationship between
+   themselves, thus enabling their users to collaborate with users on
+   the other Service Provider network.  The target of this document is
+   to drive requirements for peering between domains that provide the
+   non-VoIP based collaboration services with presence and, in
+   particular, Instant Messaging (IM).
+
+</p><p class="rfcparagraph">   Table of Contents
+<a href="#section-1" class="">1. Introduction ...................................................</a><br>
+<a href="#section-2" class="">2. Use Cases ......................................................</a><br>
+<a href="#section-2.1" class="indent-1">2.1. Simple Interdomain Subscription ...........................</a><br>
+<a href="#section-2.2" class="indent-1">2.2. List Based Interdomain Subscription .......................</a><br>
+<a href="#section-2.3" class="indent-1">2.3. Authorization Migration ...................................</a><br>
+<a href="#section-2.4" class="indent-1">2.4. Pager Mode IM .............................................</a><br>
+<a href="#section-2.5" class="indent-1">2.5. Session Based IM ..........................................</a><br>
+<a href="#section-2.6" class="indent-1">2.6. Other Services ............................................</a><br>
+<a href="#section-2.7" class="indent-1">2.7. Federation and Clearing House .............................</a><br>
+<a href="#section-3" class="">3. Security Considerations ........................................</a><br>
+<a href="#section-4" class="">4. Acknowledgments ................................................</a><br>
+<a href="#section-5" class="">5. Informative References .........................................</a><br>
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   This document uses the terminology as defined in [1] unless otherwise
+   stated.
+
+</p><p class="rfcparagraph">   Real Time Collaboration (RTC) services have become as prevalent and
+   essential for users on the Internet as email.  While RTC services can
+   be implemented directly by users in a point-to-point fashion, they
+   are often provided for, or on behalf of, a Peer Network of users
+   within an administrative domain.  As the use of these services grows,
+   users increasingly have the need to communicate with users not only
+   within their own Peer Network but with those in other Peer Networks
+   as well (similar to the old Public Switched Telephony Network (PSTN)
+   that enabled global reachability).  In practice, each Peer Network is
+   controlled by some domain, and so there is a need to provide for
+   easier establishment of connectivity between Peer Networks and for
+   the management of the relationships between the Peer Networks.  This
+   document describes a set of use cases that describe how peering
+   between Peer Networks may be used in non-VoIP RTC services.  The use
+   cases are intended to help in identifying and capturing requirements
+   that will guide and then enable a secure and easier peering between
+   Peer Networks that provide non-VoIP RTC services.  The use cases for
+   the VoIP RTC services are described in [2].
+
+</p><p class="rfcparagraph">   Note that this document does not define requirements for a new
+   protocol or for protocol extensions.  It captures the way that
+   presence and Instant Messaging are currently used within enterprises
+   and operator domains.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Use Cases</h2></a>
+
+	<a name="section-2.1"><h3>2.1   Simple Interdomain Subscription</h3></a>
+
+   Assume two Peer Networks, Peer Network A and Peer Network B.  User
+   Alice@example.com (hosted in Peer Network A) wants to subscribe to
+   user Bob@example.net (hosted in Peer Network B) and get his presence
+   information.  In order to do so, Alice@example.com could connect
+   directly to example.net and subscribe to Bob's presence information.
+   However, Peer Network B is willing to accept subscriptions and route
+   IMs only when they are coming from its users or from other Peer
+   Networks that Peer Network B trusts.
+
+</p><p class="rfcparagraph">   In reality, what will happen is Peer Network A will connect to Peer
+   Network B and send Alice's subscription to Bob via Peer Network B.
+   When Peer Network B has new information on Bob, it will send
+   notifications to Peer Network A, which will pass them to Alice.
+	<a name="section-2.2"><h3>2.2   List-Based Interdomain Subscription</h3></a>
+
+   This is similar to the simple interdomain subscription use case,
+   except in this case Alice subscribes to a Uniform Resource Identifier
+   (URI) [8] that represents a list of users in Peer Network B [9] [3].
+
+</p><p class="rfcparagraph">   There are several types of lists that Alice may subscribe to:
+
+</p><p class="rfcparagraph">   o  Personal group - a list that is created and maintained by Alice
+      and includes Alice's watch list.
+
+</p><p class="rfcparagraph">   o  Public group - a list that is created and maintained by an
+      administrator.  Public groups usually contain a list of specific
+      people that have some common characteristic, e.g., support group
+      of a company.
+
+</p><p class="rfcparagraph">   o  Ad-hoc group - a list that is short lived and is usually created
+      in the context of some activity that Alice is doing.  An ad-hoc
+      group may be created by Alice or by some application.  Typical
+      examples may be the list of people that participate with Alice in
+      a conference or a game.
+
+</p><p class="rfcparagraph">	<a name="section-2.3"><h3>2.3   Authorization Migration</h3></a>
+
+      If many users from one Peer Network watch presentities [6] in
+      another Peer Network, it may be possible that many watchers [6]
+      from one Peer Network will subscribe to the same user in the other
+      Peer Network.  However, due to privacy constraints that enable a
+      user to provide different presence documents to different
+      watchers, each Peer Network will have to send multiple copies of
+      the watched-presence document.  The need to send multiple copies
+      between the Peer Networks is very inefficient and causes redundant
+      traffic between the Peer Networks.
+
+</p><p class="rfcparagraph">      In order to make the subscription between Peer Networks more
+      efficient there needs to be a way to enable Peer Networks to agree
+      to share privacy information between them.  This will enable
+      sending a single copy (the full copy) of the presence document of
+      the watched user and letting the receiving Peer Network be
+      responsible for sending the right values to the right watchers
+      according to the delegated privacy policies of the watched users.
+
+</p><p class="rfcparagraph">      Instead of sharing the watched user's privacy policies between the
+      Peer Networks, it is also possible to send different copies of the
+      presence document with a list of the watchers the presence
+      document is intended for.  For example, if there is a set of
+      watchers in one Peer Network that may see the location of the
+      presentity and another set of users in the same Peer Network that
+      may not see the location information, two presence documents will
+      be sent--each associated with a list of watchers that should
+      receive it.  One presence document will contain the location
+      information and will be associated with a list of users that may
+      see it, and the other presence document will not contain the
+      location information and will be associated with a list of users
+      that may not see the location information. See [11].
+
+</p><p class="rfcparagraph">	<a name="section-2.4"><h3>2.4   Pager Mode IM</h3></a>
+
+      In this use case, a user from one Peer Network sends a pager mode
+      [7] IM to a user on another Peer Network.
+
+</p><p class="rfcparagraph">	<a name="section-2.5"><h3>2.5   Session Based IM</h3></a>
+
+      In this use case, a user from one Peer Network creates a Message
+      Session Relay Protocol (MSRP) [10] session with a user from
+      another Peer Network.
+
+</p><p class="rfcparagraph">	<a name="section-2.6"><h3>2.6   Other Services</h3></a>
+
+      In addition to VoIP sessions, which are out of scope for this
+      document, only presence and IM have been ratified as RFCs.  In
+      addition to presence and IM, there are many other services that
+      are being standardized or that may be implemented using minimal
+      extensions to existing standards.  These include:
+
+</p><p class="rfcparagraph">   o  N-way chat - enable a multi-participant textual chat that will
+      include users from multiple Peer Networks.  See [4] for more
+      details.
+
+</p><p class="rfcparagraph">   o  File transfer - send files from a user in one Peer Network to a
+      user in another Peer Network.  See [5] for more details.
+
+</p><p class="rfcparagraph">   o  Document sharing - sharing and editing a document between users in
+      different Peer Networks.
+
+</p><p class="rfcparagraph">      Note: Document sharing is mentioned in this document only for
+      completeness of use cases.  It is not being standardized by the
+      IETF and will not be included in the requirements document that
+      will result from this document.
+
+</p><p class="rfcparagraph">   The list above is of course not exhaustive, as new developments in
+   the world of non-VoIP RTC will surface new services.  Enabling
+   peering between networks for some of the services will create a basis
+   for enabling peering for future services also.
+	<a name="section-2.7"><h3>2.7   Federation and Clearing House</h3></a>
+
+   A federation as defined in [1] enables peering between multiple Peer
+   Networks.  A federation may be implemented by means of a central
+   service providing a hub for the Peer Networks or, alternatively, Peer
+   Networks may connect to each other in a peer-to-peer fashion.  One of
+   the most important services that this hub type of federation should
+   provide is authorized interconnection that enables each Peering
+   Network to securely identify other Peering Networks.  Other services
+   that might be provided include an N-way chat server, lawful
+   interception, logging, and more.  This hub type of federation is also
+   known as a "Clearing House".
+
+</p><p class="rfcparagraph">   As non-VoIP services are usually text-based and consume less
+   bandwidth, they may benefit from having a central service that will
+   do central services such as logging for them.  For example, instead
+   of requiring each Peer Network to log all messages that are being
+   sent to the other Peer-Network, this service can be done by the
+   Clearing House.
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   Security Considerations</h2></a>
+
+   When Peer Network A peers with Peer Network B, there are several
+   security issues for which the administrator of each Peer Network will
+   need mechanisms to verify:
+
+</p><p class="rfcparagraph">   o  All communication channels between Peer Networks and between each
+      Peer Network and the Clearing House have their authenticity and
+      confidentiality protected.
+
+</p><p class="rfcparagraph">   o  The other Peer Network is really the Peering Network that it
+      claims to be.
+
+</p><p class="rfcparagraph">   o  The other Peer Network is secure and trustworthy, such that
+      information that is passed to it will not reach a third party.
+      This includes information about specific users as well as
+      information about the authorization policies associated with user
+      information.
+
+</p><p class="rfcparagraph">   o  The other Peer Network is secure and trustworthy, such that it
+      will not modify or falsify data that it presents to its users
+      except as required by the authorization policy provided.
+
+</p><p class="rfcparagraph">   o  If there is a third party (e.g., a Clearing House) involved in the
+      connection between the two Peering Networks that element is also
+      secure.
+   The same issues of security are even more important from the point of
+   view of the users of the Peer Networks.  Users will be concerned
+   about how their privacy is being adhered to when their presence
+   information is sent to the other Peer Network.  Users today are
+   concerned about providing their email address to a third party when
+   they register to a domain; presence contains much more sensitive
+   information, and the concern of users here will be even greater.
+
+</p><p class="rfcparagraph">   The privacy issue is even harder when we take into account that, in
+   order to enable scalable peering between big Peer Networks, there are
+   some optimizations that may require migration of the privacy
+   definitions of users between Peer Network (see Section 2.3).  We can
+   imagine the fiasco that would ensue if a user of one Peer Network
+   were able to see the privacy information and learn he/she is listed
+   in the block list of a close friend.
+
+</p><p class="rfcparagraph">   This document discusses use cases for peering between Peer Networks.
+   It is out of the scope of this document to provide solutions for
+   security.  Nevertheless, it is obvious that the protocols that will
+   enable the use cases described here will have to provide for the
+   security considerations also described here.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   Acknowledgments</h2></a>
+
+   We would like to thank Jonathan Rosenberg, Jon Peterson, Rohan Mahy,
+   Jason Livingood, Alexander Mayrhofer, Joseph Salowey, Henry
+   Sinnreich, and Mohamed Boucadir for their valuable input.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   Informative References</h2></a>
+
+   [1]   Malas, D. and D. Meyer, "SPEERMINT Terminology", Work in
+         Progress, February 2008.
+
+</p><p class="rfcparagraph">   [2]   Uzelac, A. and Y. Lee, "VoIP SIP Peering Use Cases", Work in
+         Progress, May 2008.
+
+</p><p class="rfcparagraph">   [3]   Camarillo, G. and A. Roach, "Framework and Security
+         Considerations for Session Initiation Protocol (SIP) URI-List
+         Services", Work in Progress, November 2007.
+
+</p><p class="rfcparagraph">   [4]   Niemi, A., Garcia-Martin, M., and G. Sandbakken, "Multi-party
+         Instant Message (IM) Sessions Using the Message Session Relay
+         Protocol (MSRP)", Work in Progress, February 2008.
+
+</p><p class="rfcparagraph">   [5]   Garcia-Martin, M., Isomaki, M., Camarillo, G., Loreto, S., and
+         P. Kyzivat, "A Session Description Protocol (SDP) Offer/Answer
+         Mechanism to Enable File Transfer", Work in Progress, May 2008.
+   [6]   Day, M., Rosenberg, J., and H. Sugano, "A Model for Presence
+         and Instant Messaging", RFC 2778, February 2000.
+
+</p><p class="rfcparagraph">   [7]   Campbell, B., Ed., Rosenberg, J., Schulzrinne, H., Huitema, C.,
+         and D. Gurle, "Session Initiation Protocol (SIP) Extension for
+         Instant Messaging", RFC 3428, December 2002.
+
+</p><p class="rfcparagraph">   [8]   Berners-Lee, T., Fielding, R., and L. Masinter, "Uniform
+         Resource Identifier (URI): Generic Syntax", STD 66, RFC 3986,
+         January 2005.
+
+</p><p class="rfcparagraph">   [9]   Roach, A., Campbell, B., and J. Rosenberg, "A Session
+         Initiation Protocol (SIP) Event Notification Extension for
+         Resource Lists", RFC 4662, August 2006.
+
+</p><p class="rfcparagraph">   [10]  Campbell, B., Ed., Mahy, R., Ed., and C. Jennings, Ed., "The
+         Message Session Relay Protocol (MSRP)", RFC 4975, September
+         2007.
+
+</p><p class="rfcparagraph">   [11]  Rosenberg, J., Donovan, S., and K. McMurry. "Optimizing
+         Federated Presence with View Sharing", Work in Progress, July
+         2008.
+Authors' Addresses
+
+   Avshalom Houri
+   IBM
+   3 Pekris Street
+   Science Park
+   Rehovot,
+   Israel
+
+   EMail: avshalom@il.ibm.com
+
+   Edwin Aoki
+   AOL LLC
+   401 Ellis Street
+   Mountain View, CA 94043
+   USA
+
+   EMail: aoki@aol.net
+
+   Sriram Parameswar
+   Microsoft Corporation
+   One Microsoft Way
+   Redmond, WA  98052
+   USA
+
+   EMail: Sriram.Parameswar@microsoft.com
+Full Copyright Statement
+
+   Copyright (C) The IETF Trust (2008).<br>
+
+</p><p class="rfcparagraph">   This document is subject to the rights, licenses and restrictions
+   contained in BCP 78, and except as set forth therein, the authors
+   retain all their rights.
+
+</p><p class="rfcparagraph">   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY, THE IETF TRUST AND
+   THE INTERNET ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS
+   OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF
+   THE INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED
+   WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Intellectual Property
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the procedures with respect to rights in RFC documents can be
+   found in BCP 78 and BCP 79.
+
+</p><p class="rfcparagraph">   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+</p><p class="rfcparagraph">   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at
+   ietf-ipr@ietf.org.
+
+</p>
+
+
+
+
+
+
+
+
+
+
+Houri, et al.                Informational                      [Page 9]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

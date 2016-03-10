@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                         A. Bierman<br>Request for Comments: 3395                                      C. Bucci<br>Updates: 2895                                        Cisco Systems, Inc.<br>Category: Standards Track                                       R. Dietz<br>                                                              Hifn, Inc.<br>                                                                A. Warth<br>                                                          September 2002<br><br></p>
+                  <h1>
+ Remote Network Monitoring MIB Protocol Identifier Reference Extensions</h1>
+                  <h2>Status of this Memo</h2>
+
+   This document specifies an Internet standards track protocol for the
+   Internet community, and requests discussion and suggestions for
+   improvements.  Please refer to the current edition of the "Internet
+   Official Protocol Standards" (STD 1) for the standardization state
+   and status of this protocol.  Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (2002).  All Rights Reserved.<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This memo defines extensions to the Protocol Identifier Reference
+   document for the identification of application verb information.  It
+   updates the Protocol Identifier Reference document but does not
+   obsolete any portion of that document.  In particular, it describes
+   the algorithms required to identify protocol operations (verbs)
+   within the protocol encapsulations managed with MIBs such as the
+   Remote Network Monitoring MIB Version 2, RFC 2021.
+
+</p><p class="rfcparagraph">Table of Contents
+<a href="#section-1" class="">1. The SNMP Network Management Framework .........................</a><br>
+<a href="#section-2" class="">2. Overview ......................................................</a><br>
+<a href="#section-2.1" class="indent-1">2.1 Protocol Identifier Framework ................................</a><br>
+<a href="#section-2.2" class="indent-1">2.2 Protocol Identifier Extensions for Application Verbs .........</a><br>
+<a href="#section-2.3" class="indent-1">2.3 Terms ........................................................</a><br>
+<a href="#section-2.4" class="indent-1">2.4 Relationship to the RMON-2 MIB ...............................</a><br>
+<a href="#section-2.5" class="indent-1">2.5 Relationship to the RMON MIB Protocol Identifier Reference....</a><br>
+<a href="#section-3" class="">3. Definitions ...................................................</a><br>
+<a href="#section-3.1" class="indent-1">3.1 Verb Identifier Macro Format .................................</a><br>
+<a href="#section-3.1.1" class="indent-2">3.1.1 Lexical Conventions ........................................</a><br>
+<a href="#section-3.1.2" class="indent-2">3.1.2 Extended Grammar for the PI Language .......................</a><br>
+<a href="#section-3.1.3" class="indent-2">3.1.3 Mapping of the Parent Protocol Name ........................</a><br>
+<a href="#section-3.1.4" class="indent-2">3.1.4 Mapping of the DESCRIPTION Clause ..........................</a><br>
+<a href="#section-3.1.5" class="indent-2">3.1.5 Mapping of the REFERENCE Clause ............................</a><br>
+<a href="#section-3.1.6" class="indent-2">3.1.6 Mapping of the Verb List Clause ............................</a><br>
+<a href="#section-3.1.6.1" class="">3.1.6.1 Mapping of the Verb Name Field ...........................</a><br>
+<a href="#section-3.1.6.2" class="">3.1.6.2 Mapping of the Verb Enum Field ...........................</a><br>
+<a href="#section-3.2" class="indent-1">3.2 Protocol Directory Requirements ..............................</a><br>
+<a href="#section-3.2.1" class="indent-2">3.2.1 Mapping of the Verb Layer Numbering Space ..................</a><br>
+<a href="#section-3.2.2" class="indent-2">3.2.2 Mapping of the ProtocolDirID object ........................</a><br>
+<a href="#section-3.2.3" class="indent-2">3.2.3 Mapping of the ProtocolDirParameters object ................</a><br>
+<a href="#section-3.2.4" class="indent-2">3.2.4 Mapping of the ProtocolDirLocalIndex object ...............</a><br>
+<a href="#section-3.2.5" class="indent-2">3.2.5 Mapping of the protocolDirDescr object ....................</a><br>
+<a href="#section-3.2.6" class="indent-2">3.2.6 Mapping of the protocolDirType object .....................</a><br>
+<a href="#section-3.2.7" class="indent-2">3.2.7 Mapping of the protocolDirAddressMapConfig object .........</a><br>
+<a href="#section-3.2.8" class="indent-2">3.2.8 Mapping of the protocolDirHostConfig object ...............</a><br>
+<a href="#section-3.2.9" class="indent-2">3.2.9 Mapping of the protocolDirMatrixConfig object .............</a><br>
+<a href="#section-3.2.10" class="indent-2">3.2.10 Mapping of the protocolDirOwner object ...................</a><br>
+<a href="#section-3.2.11" class="indent-2">3.2.11 Mapping of the protocolDirStatus object ..................</a><br>
+<a href="#section-4" class="">4. Implementation Considerations ................................</a><br>
+<a href="#section-4.1" class="indent-1">4.1 Stateful Protocol Decoding ..................................</a><br>
+<a href="#section-4.2" class="indent-1">4.2 Packet Capture ..............................................</a><br>
+<a href="#section-4.3" class="indent-1">4.3 RMON-2 MIB Collections ......................................</a><br>
+<a href="#section-5" class="">5. Intellectual Property ........................................</a><br>
+<a href="#section-6" class="">6. Acknowledgements .............................................</a><br>
+<a href="#section-7" class="">7. Normative References .........................................</a><br>
+<a href="#section-8" class="">8. Informative References .......................................</a><br>
+<a href="#section-9" class="">9. IANA Considerations ..........................................</a><br>
+<a href="#section-10" class="">10. Security Considerations .....................................</a><br>
+   Appendix A: Usage Examples .......................................16
+   A.1 FTP Example ..................................................16
+   A.2 POP3 Example .................................................17
+   A.3 SNMP Example .................................................18
+   A.4 HTTP Example .................................................18
+   A.5 SMTP Example .................................................19
+   Authors' Addresses ...............................................20
+   Full Copyright Statement..........................................21
+
+	<a name="section-1"><h2>1.   The SNMP Network Management Framework</h2></a>
+
+   The SNMP Management Framework presently consists of five major
+   components:
+
+</p><p class="rfcparagraph">      o  An overall architecture, described in RFC 2571 [RFC2571].
+
+</p><p class="rfcparagraph">      o  Mechanisms for describing and naming objects and events for the
+         purpose of management.  The first version of this Structure of
+         Management Information (SMI) is called SMIv1 and is described
+         in STD 16, RFC 1155 [RFC1155], STD 16, RFC 1212 [RFC1212] and
+         RFC 1215 [RFC1215].  The second version, called SMIv2, is
+         described in STD 58, RFC 2578 [RFC2578], RFC 2579 [RFC2579] and
+         RFC 2580 [RFC2580].
+
+</p><p class="rfcparagraph">      o  Message protocols for transferring management information.  The
+         first version of the SNMP message protocol is called SNMPv1 and
+         is described in STD 15, RFC 1157 [RFC1157].  A second version
+         of the SNMP message protocol, which is not an Internet
+         standards track protocol, is called SNMPv2c and is described in
+         RFC 1901 [RFC1901] and RFC 1906 [RFC1906].  The third version
+         of the message protocol is called SNMPv3 and is described in
+         RFC 1906 [RFC1906], RFC 2572 [RFC2572] and RFC 2574 [RFC2574].
+
+</p><p class="rfcparagraph">      o  Protocol operations for accessing management information.  The
+         first set of protocol operations and associated PDU formats is
+         described in STD 15, RFC 1157 [RFC1157].  A second set of
+         protocol operations and associated PDU formats is described in
+         RFC 1905 [RFC1905].
+
+</p><p class="rfcparagraph">      o  A set of fundamental applications is described in RFC 2573
+         [RFC2573].  The view-based access control mechanism is
+         described in RFC 2575 [RFC2575].
+
+</p><p class="rfcparagraph">   A more detailed introduction to the current SNMP Management Framework
+   can be found in RFC 2570 [RFC2570].
+
+</p><p class="rfcparagraph">   Managed objects are accessed via a virtual information store, termed
+   the Management Information Base or MIB.  Objects in the MIB are
+   defined using the mechanisms defined in the SMI.
+
+</p><p class="rfcparagraph">   This memo does not specify a MIB module.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Overview</h2></a>
+
+   There is a need for a standardized way of identifying the protocol
+   operations defined for particular application protocols.  Different
+   protocol operations can have very different performance
+   characteristics, and it is desirable to collect certain metrics at
+   this level of granularity.  This memo defines extensions to the
+   existing protocol identifier structure [RFC2895] and is intended to
+   update, not obsolete, the existing protocol identifier encoding
+   rules.
+
+</p><p class="rfcparagraph">	<a name="section-2.1"><h3>2.1   Protocol Identifier Framework</h3></a>
+
+   The RMON Protocol Identifier (PI) structure [RFC2895] allows for a
+   variable number of layer identifiers.  Each layer contributes 4
+   octets to the protocolDirID OCTET STRING and one octet to the
+   protocolDirParameters OCTET STRING.  These two MIB objects comprise
+   the index in the protocolDirTable [RFC2021] and represent a globally
+   unique identifier for a particular protocol encapsulation (or set of
+   encapsulations if the wild-card base layer is used).
+
+</p><p class="rfcparagraph">	<a name="section-2.2"><h3>2.2   Protocol Identifier Extensions for Application Verbs</h3></a>
+
+   The existing RMON protocol identifier architecture requires that an
+   application verb be represented by one additional protocol layer,
+   appended to the protocol identifier for the parent application.
+   Since some application verbs are defined as strings which can exceed
+   4 octets in length, an integer mapping must be provided for each
+   string.  This memo specifies how the verb layer is structured, as
+   well as a verb identifier macro syntax for specification of verb name
+   to integer mappings.
+
+</p><p class="rfcparagraph">	<a name="section-2.3"><h3>2.3   Terms</h3></a>
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in RFC 2119 [RFC2119].
+
+</p><p class="rfcparagraph">   This document uses some terms defined in the RMON Protocol Identifier
+   Reference document [RFC2895] and some new terms that need
+   introduction here.
+
+</p><p class="rfcparagraph">   Application Verb
+      Also called simply 'verb'.  Refers to one of potentially many
+      protocol operations that are defined by a particular application
+      protocol.
+
+</p><p class="rfcparagraph">      Note that an application verb is not equivalent to an application
+      protocol sub-command or opcode within a packet containing a PDU
+      for the application.  An application verb is a transaction type
+      and may involve several PDU types within the application protocol
+      (e.g., SNMP Get-PDU and Response-PDU).  In some applications, a
+      verb may encompass protocol operations pertaining to more than one
+      protocol entry in the protocol directory (e.g., ftp and ftp-data).
+
+</p><p class="rfcparagraph">   Connect Verb
+      The special application verb associated with connection or session
+      setup and tear-down traffic, and not attributed to any other verb
+      for the application.  This verb is assigned the enumeration value
+      of zero, and the verb 'connect(0)' is implicitly defined for all<br>
+      application protocols.
+   Parent Application
+      One of potentially many protocol encapsulations which identifies a
+      particular application protocol.  This term refers generically to
+      any or all such encapsulations for a given set of application
+      verbs.
+
+</p><p class="rfcparagraph">   Verb Layer
+      The portion of the protocol identifier octet string which
+      identifies the application verb.
+
+</p><p class="rfcparagraph">   Verb Set
+      The group of verbs enumerated for a particular application
+      protocol.  The list of verb strings within a particular verb-
+      identifier macro invocation is also called the verb set for that
+      verb identifier.
+
+</p><p class="rfcparagraph">	<a name="section-2.4"><h3>2.4   Relationship to the RMON-2 MIB</h3></a>
+
+   The RMON-2 MIB [RFC2021] contains the protocolDirTable MIB objects
+   used to identify all protocol encapsulations that can be monitored by
+   a particular RMON agent.
+
+</p><p class="rfcparagraph">   This memo describes how these MIB objects are mapped by an
+   implementation for entries which identify application verbs. This
+   document does not define any new MIB objects to identify application
+   verbs.  The applicability of the definitions in this document is not
+   limited to the RMON-2 MIB. Other specifications which utilize the
+   RMON-2 protocolDirTable and/or the protocol identifier macros which
+   it represents can also utilize the application verb macro definitions
+   contained in this document.
+
+</p><p class="rfcparagraph">	<a name="section-2.5"><h3>2.5   Relationship to the RMON MIB Protocol Identifier Reference</h3></a>
+
+   The RMON MIB Protocol Identifier Reference [RFC2895] defines the RMON
+   Protocol Identifier Macro Specification Language as well as the
+   encoding rules for the ProtocolDirID and protocolDirParameters OCTET
+   STRINGs.  This memo defines extensions to the Protocol Identifier
+   Reference for the identification of application verb information.  It
+   does not obsolete any portion of the Protocol Identifier Reference
+   document.
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   Definitions</h2></a>
+
+	<a name="section-3.1"><h3>3.1   Verb Identifier Macro Format</h3></a>
+
+   The following example is meant to introduce the verb-identifier
+   macro.  This macro-like construct is used to represent protocol verbs
+   for a specific parent application.
+	<a name="section-3.1.1"><h4>3.1.1   Lexical Conventions</h4></a>
+
+   The following keyword is added to the PI language:
+
+</p><p class="rfcparagraph">       VERB-IDENTIFIER
+
+	<a name="section-3.1.2"><h4>3.1.2   Extended Grammar for the PI Language</h4></a>
+
+   The following is the extended BNF notation for the grammar with
+   starting symbol <piFile>.  It is for representing verb identifier
+   macros.  Note that only the term <piFile> is actually modified from
+   the definition in [RFC2895].  The <piDefinition> syntax is not
+   reproduced here, since this memo is intended to extend that
+   definition, not replace it.
+
+</p><p class="rfcparagraph">       -- a file containing one or more
+       -- Protocol Identifier (PI) definitions
+       <piFile> = [ <piDefinition> | <piVerbDefinition> ]...
+
+</p><p class="rfcparagraph">       -- a PI definition
+       <piVerbDefinition> =
+         [<wspace>] <parentProtoName> <wspace> "VERB-IDENTIFIER"
+               <wspace> "DESCRIPTION" <wspace> string
+             [ <wspace> "REFERENCE" <wspace> string ]
+             [<wspace>] "::=" [<wspace>]
+             "{" [<wspace>] <verbList> [<wspace>] "}" [<wspace>]
+
+       -- a list of verb identifier string
+       <verbList> = <verbId> [ [<wspace>] "," [<wspace>] <verbId> ]...
+
+</p><p class="rfcparagraph">       -- a verb identifier string
+       <verbId> = <verbName> [<wspace>] "(" [<wspace>]
+                 <verbEnum> [<wspace>] ")" [<wspace>]
+
+       -- a protocol name
+       <parentProtoName> = <protoName>
+
+       -- a verb name
+       <verbName> = <lcname>
+
+       -- a verb enumeration
+       <verbEnum> = <posNum>
+
+       -- a positive integer
+       <posNum> = any integer value greater than zero and
+                  less than 16,777,216
+
+       -- <piDefinition> syntax is defined in [RFC2895]
+       -- <protoName> syntax is defined in [RFC2895]
+       -- <wspace> syntax is defined in [RFC2895]
+       -- <lcname> syntax is defined in [RFC2895]
+
+	<a name="section-3.1.3"><h4>3.1.3   Mapping of the Parent Protocol Name</h4></a>
+
+   The "parentProtoName" value, called the "parent protocol name",
+   SHOULD be an ASCII string consisting of 1 to 64 characters.  (These
+   names are intended to appear in IETF documentation, so the use of
+   UTF-8 is not appropriate.)  The encoding rules are exactly as
+   specified in section 6.2.4 of [RFC2895] for the mapping of the
+   protocol name field.  The value for <parentProtoName> (which is
+   called the "parent protocol name") MUST be the value of a protocol
+   identifier defined as specified for <protoName> in section 3.2.4 of
+   [RFC2895].  The value of <parentProtoName> MUST specify a <protoName>
+   defined in the <piFile>.
+
+</p><p class="rfcparagraph">   A protocol identifier macro SHOULD exist in the <piFile> for at least
+   one encapsulation of the parent application protocol if any verb
+   identifier macros referencing that parent application are present in
+   the <piFile>.
+
+</p><p class="rfcparagraph">	<a name="section-3.1.4"><h4>3.1.4   Mapping of the DESCRIPTION Clause</h4></a>
+
+   The DESCRIPTION clause provides a textual description of the protocol
+   verb set identified by this macro.  It SHOULD NOT contain details
+   about items covered by the REFERENCE clause.  The DESCRIPTION clause
+   MUST be present in all verb-identifier macro declarations.
+
+</p><p class="rfcparagraph">	<a name="section-3.1.5"><h4>3.1.5   Mapping of the REFERENCE Clause</h4></a>
+
+   If a publicly available reference document exists for this set of
+   application protocol verbs, it SHOULD be listed here.  Typically this
+   will be a URL, otherwise it will be the name and address of the
+   controlling body.
+
+</p><p class="rfcparagraph">   The REFERENCE clause is optional but SHOULD be present if an
+   authoritative reference exists which specifies the application
+   protocol verbs defined in the <verbList> section of this macro.
+
+</p><p class="rfcparagraph">	<a name="section-3.1.6"><h4>3.1.6   Mapping of the Verb List Clause</h4></a>
+
+   The verb list clause MUST be present.  It is used to identify a list
+   of application verb names and associate a numeric constant with each
+   verb name.  At least one verb MUST be specified and a maximum of
+   16,777,215 (2^^24 - 1) verbs MAY be specified.  This enumerated list
+   SHOULD be densely numbered (i.e., valued from '1' to 'N', where 'N'
+   is the total number of verbs defined in the macro).
+<a name="section-3.1.6.1"><h4>3.1.6.1   Mapping of the Verb Name Field</h4></a>
+                        <a href="raw/text/rfc3395.txt" class="rawLink">raw</a>
+                    
+
+   The <verbName> field is case-sensitive and SHOULD be set to the most
+   appropriate string name for each application verb.  If such a
+   descriptive string is defined in an authoritative document then that
+   string SHOULD be used.  If no such string exists then an appropriate
+   but arbitrary string should be selected for this value.
+
+</p><p class="rfcparagraph">   Verb names MUST be unique for a particular parent application.  Note
+   that the special 'connect(0)' verb is implicitly defined for each<br>
+   application protocol.  It is possible for an explicit definition of
+   this verb (e.g., 'connect(8)' for http) to exist for a protocol, as<br>
+   well as the implicit 'connect(0)' verb.<br>
+
+</p><p class="rfcparagraph"><a name="section-3.1.6.2"><h4>3.1.6.2   Mapping of the Verb Enum Field</h4></a>
+                        <a href="raw/text/rfc3395.txt" class="rawLink">raw</a>
+                    
+
+   The <verbEnum> field MUST be unique for all verbs associated with a
+   particular parent application.  This field SHOULD contain a value
+   between '1' and '16,777,215' inclusive.
+
+</p><p class="rfcparagraph">	<a name="section-3.2"><h3>3.2   Protocol Directory Requirements</h3></a>
+
+   This section defines how the protocolDirTable should be populated for
+   any application verb identified with a verb-identifier macro.
+
+</p><p class="rfcparagraph">   An agent MUST implement all applicable protocolDirTable MIB objects
+   on behalf of each supported application verb.
+
+</p><p class="rfcparagraph">	<a name="section-3.2.1"><h4>3.2.1   Mapping of the Verb Layer Numbering Space</h4></a>
+
+   The verb layer consists of the 4 octets within the protocolDirID
+   INDEX field which identify a particular application verb.
+
+</p><p class="rfcparagraph">                     Figure 1
+                 Verb Layer Format
+                 -----------------
+
+            protocolDirID string fragment
+        ---<pre>+--------+--------+--------+--------+
+           | resrvd |                          |
+        .. | set to |  verb enumeration value  |
+           | zero   |   (a)     (b)      (c)   |
+        ---+--------+--------+--------+--------+ octet
+           |    1   |             3            | count
+
+   The first octet is reserved for future use and MUST be set to zero.
+   The next three octets identify the <verbEnum> field used to enumerate
+   the particular application verb represented by the <verbName> field.
+   This field is a 24-bit unsigned integer, encoded in network byte
+   order.
+
+</p><p class="rfcparagraph">   The value zero is reserved to identify the special 'connect(0)' verb.<br>
+   This verb enumeration value (i.e., '0' part of 'connect(0)') MUST NOT<br>
+   be redefined in a verb identifier macro verb list.  Note that the
+   verb name 'connect' is not reserved and MAY be redefined in a verb
+   list.
+
+</p><p class="rfcparagraph">	<a name="section-3.2.2"><h4>3.2.2   Mapping of the ProtocolDirID object</h4></a>
+
+   The protocolDirID OCTET STRING value for a particular application
+   verb is represented by the protocolDirID value for the parent
+   application, appended with the verb's layer identifier value.
+
+</p><p class="rfcparagraph">                        Figure 2
+              ProtocolDirID Format for Verbs
+              ------------------------------
+
+                protocolDirID string
+           +--------+--------+--------+--------+
+           |        parent            |  verb  |
+           |    protocolDirID         | layer  |
+           |        string            | value  |
+           +--------+--------+--------+--------+
+</pre>
+ octet
+           |   length of parent ID    |   4    | count
+
+   The protocolDirID object is encoded as the protocolDirID value of the
+   parent application, followed by four additional octets representing
+   the verb layer.  The verb layer value is encoded as [0.a.b.c] where
+   'a' is the high order byte, 'b' is the middle order byte, and 'c' is
+   the low order byte of the <verbEnum> field for the specific
+   application verb value. A valid PI verb enumeration will be encoded
+   in the range "0.0.0.0" to "0.255.255.255", where the special value
+   "0.0.0.0" is reserved for the implicitly defined 'connect(0)' verb.<br>
+
+</p><p class="rfcparagraph">	<a name="section-3.2.3"><h4>3.2.3   Mapping of the ProtocolDirParameters object</h4></a>
+
+   The protocolDirParameters OCTET STRING value for a particular
+   application verb is represented by the protocolDirParameters value
+   for the parent application, appended with one octet containing the
+   value zero.  Although not actually used, this field is included to
+   conform to the encoding rules defined in the Protocol Identifiers
+   Reference [RFC2895].
+	<a name="section-3.2.4"><h4>3.2.4   Mapping of the ProtocolDirLocalIndex object</h4></a>
+
+   The agent MUST assign an appropriate protocolDirLocalIndex value for
+   each application verb according to the encoding rules defined for
+   this object in [RFC2021] and [RFC2895].
+
+</p><p class="rfcparagraph">	<a name="section-3.2.5"><h4>3.2.5   Mapping of the protocolDirDescr object</h4></a>
+
+   The agent MUST convey the <verbName> value for a particular
+   application verb in the protocolDirDescr object.  This object SHOULD
+   be encoded as the protocolDirDescr value for the parent application
+   appended with a 'dot' character, followed by the exact text contained
+   in the <verbName> field.
+
+</p><p class="rfcparagraph">	<a name="section-3.2.6"><h4>3.2.6   Mapping of the protocolDirType object</h4></a>
+
+   The agent MUST set the protocolDirType object for each application
+   verb to the value representing the empty bit set ( {} ).
+
+</p><p class="rfcparagraph">	<a name="section-3.2.7"><h4>3.2.7   Mapping of the protocolDirAddressMapConfig object</h4></a>
+
+   The agent MUST set the protocolDirAddressMapConfig object for each
+   application verb to the value 'notSupported(1)'.<br>
+
+</p><p class="rfcparagraph">	<a name="section-3.2.8"><h4>3.2.8   Mapping of the protocolDirHostConfig object</h4></a>
+
+   The agent MUST set the protocolDirHostConfig object for each
+   application verb present in the protocol directory according to the
+   monitoring capabilities for each verb.  The agent MAY set this object
+   to the same value as configured in the parent application
+   protocolDirHostConfig object.  The agent MAY choose to transition
+   this object from the value 'supportedOn(2)' to 'supportedOff(3)' if<br>
+   the parent application protocolDirHostConfig object first transitions
+   from 'supportedOn(2)' to 'supportedOff(3)'.<br>
+
+</p><p class="rfcparagraph">	<a name="section-3.2.9"><h4>3.2.9   Mapping of the protocolDirMatrixConfig object</h4></a>
+
+   The agent MUST set the protocolDirMatrixConfig object for each
+   application verb according to the monitoring capabilities for each
+   verb.  The agent MAY set this object to the same value as configured
+   in the parent application protocolDirMatrixConfig object.  The agent
+   MAY choose to transition this object from the value 'supportedOn(2)'<br>
+   to 'supportedOff(3)' if the parent application<br>
+   protocolDirMatrixConfig object first transitions from
+   'supportedOn(2)' to 'supportedOff(3)'.<br>
+	<a name="section-3.2.10"><h4>3.2.10   Mapping of the protocolDirOwner object</h4></a>
+
+   This object is encoded exactly the same for application verbs as for
+   other protocolDirTable entries, according to the rules specified in
+   the RMON-2 MIB [RFC2021].
+
+</p><p class="rfcparagraph">	<a name="section-3.2.11"><h4>3.2.11   Mapping of the protocolDirStatus object</h4></a>
+
+   This object is encoded exactly the same for application verbs as for
+   other protocolDirTable entries, according to the rules specified in
+   RMON-2 MIB [RFC2021].
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   Implementation Considerations</h2></a>
+
+   This section discusses the implementation implications for agents
+   which support verbs in the protocol directory and the RMON
+   collections which utilize the protocol directory.
+
+</p><p class="rfcparagraph">	<a name="section-4.1"><h3>4.1   Stateful Protocol Decoding</h3></a>
+
+   Implementations of the RMON-2 MIB for application layer and network
+   layer protocols typically require little if any state to be
+   maintained by the probe.  The probe can generally decide whether to
+   count a packet and its octets on the packet's own merits, without
+   referencing or updating any state information.
+
+</p><p class="rfcparagraph">   Implementations of the RMON-2 MIB at the verb layer will, for many
+   protocols, need to maintain state information in order to correctly
+   classify a packet as "belonging" to one verb or another.  The
+   examples below illustrate this point.
+
+</p><p class="rfcparagraph">   For SNMP over UDP, a Response-PDU for an SNMP Get-PDU can't be
+   distinguished from a Response-PDU for a Getnext-PDU.  A probe would
+   need to maintain state information in order to correlate a Response-
+   PDU from B to A with a previous request from A to B.
+
+</p><p class="rfcparagraph">   For application protocols carried over a stream-based transport such
+   as TCP, the information required to identify an application verb can
+   span several packets.  A probe would need to follow the transport-
+   layer flow in order to correctly parse the application-layer data.
+
+</p><p class="rfcparagraph">	<a name="section-4.2"><h3>4.2   Packet Capture</h3></a>
+
+   For packet capture based on verb-layer protocol directory filtering,
+   the decision to include a packet in the capture buffer may need to be
+   deferred until the packet can be conclusively attributed to a
+   particular verb.  A probe may need to pre-buffer packets while
+   deciding to include or exclude them from capture based on other
+   packets that have not yet arrived.
+
+</p><p class="rfcparagraph">	<a name="section-4.3"><h3>4.3   RMON-2 MIB Collections</h3></a>
+
+   Data collections such as the protocol distribution or Application
+   Layer Host Table (alHostTable) require that each packet is counted
+   only once, i.e., a given packet is fully classified as a single
+   protocol encapsulation which resolves to a single leaf entry in the
+   protocol directory.  Also, octet counters related to protocol
+   classification are incremented by the entire size of packet, not just
+   the octets associated with a particular encapsulation layer.
+
+</p><p class="rfcparagraph">   It is possible that particular application protocols will allow
+   multiple types of verbs to be present in a single packet.  In this
+   case, the agent MUST choose one verb type, and therefore one protocol
+   directory entry, in order to properly count such a packet.
+
+</p><p class="rfcparagraph">   It is an implementation-specific matter as to which verb type an
+   agent selects to identify a packet in the event more than one verb
+   type is present in that packet.  Some possible choices include:
+
+</p><p class="rfcparagraph">      -  the first verb type encountered in the packet
+
+      -  the verb type with the most instances in the packet
+
+      -  the verb type using the largest number of octets in the packet
+
+      -  the most 'interesting' verb type in the packet (based on
+         knowledge of that application protocol).
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   Intellectual Property</h2></a>
+
+   The IETF takes no position regarding the validity or scope of any
+   intellectual property or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; neither does it represent that it
+   has made any effort to identify any such rights.  Information on the
+   IETF's procedures with respect to rights in standards-track and
+   standards-related documentation can be found in BCP-11.  Copies of
+   claims of rights made available for publication and any assurances of
+   licenses to be made available, or the result of an attempt made to
+   obtain a general license or permission for the use of such
+   proprietary rights by implementors or users of this specification can
+   be obtained from the IETF Secretariat.
+   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights which may cover technology that may be required to practice
+   this standard.  Please address the information to the IETF Executive
+   Director.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.   Acknowledgements</h2></a>
+
+   This memo is a product of the RMONMIB WG.
+
+</p><p class="rfcparagraph">	<a name="section-7"><h2>7.   Normative References</h2></a>
+
+   [RFC1905] SNMPv2 Working Group, Case, J., McCloghrie, K., Rose, M.
+             and S. Waldbusser, "Protocol Operations for Version 2 of
+             the Simple Network Management Protocol (SNMPv2)", RFC 1905,
+             January 1996.
+
+</p><p class="rfcparagraph">   [RFC1906] SNMPv2 Working Group, Case, J., McCloghrie, K., Rose, M.
+             and S.  Waldbusser, "Transport Mappings for Version 2 of
+             the Simple Network Management Protocol (SNMPv2)", RFC 1906,
+             January 1996.
+
+</p><p class="rfcparagraph">   [RFC2021] Waldbusser, S., "Remote Network Monitoring MIB (RMON-2)",
+             RFC 2021, January 1997.
+
+</p><p class="rfcparagraph">   [RFC2026] Bradner, S., "The Internet Standards Process -- Revision
+             3", BCP 9, RFC 2026, October 1996.
+
+</p><p class="rfcparagraph">   [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate
+             Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">   [RFC2571] Harrington, D., Presuhn, R. and B. Wijnen, "An Architecture
+             for Describing SNMP Management Frameworks", RFC 2571, April
+             1999.
+
+</p><p class="rfcparagraph">   [RFC2572] Case, J., Harrington D., Presuhn R. and B. Wijnen, "Message
+             Processing and Dispatching for the Simple Network
+             Management Protocol (SNMP)", RFC 2572, April 1999.
+
+</p><p class="rfcparagraph">   [RFC2573] Levi, D., Meyer, P. and B. Stewart, "SNMPv3 Applications",
+             RFC 2573, April 1999.
+
+</p><p class="rfcparagraph">   [RFC2574] Blumenthal, U. and B. Wijnen, "User-based Security Model
+             (USM) for version 3 of the Simple Network Management
+             Protocol (SNMPv3)", RFC 2574, April 1999.
+   [RFC2575] Wijnen, B., Presuhn, R. and K. McCloghrie, "View-based
+             Access Control Model (VACM) for the Simple Network
+             Management Protocol (SNMP)", RFC 2575, April 1999.
+
+</p><p class="rfcparagraph">   [RFC2578] McCloghrie, K., Perkins, D., Schoenwaelder, J., Case, J.,
+             Rose, M.  and S. Waldbusser, "Structure of Management
+             Information Version 2 (SMIv2)", STD 58, RFC 2578, April
+             1999.
+
+</p><p class="rfcparagraph">   [RFC2579] McCloghrie, K., Perkins, D., Schoenwaelder, J., Case, J.,
+             Rose, M.  and S. Waldbusser, "Textual Conventions for
+             SMIv2", STD 58, RFC 2579, April 1999.
+
+</p><p class="rfcparagraph">   [RFC2580] McCloghrie, K., Perkins, D., Schoenwaelder, J., Case, J.,
+             Rose, M.  and S. Waldbusser, "Conformance Statements for
+             SMIv2", STD 58, RFC 2580, April 1999.
+
+</p><p class="rfcparagraph">   [RFC2895] Bierman, A., Bucci, C. and R. Iddon, "Remote Network
+             Monitoring MIB Protocol Identifiers", RFC 2895, August
+             2000.
+
+</p><p class="rfcparagraph">	<a name="section-8"><h2>8.   Informative References</h2></a>
+
+   [RFC1155] Rose, M. and K. McCloghrie, "Structure and Identification
+             of Management Information for TCP/IP-based Internets", STD
+             16, RFC 1155, May 1990.
+
+</p><p class="rfcparagraph">   [RFC1157] Case, J., Fedor, M., Schoffstall, M. and J. Davin, "Simple
+             Network Management Protocol", STD 15, RFC 1157, May 1990.
+
+</p><p class="rfcparagraph">   [RFC1212] Rose, M. and K. McCloghrie, "Concise MIB Definitions", STD
+             16, RFC 1212, March 1991.
+
+</p><p class="rfcparagraph">   [RFC1215] Rose, M., "A Convention for Defining Traps for use with the
+             SNMP", RFC 1215, March 1991.
+
+</p><p class="rfcparagraph">   [RFC1901] SNMPv2 Working Group, Case, J., McCloghrie, K., Rose, M.
+             and S.  Waldbusser, "Introduction to Community-based
+             SNMPv2", RFC 1901, January 1996.
+
+</p><p class="rfcparagraph">   [RFC2570] Case, J., Mundy, R., Partain, D. and B. Stewart,
+             "Introduction to Version 3 of the Internet-standard Network
+             Management Framework", RFC 2570, April 1999.
+	<a name="section-9"><h2>9.   IANA Considerations</h2></a>
+
+   At this time there are no application protocol verbs defined that
+   require IANA registration, similar to the 'ianaAssigned' protocol
+   identifiers found in RFC 2895.  It is remotely possible that a future
+   version of this document will contain application verb definitions
+   which require assignment in the 'ianaAssigned' protocol identifier
+   subtree.
+
+</p><p class="rfcparagraph">	<a name="section-10"><h2>10.   Security Considerations</h2></a>
+
+   This memo defines the structure of a portion of the Remote Monitoring
+   MIB framework, but does not define any MIB objects or protocol
+   operations.  Instead, it defines algorithms for representing
+   application protocol verbs in RMON Protocol Identifiers.  It does not
+   introduce any new security risks into a managed system.
+
+</p><p class="rfcparagraph">   However, if an MIB collection is designed which utilizes this type of
+   Protocol Identifier, then such a collection may expose which verbs in
+   an application protocol are used in a network.  Inclusion of this
+   additional information may require more consideration for protection.
+   MIB writers should address such considerations.
+Appendix A: Usage Examples
+
+   The following examples are listed to demonstrate how RMON verb
+   identifiers are declared.
+
+</p><p class="rfcparagraph">A.1  FTP Example
+
+   This example defines verb enumeration values for the File Transfer
+   Protocol as defined in RFC 959 and updated by RFC 2228 and RFC 2640.
+   Note that verb name strings specified in the <verbName> field are not
+   limited to 4 characters in length. In the FTP protocol, all the
+   command names are 4 characters in length and the verb name string
+   should match the official command name as closely as possible.
+
+</p><p class="rfcparagraph">   ftp VERB-IDENTIFIER
+       DESCRIPTION
+         "The set of verbs for FTP is derived from the list
+          of commands defined for the File Transfer Protocol,
+          which are identified by case-insensitive strings.
+          The commands are simply listed in the order found
+          in the FTP documentation."
+       REFERENCE
+         "File Transfer Protocol, RFC 959, Section 4.1;
+          FTP Security Extensions, RFC 2228, Section 3;
+          Internationalization of the File Transfer Protocol,
+          RFC 2640, Section 4.1."
+       ::= {
+             user(1),     -- USER NAME<br>
+             pass(2),     -- PASSWORD<br>
+             acct(3),     -- ACCOUNT<br>
+             cwd(4),      -- CHANGE WORKING DIRECTORY<br>
+             cdup(5),     -- CHANGE TO PARENT DIRECTORY<br>
+             smnt(6),     -- STRUCTURE MOUNT<br>
+             rein(7),     -- REINITIALIZE<br>
+             quit(8),     -- LOGOUT<br>
+             port(9),     -- DATA PORT<br>
+             pasv(10),    -- PASSIVE<br>
+             type(11),    -- REPRESENTATION TYPE<br>
+             stru(12),    -- FILE STRUCTURE<br>
+             mode(13),    -- TRANSFER MODE<br>
+             retr(14),    -- RETRIEVE<br>
+             stor(15),    -- STORE<br>
+             stou(16),    -- STORE UNIQUE<br>
+             appe(17),    -- APPEND (with create)<br>
+             allo(18),    -- ALLOCATE<br>
+             rest(19),    -- RESTART<br>
+             rnfr(20),    -- RENAME FROM<br>
+             rnto(21),    -- RENAME TO<br>
+             abor(22),    -- ABORT<br>
+             dele(23),    -- DELETE<br>
+             rmd(24),     -- REMOVE DIRECTORY<br>
+             mkd(25),     -- MAKE DIRECTORY<br>
+             pwd(26),     -- PRINT WORKING DIRECTORY<br>
+             list(27),    -- LIST<br>
+             nlst(28),    -- NAME LIST<br>
+             site(29),    -- SITE PARAMETERS<br>
+             syst(30),    -- SYSTEM<br>
+             stat(31),    -- STATUS<br>
+             help(32),    -- HELP<br>
+             noop(33),    -- NOOP<br>
+             auth(34),    -- AUTHENTICATION/SECURITY MECHANISM<br>
+             adat(35),    -- AUTHENTICATION/SECURITY DATA<br>
+             pbsz(36),    -- PROTECTION BUFFER SIZE<br>
+             prot(37),    -- DATA CHANNEL PROTECTION LEVEL<br>
+             ccc(38),     -- CLEAR COMMAND CHANNEL<br>
+             mic(39),     -- INTEGRITY PROTECTED COMMAND<br>
+             conf(40),    -- CONFIDENTIALITY PROTECTED COMMAND<br>
+             enc(41),     -- PRIVACY PROTECTED COMMAND<br>
+             lang(42)     -- LANGUAGE<br>
+      }
+
+A.2  POP3 Example
+
+   This example defines verb enumeration values for the Post Office
+   Protocol, Version 3, as defined in RFC 1939 and updated by RFC 2449.
+
+</p><p class="rfcparagraph">   pop3 VERB-IDENTIFIER
+       DESCRIPTION
+         "The set of verbs for POP3 is derived from the list
+          of commands defined for the Post Office Protocol,
+          which are identified by case-insensitive strings.
+          The commands are simply listed in the order found
+          in the POP3 command summary."
+       REFERENCE
+         "Post Office Protocol, Version 3, RFC 1939, Section 9;
+          POP3 Extension Mechanism, RFC 2449, Section 5."
+       ::= {
+             user(1),<br>
+             pass(2),<br>
+             quit(3),<br>
+             stat(4),<br>
+             list(5),<br>
+             retr(6),<br>
+             dele(7),<br>
+             noop(8),<br>
+             rset(9),<br>
+             apop(10),<br>
+             top(11),<br>
+             uidl(12),<br>
+             capa(13)
+       }
+
+A.3  SNMP Example
+
+   This example defines verb enumeration values for the Simple Network
+   Management Protocol, as defined in RFC 1905.
+
+</p><p class="rfcparagraph">   snmp VERB-IDENTIFIER
+       DESCRIPTION
+         "The set of verbs for SNMP is derived from the list
+          of PDU transaction types in the Protocol Operations
+          document for SNMPv2.  Note that the 'Response'
+          and 'Report' PDUs are not considered verbs, but are
+          classified as belonging to the transaction type
+          associated with the request PDU."
+       REFERENCE
+         "Protocol Operations for Version 2 of the
+          Simple Network Management Protocol (SNMPv2),
+          RFC 1905, Section 3."
+       ::= {
+             get(1),<br>
+             get-next(2),<br>
+             get-bulk(3),<br>
+             set(4),<br>
+             inform-request(5),<br>
+             trap(6)
+       }
+
+A.4  HTTP Example
+
+   This example defines verb enumeration values for the Hypertext
+   Transfer Protocol, version 1.1, as defined in RFC 2616.
+
+</p><p class="rfcparagraph">   http VERB-IDENTIFIER
+       DESCRIPTION
+         "The set of verbs for HTTP is derived from the list
+          of methods defined for the Hypertext Transfer Protocol,
+          which are identified by case-sensitive strings.
+          The commands are simply listed in the order found
+          in the HTTP/1.1 documentation.  Methods commonly used
+          in HTTP/1.0 are a proper subset of those used in HTTP/1.1.
+          Both versions of the protocol are in current use."
+       REFERENCE
+          "Hypertext Transfer Protocol -- HTTP/1.1, RFC 2616,
+          Section 9; Hypertext Transfer Protocol -- HTTP/1.0, RFC
+          1945, Section 8."
+       ::= {
+             options(1),<br>
+             get(2),<br>
+             head(3),<br>
+             post(4),<br>
+             put(5),<br>
+             delete(6),<br>
+             trace(7),<br>
+             connect(8)  -- reserved for future use by HTTP/1.1<br>
+       }
+
+A.5  SMTP Example
+
+   This example defines verb enumeration values for the Simple Mail
+   Transfer Protocol as defined in RFC 2821.
+
+</p><p class="rfcparagraph">   smtp VERB-IDENTIFIER
+       DESCRIPTION
+       "The set of verbs for SMTP is derived from the set of commands
+        defined for the protocol.  These commands are identified
+        by case-insensitive strings.  Commands are listed in the
+        order found in RFC 2821.  The special "xcmd" verb is defined
+        here as a catch-all for private-use commands, which must
+        start with the letter 'X'."
+       REFERENCE
+         "Simple Mail Transfer Protocol -- RFC 2821, sections 4.1.1
+          and 4.1.5."
+       ::= {
+             ehlo(1),  -- Extended HELLO (4.1.1.1)<br>
+             helo(2),  -- HELLO (4.1.1.1)<br>
+             mail(3),  -- MAIL (4.1.1.2)<br>
+             rcpt(4),  -- RECIPIENT (4.1.1.3)<br>
+             data(5),  -- DATA (4.1.1.4)<br>
+             rset(6),  -- RESET (4.1.1.5)<br>
+             vrfy(7),  -- VERIFY (4.1.1.6)<br>
+             expn(8),  -- EXPAND (4.1.1.7)<br>
+             help(9),  -- HELP (4.1.1.8)<br>
+             noop(10), -- NOOP (4.1.1.9)<br>
+             quit(11), -- QUIT (4.1.1.10)<br>
+             xcmd(12)  -- Catch-all for private-use "X" commands (4.1.5)<br>
+       }
+Authors' Addresses
+
+   Andy Bierman
+   Cisco Systems, Inc.
+   170 West Tasman Dr
+   San Jose, CA USA 95134
+
+   Phone: +1 408-527-3711
+   EMail: abierman@cisco.com
+
+
+   Chris Bucci
+   Cisco Systems, Inc.
+   170 West Tasman Dr
+   San Jose, CA USA 95134
+
+   Phone: +1 408-527-5337
+   EMail: cbucci@cisco.com
+
+
+   Russell Dietz
+   Hifn, Inc.
+   750 University Ave
+   Los Gatos, CA, USA 95032-7695
+
+   Phone: +1 408-399-3623
+   EMail: rdietz@hifn.com
+
+
+   Albin Warth
+
+   EMail: dahoss@earthlink.net
+Full Copyright Statement
+
+   Copyright (C) The Internet Society (2002).  All Rights Reserved.<br>
+
+</p><p class="rfcparagraph">   This document and translations of it may be copied and furnished to
+   others, and derivative works that comment on or otherwise explain it
+   or assist in its implementation may be prepared, copied, published
+   and distributed, in whole or in part, without restriction of any
+   kind, provided that the above copyright notice and this paragraph are
+   included on all such copies and derivative works.  However, this
+   document itself may not be modified in any way, such as by removing
+   the copyright notice or references to the Internet Society or other
+   Internet organizations, except as needed for the purpose of
+   developing Internet standards in which case the procedures for
+   copyrights defined in the Internet Standards process must be
+   followed, or as required to translate it into languages other than
+   English.
+
+</p><p class="rfcparagraph">   The limited permissions granted above are perpetual and will not be
+   revoked by the Internet Society or its successors or assigns.
+
+</p><p class="rfcparagraph">   This document and the information contained herein is provided on an
+   "AS IS" basis and THE INTERNET SOCIETY AND THE INTERNET ENGINEERING
+   TASK FORCE DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING
+   BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION
+   HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED WARRANTIES OF
+   MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is currently provided by the
+   Internet Society.
+
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Bierman, et. al.            Standards Track                    [Page 21]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

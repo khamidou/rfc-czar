@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                       A. Mayrhofer<br>Request for Comments: 4979                                       enum.at<br>Category: Standards Track                                    August 2007<br><br></p>
+                  <h1>
+                IANA Registration for Enumservice 'XMPP'</h1>
+                  <h2>Status of This Memo</h2>
+
+   This document specifies an Internet standards track protocol for the
+   Internet community, and requests discussion and suggestions for
+   improvements.  Please refer to the current edition of the "Internet
+   Official Protocol Standards" (STD 1) for the standardization state
+   and status of this protocol.  Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The IETF Trust (2007).<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This document requests IANA registration of an Enumservice for XMPP,
+   the Extensible Messaging and Presence Protocol.  This Enumservice
+   specifically allows the use of 'xmpp' Uniform Resource Identifiers
+   (URIs) in the context of E.164 Number Mapping (ENUM).
+
+</p><p class="rfcparagraph">Table of Contents
+<a href="#section-1" class="">1. Introduction  . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2" class="">2. Terminology . . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3" class="">3. Enumservice Registration - XMPP . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4" class="">4. XMPP IRI/URI Considerations for ENUM  . . . . . . . . . . . . </a><br>
+<a href="#section-4.1" class="indent-1">4.1. Authority Component . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.2" class="indent-1">4.2. IRI-to-URI mapping  . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-5" class="">5. Example . . . . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-6" class="">6. Security and Privacy Considerations . . . . . . . . . . . . . </a><br>
+<a href="#section-7" class="">7. IANA Considerations . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-8" class="">8. Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-9" class="">9. References  . . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-9.1" class="indent-1">9.1. Normative References  . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-9.2" class="indent-1">9.2. Informative References  . . . . . . . . . . . . . . . . . </a><br>
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   E.164 Number Mapping (ENUM) [1] uses the Domain Name System (DNS) [6]
+   to refer from E.164 numbers [7] to Uniform Resource Identifiers
+   (URIs) [3].  Specific services to be used with ENUM must be
+   registered with IANA.  Section 3 of RFC 3761 describes the process of
+   such an Enumservice registration.
+
+</p><p class="rfcparagraph">   The Extensible Messaging and Presence Protocol (XMPP) [9] provides
+   means for streaming Extensible Markup Language (XML) [8] elements
+   between endpoints in close to real time.  The XMPP framework is
+   mainly used to provide instant messaging, presence, and streaming
+   media services.
+
+</p><p class="rfcparagraph">   RFC 4622 [5] registers a Uniform Resource Identifier (URI) scheme for
+   identifying an XMPP entity as a URI or as an Internationalized
+   Resource Identifier (IRI) [4].  The Enumservice specified in this
+   document allows the provisioning of such "xmpp" URIs (and the URI
+   representations of "xmpp" IRIs) in ENUM.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Terminology</h2></a>
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in RFC 2119 [2].
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   Enumservice Registration - XMPP</h2></a>
+
+   The following template contains information required for the IANA
+   registrations of the 'XMPP' Enumservice, according to Section 3 of
+   RFC 3761:
+
+</p><p class="rfcparagraph">   Enumservice Name: "XMPP"
+
+   Enumservice Type: "xmpp"
+
+   Enumservice Subtype: n/a
+
+   URI Schemes: "xmpp"
+
+   Functional Specification:
+
+</p><p class="rfcparagraph">      This Enumservice indicates that the resource identified is an XMPP
+      entity.
+
+</p><p class="rfcparagraph">   Security Considerations: see Section 6
+   Intended Usage: COMMON
+
+   Author: Alexander Mayrhofer <alexander.mayrhofer@enum.at>
+
+	<a name="section-4"><h2>4.   XMPP IRI/URI Considerations for ENUM</h2></a>
+
+	<a name="section-4.1"><h3>4.1   Authority Component</h3></a>
+
+   XMPP IRIs/URIs optionally contain an "Authority Component" (see
+   Section 2.3 of RFC 4622).  The presence of such an Authority
+   Component in an IRI/URI signals the processing application to
+   authenticate as the user indicated in the URI/IRI rather than using
+   the preconfigured identity.
+
+</p><p class="rfcparagraph">   In the context of this Enumservice, arbitrary clients may discover
+   and use the XMPP URIs/IRIs associated to an E.164 number.  Hence, in
+   most cases, those clients will not be able to authenticate as
+   requested in the Authority Component.
+
+</p><p class="rfcparagraph">   Therefore, URIs/IRIs that result from processing an XMPP Enumservice
+   record SHOULD NOT contain an Authority Component.
+
+</p><p class="rfcparagraph">	<a name="section-4.2"><h3>4.2   IRI-to-URI mapping</h3></a>
+
+   While XMPP supports IRIs as well as 'plain' URIs, ENUM itself
+   supports only the use of URIs for Enumservices.
+
+</p><p class="rfcparagraph">   Therefore, XMPP IRIs MUST be mapped to URIs for use in an XMPP
+   Enumservice record.  The mapping MUST follow the procedures outlined
+   in Section 3.1 of RFC 3987.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   Example</h2></a>
+
+   An example ENUM entry referencing to a XMPP URI could look like:
+
+</p><p class="rfcparagraph">             $ORIGIN 6.9.4.0.6.9.4.5.1.1.4.4.e164.arpa.
+             @  IN NAPTR  ( 100 10 "u"
+                            "E2U+xmpp"
+                            "!^.*$!xmpp:some-user@example.com!" .
+                          )
+	<a name="section-6"><h2>6.   Security and Privacy Considerations</h2></a>
+
+   General security considerations of the protocols on which this
+   Enumservice registration is based are addressed in Sections 3.1.3 and
+   6 of RFC 3761 (ENUM) and Section 14 of RFC 3920 (XMPP).
+
+</p><p class="rfcparagraph">   Since ENUM uses DNS -- a publicly available database -- any
+   information contained in records provisioned in ENUM domains must be
+   considered public as well.  Even after revoking the DNS entry and
+   removing the referred resource, copies of the information could still
+   be available.
+
+</p><p class="rfcparagraph">   Information published in ENUM records could reveal associations
+   between E.164 numbers and their owners -- especially if IRIs/URIs
+   contain personal identifiers or domain names for which ownership
+   information can be obtained easily.
+
+</p><p class="rfcparagraph">   However, it is important to note that the ENUM record itself does not
+   need to contain any personal information.  It just points to a
+   location where access to personal information could be granted.
+
+</p><p class="rfcparagraph">   ENUM records pointing to third-party resources can easily be
+   provisioned on purpose by the ENUM domain owner -- so any assumption
+   about the association between a number and an entity could therefore
+   be completely bogus unless some kind of identity verification is in
+   place.  This verification is out of scope for this memo.
+
+</p><p class="rfcparagraph">	<a name="section-7"><h2>7.   IANA Considerations</h2></a>
+
+   This memo requests IANA to add a new "XMPP" Enumservice to the
+   'Enumservice Registrations' registry, according to the definitions in
+   this document and RFC 3761 [1].
+
+</p><p class="rfcparagraph">   The required template is contained in Section 3.
+
+</p><p class="rfcparagraph">	<a name="section-8"><h2>8.   Acknowledgements</h2></a>
+
+   Some text from RFC 4622 was used in the Introduction of this
+   document.  Charles Clancy, Miguel Garcia, Andrew Newton, Jon
+   Peterson, and Peter Saint-Andre provided extensive reviews and
+   valuable feedback.
+	<a name="section-9"><h2>9.   References</h2></a>
+
+	<a name="section-9.1"><h3>9.1   Normative References</h3></a>
+
+   [1]  Faltstrom, P. and M. Mealling, "The E.164 to Uniform Resource
+        Identifiers (URI) Dynamic Delegation Discovery System (DDDS)
+        Application (ENUM)", RFC 3761, April 2004.
+
+</p><p class="rfcparagraph">   [2]  Bradner, S., "Key words for use in RFCs to Indicate Requirement
+        Levels", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">   [3]  Berners-Lee, T., Fielding, R., and L. Masinter, "Uniform
+        Resource Identifier (URI): Generic Syntax", STD 66, RFC 3986,
+        January 2005.
+
+</p><p class="rfcparagraph">   [4]  Duerst, M. and M. Suignard, "Internationalized Resource
+        Identifiers (IRIs)", RFC 3987, January 2005.
+
+</p><p class="rfcparagraph">   [5]  Saint-Andre, P., "Internationalized Resource Identifiers (IRIs)
+        and Uniform Resource Identifiers (URIs) for the Extensible
+        Messaging and Presence Protocol (XMPP)", RFC 4622, July 2006.
+
+</p><p class="rfcparagraph">	<a name="section-9.2"><h3>9.2   Informative References</h3></a>
+
+   [6]  Mockapetris, P., "Domain names - implementation and
+        specification", STD 13, RFC 1035, November 1987.
+
+</p><p class="rfcparagraph">   [7]  ITU-T, "The international public telecommunication numbering
+        plan", Recommendation E.164 (02/05), Feb. 2005.
+
+</p><p class="rfcparagraph">   [8]  Maler, E., Paoli, J., Bray, T., Yergeau, F., and C. Sperberg-
+        McQueen, "Extensible Markup Language (XML) 1.0 (Third Edition)",
+        World Wide Web Consortium FirstEdition REC-xml-20040204,
+        February 2004, <http://www.w3.org/TR/2004/REC-xml-20040204>.
+
+</p><p class="rfcparagraph">   [9]  Saint-Andre, P., Ed., "Extensible Messaging and Presence
+        Protocol (XMPP): Core", RFC 3920, October 2004.
+Author's Address
+
+   Alexander Mayrhofer
+   enum.at GmbH
+   Karlsplatz 1/2/9
+   Wien  A-1010
+   Austria
+
+   Phone: +43 1 5056416 34
+   EMail: alexander.mayrhofer@enum.at
+   URI:   http://www.enum.at/
+Full Copyright Statement
+
+   Copyright (C) The IETF Trust (2007).<br>
+
+</p><p class="rfcparagraph">   This document is subject to the rights, licenses and restrictions
+   contained in BCP 78, and except as set forth therein, the authors
+   retain all their rights.
+
+</p><p class="rfcparagraph">   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY, THE IETF TRUST AND
+   THE INTERNET ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS
+   OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF
+   THE INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED
+   WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Intellectual Property
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the procedures with respect to rights in RFC documents can be
+   found in BCP 78 and BCP 79.
+
+</p><p class="rfcparagraph">   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+</p><p class="rfcparagraph">   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at
+   ietf-ipr@ietf.org.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is currently provided by the
+   Internet Society.
+
+</p>
+
+
+
+
+
+Mayrhofer                   Standards Track                     [Page 7]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

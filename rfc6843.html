@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph">Internet Engineering Task Force (IETF)                          A. Clark
+Request for Comments: 6843                                      Telchemy
+Category: Standards Track                                       K. Gross
+ISSN: 2070-1721                                             AVA Networks
+                                                                   Q. Wu
+                                                                  Huawei
+                                                            January 2013
+
+
+            RTP Control Protocol (RTCP) Extended Report (XR)
+                    Block for Delay Metric Reporting
+
+<h2>Abstract</h2>
+
+   This document defines an RTP Control Protocol (RTCP) Extended Report
+   (XR) block that allows the reporting of delay metrics for use in a
+   range of Real-time Transport Protocol (RTP) applications.
+
+</p><p class="rfcparagraph">Status of This Memo
+
+   This is an Internet Standards Track document.
+
+</p><p class="rfcparagraph">   This document is a product of the Internet Engineering Task Force
+   (IETF).  It represents the consensus of the IETF community.  It has
+   received public review and has been approved for publication by the
+   Internet Engineering Steering Group (IESG).  Further information on
+   Internet Standards is available in Section 2 of RFC 5741.
+
+</p><p class="rfcparagraph">   Information about the current status of this document, any errata,
+   and how to provide feedback on it may be obtained at
+   http://www.rfc-editor.org/info/rfc6843.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (c) 2013 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+</p><p class="rfcparagraph">   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (http://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
+   the Trust Legal Provisions and are provided without warranty as
+   described in the Simplified BSD License.
+<h2>Table of Contents</h2>
+<a href="#section-1" class="">1. Introduction ...................................................</a><br>
+<a href="#section-1.1" class="indent-1">1.1. Packet Delay Metrics Block ................................</a><br>
+<a href="#section-1.2" class="indent-1">1.2. RTCP and RTCP XR Reports ..................................</a><br>
+<a href="#section-1.3" class="indent-1">1.3. Performance Metrics Framework .............................</a><br>
+<a href="#section-1.4" class="indent-1">1.4. Applicability .............................................</a><br>
+<a href="#section-2" class="">2. Terminology ....................................................</a><br>
+<a href="#section-2.1" class="indent-1">2.1. Standards Language ........................................</a><br>
+<a href="#section-3" class="">3. Delay Block ....................................................</a><br>
+<a href="#section-3.1" class="indent-1">3.1. Report Block Structure ....................................</a><br>
+<a href="#section-3.2" class="indent-1">3.2. Definition of Fields in Delay Metrics Report Block ........</a><br>
+<a href="#section-4" class="">4. SDP Signaling ..................................................</a><br>
+<a href="#section-4.1" class="indent-1">4.1. SDP rtcp-xr-attrib Attribute Extension ....................</a><br>
+<a href="#section-4.2" class="indent-1">4.2. Offer/Answer Usage ........................................</a><br>
+<a href="#section-5" class="">5. IANA Considerations ............................................</a><br>
+<a href="#section-5.1" class="indent-1">5.1. New RTCP XR Block Type Value ..............................</a><br>
+<a href="#section-5.2" class="indent-1">5.2. New RTCP XR SDP Parameter .................................</a><br>
+<a href="#section-5.3" class="indent-1">5.3. Contact Information for Registrations .....................</a><br>
+<a href="#section-6" class="">6. Security Considerations ........................................</a><br>
+<a href="#section-7" class="">7. Contributors ...................................................</a><br>
+<a href="#section-8" class="">8. Acknowledgments ................................................</a><br>
+<a href="#section-9" class="">9. References .....................................................</a><br>
+<a href="#section-9.1" class="indent-1">9.1. Normative References ......................................</a><br>
+<a href="#section-9.2" class="indent-1">9.2. Informative References ....................................</a><br>
+
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+	<a name="section-1.1"><h3>1.1   Packet Delay Metrics Block</h3></a>
+
+   This document defines a new block type to augment those defined in
+   [RFC3611] for use in a range of RTP applications.  The new block type
+   supports the reporting of the mean, minimum, and maximum values of
+   the network round-trip delay between RTP interfaces in peer RTP end
+   systems as measured, for example, using the RTCP method described in
+   [RFC3550].  It also supports reporting of the component of the round-
+   trip delay internal to the local RTP system.
+
+</p><p class="rfcparagraph">   The network metrics belong to the class of transport metrics defined
+   in [RFC6792].
+
+</p><p class="rfcparagraph">	<a name="section-1.2"><h3>1.2   RTCP and RTCP XR Reports</h3></a>
+
+   The use of RTCP for reporting is defined in [RFC3550].  [RFC3611]
+   defined an extensible structure for reporting using an RTCP Extended
+   Report (XR).  This document defines a new Extended Report block for
+   use with [RFC3550] and [RFC3611].
+	<a name="section-1.3"><h3>1.3   Performance Metrics Framework</h3></a>
+
+   The Performance Metrics Framework [RFC6390] provides guidance on the
+   definition and specification of performance metrics.  The RTP
+   Monitoring Architectures [RFC6792] provides guidelines for reporting
+   block format using RTCP XR.  The metrics block described in this
+   document is in accordance with the guidelines in [RFC6390] and
+   [RFC6792].
+
+</p><p class="rfcparagraph">	<a name="section-1.4"><h3>1.4   Applicability</h3></a>
+
+   These metrics are applicable to a range of RTP applications in which
+   this report block would be useful, such as multimedia conferencing
+   and streaming audio and video.  Knowledge of the round-trip delay and
+   delay characteristics can aid other receivers in sizing their receive
+   buffers and selecting a playout delay.  The same information is also
+   valuable to network managers in troubleshooting network and user
+   experience issues.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Terminology</h2></a>
+
+	<a name="section-2.1"><h3>2.1   Standards Language</h3></a>
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in RFC 2119 [RFC2119].
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   Delay Block</h2></a>
+
+   Metrics in this block report on packet delay in the stream arriving
+   at the RTP system.  The measurement of these metrics is made either
+   at the receiving end of the RTP stream or at the sending end of the
+   RTP stream.  Instances of this metrics block refer by synchronization
+   source (SSRC) to the separate auxiliary Measurement Information block
+   [RFC6776], which contains measurement periods (see [RFC6776], Section
+   4.2).  This metrics block relies on the measurement period in the
+   Measurement Information block indicating the span of the report and
+   SHOULD be sent in the same compound RTCP packet as the Measurement
+   Information block.  If the measurement period is not received in the
+   same compound RTCP packet as this metrics block, this metrics block
+   MUST be discarded.
+	<a name="section-3.1"><h3>3.1   Report Block Structure</h3></a>
+
+   Delay metrics block
+
+        0               1               2               3
+        0 1 2 3 4 5 6 7 0 1 2 3 4 5 6 7 0 1 2 3 4 5 6 7 0 1 2 3 4 5 6 7
+       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+       |    BT=16      | I |   resv.   |      block length = 6         |
+       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+       |                           SSRC of Source                      |
+       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+       |                  Mean Network Round-Trip Delay                |
+       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+       |                   Min Network Round-Trip Delay                |
+       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+       |                   Max Network Round-Trip Delay                |
+       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+       |               End System Delay - Seconds (bit 0-31)           |
+       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+       |              End System Delay - Fraction (bit 0-31)           |
+       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+
+                     Figure 1: Report Block Structure
+
+	<a name="section-3.2"><h3>3.2   Definition of Fields in Delay Metrics Report Block</h3></a>
+
+   Block type (BT): 8 bits
+
+      A Delay Report Block is identified by the constant 16.
+
+</p><p class="rfcparagraph">   Interval Metric flag (I): 2 bit
+
+      This field is used to indicate whether the delay metrics are
+      Sampled, Interval or Cumulative metrics:
+
+</p><p class="rfcparagraph">         I=10: Interval Duration - the reported value applies to the
+         most recent measurement interval duration between successive
+         metrics reports.
+
+</p><p class="rfcparagraph">         I=11: Cumulative Duration - the reported value applies to the
+         accumulation period characteristic of cumulative measurements.
+
+</p><p class="rfcparagraph">         I=01: Sampled Value - the reported value is a sampled
+         instantaneous value.
+   Reserved (resv): 6 bits
+
+      These bits are reserved.  They MUST be set to zero by senders and
+      ignored by receivers (see [RFC6709], Section 4.2).
+
+</p><p class="rfcparagraph">   block length: 16 bits
+
+      The length of this report block in 32-bit words, minus one.  For
+      the delay block, the block length is equal to 6.
+
+</p><p class="rfcparagraph">   SSRC of source: 32 bits
+
+      As defined in Section 4.1 of [RFC3611].
+
+</p><p class="rfcparagraph">   Mean Network Round-Trip Delay: 32 bits
+
+      The Mean Network Round-Trip Delay is the mean value of the RTP-to-
+      RTP interface round-trip delay over the measurement period,
+      expressed in units of 1/65536 seconds.  This value is typically
+      determined using "the NTP timestamp field" in the RTCP sender
+      report (SR) and "the last SR (LSR) field","delay since last SR
+      (DLSR) field" in the RTCP receiver report (RR) (see [RFC3550],
+      Section 6.4.1 and Figure 2).  It also can be determined using "the
+      NTP timestamp field" in the RTCP Receiver Reference Time Report
+      Block and "last RR (LRR) field", "delay since last RR (DLRR)
+      field" in the DLRR Report Block (see [RFC3611], Section 4.5).
+
+</p><p class="rfcparagraph">      If only one measurement of Round-Trip Delay is available for the
+      time span of the report (i.e., the measurement period) (whether
+      Interval or Cumulative), this single value SHOULD be reported as
+      the mean value.
+
+</p><p class="rfcparagraph">      If the measurement is unavailable, the value of this field with
+      all bits set to 1 MUST be reported.
+
+</p><p class="rfcparagraph">   Min Network Round-Trip Delay: 32 bits
+
+      The Min Network Round Trip Delay is the minimum value of the RTP-
+      to-RTP interface round-trip delay over the measurement period,
+      expressed in units of 1/65536 seconds.  This value is typically
+      determined using the NTP timestamp field in the RTCP SR and LSR
+      field and DLSR field in the RTCP RR.  It also can be determined
+      using the NTP timestamp field in the RTCP Receiver Reference Time
+      Report Block and LRR field and DLRR field in the DLRR Report
+      Block.
+      If only one measurement of Round Trip Delay is available for the
+      time span of the report (i.e., the measurement period) (whether
+      Interval or Cumulative), this single value SHOULD be reported as
+      the minimum value.
+
+</p><p class="rfcparagraph">      If the measurement is unavailable, the value of this field with
+      all bits set to 1 MUST be reported.
+
+</p><p class="rfcparagraph">   Max Network Round-Trip Delay: 32 bits
+
+      The Max Network Round-Trip Delay is the maximum value of the RTP-
+      to-RTP interface round-trip delay over the measurement period,
+      expressed in units of 1/65536 seconds.  This value is typically
+      determined using the NTP timestamp field in the RTCP SR and LSR
+      field and DLSR field in the RTCP RR.  It also can be determined
+      using the NTP timestamp field in the RTCP Receiver Reference Time
+      Report Block and LRR field and DLRR field in the DLRR Report
+      Block.
+
+</p><p class="rfcparagraph">      If only one measurement of Round-Trip Delay is available for the
+      time span of the report (i.e.,the measurement period) (whether
+      Interval or Cumulative), this single value SHOULD be reported as
+      the maximum value.
+
+</p><p class="rfcparagraph">      If the measurement is unavailable, the value of this field with
+      all bits set to 1 MUST be reported.
+
+</p><p class="rfcparagraph">   End System Delay: 64 bits
+
+      The End System Delay is the internal round-trip delay within the
+      reporting endpoint, calculated using the nominal value of the
+      jitter buffer delay plus the accumulation/encoding and decoding/
+      playout delay associated with the codec being used.  The value of
+      this field is represented using a 64-bit NTP-format timestamp as
+      defined in [RFC5905], which is a 64-bit unsigned fixed-point
+      number with the integer part in the first 32 bits and the
+      fractional part in the last 32 bits.
+
+</p><p class="rfcparagraph">      If the measurement is unavailable, the value of this field with
+      all bits set to 1 MUST be reported.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   SDP Signaling</h2></a>
+
+   [RFC3611] defines the use of SDP (Session Description Protocol)
+   [RFC4566] for signaling the use of XR blocks.  XR blocks MAY be used
+   without prior signaling.
+	<a name="section-4.1"><h3>4.1   SDP rtcp-xr-attrib Attribute Extension</h3></a>
+
+   This section augments the SDP [RFC4566] attribute "rtcp-xr" defined
+   in [RFC3611] by providing an additional value of "xr-format" to
+   signal the use of the report block defined in this document.
+
+</p><p class="rfcparagraph">   xr-format =/ xr-delay-block
+
+   xr-delay-block ="delay"
+
+	<a name="section-4.2"><h3>4.2   Offer/Answer Usage</h3></a>
+
+   When SDP is used in offer/answer context, the SDP Offer/Answer usage
+   defined in [RFC3611] applies.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   IANA Considerations</h2></a>
+
+   New block types for RTCP XR are subject to IANA registration.  For
+   general guidelines on IANA considerations for RTCP XR, refer to
+   [RFC3611].
+
+</p><p class="rfcparagraph">	<a name="section-5.1"><h3>5.1   New RTCP XR Block Type Value</h3></a>
+
+   This document assigns the block type value 16 in the IANA "RTP
+   Control Protocol Extended Reports (RTCP XR) Block Type Registry" to
+   the "Delay Metrics Block".
+
+</p><p class="rfcparagraph">	<a name="section-5.2"><h3>5.2   New RTCP XR SDP Parameter</h3></a>
+
+   This document also registers a new parameter "delay" in the "RTP
+   Control Protocol Extended Reports (RTCP XR) Session Description
+   Protocol (SDP) Parameters" registry.
+
+</p><p class="rfcparagraph">	<a name="section-5.3"><h3>5.3   Contact Information for Registrations</h3></a>
+
+      The contact information for the registrations is:
+
+</p><p class="rfcparagraph">      Qin Wu (sunseawq@huawei.com)
+      Huawei
+      101 Software Avenue, Yuhua District
+      Nanjing, Jiangsu  210012
+      China
+	<a name="section-6"><h2>6.   Security Considerations</h2></a>
+
+   It is believed that this proposed RTCP XR report block introduces no
+   new security considerations beyond those described in [RFC3611].
+   This block does not provide per-packet statistics, so the risk to
+   confidentiality documented in Section 7, paragraph 3, of [RFC3611]
+   does not apply.
+
+</p><p class="rfcparagraph">	<a name="section-7"><h2>7.   Contributors</h2></a>
+
+   Geoff Hunt wrote the initial version of this document.
+
+</p><p class="rfcparagraph">	<a name="section-8"><h2>8.   Acknowledgments</h2></a>
+
+   The authors gratefully acknowledge the comments and contributions
+   made by Bruce Adams, Philip Arden, Amit Arora, Bob Biskner, Kevin
+   Connor, Claus Dahm, Randy Ethier, Roni Even, Jim Frauenthal, Albert
+   Higashi, Tom Hock, Shane Holthaus, Paul Jones, Rajesh Kumar, Keith
+   Lantz, Mohamed Mostafa, Amy Pendleton, Colin Perkins, Mike Ramalho,
+   Ravi Raviraj, Albrecht Schwarz, Tom Taylor, and Hideaki Yamada, Jing
+   Zhao, Kevin Gross, Colin Perkins, Charles Eckel, Glen Zorn, Shida
+   Schubert, Barry Leiba, Sean Turner, Robert Sparks, Benoit Claise, and
+   Stephen Farrell.
+
+</p><p class="rfcparagraph">	<a name="section-9"><h2>9.   References</h2></a>
+
+	<a name="section-9.1"><h3>9.1   Normative References</h3></a>
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">   [RFC3550]  Schulzrinne, H., Casner, S., Frederick, R., and V.
+              Jacobson, "RTP: A Transport Protocol for Real-Time
+              Applications", STD 64, RFC 3550, July 2003.
+
+</p><p class="rfcparagraph">   [RFC3611]  Friedman, T., Caceres, R., and A. Clark, "RTP Control
+              Protocol Extended Reports (RTCP XR)", RFC 3611,
+              November 2003.
+
+</p><p class="rfcparagraph">   [RFC4566]  Handley, M., Jacobson, V., and C. Perkins, "SDP: Session
+              Description Protocol", RFC 4566, July 2006.
+
+</p><p class="rfcparagraph">   [RFC5905]  Mills, D., Martin, J., Burbank, J., and W. Kasch, "Network
+              Time Protocol Version 4: Protocol and Algorithms
+              Specification", RFC 5905, June 2010.
+   [RFC6709]  Carpenter, B., Aboba, B., and S. Cheshire, "Design
+              Considerations for Protocol Extensions", RFC 6709,
+              September 2012.
+
+</p><p class="rfcparagraph">	<a name="section-9.2"><h3>9.2   Informative References</h3></a>
+
+   [RFC6390]  Clark, A. and B. Claise, "Guidelines for Considering New
+              Performance Metric Development", BCP 170, RFC 6390,
+              October 2011.
+
+</p><p class="rfcparagraph">   [RFC6776]  Clark, A. and Q. Wu, "Measurement Identity and Information
+              Reporting Using a Source Description (SDES) Item and an
+              RTCP Extended Report (XR) Block", RFC 6776, October 2012.
+
+</p><p class="rfcparagraph">   [RFC6792]  Wu, Q., Hunt, G., and P. Arden, "Guidelines for Use of the
+              RTP Monitoring Framework", RFC 6792, November 2012.
+
+</p>Authors' Addresses
+
+   Alan Clark
+   Telchemy Incorporated
+   2905 Premiere Parkway, Suite 280
+   Duluth, GA  30097
+   USA
+
+   EMail: alan.d.clark@telchemy.com
+
+
+   Kevin Gross
+   AVA Networks
+
+   EMail: kevin.gross@avanw.com
+
+
+   Qin Wu
+   Huawei
+   101 Software Avenue, Yuhua District
+   Nanjing, Jiangsu  210012
+   China
+
+   EMail: sunseawq@huawei.com
+
+
+
+
+
+
+
+
+
+
+Clark, et al.                Standards Track                    [Page 9]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

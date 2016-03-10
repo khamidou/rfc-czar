@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                      R. Siemborski<br>Request for Comments: 4959                                  Google, Inc.<br>Category: Standards Track                                 A. Gulbrandsen<br>                                                  Oryx Mail Systems GmbH<br>                                                          September 2007<br><br></p>
+                  <h1>
+   IMAP Extension for Simple Authentication and Security Layer (SASL)
+                        Initial Client Response</h1>
+                  <h2>Status of This Memo</h2>
+
+   This document specifies an Internet standards track protocol for the
+   Internet community, and requests discussion and suggestions for
+   improvements.  Please refer to the current edition of the "Internet
+   Official Protocol Standards" (STD 1) for the standardization state
+   and status of this protocol.  Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   To date, the Internet Message Access Protocol (IMAP) has used a
+   Simple Authentication and Security Layer (SASL) profile which always
+   required at least one complete round trip for an authentication, as
+   it did not support an initial client response argument.  This
+   additional round trip at the beginning of the session is undesirable,
+   especially when round-trip costs are high.
+
+</p><p class="rfcparagraph">   This document defines an extension to IMAP which allows clients and
+   servers to avoid this round trip by allowing an initial client
+   response argument to the IMAP AUTHENTICATE command.
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   The SASL initial client response extension is present in any IMAP
+   [RFC3501] server implementation which returns "SASL-IR" as one of the
+   supported capabilities in its CAPABILITY response.
+
+</p><p class="rfcparagraph">   Servers which support this extension will accept an optional initial
+   client response with the AUTHENTICATE command for any SASL [RFC4422]
+   mechanisms which support it.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Conventions Used in This Document</h2></a>
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in [RFC2119].
+
+</p><p class="rfcparagraph">   In examples, "C:" and "S:" indicate lines sent by the client and
+   server, respectively.
+
+</p><p class="rfcparagraph">   Formal syntax is defined by [RFC4234] as extended by [RFC3501].
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   IMAP Changes to the IMAP AUTHENTICATE Command</h2></a>
+
+   This extension adds an optional second argument to the AUTHENTICATE
+   command that is defined in Section 6.2.2 of [RFC3501].  If this
+   second argument is present, it represents the contents of the
+   "initial client response" defined in Section 5.1 of [RFC4422].
+
+</p><p class="rfcparagraph">   As with any other client response, this initial client response MUST
+   be encoded as defined in Section 4 of [RFC4648].  It also MUST be
+   transmitted outside of a quoted string or literal.  To send a zero-
+   length initial response, the client MUST send a single pad character
+   ("=").  This indicates that the response is present, but is a zero-
+   length string.
+
+</p><p class="rfcparagraph">   When decoding the BASE64 [RFC4648] data in the initial client
+   response, decoding errors MUST be treated as IMAP [RFC3501] would
+   handle them in any normal SASL client response.  In particular, the
+   server should check for any characters not explicitly allowed by the
+   BASE64 alphabet, as well as any sequence of BASE64 characters that
+   contains the pad character ('=') anywhere other than the end of the
+   string (e.g., "=AAA" and "AAA=BBB" are not allowed).
+
+</p><p class="rfcparagraph">   If the client uses an initial response with a SASL mechanism that
+   does not support an initial response, the server MUST reject the
+   command with a tagged BAD response.
+   Note: support and use of the initial client response is optional for
+   both clients and servers.  Servers that implement this extension MUST
+   support clients that omit the initial client response, and clients
+   that implement this extension MUST NOT send an initial client
+   response to servers that do not advertise the SASL-IR capability.  In
+   such a situation, clients MUST fall back to an IMAP [RFC3501]
+   compatible mode.
+
+</p><p class="rfcparagraph">   If either the client or the server do not support the SASL-IR
+   capability, a mechanism which uses an initial client response is
+   negotiated using the challenge/response exchange described in
+   [RFC3501], with an initial zero-length server challenge.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   Examples</h2></a>
+
+   The following is an example authentication using the PLAIN (see
+   [RFC4616]) SASL mechanism (under a TLS protection layer, see
+   [RFC4346]) and an initial client response:
+
+</p><p class="rfcparagraph">            ... client connects to server and negotiates a TLS
+           protection layer ...
+        C: C01 CAPABILITY
+        S: * CAPABILITY IMAP4rev1 SASL-IR AUTH=PLAIN
+        S: C01 OK Completed
+        C: A01 AUTHENTICATE PLAIN dGVzdAB0ZXN0AHRlc3Q=
+        S: A01 OK Success (tls protection)
+
+   Note that even when a server supports this extension, the following
+   negotiation (which does not use the initial response) is still valid
+   and MUST be supported by the server:
+
+</p><p class="rfcparagraph">            ... client connects to server and negotiates a TLS
+           protection layer ...
+        C: C01 CAPABILITY
+        S: * CAPABILITY IMAP4rev1 SASL-IR AUTH=PLAIN
+        S: C01 OK Completed
+        C: A01 AUTHENTICATE PLAIN
+            (note that there is a space following the "+" in the
+           following line)
+        S: +
+        C: dGVzdAB0ZXN0AHRlc3Q=
+        S: A01 OK Success (tls protection)
+
+   The following is an example authentication using the SASL EXTERNAL
+   mechanism (defined in [RFC4422]) under a TLS protection layer (see
+   [RFC4346]) and an empty initial client response:
+            ... client connects to server and negotiates a TLS
+           protection layer ...
+        C: C01 CAPABILITY
+        S: * CAPABILITY IMAP4rev1 SASL-IR AUTH=PLAIN AUTH=EXTERNAL
+        S: C01 OK Completed
+        C: A01 AUTHENTICATE EXTERNAL =
+        S: A01 OK Success (tls protection)
+
+   This is in contrast with the handling of such a situation when an
+   initial response is omitted:
+
+</p><p class="rfcparagraph">         ... client connects to server and negotiates a TLS protection
+           layer ...
+        C: C01 CAPABILITY
+        S: * CAPABILITY IMAP4rev1 SASL-IR AUTH=PLAIN AUTH=EXTERNAL
+        S: C01 OK Completed
+        C: A01 AUTHENTICATE EXTERNAL
+            (note that there is a space following the "+" in the
+           following line)
+        S: +
+        C:
+        S: A01 OK Success (tls protection)
+
+	<a name="section-5"><h2>5.   IANA Considerations</h2></a>
+
+   The IANA has added SASL-IR to the IMAP4 Capabilities Registry.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.   Security Considerations</h2></a>
+
+   The extension defined in this document is subject to many of the
+   Security Considerations defined in [RFC3501] and [RFC4422].
+
+</p><p class="rfcparagraph">   Server implementations MUST treat the omission of an initial client
+   response from the AUTHENTICATE command as defined by [RFC3501] (as if
+   this extension did not exist).
+
+</p><p class="rfcparagraph">   Although [RFC3501] has no express line length limitations, some
+   implementations choose to enforce them anyway.  Such implementations
+   MUST be aware that the addition of the initial response parameter to
+   AUTHENTICATE may increase the maximum line length that IMAP parsers
+   may expect to support.  Server implementations MUST be able to
+   receive the largest possible initial client response that their
+   supported mechanisms might receive.
+	<a name="section-7"><h2>7.   Formal Syntax</h2></a>
+
+   The following syntax specification uses the Augmented Backus-Naur
+   Form [RFC4234] notation.  [RFC3501] defines the non-terminals
+   capability, auth-type, and base64.
+
+</p><p class="rfcparagraph">      capability    =/ "SASL-IR"
+
+      authenticate  = "AUTHENTICATE" SP auth-type [SP (base64 / "=")]
+                      *(CRLF base64)
+                      ;;redefine AUTHENTICATE from [RFC3501]
+
+	<a name="section-8"><h2>8.   Acknowledgments</h2></a>
+
+   The authors would like to acknowledge the contributions of Ken
+   Murchison and Mark Crispin, along with the rest of the IMAPEXT
+   Working Group for their assistance in reviewing this document.
+
+</p><p class="rfcparagraph">   Alexey Melnikov and Cyrus Daboo also had some early discussions about
+   this extension.
+
+</p><p class="rfcparagraph">	<a name="section-9"><h2>9.   References</h2></a>
+
+	<a name="section-9.1"><h3>9.1   Normative References</h3></a>
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">   [RFC3501]  Crispin, M., "INTERNET MESSAGE ACCESS PROTOCOL - VERSION
+              4rev1", RFC 3501, March 2003.
+
+</p><p class="rfcparagraph">   [RFC4234]  Crocker, D. and P. Overell, "Augmented BNF for Syntax
+              Specifications: ABNF", RFC 4234, October 2005.
+
+</p><p class="rfcparagraph">   [RFC4422]  Melnikov, A. and  K. Zeilenga, "Simple Authentication and
+              Security Layer (SASL)", RFC 4422, June 2006.
+
+</p><p class="rfcparagraph">   [RFC4648]  Josefsson, S., "The Base16, Base32, and Base64 Data
+              Encodings", RFC 4648, October 2006.
+
+</p><p class="rfcparagraph">	<a name="section-9.2"><h3>9.2   Informative References</h3></a>
+
+   [RFC4616]  Zeilenga, K., "The PLAIN Simple Authentication and
+              Security Layer (SASL) Mechanism", RFC 4616, August 2006.
+
+</p><p class="rfcparagraph">   [RFC4346]  Dierks, T. and E. Rescorla, "The Transport Layer Security
+              (TLS) Protocol Version 1.1", RFC 4346, April 2006.
+Authors' Addresses
+
+   Robert Siemborski
+   Google, Inc.
+   1600 Ampitheatre Parkway
+   Mountain View, CA 94043
+
+   Phone: +1 650 623 6925
+   EMail: robsiemb@google.com
+
+
+   Arnt Gulbrandsen
+   Oryx Mail Systems GmbH
+   Schweppermannstr. 8
+   D-81671 Muenchen
+   Germany
+
+   EMail: arnt@oryx.com
+Full Copyright Statement
+
+   Copyright (C) The IETF Trust (2007).<br>
+
+</p><p class="rfcparagraph">   This document is subject to the rights, licenses and restrictions
+   contained in BCP 78, and except as set forth therein, the authors
+   retain all their rights.
+
+</p><p class="rfcparagraph">   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY, THE IETF TRUST AND
+   THE INTERNET ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS
+   OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF
+   THE INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED
+   WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Intellectual Property
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the procedures with respect to rights in RFC documents can be
+   found in BCP 78 and BCP 79.
+
+</p><p class="rfcparagraph">   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+</p><p class="rfcparagraph">   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at
+   ietf-ipr@ietf.org.
+
+</p>
+
+
+
+
+
+
+
+
+
+
+Siemborski & Gulbrandsen  Standards Track                       [Page 7]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

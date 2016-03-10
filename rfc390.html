@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph">Network Working Group                                  Robert T. Braden
+Request for Comments: 390                              UCLA/CCM
+NIC: 11582                                             September 12, 1972
+
+                              TSO SCENARIO
+               BATCH COMPILATION AND FOREGROUND EXECUTION
+
+logon uid                                              (Use your user-id)
+LOGON UID                       (TSO repeats line for reasons of its own)
+ENTER PASSWORD                                    (TSO asks for password)
+xyz
+UID LOGON IN PROGRESS AT 09:59:18 ON AUGUST 28, 1972
+LOGON PROCEEDING                         (It may take a minute or longer)
+WELCOME TO TSO.  GOOD LUCK.
+
+</p><p class="rfcparagraph">= CCN NEWS =
+
+THE DEFAULT LOGON PROCEDURE NO LONGER PRE-ALLOCATES FILES -
+  SYSUT1, SYSUT2, AND SYSUT3.
+
+</p>READY                               (call EDIT to create source data set)
+edit sample new fortg
+INPUT          (for "new" data set, EDIT enters INPUT mode automatically)
+	<a name="section-00010"><h2>00010.  // exec fortgcl                                     (in INPUT mode,</h2></a>
+	<a name="section-00020"><h2>00020.  c  a sample fortran program            EDIT types out line numbers,</h2></a>
+	<a name="section-00030"><h2>00030.  c                                               user enters lines.)</h2></a>
+	<a name="section-00040"><h2>00040.  1     format(' enter a')</h2></a>
+	<a name="section-00050"><h2>00050.  2     format(' the square root of',f10.3,' is',f10.3)</h2></a>
+	<a name="section-00060"><h2>00060.  3     format(f10.3)</h2></a>
+	<a name="section-00070"><h2>00070.  100   write(6,1)                            (Specifying "fortg" in</h2></a>
+	<a name="section-00080"><h2>00080.        read(5,3) a                   edit command sets logical tabs</h2></a>
+	<a name="section-00090"><h2>00090.        b=sqrt(a)                             correctly for Fortran)</h2></a>
+	<a name="section-00100"><h2>00100.        write(6,2) a, b</h2></a>
+	<a name="section-00110"><h2>00110.        go to 100</h2></a>
+	<a name="section-00120"><h2>00120.        end</h2></a>
+	<a name="section-00130"><h2>00130.  /*</h2></a>
+	<a name="section-00140"><h2>00140.  //lked.syslmod dd disp=new,dsn=abc132.uid.load(root)</h2></a>
+	<a name="section-00150"><h2>00150.                                       (Null line leaves INPUT mode)</h2></a>
+verify                    ("verify" causes changed line to be displayed)
+change 140 /new/old/
+	<a name="section-00140"><h2>00140.  //LKED.SYSLMOD DD DISP=OLD,DSN=ABC123.UID.LOAD(ROOT)</h2></a>
+list
+	<a name="section-00010"><h2>00010.  // EXEC FORTGCL</h2></a>
+	<a name="section-00020"><h2>00020.  C A SAMPLE FORTRAN PROGRAM</h2></a>
+	<a name="section-00030"><h2>00030.  C</h2></a>
+
+
+
+
+
+
+                                                                [Page 1]
+
+	<a name="section-00040"><h2>00040.  1     FORMAT(' ENTER A')</h2></a>
+	<a name="section-00050"><h2>00050.  2     FORMAT(' THE SQUARE ROOT OF',F10.3,' IS',F10.3)</h2></a>
+	<a name="section-00060"><h2>00060.  3     FORMAT(F10.3)</h2></a>
+	<a name="section-00070"><h2>00070.  100   WRITE(6,1)</h2></a>
+	<a name="section-00080"><h2>00080.        READ(5,3) A</h2></a>
+	<a name="section-00090"><h2>00090.        B=SQRT(A)</h2></a>
+	<a name="section-00100"><h2>00100.        WRITE(6,2) A, B</h2></a>
+	<a name="section-00110"><h2>00110.        GO TO 100</h2></a>
+	<a name="section-00120"><h2>00120.        END</h2></a>
+	<a name="section-00130"><h2>00130.  /*</h2></a>
+	<a name="section-00140"><h2>00140.  //LKED.SYSLMOD DD DISP=OLD,DSN=ABC132.UID.LOAD(ROOT)</h2></a>
+END OF DATA
+save                          (Make permanent copy of source file)
+SAVED
+end                           (Leave EDIT)
+READY                         (Create new load module library data set)
+allocate da(load) new space(5,5) block(7294) dir(1)<br>
+READY
+free da(load)                 (Free library data set from TSO so batch
+READY                         job can linkedit into it)
+submit sample                 (Submit source file to batch)
+ENTER JOBNAME CHARACTER-
+p
+JOB ABC123P SUBMITTED         (User "UID" has charge number "ABC123")
+READY
+status
+ ABC123P  WAITING FOR READER
+IEF404I ABC123P  ENDED        (Spontaneous message when job finishes)
+READY
+status
+ ABC123P  FINISHED WAITING FOR WRITER
+READY
+keepout abc123p               (Save output in permanent data set)
+SYSOUT DATA SET FOR JOB ABC123P ADDED TO PRINT DATA SET WITH UNLIKE ATTRIBUTES+
+SYSOUT DATA SET FOR JOB ABC123P ADDED TO PRINT DATA SET WITH UNLIKE ATTRIBUTES+
+NO CLASS OUTPUT FOR JOB ABC123P
+EDIT OUTPUT.LIST  ("Keepout" leaves you in EDIT to examine output list)
+find /return code/
+CCN011I STEP RETURN CODE =     0
+list
+//ABC123P   JOB  'ABC123.UID,B=0672',
+//             UID,
+//             NOTIFY=UID,
+//             MSGLEVEL=(1,1)
+// EXEC FORTGCL                                                0000001
+
+
+
+
+
+
+                                                                [Page 2]
+
+XXFORTGCL PROC TC=1439,TL=1439,PC=150,PL=10,RL=154K,RC=100K,LEVEL=1
+XXFORT   EXEC  PGM=IEYFORT,REGION=&RC,TIME=&TC                 0000002
+IEF653I SUBSTITUTION JCL - PGM=IEYFORT,REGION=100K,TIME=1439
+XXSTEPLIB DD DISP=(SHR,PASS),DSN=&&FORTRAN&LEVEL               0000003
+IEF653I SUBSTITUTION JCL - DISP=(SHR,PASS),DSN=&&FORTRAN1
+XXSYSLIN DD DSN=&&LOADSET,DISP=(MOD,PASS),UNIT=SYSDA,          0000004
+XX SPACE=(3200,(8,4),RLSE),DCB=BLKSIZE=3200                    0000005
+XXSYSPRINT DD SYSOUT=A,DCB=(RECFM=FBA,LRECL=120,BLKSIZE=3480), 0000006
+XX SPACE=(TRK,&PC,RLSE)                                        0000007
+IEF653I SUBSTITUTION JCL - SPACE=(TRK,150,RLSE)
+//SYSIN DD * GENERATED STATEMENT
+IEF236I ALLOC. FOR ABC123P  FORT
+IEF237I 342   ALLOCATED TO STEPLIB
+IEF237I 450   ALLOCATED TO SYSLIN
+IEF237I 630   ALLOCATED TO SYSPRINT
+IEF237I 230   ALLOCATED TO SYSIN
+	<a name="section-1"><h2>1.   FORTRAN IV G LEVEL  20                MAIN          DATE=72241</h2></a>
+
+	<a name="section-0"><h2>0.                C  A SAMPLE FORTRAN PROGRAM</h2></a>
+                C
+    0001        1     FORMAT(' ENTER A')
+    0002        2     FORMAT(' THE SQUARE ROOT OF',F10.3,' IS',F10.3)
+    0003        3     FORMAT(F10.3)
+    0004        100   WRITE(6,1)
+    0005              READ(5,3) A
+    0006              B=SQRT(A)
+    0007              WRITE(6,2) A, B
+    0008              GO TO 100
+    0009              END
+	<a name="section-1"><h2>1.  FORTRAN IV G LEVEL   20                MAIN          DATE=72241</h2></a>
+	<a name="section-0"><h2>0. </h2></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                [Page 3]
+
+SUBPROGRAMS CALLED
+EDIT
+end                           (Leave EDIT)
+READY
+print output.list             (Ask to have output printed at CCN)
+DATASET OUTPUT.LIST HAS BEEN ENQUEUED FOR PRINTING IN CLASS C
+READY                         (Now execute load module in foreground)
+allocate file(ft05f001) da(*)
+READY              (Allocate Fortran input and output files to terminal)
+allocate file(ft06f001) da(*)
+READY
+call load(root)               (Call load module)
+ENTER A
+	<a name="section-3.141"><h3>3.141 </h3></a>
+THE SQUARE ROOT OF      3.141 IS    1.772
+ENTER A
+	<a name="section-4096"><h2>4096. </h2></a>
+THE SQUARE ROOT OF   4096.000 IS   64.000
+ENTER A
+READY
+logoff
+UID LOGGED OFF TSO AT 10:40:18 ON AUGUST 28,  1972+
+
+
+       [ This RFC was put into machine readable form for entry ]
+        [ into the online RFC archives by Marcus Meissner 1/98 ]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                [Page 4]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

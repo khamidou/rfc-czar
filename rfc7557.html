@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph">Independent Submission                                     J. Chroboczek
+Request for Comments: 7557              PPS, University of Paris-Diderot
+Updates: 6126                                                   May 2015
+Category: Experimental
+ISSN: 2070-1721
+
+
+           Extension Mechanism for the Babel Routing Protocol
+
+<h2>Abstract</h2>
+
+   This document defines the encoding of extensions to the Babel routing
+   protocol, as specified in RFC 6126.
+
+</p><p class="rfcparagraph">Status of This Memo
+
+   This document is not an Internet Standards Track specification; it is
+   published for examination, experimental implementation, and
+   evaluation.
+
+</p><p class="rfcparagraph">   This document defines an Experimental Protocol for the Internet
+   community.  This is a contribution to the RFC Series, independently
+   of any other RFC stream.  The RFC Editor has chosen to publish this
+   document at its discretion and makes no statement about its value for
+   implementation or deployment.  Documents approved for publication by
+   the RFC Editor are not a candidate for any level of Internet
+   Standard; see Section 2 of RFC 5741.
+
+</p><p class="rfcparagraph">   Information about the current status of this document, any errata,
+   and how to provide feedback on it may be obtained at
+   http://www.rfc-editor.org/info/rfc7557.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (c) 2015 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+</p><p class="rfcparagraph">   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (http://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document.
+<h2>Table of Contents</h2>
+<a href="#section-1" class="">1. Introduction  . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2" class="">2. Mechanisms for Extending the Babel Protocol . . . . . . . . </a><br>
+<a href="#section-2.1" class="indent-1">2.1. New Versions of the Babel Protocol  . . . . . . . . . . </a><br>
+<a href="#section-2.2" class="indent-1">2.2. New TLVs  . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2.3" class="indent-1">2.3. Sub-TLVs  . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2.4" class="indent-1">2.4. The Flags Field . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2.5" class="indent-1">2.5. Packet Trailer  . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3" class="">3. Format of Sub-TLVs  . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.1" class="indent-1">3.1. Sub-TLVs Specified in This Document . . . . . . . . . . </a><br>
+<a href="#section-3.2" class="indent-1">3.2. Unknown Sub-TLVs  . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4" class="">4. Choosing between Extension Mechanisms . . . . . . . . . . . </a><br>
+<a href="#section-5" class="">5. IANA Considerations . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-6" class="">6. Security Considerations . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-7" class="">7. References  . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-7.1" class="indent-1">7.1. Normative References  . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-7.2" class="indent-1">7.2. Informative References  . . . . . . . . . . . . . . . . </a><br>
+   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  10
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  11
+
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   A Babel packet [RFC6126] contains a header followed by a sequence of
+   TLVs, each of which is a sequence of octets having an explicit type
+   and length.  The original Babel protocol has the following provisions
+   for including extension data:
+
+</p><p class="rfcparagraph">   o  A Babel packet with a version number different from 2 MUST be
+      silently ignored ([RFC6126], Section 4.2).
+
+</p><p class="rfcparagraph">   o  An unknown TLV MUST be silently ignored ([RFC6126], Section 4.3).
+
+</p><p class="rfcparagraph">   o  Except for Pad1 and PadN, all TLVs are self-terminating, and any
+      extra data included in a TLV MUST be silently ignored ([RFC6126],
+      Section 4.2).
+
+</p><p class="rfcparagraph">   o  The Flags field of the Update TLV contains 6 undefined bits that
+      MUST be silently ignored ([RFC6126], Section 4.4.9).
+
+</p><p class="rfcparagraph">   o  Any data following the last TLV of a Babel packet MUST be silently
+      ignored ([RFC6126], Section 4.2).
+
+</p><p class="rfcparagraph">   Each of these provisions provides a place to store data needed by
+   extensions of the Babel protocol.  However, in the absence of any
+   further conventions, independently developed extensions to the Babel
+   protocol might make conflicting uses of the available space, and
+   therefore lead to implementations that would fail to interoperate.
+   This document formalises a set of rules for extending the Babel
+   protocol that are designed to ensure that no such incompatibilities
+   arise, and that are currently respected by a number of deployed
+   extensions.
+
+</p><p class="rfcparagraph">   In the rest of this document, we use the term "original protocol" for
+   the protocol defined in [RFC6126], and "extended protocol" for any
+   extension of the Babel protocol that follows the rules set out in
+   this document.
+
+</p><p class="rfcparagraph">   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in
+   this document are to be interpreted as described in [RFC2119].
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Mechanisms for Extending the Babel Protocol</h2></a>
+
+   This section describes each of the mechanisms available for extending
+   the Babel protocol.
+
+</p><p class="rfcparagraph">	<a name="section-2.1"><h3>2.1   New Versions of the Babel Protocol</h3></a>
+
+   The header of a Babel packet contains an eight-bit protocol version.
+   The current version of the Babel protocol is version 2; any packets
+   containing a version number different from 2 MUST be silently
+   ignored.
+
+</p><p class="rfcparagraph">   Versions 0 and 1 were earlier experimental versions of the Babel
+   protocol that have seen some modest deployment; these version numbers
+   SHOULD NOT be reused by future versions of the Babel protocol.
+   Version numbers larger than 2 might be used by a future incompatible
+   protocol.
+
+</p><p class="rfcparagraph">	<a name="section-2.2"><h3>2.2   New TLVs</h3></a>
+
+   An extension may carry its data in a new TLV type.  Such new TLVs
+   will be silently ignored by implementations of the original Babel
+   protocol, as well as by other extended implementations of the Babel
+   protocol, as long as the TLV types do not collide.
+
+</p><p class="rfcparagraph">   All new TLVs MUST have the format defined in [RFC6126], Section 4.3.
+   New TLVs SHOULD be self-terminating, in the sense defined in the next
+   section, and any data found after the main data section of the TLV
+   SHOULD be treated as a series of sub-TLVs.
+
+</p><p class="rfcparagraph">   TLV types 224 through 254 are reserved for Experimental Use
+   [RFC3692].  TLV type 255 is reserved for expansion of the TLV type
+   space, in the unlikely event that eight bits turn out not to be
+   enough.
+	<a name="section-2.3"><h3>2.3   Sub-TLVs</h3></a>
+
+   With the exception of the Pad1 TLV, all Babel TLVs carry an explicit
+   length.  With the exception of Pad1 and PadN, all TLVs defined by the
+   original protocol are self-terminating, in the sense that the length
+   of the meaningful data that they contain (the "natural length") can
+   be determined without reference to the explicitly encoded length.  In
+   some cases, the natural length is trivial to determine: for example,
+   a HELLO TLV always has a natural length of 2 (4 including the Type
+   and Length fields).  In other cases, determining the natural length
+   is not that easy, but this needs to be done anyway by an
+   implementation that interprets the given TLV.  For example, the
+   natural length of an Update TLV depends on both the prefix length and
+   the amount of prefix compression being performed.
+
+</p><p class="rfcparagraph">   If the explicit length of a TLV defined by the original protocol is
+   larger than its natural length, the extra space present in the TLV is
+   silently ignored by an implementation of the original protocol;
+   extended implementations MAY use it to store arbitrary data and
+   SHOULD structure the additional data as a sequence of sub-TLVs.
+   Unlike TLVs, the sub-TLVs themselves need not be self-terminating.
+
+</p><p class="rfcparagraph">   An extension MAY be assigned one or more sub-TLV types.  Sub-TLV
+   types are assigned independently from TLV types: the same numeric
+   type can be assigned to a TLV and a sub-TLV.  Sub-TLV types are
+   assigned globally: once an extension is assigned a given sub-TLV
+   number, it MAY use this number within any TLV.  However, the
+   interpretation of a given sub-TLV type can depend on which particular
+   TLV it is embedded within.
+
+</p><p class="rfcparagraph">   Sub-TLV types 224 through 254 are reserved for Experimental Use
+   [RFC3692].  TLV type 255 is reserved for expansion of the sub-TLV
+   type space, in the unlikely event that eight bits turn out not to be
+   enough.  The format of sub-TLVs is defined in Section 3 below.
+
+</p><p class="rfcparagraph">	<a name="section-2.4"><h3>2.4   The Flags Field</h3></a>
+
+   The Flags field is an eight-bit field in the Update TLV.  Bits 0 and
+   1 (the bits with values 80 and 40 hexadecimal) are defined by the
+   original protocol and MUST be recognised and used by every
+   implementation.  The remaining six bits are not currently used and
+   are silently ignored by implementations of the original protocol.
+
+</p><p class="rfcparagraph">   Due to the small size of the Flags field, it is NOT RECOMMENDED that
+   one or more bits be assigned to an extension; a sub-TLV SHOULD be
+   assigned instead.  An implementation MUST ignore any bits in the
+   Flags field that it does not know about and MUST send them as zero.
+	<a name="section-2.5"><h3>2.5   Packet Trailer</h3></a>
+
+   A Babel packet carries an explicit length in its header.  A Babel
+   packet is carried by a UDP datagram, which in turn contains an
+   explicit length in its header.  It is possible for a UDP datagram
+   carrying a Babel packet to be larger than the size of the Babel
+   packet.  In that case, the extra space after the Babel packet, known
+   as the packet trailer, is silently ignored by an implementation of
+   the original protocol.
+
+</p><p class="rfcparagraph">   The packet trailer was originally intended to be used as a
+   cryptographic trailer.  However, the authentication extension to
+   Babel [RFC7298] ended up using a pair of new TLVs, and no currently
+   deployed extension of Babel uses the packet trailer.  The format and
+   purpose of the packet trailer is therefore currently left undefined.
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   Format of Sub-TLVs</h2></a>
+
+   A sub-TLV has exactly the same structure as a TLV.  Except for Pad1
+   (Section 3.1.1), all sub-TLVs have the following structure:
+
+</p><p class="rfcparagraph">    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |     Type      |    Length     |     Body...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+
+   Fields:
+
+</p><p class="rfcparagraph">   Type      The type of the sub-TLV.
+
+</p><p class="rfcparagraph">   Length    The length of the body, in octets, exclusive of the Type
+             and Length fields.
+
+</p><p class="rfcparagraph">   Body      The sub-TLV body, the interpretation of which depends on
+             both the type of the sub-TLV and the type of the TLV within
+             which it is embedded.
+
+</p><p class="rfcparagraph">	<a name="section-3.1"><h3>3.1   Sub-TLVs Specified in This Document</h3></a>
+
+   This document defines two types of sub-TLVs, Pad1 and PadN.  These
+   two sub-TLVs MUST be correctly parsed and ignored by any extended
+   implementation of the Babel protocol that uses sub-TLVs.
+	<a name="section-3.1.1"><h4>3.1.1   Pad1</h4></a>
+
+    0
+    0 1 2 3 4 5 6 7
+   +-+-+-+-+-+-+-+-+
+   |   Type = 0    |
+   +-+-+-+-+-+-+-+-+
+
+   Fields:
+
+</p><p class="rfcparagraph">   Type      Set to 0 to indicate a Pad1 sub-TLV.
+
+</p><p class="rfcparagraph">   This sub-TLV is silently ignored on reception.
+
+</p><p class="rfcparagraph">	<a name="section-3.1.2"><h4>3.1.2   PadN</h4></a>
+
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |    Type = 1   |    Length     |      MBZ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+
+   Fields:
+
+</p><p class="rfcparagraph">   Type      Set to 1 to indicate a PadN sub-TLV.
+
+</p><p class="rfcparagraph">   Length    The length of the body, in octets, exclusive of the Type
+             and Length fields.
+
+</p><p class="rfcparagraph">   MBZ       Set to 0 on transmission.
+
+</p><p class="rfcparagraph">   This sub-TLV is silently ignored on reception.
+
+</p><p class="rfcparagraph">	<a name="section-3.2"><h3>3.2   Unknown Sub-TLVs</h3></a>
+
+   Any unknown sub-TLV MUST be silently ignored by an extended
+   implementation that uses sub-TLVs.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   Choosing between Extension Mechanisms</h2></a>
+
+   New versions of the Babel protocol should only be defined if the new
+   version is not backwards compatible with the original protocol.
+
+</p><p class="rfcparagraph">   In many cases, an extension could be implemented either by defining a
+   new TLV or by adding a new sub-TLV to an existing TLV.  For example,
+   an extension whose purpose is to attach additional data to route
+   updates can be implemented either by creating a new "enriched" Update
+   TLV or by adding a sub-TLV to the Update TLV.
+   The two encodings are treated differently by implementations that do
+   not understand the extension.  In the case of a new TLV, the whole
+   unknown TLV is ignored by an implementation of the original protocol,
+   while in the case of a new sub-TLV, the TLV is parsed and acted upon,
+   and the unknown sub-TLV is silently ignored.  Therefore, a sub-TLV
+   should be used by extensions that extend the Update in a compatible
+   manner (the extension data may be silently ignored), while a new TLV
+   must be used by extensions that make incompatible extensions to the
+   meaning of the TLV (the whole TLV must be thrown away if the
+   extension data is not understood).
+
+</p><p class="rfcparagraph">   Using a new bit in the Flags field is equivalent to defining a new
+   sub-TLV while using less space in the Babel packet.  Due to the
+   limited Flags space, and the doubtful space savings, we do not
+   recommend the use of bits in the Flags field -- a new sub-TLV should
+   be used instead.
+
+</p><p class="rfcparagraph">   We refrain from making any recommendations about the usage of the
+   packet trailer due to the lack of implementation experience.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   IANA Considerations</h2></a>
+
+   IANA has created three new registries, called "Babel TLV Types",
+   "Babel Sub-TLV Types", and "Babel Flags Values".  The allocation
+   policy for each of these registries is Specification Required
+   [RFC5226].
+   The initial values in the "Babel TLV Types" registry are as follows:
+
+</p><p class="rfcparagraph"><pre>   +---------+-----------------------------------------+---------------+
+   | Type    | Name                                    | Reference     |
+   +---------+-----------------------------------------+---------------+
+   | 0       | Pad1                                    | [RFC6126]     |
+   |         |                                         |               |
+   | 1       | PadN                                    | [RFC6126]     |
+   |         |                                         |               |
+   | 2       | Acknowledgment Request                  | [RFC6126]     |
+   |         |                                         |               |
+   | 3       | Acknowledgment                          | [RFC6126]     |
+   |         |                                         |               |
+   | 4       | Hello                                   | [RFC6126]     |
+   |         |                                         |               |
+   | 5       | IHU                                     | [RFC6126]     |
+   |         |                                         |               |
+   | 6       | Router-Id                               | [RFC6126]     |
+   |         |                                         |               |
+   | 7       | Next Hop                                | [RFC6126]     |
+   |         |                                         |               |
+   | 8       | Update                                  | [RFC6126]     |
+   |         |                                         |               |
+   | 9       | Route Request                           | [RFC6126]     |
+   |         |                                         |               |
+   | 10      | Seqno Request                           | [RFC6126]     |
+   |         |                                         |               |
+   | 11      | TS/PC                                   | [RFC7298]     |
+   |         |                                         |               |
+   | 12      | HMAC                                    | [RFC7298]     |
+   |         |                                         |               |
+   | 13      | Source-specific Update                  | [BABEL-SS]    |
+   |         |                                         |               |
+   | 14      | Source-specific Request                 | [BABEL-SS]    |
+   |         |                                         |               |
+   | 15      | Source-specific Seqno Request           | [BABEL-SS]    |
+   |         |                                         |               |
+   | 224-254 | Reserved for Experimental Use           | this document |
+   |         |                                         |               |
+   | 255     | Reserved for expansion of the type      | this document |
+   |         | space                                   |               |
+   +---------+-----------------------------------------+---------------+
+   The initial values in the "Babel Sub-TLV Types" registry are as
+   follows:
+
+</p><p class="rfcparagraph">   +---------+-----------------------------------------+---------------+
+   | Type    | Name                                    | Reference     |
+   +---------+-----------------------------------------+---------------+
+   | 0       | Pad1                                    | this document |
+   |         |                                         |               |
+   | 1       | PadN                                    | this document |
+   |         |                                         |               |
+   | 2       | Diversity                               | [BABEL-DIV]   |
+   |         |                                         |               |
+   | 3       | Timestamp                               | [BABEL-RTT]   |
+   |         |                                         |               |
+   | 224-254 | Reserved for Experimental Use           | this document |
+   |         |                                         |               |
+   | 255     | Reserved for expansion of the type      | this document |
+   |         | space                                   |               |
+   +---------+-----------------------------------------+---------------+
+
+   The initial values in the "Babel Flags Values" registry are as
+   follows:
+
+</p><p class="rfcparagraph">                  +-----+-------------------+-----------+
+                  | Bit | Name              | Reference |
+                  +-----+-------------------+-----------+
+                  | 0   | Default prefix    | [RFC6126] |
+                  |     |                   |           |
+                  | 1   | Default router-id | [RFC6126] |
+                  |     |                   |           |
+                  | 2-7 | Unassigned        |           |
+                  +-----+-------------------+-----------+
+</pre>
+
+
+	<a name="section-6"><h2>6.   Security Considerations</h2></a>
+
+   This document specifies the structure of fields that are already
+   present in the original Babel protocol and does not, by itself, raise
+   any new security considerations.  Specific extensions may change the
+   security properties of the protocol, for example, by adding security
+   mechanisms [RFC7298] or by enabling new kinds of attack.
+	<a name="section-7"><h2>7.   References</h2></a>
+
+	<a name="section-7.1"><h3>7.1   Normative References</h3></a>
+
+   [RFC2119]   Bradner, S., "Key words for use in RFCs to Indicate
+               Requirement Levels", BCP 14, RFC 2119,
+               DOI 10.17487/RFC2119, March 1997,
+               <http://www.rfc-editor.org/info/rfc2119>.
+
+</p><p class="rfcparagraph">   [RFC3692]   Narten, T., "Assigning Experimental and Testing Numbers
+               Considered Useful", BCP 82, RFC 3692,
+               DOI 10.17487/RFC3692, January 2004,
+               <http://www.rfc-editor.org/info/rfc3692>.
+
+</p><p class="rfcparagraph">   [RFC5226]   Narten, T. and H. Alvestrand, "Guidelines for Writing an
+               IANA Considerations Section in RFCs", BCP 26, RFC 5226,
+               DOI 10.17487/RFC5226, May 2008,
+               <http://www.rfc-editor.org/info/rfc5226>.
+
+</p><p class="rfcparagraph">   [RFC6126]   Chroboczek, J., "The Babel Routing Protocol", RFC 6126,
+               DOI 10.17487/RFC6126, April 2011,
+               <http://www.rfc-editor.org/info/rfc6126>.
+
+</p><p class="rfcparagraph">	<a name="section-7.2"><h3>7.2   Informative References</h3></a>
+
+   [BABEL-DIV] Chroboczek, J., "Diversity Routing for the Babel Routing
+               Protocol", Work in Progress, draft-chroboczek-babel-
+               diversity-routing-00, July 2014.
+
+</p><p class="rfcparagraph">   [BABEL-RTT] Jonglez, B. and J. Chroboczek, "Delay-based Metric
+               Extension for the Babel Routing Protocol", Work in
+               Progress, draft-jonglez-babel-rtt-extension-01, May 2015.
+
+</p><p class="rfcparagraph">   [BABEL-SS]  Boutier, M. and J. Chroboczek, "Source-Specific Routing
+               in Babel", Work in Progress, draft-boutier-babel-
+               source-specific-01, May 2015.
+
+</p><p class="rfcparagraph">   [RFC7298]   Ovsienko, D., "Babel Hashed Message Authentication Code
+               (HMAC) Cryptographic Authentication", RFC 7298,
+               DOI 10.17487/RFC7298, July 2014,
+               <http://www.rfc-editor.org/info/rfc7298>.
+Acknowledgments
+
+   I am grateful to Denis Ovsienko and Gabriel Kerneis for their
+   feedback on previous draft versions of this document.
+
+</p>Author's Address
+
+   Juliusz Chroboczek
+   PPS, University of Paris-Diderot
+   Case 7014
+   75205 Paris Cedex 13
+   France
+
+   EMail: jch@pps.univ-paris-diderot.fr
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Chroboczek                    Experimental                     [Page 11]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

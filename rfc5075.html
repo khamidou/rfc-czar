@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                   B. Haberman, Ed.<br>Request for Comments: 5075                                       JHU APL<br>Category: Standards Track                                      R. Hinden<br>                                                                   Nokia<br>                                                           November 2007<br><br></p>
+                  <h1>
+                 IPv6 Router Advertisement Flags Option</h1>
+                  <h2>Status of This Memo</h2>
+
+   This document specifies an Internet standards track protocol for the
+   Internet community, and requests discussion and suggestions for
+   improvements.  Please refer to the current edition of the "Internet
+   Official Protocol Standards" (STD 1) for the standardization state
+   and status of this protocol.  Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   The IPv6 Neighbor Discovery's Router Advertisement message contains
+   an 8-bit field reserved for single-bit flags.  Several protocols have
+   reserved flags in this field and others are preparing to reserve a
+   sufficient number of flags to exhaust the field.  This document
+   defines an option to the Router Advertisement message that expands
+   the available number of flag bits available.
+
+</p><p class="rfcparagraph">Table of Contents
+<a href="#section-1" class="">1. Introduction  . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2" class="">2. Terminology . . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3" class="">3. Current Router Advertisement Flags  . . . . . . . . . . . . . </a><br>
+<a href="#section-4" class="">4. Flags Expansion Option  . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-5" class="">5. IANA Considerations . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-6" class="">6. Security Considerations . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-7" class="">7. References  . . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-7.1" class="indent-1">7.1. Normative References  . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-7.2" class="indent-1">7.2. Informative References  . . . . . . . . . . . . . . . . . </a><br>
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   The IPv6 Neighbor Discovery Protocol's (NDP) [RFC4861] Router
+   Advertisement message contains an 8-bit field reserved for single-bit
+   flags.  Several protocols have reserved flags in this field and
+   others are preparing to reserve a sufficient number of flags to
+   exhaust the field.
+
+</p><p class="rfcparagraph">   This document defines an option for the Router Advertisement message
+   that expands the available number of flag bits by adding an
+   additional 48 flag bits to NDP messages.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Terminology</h2></a>
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in [RFC2119].
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   Current Router Advertisement Flags</h2></a>
+
+   Currently, the NDP Router Advertisement message contains the
+   following one-bit flags defined in published RFCs:
+
+</p><p class="rfcparagraph">    0 1 2 3 4 5 6 7
+   +-+-+-+-+-+-+-+-+
+   |M|O|H|Prf|P|R|R|
+   +-+-+-+-+-+-+-+-+
+
+                   Figure 1: Router Advertisement Flags
+
+   o  M - Managed Address Configuration Flag [RFC4861]
+
+   o  O - Other Configuration Flag [RFC4861]
+
+   o  H - Mobile IPv6 Home Agent Flag [RFC3775]
+
+   o  Prf - Router Selection Preferences [RFC4191]
+
+   o  P - Neighbor Discovery Proxy Flag [RFC4389]
+
+   o  R - Reserved
+
+   With other protocols in the works (e.g., Detecting Network
+   Attachment) that want to use flags in the NDP messages, it is
+   necessary to define an expansion capability to support new features.
+	<a name="section-4"><h2>4.   Flags Expansion Option</h2></a>
+
+   The Neighbor Discovery specification [RFC4861] contains the
+   capability to define NDP options.  The following (Figure 2) is the
+   definition of the Expanded Flags Option (EFO) for NDP Router
+   Advertisement messages.
+
+</p><p class="rfcparagraph">    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |     Type      |    Length     |         Bit fields available ..
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   ... for assignment                                              |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+           Figure 2: Router Advertisement Expanded Flags Option
+
+   o  Type - TBD (to be assigned by IANA)
+
+   o  Length - The length MUST be checked when processing the option in
+      order to allow for future expansion of this option.  An
+      implementation of this specification MUST set the Length to 1,
+      MUST ignore any unrecognized data, and MUST be able to recognize
+      the specific length in order to skip over unrecognized bits.
+
+</p><p class="rfcparagraph">   o  Bits - allocated by IANA
+
+   The definition and usage of these bits is to be found in the document
+   requesting their allocation.
+
+</p><p class="rfcparagraph">   During the construction/transmission, this option:
+
+</p><p class="rfcparagraph">   o  MUST only occur in Router Advertisement messages.
+
+</p><p class="rfcparagraph">   o  MUST occur prior to any additional options associated with any
+      flags set in this option.
+
+</p><p class="rfcparagraph">   o  MUST only occur once in the Router Advertisement message.
+
+</p><p class="rfcparagraph">   o  MUST NOT be added to a Router Advertisement message if no flags in
+      the option are set.
+
+</p><p class="rfcparagraph">   o  MUST set all unused flags to zero.
+   Upon reception, a receiver processing NDP messages containing this
+   option:
+
+</p><p class="rfcparagraph">   o  MUST ignore the option if it occurs in a message other than a
+      Router Advertisement.
+
+</p><p class="rfcparagraph">   o  MUST ignore all instances of the option except the first one
+      encountered in the Router Advertisement message.
+
+</p><p class="rfcparagraph">   o  MUST ignore the option if the Length is less than 1.
+
+</p><p class="rfcparagraph">   o  MUST ignore any unknown flag bits.
+
+</p><p class="rfcparagraph">   The bit fields within the option are numbered from left to right,
+   from 8 to 55 (starting as bit offset 16 in the option) and follow the
+   numbering of the flag bits in the RA option described in Figure 1.
+   Flag bits 0 to 7 are found in the Router Advertisement message header
+   defined in [RFC4861].
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   IANA Considerations</h2></a>
+
+   IANA has defined a new IPv6 Neighbor Discovery option for the option
+   defined in this document of the form:
+
+</p><p class="rfcparagraph"><pre>             +------+---------------------------+-----------+
+             | Type | Description               | Reference |
+             +------+---------------------------+-----------+
+             | 26   | RA Flags Extension Option | [RFC5075] |
+             +------+---------------------------+-----------+
+
+   The registry for these options can be found at:
+   http://www.iana.org/assignments/icmpv6-parameters
+
+   IANA has created a new registry for IPv6 ND Router Advertisement
+   flags.  This should include the current flags in the RA option and in
+   the extension option defined in this document.  The new registry has
+   been added to the icmpv6-parameters as shown above.  The format for
+   the registry is:
+   +---------------+---------------------------------------+-----------+
+   | RA Option Bit | Description                           | Reference |
+   +---------------+---------------------------------------+-----------+
+   | 0             | M - Managed Address Configuration     | [RFC4861] |
+   |               | Flag                                  |           |
+   | 1             | O - Other Configuration Flag          | [RFC4861] |
+   | 2             | H - Mobile IPv6 Home Agent Flag       | [RFC3775] |
+   | 3             | Prf - Router Selection Preferences    | [RFC4191] |
+   | 4             | Prf - Router Selection Preferences    | [RFC4191] |
+   | 5             | P - Neighbor Discovery Proxy Flag     | [RFC4389] |
+   | 6-53          | R - Reserved; Available for           |           |
+   |               | assignment                            |           |
+   | 54-55         | Private Experimentation               |           |
+   +---------------+---------------------------------------+-----------+
+</pre>
+
+
+   The assignment of new RA flags in the RA option header and the bits
+   defined in the RA extension option defined in this document require
+   standards action or IESG approval [RFC2434].
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.   Security Considerations</h2></a>
+
+   This protocol shares the security issues of NDP that are documented
+   in the "Security Considerations" section of [RFC4861].
+
+</p><p class="rfcparagraph">   The inclusion of additional optional bit fields provides a potential
+   covert channel that is useful for passing information.
+
+</p><p class="rfcparagraph">	<a name="section-7"><h2>7.   References</h2></a>
+
+	<a name="section-7.1"><h3>7.1   Normative References</h3></a>
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">   [RFC2434]  Narten, T. and H. Alvestrand, "Guidelines for Writing an
+              IANA Considerations Section in RFCs", BCP 26, RFC 2434,
+              October 1998.
+
+</p><p class="rfcparagraph">   [RFC4861]  Narten, T., Nordmark, E., Simpson, W., and H. Soliman,
+              "Neighbor Discovery for IP version 6 (IPv6)", RFC 4861,
+              September 2007.
+	<a name="section-7.2"><h3>7.2   Informative References</h3></a>
+
+   [RFC3775]  Johnson, D., Perkins, C., and J. Arkko, "Mobility Support
+              in IPv6", RFC 3775, June 2004.
+
+</p><p class="rfcparagraph">   [RFC4191]  Draves, R. and D. Thaler, "Default Router Preferences and
+              More-Specific Routes", RFC 4191, November 2005.
+
+</p><p class="rfcparagraph">   [RFC4389]  Thaler, D., Talwar, M., and C. Patel, "Neighbor Discovery
+              Proxies (ND Proxy)", RFC 4389, April 2006.
+
+</p><p class="rfcparagraph">Authors' Addresses
+
+   Brian Haberman (editor)
+   Johns Hopkins University Applied Physics Lab
+   11100 Johns Hopkins Road
+   Laurel, MD  20723-6099
+   USA
+
+   Phone: +1 443 778 1319
+   EMail: brian@innovationslab.net
+
+
+   Robert Hinden
+   Nokia
+   313 Fairchild Drive
+   Mountain View, CA  94043
+   USA
+
+   Phone: +1 650 625 2004
+   EMail: bob.hinden@nokia.com
+Full Copyright Statement
+
+   Copyright (C) The IETF Trust (2007).<br>
+
+</p><p class="rfcparagraph">   This document is subject to the rights, licenses and restrictions
+   contained in BCP 78, and except as set forth therein, the authors
+   retain all their rights.
+
+</p><p class="rfcparagraph">   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY, THE IETF TRUST AND
+   THE INTERNET ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS
+   OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF
+   THE INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED
+   WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Intellectual Property
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the procedures with respect to rights in RFC documents can be
+   found in BCP 78 and BCP 79.
+
+</p><p class="rfcparagraph">   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+</p><p class="rfcparagraph">   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at
+   ietf-ipr@ietf.org.
+
+</p>
+
+
+
+
+
+
+
+
+
+
+Haberman & Hinden           Standards Track                     [Page 7]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

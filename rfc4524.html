@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                   K. Zeilenga, Ed.<br>Request for Comments: 4524                           OpenLDAP Foundation<br>Obsoletes: 1274                                                June 2006<br>Updates: 2247, 2798<br>Category: Standards Track<br><br></p>
+                  <h1>
+                        COSINE LDAP/X.500 Schema</h1>
+                  <h2>Status of This Memo</h2>
+
+   This document specifies an Internet standards track protocol for the
+   Internet community, and requests discussion and suggestions for
+   improvements.  Please refer to the current edition of the "Internet
+   Official Protocol Standards" (STD 1) for the standardization state
+   and status of this protocol.  Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (2006).<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This document provides a collection of schema elements for use with
+   the Lightweight Directory Access Protocol (LDAP) from the COSINE and
+   Internet X.500 pilot projects.
+
+</p><p class="rfcparagraph">   This document obsoletes RFC 1274 and updates RFCs 2247 and 2798.
+
+</p><p class="rfcparagraph">Table of Contents
+<a href="#section-1" class="">1. Introduction ...................................................</a><br>
+<a href="#section-1.1" class="indent-1">1.1. Relationship to Other Documents ...........................</a><br>
+<a href="#section-1.2" class="indent-1">1.2. Terminology and Conventions ...............................</a><br>
+<a href="#section-2" class="">2. COSINE Attribute Types .........................................</a><br>
+<a href="#section-2.1" class="indent-1">2.1. associatedDomain ..........................................</a><br>
+<a href="#section-2.2" class="indent-1">2.2. associatedName ............................................</a><br>
+<a href="#section-2.3" class="indent-1">2.3. buildingName ..............................................</a><br>
+<a href="#section-2.4" class="indent-1">2.4. co ........................................................</a><br>
+<a href="#section-2.5" class="indent-1">2.5. documentAuthor ............................................</a><br>
+<a href="#section-2.6" class="indent-1">2.6. documentIdentifier ........................................</a><br>
+<a href="#section-2.7" class="indent-1">2.7. documentLocation ..........................................</a><br>
+<a href="#section-2.8" class="indent-1">2.8. documentPublisher .........................................</a><br>
+<a href="#section-2.9" class="indent-1">2.9. documentTitle .............................................</a><br>
+<a href="#section-2.10" class="indent-1">2.10. documentVersion ..........................................</a><br>
+<a href="#section-2.11" class="indent-1">2.11. drink ....................................................</a><br>
+<a href="#section-2.12" class="indent-1">2.12. homePhone ................................................</a><br>
+<a href="#section-2.13" class="indent-1">2.13. homePostalAddress ........................................</a><br>
+<a href="#section-2.14" class="indent-1">2.14. host .....................................................</a><br>
+<a href="#section-2.15" class="indent-1">2.15. info .....................................................</a><br>
+<a href="#section-2.16" class="indent-1">2.16. mail .....................................................</a><br>
+<a href="#section-2.17" class="indent-1">2.17. manager .................................................</a><br>
+<a href="#section-2.18" class="indent-1">2.18. mobile ..................................................</a><br>
+<a href="#section-2.19" class="indent-1">2.19. organizationalStatus ....................................</a><br>
+<a href="#section-2.20" class="indent-1">2.20. pager ...................................................</a><br>
+<a href="#section-2.21" class="indent-1">2.21. personalTitle ...........................................</a><br>
+<a href="#section-2.22" class="indent-1">2.22. roomNumber ..............................................</a><br>
+<a href="#section-2.23" class="indent-1">2.23. secretary ...............................................</a><br>
+<a href="#section-2.24" class="indent-1">2.24. uniqueIdentifier ........................................</a><br>
+<a href="#section-2.25" class="indent-1">2.25. userClass ...............................................</a><br>
+<a href="#section-3" class="">3. COSINE Object Classes .........................................</a><br>
+<a href="#section-3.1" class="indent-1">3.1. account ..................................................</a><br>
+<a href="#section-3.2" class="indent-1">3.2. document .................................................</a><br>
+<a href="#section-3.3" class="indent-1">3.3. documentSeries ...........................................</a><br>
+<a href="#section-3.4" class="indent-1">3.4. domain ...................................................</a><br>
+<a href="#section-3.5" class="indent-1">3.5. domainRelatedObject ......................................</a><br>
+<a href="#section-3.6" class="indent-1">3.6. friendlyCountry ..........................................</a><br>
+<a href="#section-3.7" class="indent-1">3.7. rFC822LocalPart ..........................................</a><br>
+<a href="#section-3.8" class="indent-1">3.8. room .....................................................</a><br>
+<a href="#section-3.9" class="indent-1">3.9. simpleSecurityObject .....................................</a><br>
+<a href="#section-4" class="">4. Security Considerations .......................................</a><br>
+<a href="#section-5" class="">5. IANA Considerations ...........................................</a><br>
+<a href="#section-6" class="">6. Acknowledgements ..............................................</a><br>
+<a href="#section-7" class="">7. References ....................................................</a><br>
+<a href="#section-7.1" class="indent-1">7.1. Normative References .....................................</a><br>
+<a href="#section-7.2" class="indent-1">7.2. Informative References ...................................</a><br>
+   Appendix A.  Changes since RFC 1274 ...............................23
+      A.1.  LDAP Short Names .........................................23
+      A.2.  pilotObject ..............................................23
+      A.3.  pilotPerson ..............................................23
+      A.4.  dNSDomain ................................................24
+      A.5.  pilotDSA and qualityLabelledData .........................24
+      A.6.  Attribute Syntaxes .......................................24
+   Appendix B.  Changes since RFC 2247 ...............................24
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   In the late 1980s, X.500 Directory Services were standardized by the
+   CCITT (Commite' Consultatif International de Telegraphique et
+   Telephonique), now a part of the ITU (International Telephone Union).
+   This lead to Directory Service piloting activities in the early
+   1990s, including the COSINE (Co-operation and Open Systems
+   Interconnection in Europe) PARADISE Project pilot [COSINEpilot] in
+   Europe.  Motivated by needs for large-scale directory pilots, RFC
+   1274 was published to standardize the directory schema and naming
+   architecture for use in the COSINE and other Internet X.500 pilots
+   [RFC1274].
+
+</p><p class="rfcparagraph">   In the years that followed, X.500 Directory Services have evolved to
+   incorporate new capabilities and even new protocols.  In particular,
+   the Lightweight Directory Access Protocol (LDAP) [RFC4510] was
+   introduced in the early 1990s [RFC1487], with Version 3 of LDAP
+   introduced in the late 1990s [RFC2251] and subsequently revised in
+   2005 [RFC4510].
+
+</p><p class="rfcparagraph">   While much of the material in RFC 1274 has been superceded by
+   subsequently published ITU-T Recommendations and IETF RFCs, many of
+   the schema elements lack standardized schema descriptions for use in
+   modern X.500 and LDAP directory services despite the fact that these
+   schema elements are in wide use today.  As the old schema
+   descriptions cannot be used without adaptation, interoperability
+   issues may arise due to lack of standardized modern schema
+   descriptions.
+
+</p><p class="rfcparagraph">   This document addresses these issues by offering standardized schema
+   descriptions, where needed, for widely used COSINE schema elements.
+
+</p><p class="rfcparagraph">	<a name="section-1.1"><h3>1.1   Relationship to Other Documents</h3></a>
+
+   This document, together with [RFC4519] and [RFC4517], obsoletes RFC
+   1274 in its entirety.  [RFC4519] replaces Sections 9.3.1 (Userid) and
+   9.3.21 (Domain Component) of RFC 1274.  [RFC4517] replaces Section
+   9.4 (Generally useful syntaxes) of RFC 1274.
+
+</p><p class="rfcparagraph">   This document replaces the remainder of RFC 1274.  Appendix A
+   discusses changes since RFC 1274, as well as why certain schema
+   elements were not brought forward in this revision of the COSINE
+   schema.  All elements not brought are to be regarded as Historic.
+
+</p><p class="rfcparagraph">   The description of the 'domain' object class provided in this
+   document supercedes that found in RFC 2247.  That is, Section 3.4 of
+   this document replaces Section 5.2 of [RFC2247].
+   Some of the schema elements specified here were described in RFC 2798
+   (inetOrgPerson schema).  This document supersedes these descriptions.
+   This document, together with [RFC4519], replaces Section 9.1.3 of RFC
+   2798.
+
+</p><p class="rfcparagraph">	<a name="section-1.2"><h3>1.2   Terminology and Conventions</h3></a>
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in BCP 14 [RFC2119].
+
+</p><p class="rfcparagraph">   DIT stands for Directory Information Tree.
+   DN stands for Distinguished Name.
+   DSA stands for Directory System Agent, a server.
+   DSE stands for DSA-Specific Entry.
+   DUA stands for Directory User Agent, a client.
+
+</p><p class="rfcparagraph">   These terms are discussed in [RFC4512].
+
+</p><p class="rfcparagraph">   Schema definitions are provided using LDAP description formats
+   [RFC4512].  Definitions provided here are formatted (line wrapped)
+   for readability.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   COSINE Attribute Types</h2></a>
+
+   This section details COSINE attribute types for use in LDAP.
+
+</p><p class="rfcparagraph">	<a name="section-2.1"><h3>2.1   associatedDomain</h3></a>
+
+   The 'associatedDomain' attribute specifies DNS [RFC1034][RFC2181]
+   host names [RFC1123] that are associated with an object.   That is,
+   values of this attribute should conform to the following ABNF:
+
+</p><p class="rfcparagraph">    domain = root / label *( DOT label )
+    root   = SPACE
+    label  = LETDIG [ *61( LETDIG / HYPHEN ) LETDIG ]
+    LETDIG = %x30-39 / %x41-5A / %x61-7A ; "0" - "9" / "A"-"Z" / "a"-"z"
+    SPACE  = %x20                        ; space (" ")
+    HYPHEN = %x2D                        ; hyphen ("-")
+    DOT    = %x2E                        ; period (".")
+
+   For example, the entry in the DIT with a DN <DC=example,DC=com> might
+   have an associated domain of "example.com".
+
+</p><p class="rfcparagraph">      ( 0.9.2342.19200300.100.1.37 NAME 'associatedDomain'
+        EQUALITY caseIgnoreIA5Match
+        SUBSTR caseIgnoreIA5SubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+   The IA5String (1.3.6.1.4.1.1466.115.121.1.26) syntax and the
+   'caseIgnoreIA5Match' and 'caseIgnoreIA5SubstringsMatch' rules are
+   described in [RFC4517].
+
+</p><p class="rfcparagraph">   Note that the directory will not ensure that values of this attribute
+   conform to the <domain> production provided above.  It is the
+   application's responsibility to ensure that domains it stores in this
+   attribute are appropriately represented.
+
+</p><p class="rfcparagraph">   Also note that applications supporting Internationalized Domain Names
+   SHALL use the ToASCII method [RFC3490] to produce <label> components
+   of the <domain> production.
+
+</p><p class="rfcparagraph">	<a name="section-2.2"><h3>2.2   associatedName</h3></a>
+
+   The 'associatedName' attribute specifies names of entries in the
+   organizational DIT associated with a DNS domain [RFC1034][RFC2181].
+
+</p><p class="rfcparagraph">      ( 0.9.2342.19200300.100.1.38 NAME 'associatedName'
+        EQUALITY distinguishedNameMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.12 )
+
+   The DistinguishedName (1.3.6.1.4.1.1466.115.121.1.12) syntax and the
+   'distinguishedNameMatch' rule are described in [RFC4517].
+
+</p><p class="rfcparagraph">	<a name="section-2.3"><h3>2.3   buildingName</h3></a>
+
+   The 'buildingName' attribute specifies names of the buildings where
+   an organization or organizational unit is based, for example, "The
+   White House".
+
+</p><p class="rfcparagraph">      ( 0.9.2342.19200300.100.1.48 NAME 'buildingName'
+        EQUALITY caseIgnoreMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} )
+
+   The DirectoryString (1.3.6.1.4.1.1466.115.121.1.15) syntax and the
+   'caseIgnoreMatch' and 'caseIgnoreSubstringsMatch' rules are described
+   in [RFC4517].
+
+</p><p class="rfcparagraph">	<a name="section-2.4"><h3>2.4   co</h3></a>
+
+   The 'co' (Friendly Country Name) attribute specifies names of
+   countries in human-readable format, for example, "Germany" and
+   "Federal Republic of Germany".  It is commonly used in conjunction
+   with the 'c' (Country Name) [RFC4519] attribute (whose values are
+   restricted to the two-letter codes defined in [ISO3166]).
+      ( 0.9.2342.19200300.100.1.43 NAME 'co'
+        EQUALITY caseIgnoreMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+   The DirectoryString (1.3.6.1.4.1.1466.115.121.1.15) syntax and the
+   'caseIgnoreMatch' and 'caseIgnoreSubstringsMatch' rules are described
+   in [RFC4517].
+
+</p><p class="rfcparagraph">	<a name="section-2.5"><h3>2.5   documentAuthor</h3></a>
+
+   The 'documentAuthor' attribute specifies the distinguished names of
+   authors (or editors) of a document.  For example,
+
+      ( 0.9.2342.19200300.100.1.14 NAME 'documentAuthor'
+        EQUALITY distinguishedNameMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.12 )
+
+   The DistinguishedName (1.3.6.1.4.1.1466.115.121.1.12) syntax and the
+   'distinguishedNameMatch' rule are described in [RFC4517].
+
+</p><p class="rfcparagraph">	<a name="section-2.6"><h3>2.6   documentIdentifier</h3></a>
+
+   The 'documentIdentifier' attribute specifies unique identifiers for a
+   document.  A document may be identified by more than one unique
+   identifier.  For example, RFC 3383 and BCP 64 are unique identifiers
+   that (presently) refer to the same document.
+
+</p><p class="rfcparagraph">      ( 0.9.2342.19200300.100.1.11 NAME 'documentIdentifier'
+        EQUALITY caseIgnoreMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} )
+
+   The DirectoryString (1.3.6.1.4.1.1466.115.121.1.15) syntax and the
+   'caseIgnoreMatch' and 'caseIgnoreSubstringsMatch' rules are described
+   in [RFC4517].
+
+</p><p class="rfcparagraph">	<a name="section-2.7"><h3>2.7   documentLocation</h3></a>
+
+   The 'documentLocation' attribute specifies locations of the document
+   original.
+
+</p><p class="rfcparagraph">      ( 0.9.2342.19200300.100.1.15 NAME 'documentLocation'
+        EQUALITY caseIgnoreMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} )
+   The DirectoryString (1.3.6.1.4.1.1466.115.121.1.15) syntax and the
+   'caseIgnoreMatch' and 'caseIgnoreSubstringsMatch' rules are described
+   in [RFC4517].
+
+</p><p class="rfcparagraph">	<a name="section-2.8"><h3>2.8   documentPublisher</h3></a>
+
+   The 'documentPublisher' attribute is the persons and/or organizations
+   that published the document.  Documents that are jointly published
+   have one value for each publisher.
+
+</p><p class="rfcparagraph">      ( 0.9.2342.19200300.100.1.56 NAME 'documentPublisher'
+        EQUALITY caseIgnoreMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+   The DirectoryString (1.3.6.1.4.1.1466.115.121.1.15) syntax and the
+   'caseIgnoreMatch' and 'caseIgnoreSubstringsMatch' rules are described
+   in [RFC4517].
+
+</p><p class="rfcparagraph">	<a name="section-2.9"><h3>2.9   documentTitle</h3></a>
+
+   The 'documentTitle' attribute specifies the titles of a document.
+   Multiple values are allowed to accommodate both long and short
+   titles, or other situations where a document has multiple titles, for
+   example, "The Lightweight Directory Access Protocol Technical
+   Specification" and "The LDAP Technical Specification".
+
+</p><p class="rfcparagraph">      ( 0.9.2342.19200300.100.1.12 NAME 'documentTitle'
+        EQUALITY caseIgnoreMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} )
+
+   The DirectoryString (1.3.6.1.4.1.1466.115.121.1.15) syntax and the
+   'caseIgnoreMatch' and 'caseIgnoreSubstringsMatch' rules are described
+   in [RFC4517].
+
+</p><p class="rfcparagraph">	<a name="section-2.10"><h3>2.10   documentVersion</h3></a>
+
+   The 'documentVersion' attribute specifies the version information of
+   a document.
+
+</p><p class="rfcparagraph">      ( 0.9.2342.19200300.100.1.13 NAME 'documentVersion'
+        EQUALITY caseIgnoreMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} )
+   The DirectoryString (1.3.6.1.4.1.1466.115.121.1.15) syntax and the
+   'caseIgnoreMatch' and 'caseIgnoreSubstringsMatch' rules are described
+   in [RFC4517].
+
+</p><p class="rfcparagraph">	<a name="section-2.11"><h3>2.11   drink</h3></a>
+
+   The 'drink' (favoriteDrink) attribute specifies the favorite drinks
+   of an object (or person), for instance, "cola" and "beer".
+
+</p><p class="rfcparagraph">      ( 0.9.2342.19200300.100.1.5 NAME 'drink'
+        EQUALITY caseIgnoreMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} )
+
+   The DirectoryString (1.3.6.1.4.1.1466.115.121.1.15) syntax and the
+   'caseIgnoreMatch' and 'caseIgnoreSubstringsMatch' rules are described
+   in [RFC4517].
+
+</p><p class="rfcparagraph">	<a name="section-2.12"><h3>2.12   homePhone</h3></a>
+
+   The 'homePhone' (Home Telephone Number) attribute specifies home
+   telephone numbers (e.g., "+1 775 555 1234") associated with a person.
+
+</p><p class="rfcparagraph">      ( 0.9.2342.19200300.100.1.20 NAME 'homePhone'
+        EQUALITY telephoneNumberMatch
+        SUBSTR telephoneNumberSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.50 )
+
+   The telephoneNumber (1.3.6.1.4.1.1466.115.121.1.50) syntax and the
+   'telephoneNumberMatch' and 'telephoneNumberSubstringsMatch' rules are
+   described in [RFC4517].
+
+</p><p class="rfcparagraph">	<a name="section-2.13"><h3>2.13   homePostalAddress</h3></a>
+
+   The 'homePostalAddress' attribute specifies home postal addresses for
+   an object.  Each value should be limited to up to 6 directory strings
+   of 30 characters each.  (Note: It is not intended that the directory
+   service enforce these limits.)
+
+      ( 0.9.2342.19200300.100.1.39 NAME 'homePostalAddress'
+        EQUALITY caseIgnoreListMatch
+        SUBSTR caseIgnoreListSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.41 )
+
+   The PostalAddress (1.3.6.1.4.1.1466.115.121.1.41) syntax and the
+   'caseIgnoreListMatch' and 'caseIgnoreListSubstringsMatch' rules are
+   described in [RFC4517].
+	<a name="section-2.14"><h3>2.14   host</h3></a>
+
+   The 'host' attribute specifies host computers, generally by their
+   primary fully qualified domain name (e.g., my-host.example.com).
+
+</p><p class="rfcparagraph">      ( 0.9.2342.19200300.100.1.9 NAME 'host'
+        EQUALITY caseIgnoreMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} )
+
+   The DirectoryString (1.3.6.1.4.1.1466.115.121.1.15) syntax and the
+   'caseIgnoreMatch' and 'caseIgnoreSubstringsMatch' rules are described
+   in [RFC4517].
+
+</p><p class="rfcparagraph">	<a name="section-2.15"><h3>2.15   info</h3></a>
+
+   The 'info' attribute specifies any general information pertinent to
+   an object.  This information is not necessarily descriptive of the
+   object.
+
+</p><p class="rfcparagraph">   Applications should not attach specific semantics to values of this
+   attribute.  The 'description' attribute [RFC4519] is available for
+   specifying descriptive information pertinent to an object.
+
+</p><p class="rfcparagraph">      ( 0.9.2342.19200300.100.1.4 NAME 'info'
+        EQUALITY caseIgnoreMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{2048} )
+
+   The DirectoryString (1.3.6.1.4.1.1466.115.121.1.15) syntax and the
+   'caseIgnoreMatch' and 'caseIgnoreSubstringsMatch' rules are described
+   in [RFC4517].
+
+</p><p class="rfcparagraph">	<a name="section-2.16"><h3>2.16   mail</h3></a>
+
+   The 'mail' (rfc822mailbox) attribute type holds Internet mail
+   addresses in Mailbox [RFC2821] form (e.g., user@example.com).
+
+</p><p class="rfcparagraph">      ( 0.9.2342.19200300.100.1.3 NAME 'mail'
+        EQUALITY caseIgnoreIA5Match
+        SUBSTR caseIgnoreIA5SubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{256} )
+
+   The IA5String (1.3.6.1.4.1.1466.115.121.1.26) syntax and the
+   'caseIgnoreIA5Match' and 'caseIgnoreIA5SubstringsMatch' rules are
+   described in [RFC4517].
+   Note that the directory will not ensure that values of this attribute
+   conform to the <Mailbox> production [RFC2821].  It is the
+   application's responsibility to ensure that domains it stores in this
+   attribute are appropriately represented.
+
+</p><p class="rfcparagraph">   Additionally, the directory will compare values per the matching
+   rules named in the above attribute type description.  As these rules
+   differ from rules that normally apply to <Mailbox> comparisons,
+   operational issues may arise.  For example, the assertion
+   (mail=joe@example.com) will match "JOE@example.com" even though the
+   <local-parts> differ.  Also, where a user has two <Mailbox>es whose
+   addresses differ only by case of the <local-part>, both cannot be
+   listed as values of the user's mail attribute (as they are considered
+   equal by the 'caseIgnoreIA5Match' rule).
+
+</p><p class="rfcparagraph">   Also note that applications supporting internationalized domain names
+   SHALL use the ToASCII method [RFC3490] to produce <sub-domain>
+   components of the <Mailbox> production.
+
+</p><p class="rfcparagraph">	<a name="section-2.17"><h3>2.17   manager</h3></a>
+
+   The 'manager' attribute specifies managers, by distinguished name, of
+   the person (or entity).
+
+</p><p class="rfcparagraph">      ( 0.9.2342.19200300.100.1.10 NAME 'manager'
+        EQUALITY distinguishedNameMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.12 )
+
+   The DistinguishedName (1.3.6.1.4.1.1466.115.121.1.12) syntax and the
+   'distinguishedNameMatch' rule are described in [RFC4517].
+
+</p><p class="rfcparagraph">	<a name="section-2.18"><h3>2.18   mobile</h3></a>
+
+   The 'mobile' (mobileTelephoneNumber) attribute specifies mobile
+   telephone numbers (e.g., "+1 775 555 6789") associated with a person
+   (or entity).
+
+</p><p class="rfcparagraph">      ( 0.9.2342.19200300.100.1.41 NAME 'mobile'
+        EQUALITY telephoneNumberMatch
+        SUBSTR telephoneNumberSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.50 )
+
+   The telephoneNumber (1.3.6.1.4.1.1466.115.121.1.50) syntax and the
+   'telephoneNumberMatch' and 'telephoneNumberSubstringsMatch' rules are
+   described in [RFC4517].
+	<a name="section-2.19"><h3>2.19   organizationalStatus</h3></a>
+
+   The 'organizationalStatus' attribute specifies categories by which a
+   person is often referred to in an organization.  Examples of usage in
+   academia might include "undergraduate student", "researcher",
+   "professor", and "staff".  Multiple values are allowed where the
+   person is in multiple categories.
+
+</p><p class="rfcparagraph">   Directory administrators and application designers SHOULD consider
+   carefully the distinctions between this and the 'title' and
+   'userClass' attributes.
+
+</p><p class="rfcparagraph">      ( 0.9.2342.19200300.100.1.45 NAME 'organizationalStatus'
+        EQUALITY caseIgnoreMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} )
+
+   The DirectoryString (1.3.6.1.4.1.1466.115.121.1.15) syntax and the
+   'caseIgnoreMatch' and 'caseIgnoreSubstringsMatch' rules are described
+   in [RFC4517].
+
+</p><p class="rfcparagraph">	<a name="section-2.20"><h3>2.20   pager</h3></a>
+
+   The 'pager' (pagerTelephoneNumber) attribute specifies pager
+   telephone numbers (e.g., "+1 775 555 5555") for an object.
+
+</p><p class="rfcparagraph">      ( 0.9.2342.19200300.100.1.42 NAME 'pager'
+        EQUALITY telephoneNumberMatch
+        SUBSTR telephoneNumberSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.50 )
+
+   The telephoneNumber (1.3.6.1.4.1.1466.115.121.1.50) syntax and the
+   'telephoneNumberMatch' and 'telephoneNumberSubstringsMatch' rules are
+   described in [RFC4517].
+
+</p><p class="rfcparagraph">	<a name="section-2.21"><h3>2.21   personalTitle</h3></a>
+
+   The 'personalTitle' attribute specifies personal titles for a person.
+   Examples of personal titles are "Frau", "Dr.", "Herr", and
+   "Professor".
+
+</p><p class="rfcparagraph">      ( 0.9.2342.19200300.100.1.40 NAME 'personalTitle'
+        EQUALITY caseIgnoreMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} )
+   The DirectoryString (1.3.6.1.4.1.1466.115.121.1.15) syntax and the
+   'caseIgnoreMatch' and 'caseIgnoreSubstringsMatch' rules are described
+   in [RFC4517].
+
+</p><p class="rfcparagraph">	<a name="section-2.22"><h3>2.22   roomNumber</h3></a>
+
+   The 'roomNumber' attribute specifies the room number of an object.
+   During periods of renumbering, or in other circumstances where a room
+   has multiple valid room numbers associated with it, multiple values
+   may be provided.  Note that the 'cn' (commonName) attribute type
+   SHOULD be used for naming room objects.
+
+</p><p class="rfcparagraph">      ( 0.9.2342.19200300.100.1.6 NAME 'roomNumber'
+        EQUALITY caseIgnoreMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} )
+
+   The DirectoryString (1.3.6.1.4.1.1466.115.121.1.15) syntax and the
+   'caseIgnoreMatch' and 'caseIgnoreSubstringsMatch' rules are described
+   in [RFC4517].
+
+</p><p class="rfcparagraph">	<a name="section-2.23"><h3>2.23   secretary</h3></a>
+
+   The 'secretary' attribute specifies secretaries and/or administrative
+   assistants, by distinguished name.
+
+</p><p class="rfcparagraph">      ( 0.9.2342.19200300.100.1.21 NAME 'secretary'
+        EQUALITY distinguishedNameMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.12 )
+
+   The DistinguishedName (1.3.6.1.4.1.1466.115.121.1.12) syntax and the
+   'distinguishedNameMatch' rule are described in [RFC4517].
+
+</p><p class="rfcparagraph">	<a name="section-2.24"><h3>2.24   uniqueIdentifier</h3></a>
+
+   The 'uniqueIdentifier' attribute specifies a unique identifier for an
+   object represented in the Directory.  The domain within which the
+   identifier is unique and the exact semantics of the identifier are
+   for local definition.  For a person, this might be an institution-
+   wide payroll number.  For an organizational unit, it might be a
+   department code.
+
+</p><p class="rfcparagraph">      ( 0.9.2342.19200300.100.1.44 NAME 'uniqueIdentifier'
+        EQUALITY caseIgnoreMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} )
+   The DirectoryString (1.3.6.1.4.1.1466.115.121.1.15) syntax and the
+   'caseIgnoreMatch' and 'caseIgnoreSubstringsMatch' rules are described
+   in [RFC4517].
+
+</p><p class="rfcparagraph">   Note: X.520 also describes an attribute called 'uniqueIdentifier'
+         (2.5.4.45), which is called 'x500UniqueIdentifier' in LDAP
+         [RFC4519].  The attribute detailed here ought not be confused
+         with 'x500UniqueIdentifier'.
+
+</p><p class="rfcparagraph">	<a name="section-2.25"><h3>2.25   userClass</h3></a>
+
+   The 'userClass' attribute specifies categories of computer or
+   application user.  The semantics placed on this attribute are for
+   local interpretation.  Examples of current usage of this attribute in
+   academia are "student", "staff", and "faculty".  Note that the
+   'organizationalStatus' attribute type is now often preferred, as it
+   makes no distinction between persons as opposed to users.
+
+</p><p class="rfcparagraph">      ( 0.9.2342.19200300.100.1.8 NAME 'userClass'
+        EQUALITY caseIgnoreMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} )
+
+   The DirectoryString (1.3.6.1.4.1.1466.115.121.1.15) syntax and the
+   'caseIgnoreMatch' and 'caseIgnoreSubstringsMatch' rules are described
+   in [RFC4517].
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   COSINE Object Classes</h2></a>
+
+   This section details COSINE object classes for use in LDAP.
+
+</p><p class="rfcparagraph">	<a name="section-3.1"><h3>3.1   account</h3></a>
+
+   The 'account' object class is used to define entries representing
+   computer accounts.  The 'uid' attribute SHOULD be used for naming
+   entries of this object class.
+
+</p><p class="rfcparagraph">      ( 0.9.2342.19200300.100.4.5 NAME 'account'
+        SUP top STRUCTURAL
+        MUST uid
+        MAY ( description $ seeAlso $ l $ o $ ou $ host ) )
+
+   The 'top' object class is described in [RFC4512].  The 'description',
+   'seeAlso', 'l', 'o', 'ou', and 'uid' attribute types are described in
+   [RFC4519].  The 'host' attribute type is described in Section 2 of
+   this document.
+   3.3.  documentSeriesExample:
+
+</p><p class="rfcparagraph">      dn: uid=kdz,cn=Accounts,dc=Example,dc=COM
+      objectClass: account
+      uid: kdz
+      seeAlso: cn=Kurt D. Zeilenga,cn=Persons,dc=Example,dc=COM
+
+	<a name="section-3.2"><h3>3.2   document</h3></a>
+
+   The 'document' object class is used to define entries that represent
+   documents.
+
+</p><p class="rfcparagraph">      ( 0.9.2342.19200300.100.4.6 NAME 'document'
+        SUP top STRUCTURAL
+        MUST documentIdentifier
+        MAY ( cn $ description $ seeAlso $ l $ o $ ou $
+          documentTitle $ documentVersion $ documentAuthor $
+          documentLocation $ documentPublisher ) )
+
+   The 'top' object class is described in [RFC4512].  The 'cn',
+   'description', 'seeAlso', 'l', 'o', and 'ou' attribute types are
+   described in [RFC4519].  The 'documentIdentifier', 'documentTitle',
+   'documentVersion', 'documentAuthor', 'documentLocation', and
+   'documentPublisher' attribute types are described in Section 2 of
+   this document.
+
+</p><p class="rfcparagraph">   Example:
+
+</p><p class="rfcparagraph">      dn: documentIdentifier=RFC 4524,cn=RFC,dc=Example,dc=COM
+      objectClass: document
+      documentIdentifier: RFC 4524
+      documentTitle: COSINE LDAP/X.500 Schema
+      documentAuthor: cn=Kurt D. Zeilenga,cn=Persons,dc=Example,dc=COM
+      documentLocation: http://www.rfc-editor.org/rfc/rfc4524.txt
+      documentPublisher: Internet Engineering Task Force
+      description: A collection of schema elements for use in LDAP
+      description: Obsoletes RFC 1274
+      seeAlso: documentIdentifier=RFC 4510,cn=RFC,dc=Example,dc=COM
+      seeAlso: documentIdentifier=RFC 1274,cn=RFC,dc=Example,dc=COM
+
+	<a name="section-3.3"><h3>3.3   documentSeries</h3></a>
+
+   The 'documentSeries' object class is used to define an entry that
+   represents a series of documents (e.g., The Request For Comments
+   memos).
+      ( 0.9.2342.19200300.100.4.9 NAME 'documentSeries'
+        SUP top STRUCTURAL
+        MUST cn
+        MAY ( description $ l $ o $ ou $ seeAlso $
+          telephonenumber ) )
+
+   The 'top' object class is described in [RFC4512].  The 'description',
+   'l', 'o', 'ou', 'seeAlso', and 'telephoneNumber' attribute types are
+   described in [RFC4519].
+
+</p><p class="rfcparagraph">   Example:
+
+</p><p class="rfcparagraph">      dn: cn=RFC,dc=Example,dc=COM
+      objectClass: documentSeries
+      cn: Request for Comments
+      cn: RFC
+      description: a series of memos about the Internet
+
+	<a name="section-3.4"><h3>3.4   domain</h3></a>
+
+   The 'domain' object class is used to define entries that represent
+   DNS domains for objects that are not organizations, organizational
+   units, or other kinds of objects more appropriately defined using an
+   object class specific to the kind of object being defined (e.g.,
+   'organization', 'organizationUnit').
+
+</p><p class="rfcparagraph">   The 'dc' attribute should be used for naming entries of the 'domain'
+   object class.
+
+</p><p class="rfcparagraph">      ( 0.9.2342.19200300.100.4.13 NAME 'domain'
+        SUP top STRUCTURAL
+        MUST dc
+        MAY ( userPassword $ searchGuide $ seeAlso $ businessCategory $
+          x121Address $ registeredAddress $ destinationIndicator $
+          preferredDeliveryMethod $ telexNumber $
+          teletexTerminalIdentifier $ telephoneNumber $
+          internationaliSDNNumber $ facsimileTelephoneNumber $ street $
+          postOfficeBox $ postalCode $ postalAddress $
+          physicalDeliveryOfficeName $ st $ l $ description $ o $
+          associatedName ) )
+
+   The 'top' object class and the 'dc', 'userPassword', 'searchGuide',
+   'seeAlso', 'businessCategory', 'x121Address', 'registeredAddress',
+   'destinationIndicator', 'preferredDeliveryMethod', 'telexNumber',
+   'teletexTerminalIdentifier', 'telephoneNumber',
+   'internationaliSDNNumber', 'facsimileTelephoneNumber', 'street',
+   'postOfficeBox', 'postalCode', 'postalAddress',
+   'physicalDeliveryOfficeName', 'st', 'l', 'description', and 'o' types
+   are described in [RFC4519].  The 'associatedName' attribute type is
+   described in Section 2 of this document.
+
+</p><p class="rfcparagraph">   Example:
+
+</p><p class="rfcparagraph">      dn: dc=com
+      objectClass: domain
+      dc: com
+      description: the .COM TLD
+
+	<a name="section-3.5"><h3>3.5   domainRelatedObject</h3></a>
+
+   The 'domainRelatedObject' object class is used to define entries that
+   represent DNS domains that are "equivalent" to an X.500 domain, e.g.,
+   an organization or organizational unit.
+
+</p><p class="rfcparagraph">      ( 0.9.2342.19200300.100.4.17 NAME 'domainRelatedObject'
+        SUP top AUXILIARY
+        MUST associatedDomain )
+
+   The 'top' object class is described in [RFC4512].  The
+   'associatedDomain' attribute type is described in Section 2 of this
+   document.
+
+</p><p class="rfcparagraph">   Example:
+
+</p><p class="rfcparagraph">      dn: dc=example,dc=com
+      objectClass: organization
+      objectClass: dcObject
+      objectClass: domainRelatedObject
+      dc: example
+      associatedDomain: example.com
+      o: Example Organization
+
+   The 'organization' and 'dcObject' object classes and the 'dc' and 'o'
+   attribute types are described in [RFC4519].
+
+</p><p class="rfcparagraph">	<a name="section-3.6"><h3>3.6   friendlyCountry</h3></a>
+
+   The 'friendlyCountry' object class is used to define entries
+   representing countries in the DIT.  The object class is used to allow
+   friendlier naming of countries than that allowed by the object class
+   'country' [RFC4519].
+
+</p><p class="rfcparagraph">      ( 0.9.2342.19200300.100.4.18 NAME 'friendlyCountry'
+        SUP country STRUCTURAL
+        MUST co )
+   The 'country' object class is described in [RFC4519].  The 'co'
+   attribute type is described in Section 2 of this document.
+
+</p><p class="rfcparagraph">   Example:
+
+</p><p class="rfcparagraph">      dn: c=DE
+      objectClass: country
+      objectClass: friendlyCountry
+      c: DE
+      co: Deutschland
+      co: Germany
+      co: Federal Republic of Germany
+      co: FRG
+
+   The 'c' attribute type is described in [RFC4519].
+
+</p><p class="rfcparagraph">	<a name="section-3.7"><h3>3.7   rFC822LocalPart</h3></a>
+
+   The 'rFC822LocalPart' object class is used to define entries that
+   represent the local part of Internet mail addresses [RFC2822].  This
+   treats the local part of the address as a 'domain' object.
+
+</p><p class="rfcparagraph">      ( 0.9.2342.19200300.100.4.14 NAME 'rFC822localPart'
+        SUP domain STRUCTURAL
+        MAY ( cn $ description $ destinationIndicator $
+          facsimileTelephoneNumber $ internationaliSDNNumber $
+          physicalDeliveryOfficeName $ postalAddress $ postalCode $
+          postOfficeBox $ preferredDeliveryMethod $ registeredAddress $
+          seeAlso $ sn $ street $ telephoneNumber $
+          teletexTerminalIdentifier $ telexNumber $ x121Address ) )
+
+   The 'domain' object class is described in Section 3.4 of this
+   document.  The 'cn', 'description', 'destinationIndicator',
+   'facsimileTelephoneNumber', 'internationaliSDNNumber,
+   'physicalDeliveryOfficeName', 'postalAddress', 'postalCode',
+   'postOfficeBox', 'preferredDeliveryMethod', 'registeredAddress',
+   'seeAlso', 'sn, 'street', 'telephoneNumber',
+   'teletexTerminalIdentifier', 'telexNumber', and 'x121Address'
+   attribute types are described in [RFC4519].
+
+</p><p class="rfcparagraph">   Example:
+
+</p><p class="rfcparagraph">      dn: dc=kdz,dc=example,dc=com
+      objectClass: domain
+      objectClass: rFC822LocalPart
+      dc: kdz
+      associatedName: cn=Kurt D. Zeilenga,cn=Persons,dc=Example,dc=COM
+   The 'dc' attribute type is described in [RFC4519].
+
+</p><p class="rfcparagraph">	<a name="section-3.8"><h3>3.8   room</h3></a>
+
+   The 'room' object class is used to define entries representing rooms.
+   The 'cn' (commonName) attribute SHOULD be used for naming entries of
+   this object class.
+
+</p><p class="rfcparagraph">      ( 0.9.2342.19200300.100.4.7 NAME 'room'
+        SUP top STRUCTURAL
+        MUST cn
+        MAY ( roomNumber $ description $ seeAlso $ telephoneNumber ) )
+
+   The 'top' object class is described in [RFC4512].  The 'cn',
+   'description', 'seeAlso', and 'telephoneNumber' attribute types are
+   described in [RFC4519].  The 'roomNumber' attribute type is described
+   in Section 2 of this document.
+
+</p><p class="rfcparagraph">      dn: cn=conference room,dc=example,dc=com
+      objectClass: room
+      cn: conference room
+      telephoneNumber: +1 755 555 1111
+
+	<a name="section-3.9"><h3>3.9   simpleSecurityObject</h3></a>
+
+   The 'simpleSecurityObject' object class is used to require an entry
+   to have a 'userPassword' attribute when the entry's structural object
+   class does not require (or allow) the 'userPassword attribute'.
+
+</p><p class="rfcparagraph">      ( 0.9.2342.19200300.100.4.19 NAME 'simpleSecurityObject'
+        SUP top AUXILIARY
+        MUST userPassword )
+
+   The 'top' object class is described in [RFC4512].  The 'userPassword'
+   attribute type is described in [RFC4519].
+
+</p><p class="rfcparagraph">      dn: dc=kdz,dc=Example,dc=COM
+      objectClass: account
+      objectClass: simpleSecurityObject
+      uid: kdz
+      userPassword: My Password
+      seeAlso: cn=Kurt D. Zeilenga,cn=Persons,dc=Example,dc=COM
+
+	<a name="section-4"><h2>4.   Security Considerations</h2></a>
+
+   General LDAP security considerations [RFC4510] are applicable to the
+   use of this schema.  Additional considerations are noted above where
+   appropriate.
+   Directories administrators should ensure that access to sensitive
+   information be restricted to authorized entities and that appropriate
+   data security services, including data integrity and data
+   confidentiality, are used to protect against eavesdropping.
+
+</p><p class="rfcparagraph">   Simple authentication (e.g., plain text passwords) mechanisms should
+   only be used when adequate data security services are in place.  LDAP
+   offers reasonably strong authentication and data security services
+   [RFC4513].
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   IANA Considerations</h2></a>
+
+   The Internet Assigned Numbers Authority (IANA) has updated the LDAP
+   descriptors registry [RFC4520] as indicated in the following
+   template:
+
+</p><p class="rfcparagraph">      Subject: Request for LDAP Descriptor Registration Update
+      Descriptor (short name): see comment
+      Object Identifier: see comments
+      Person & email address to contact for further information:
+          Kurt Zeilenga <kurt@OpenLDAP.org>
+      Usage: see comments
+      Specification: RFC 4524
+      Author/Change Controller: IESG
+      Comments:
+
+</p><p class="rfcparagraph">      The following descriptors have been updated to refer to RFC 4524.
+
+</p><p class="rfcparagraph">        NAME                           Type OID
+        ------------------------       ---- --------------------------
+        account                        O    0.9.2342.19200300.100.4.5
+        associatedDomain               A    0.9.2342.19200300.100.1.37
+        associatedName                 A    0.9.2342.19200300.100.1.38
+        buildingName                   A    0.9.2342.19200300.100.1.48
+        co                             A    0.9.2342.19200300.100.1.43
+        document                       O    0.9.2342.19200300.100.4.6
+        documentAuthor                 A    0.9.2342.19200300.100.1.14
+        documentIdentifier             A    0.9.2342.19200300.100.1.11
+        documentLocation               A    0.9.2342.19200300.100.1.15
+        documentPublisher              A    0.9.2342.19200300.100.1.56
+        documentSeries                 O    0.9.2342.19200300.100.4.8
+        documentTitle                  A    0.9.2342.19200300.100.1.12
+        documentVersion                A    0.9.2342.19200300.100.1.13
+        domain                         O    0.9.2342.19200300.100.4.13
+        domainRelatedObject            O    0.9.2342.19200300.100.4.17
+        drink                          A    0.9.2342.19200300.100.1.5
+        favouriteDrink                 A*   0.9.2342.19200300.100.1.5
+        friendlyCountry                O    0.9.2342.19200300.100.4.18
+        friendlyCountryName            A*   0.9.2342.19200300.100.1.43
+        homePhone                      A    0.9.2342.19200300.100.1.20
+        homePostalAddress              A    0.9.2342.19200300.100.1.39
+        homeTelephone                  A*   0.9.2342.19200300.100.1.20
+        host                           A    0.9.2342.19200300.100.1.9
+        info                           A    0.9.2342.19200300.100.1.4
+        mail                           A    0.9.2342.19200300.100.1.3
+        manager                        A    0.9.2342.19200300.100.1.10
+        mobile                         A    0.9.2342.19200300.100.1.41
+        mobileTelephoneNumber          A*   0.9.2342.19200300.100.1.41
+        organizationalStatus           A    0.9.2342.19200300.100.1.45
+        pager                          A    0.9.2342.19200300.100.1.42
+        pagerTelephoneNumber           A*   0.9.2342.19200300.100.1.42
+        personalTitle                  A    0.9.2342.19200300.100.1.40
+        rFC822LocalPart                O    0.9.2342.19200300.100.4.14
+        rfc822Mailbox                  A*   0.9.2342.19200300.100.1.3
+        room                           O    0.9.2342.19200300.100.4.7
+        roomNumber                     A    0.9.2342.19200300.100.1.6
+        secretary                      A    0.9.2342.19200300.100.1.21
+        simpleSecurityObject           O    0.9.2342.19200300.100.4.19
+        singleLevelQuality             A    0.9.2342.19200300.100.1.50
+        uniqueIdentifier               A    0.9.2342.19200300.100.1.44
+        userClass                      A    0.9.2342.19200300.100.1.8
+
+      where Type A is Attribute, Type O is ObjectClass, and *
+      indicates that the registration is historic in nature.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.   Acknowledgements</h2></a>
+
+   This document is based on RFC 1274, by Paul Barker and Steve Kille,
+   as well as on RFC 2247, by Steve Kill, Mark Wahl, Al Grimstad, Rick
+   Huber, and Sri Satulari.
+
+</p><p class="rfcparagraph">	<a name="section-7"><h2>7.   References</h2></a>
+
+	<a name="section-7.1"><h3>7.1   Normative References</h3></a>
+
+   [RFC1034]     Mockapetris, P., "Domain names - concepts and
+                 facilities", STD 13, RFC 1034, November 1987.
+
+</p><p class="rfcparagraph">   [RFC1123]     Braden, R., "Requirements for Internet Hosts -
+                 Application and Support", STD 3, RFC 1123, October
+                 1989.
+
+</p><p class="rfcparagraph">   [RFC2119]     Bradner, S., "Key words for use in RFCs to Indicate
+                 Requirement Levels", BCP 14, RFC 2119, March 1997.
+   [RFC2181]     Elz, R. and R. Bush, "Clarifications to the DNS
+                 Specification", RFC 2181, July 1997.
+
+</p><p class="rfcparagraph">   [RFC2247]     Kille, S., Wahl, M., Grimstad, A., Huber, R., and S.
+                 Sataluri, "Using Domains in LDAP/X.500 Distinguished
+                 Names", RFC 2247, January 1998.
+
+</p><p class="rfcparagraph">   [RFC2821]     Klensin, J., Ed., "Simple Mail Transfer Protocol", RFC
+                 2821, April 2001.
+
+</p><p class="rfcparagraph">   [RFC2822]     Resnick, P., "Internet Message Format", RFC 2822, April
+                 2001.
+
+</p><p class="rfcparagraph">   [RFC3490]     Faltstrom, P., Hoffman, P., and A. Costello,
+                 "Internationalizing Domain Names in Applications
+                 (IDNA)", RFC 3490, March 2003.
+
+</p><p class="rfcparagraph">   [RFC4510]     Zeilenga, K., Ed.,  "Lightweight Directory Access
+                 Protocol (LDAP): Technical Specification Road Map", RFC
+                 4510, June 2006.
+
+</p><p class="rfcparagraph">   [RFC4512]     Zeilenga, K., "Lightweight Directory Access Protocol
+                 (LDAP): Directory Information Models", RFC 4512, June
+                 2006.
+
+</p><p class="rfcparagraph">   [RFC4513]     Harrison, R., "Lightweight Directory Access Protocol
+                 (LDAP): Authentication Methods and Security
+                 Mechanisms", RFC 4513, June 2006.
+
+</p><p class="rfcparagraph">   [RFC4517]     Legg, S., Ed., "Lightweight Directory Access Protocol
+                 (LDAP): Syntaxes and Matching Rules", RC 4517, June
+                 2006.
+
+</p><p class="rfcparagraph">   [RFC4519]     Sciberras, A., Ed., "Lightweight Directory Access
+                 Protocol (LDAP): Schema for User Applications", RFC
+                 4519, June 2006.
+
+</p><p class="rfcparagraph">   [X.501]       International Telecommunication Union -
+                 Telecommunication Standardization Sector, "The
+                 Directory -- Models," X.501(1993) (also ISO/IEC 9594-<br>
+                 2:1994).
+
+</p><p class="rfcparagraph">	<a name="section-7.2"><h3>7.2   Informative References</h3></a>
+
+   [COSINEpilot] Goodman, D., "PARADISE" section of the March 1991
+                 INTERNET MONTHLY REPORTS (p. 28-29),
+                 http://www.iana.org/periodic-reports/imr-mar91.txt
+   [ISO3166]     International Organization for Standardization, "Codes
+                 for the representation of names of countries", ISO
+<a href="#section-3166" class="">3166. </p><p class="rfcparagraph">   [RFC1274]     Barker, P. and S. Kille, "The COSINE and Internet X</a><br>
+                 Schema", RFC 1274, November 1991.
+
+</p><p class="rfcparagraph">   [RFC1279]     Hardcastle-Kille, S., "X.500 and Domains", RFC 1279,
+                 November 1991.
+
+</p><p class="rfcparagraph">   [RFC1487]     Yeong, W., Howes, T., and S. Kille, "X.500 Lightweight
+                 Directory Access Protocol", RFC 1487, July 1993.
+
+</p><p class="rfcparagraph">   [RFC2251]     Wahl, M., Howes, T., and S. Kille, "Lightweight
+                 Directory Access Protocol (v3)", RFC 2251, December
+                 1997.
+
+</p><p class="rfcparagraph">   [RFC2798]     Smith, M., "Definition of the inetOrgPerson LDAP Object
+                 Class", RFC 2798, April 2000.
+
+</p><p class="rfcparagraph">   [RFC3494]     Zeilenga, K., "Lightweight Directory Access Protocol
+                 version 2 (LDAPv2) to Historic Status", RFC 3494, March
+                 2003.
+
+</p><p class="rfcparagraph">   [RFC4520]     Zeilenga, K., "Internet Assigned Numbers Authority
+                 (IANA) Considerations for the Lightweight Directory
+                 Access Protocol (LDAP)", BCP 64, RFC 4520.
+Appendix A.  Changes since RFC 1274
+
+   This document represents a substantial rewrite of RFC 1274.  The
+   following sections summarize the substantive changes.
+
+</p><p class="rfcparagraph">A.1.  LDAP Short Names
+
+   A number of COSINE attribute types have short names in LDAP.
+
+</p><p class="rfcparagraph">      X.500 Name              LDAP Short Name
+      -------------           ---------------
+      domainComponent         dc
+      favoriteDrink           drink
+      friendCountryName       co
+      homeTelephoneNumber     homePhone
+      mobileTelephoneNumber   mobile
+      pagerTelephoneNumber    pager
+      rfc822Mailbox           mail
+      userid                  uid
+
+   While the LDAP short names are generally used in LDAP, some
+   implementations may (for legacy reasons [RFC3494]) recognize the
+   attribute type by its X.500 name.  Hence, the X.500 names have been
+   reserved solely for this purpose.
+
+</p><p class="rfcparagraph">   Note: 'uid' and 'dc' are described in [RFC4519].
+
+</p><p class="rfcparagraph">A.2.  pilotObject
+
+   The 'pilotObject' object class was not brought forward as its
+   function is largely replaced by operational attributes introduced in
+   X.500(93) [X.501] and version 3 of LDAP [RFC4512].  For instance, the<br>
+   function of the 'lastModifiedBy' and 'lastModifiedTime' attribute
+   types is now served by the 'creatorsName', 'createTimestamp',
+   'modifiersName', and 'modifyTimestamp' operational attributes
+   [RFC4512].
+
+</p><p class="rfcparagraph">A.3.  pilotPerson
+
+   The 'pilotPerson' object class was not brought forward as its
+   function is largely replaced by the 'organizationalPerson' [RFC4512]
+   object class and its subclasses, such as 'inetOrgPerson' [RFC2798].
+
+</p><p class="rfcparagraph">   Most of the related attribute types (e.g., 'mail', 'manager') were
+   brought forward as they are used in other object classes.
+A.4.  dNSDomain
+
+   The 'dNSDomain' object class and related attribute types were not
+   brought forward as its use is primarily experimental [RFC1279].
+
+</p><p class="rfcparagraph">A.5.  pilotDSA and qualityLabelledData
+
+   The 'pilotDSA' and 'qualityLabelledData' object classes, as well as
+   related attribute types, were not brought forward as its use is
+   primarily experimental [QoS].
+
+</p><p class="rfcparagraph">A.6.  Attribute Syntaxes
+
+   RFC 1274 defined and used caseIgnoreIA5StringSyntax attribute syntax.
+   This has been replaced with the IA5String syntax and appropriate
+   matching rules in 'mail' and 'associatedDomain'.
+
+</p><p class="rfcparagraph">   RFC 1274 restricted 'mail' to have non-zero length values.  This
+   restriction is not reflected in the IA5String syntax used in the
+   definitions provided in this specification.  However, as values are
+   to conform to the <Mailbox> production, the 'mail' should not contain
+   zero-length values.  Unfortunately, the directory service will not
+   enforce this restriction.
+
+</p><p class="rfcparagraph">Appendix B.  Changes since RFC 2247
+
+   The 'domainNameForm' name form was not brought forward as
+   specification of name forms used in LDAP is left to a future
+   specification.
+
+</p><p class="rfcparagraph">Editor's Address
+
+   Kurt D. Zeilenga
+   OpenLDAP Foundation
+
+   EMail: Kurt@OpenLDAP.org
+Full Copyright Statement
+
+   Copyright (C) The Internet Society (2006).<br>
+
+</p><p class="rfcparagraph">   This document is subject to the rights, licenses and restrictions
+   contained in BCP 78, and except as set forth therein, the authors
+   retain all their rights.
+
+</p><p class="rfcparagraph">   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY AND THE INTERNET
+   ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED,
+   INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE
+   INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED
+   WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Intellectual Property
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the procedures with respect to rights in RFC documents can be
+   found in BCP 78 and BCP 79.
+
+</p><p class="rfcparagraph">   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+</p><p class="rfcparagraph">   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at
+   ietf-ipr@ietf.org.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is provided by the IETF
+   Administrative Support Activity (IASA).
+
+</p>
+
+
+
+
+
+Zeilenga                    Standards Track                    [Page 25]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                         T. Edwards<br>Request for Comments: 5119                                           FOX<br>Category: Informational                                    February 2008<br><br></p>
+                  <h1>
+              A Uniform Resource Name (URN) Namespace for
+     the Society of Motion Picture and Television Engineers (SMPTE)</h1>
+                  <h2>Status of This Memo</h2>
+
+   This memo provides information for the Internet community.  It does
+   not specify an Internet standard of any kind.  Distribution of this
+   memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This document describes a Uniform Resource Name (URN) namespace for
+   the Society of Motion Picture and Television Engineers (SMPTE) for
+   naming persistent resources that SMPTE produces or manages.  A
+   subnamespace for Universal Labels is specifically described.
+
+</p><p class="rfcparagraph">Table of Contents
+<a href="#section-1" class="">1. Introduction . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2" class="">2. URN Namespace Definition Template  . . . . . . . . . . . . . </a><br>
+<a href="#section-3" class="">3. Examples . . . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4" class="">4. Security Considerations  . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-5" class="">5. Namespace Considerations and Community Considerations  . . . </a><br>
+<a href="#section-6" class="">6. IANA Considerations  . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-7" class="">7. SMPTE Registration Authority (Informative) . . . . . . . . . </a><br>
+<a href="#section-8" class="">8. References . . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-8.1" class="indent-1">8.1. Normative References . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-8.2" class="indent-1">8.2. Informative References . . . . . . . . . . . . . . . . . </a><br>
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   SMPTE (the Society of Motion Picture and Television Engineers) is an
+   internationally-recognized standards-developing organization.
+   Headquartered and incorporated in the United States of America, SMPTE
+   has members in over 80 countries on six continents.  SMPTE's
+   Engineering Documents, including Standards, Recommended Practices,
+   and Engineering Guidelines, are prepared by SMPTE's Technology
+   Committees.  Participation in these Committees is open to all with a
+   bona fide interest in a committee's work.  SMPTE cooperates closely
+   with other standards-developing organizations, including ISO, the
+   IEC, and the ITU.  Also, the SMPTE Registration Authority maintains a
+   registry of Universal Labels (ULs) used in identifying the type and
+   encoding of data within data streams associated with audio-visual
+   material.
+
+</p><p class="rfcparagraph">   SMPTE would like to assign unique, permanent, and location-
+   independent names using URNs for resources that SMPTE produces or
+   manages.
+
+</p><p class="rfcparagraph">   This namespace specification is for a formal namespace.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   URN Namespace Definition Template</h2></a>
+
+   The following template is provided in accordance with [RFC3406].
+
+</p><p class="rfcparagraph">      Namespace ID:
+
+</p><p class="rfcparagraph">         smpte
+
+      Registration Information:
+
+</p><p class="rfcparagraph">         Version: 2
+
+         Date: 2007-07-08
+
+      Declared registrant of the namespace:
+
+</p><p class="rfcparagraph">         Registering Organization: Society of Motion Picture and
+                                   Television Engineers
+
+            Address: 3 Barker Avenue - 5th Floor
+                     White Plains, NY 10601 USA
+
+         Designated Contact Person: Director of Engineering
+
+            Phone: +1 (914) 761-1100<br>
+            Email: standards@smpte.org
+      Declaration of structure:
+
+</p><p class="rfcparagraph">         The Namespace Specific String (NSS) of all URNs that use the
+         "smpte" NID shall be conformant to the URN syntax requirements
+         defined in [RFC2141].
+
+</p><p class="rfcparagraph">         URNs for the "urn:smpte" namespace shall follow the structure
+         defined in [SMPTE2029].
+
+</p><p class="rfcparagraph">         SMPTE (or it successor) may add additional subnamespaces
+         in the future.  Any system that deals with URNs for the
+         "urn:smpte" namespace should be written with the awareness
+         that this could occur at any time.
+
+</p><p class="rfcparagraph">         For informative purposes, the identifier structure described
+         using ABNF (according to [RFC4234]) is as follows:
+
+</p><p class="rfcparagraph">            ;start ABNF notation
+
+            URN = "urn:" NID NSS
+
+            NID = "smpte:"
+
+            NSS = UL-NSS / other-NSS
+
+            UL-NSS = "ul:" UL
+
+            UL = QUADBYTE *(DOT QUADBYTE)
+
+            DOT = %x2E ; period
+
+            QUADBYTE = 4BYTE
+
+            BYTE = 2HEXDIG
+
+            other-NSS = 1*(DIGIT / ALPHA / "-"/":")
+
+            ; other-NSS that conforms with [RFC2141] for future
+            expansion
+
+            ;end ABNF notation
+
+      Relevant ancillary documentation:
+
+</p><p class="rfcparagraph">         The structure for URNs in the "urn:smpte" namespace are defined
+         in [SMPTE2029].
+         The values of ULs in the "urn:smpte:ul" subnamespace shall be
+         constrained as defined in [SMPTE298M].  Details regarding the
+         use of ULs as keys in key-length-value (KLV) coding, including
+         how to determine in which SMPTE registry a SMPTE-administered
+         UL may be found, are described in [SMPTE336M].
+
+</p><p class="rfcparagraph">      Identifier uniqueness considerations:
+
+</p><p class="rfcparagraph">         [SMPTE2029] states that "All URNs in the SMPTE namespace shall
+         conform to IETF RFC 3406.  In particular, URNs in the SMPTE
+         namespace shall not be re-assigned, and URNs shall continue to
+         be valid, even if the owners or registrants of the SMPTE
+         resources identified by the URNs are no longer members or
+         customers of SMPTE.  There need not be resolution of such URNs,
+         but they shall not resolve to false or stale information."
+
+         Additionally, the rules for assignment of SMPTE-administered
+         ULs requires that each UL be unique to the UL space and that it
+         cannot be reassigned or reused.
+
+</p><p class="rfcparagraph">         It should be noted that [SMPTE298M] states that "A universal
+         label shall be an 'object identifier' as specified by ISO/IEC
+         8824-1," ([ISO8824-1]) although the SMPTE Universal Label
+         representation is a specialized one that carries additional
+         semantics over the OID representation of a URN OID ([RFC3061]).
+
+</p><p class="rfcparagraph">         SMPTE will work to ensure that all current and future
+         "urn:smpte" subnamespaces contain unique identifiers.
+
+</p><p class="rfcparagraph">      Identifier persistence considerations:
+
+</p><p class="rfcparagraph">         SMPTE-administered ULs may occasionally be deleted through
+         SMPTE procedures.  Regardless, even after a UL has been
+         deleted, it will not be reused.  Revisions to ULs will result
+         in the creation of a new UL and the deletion of the old one.
+
+</p><p class="rfcparagraph">         The persistence of URNs in future "urn:smpte" subnamespaces
+         will be defined by SMPTE Standards.
+
+</p><p class="rfcparagraph">      Process of identifier assignment:
+
+</p><p class="rfcparagraph">         Assignment of URNs in the SMPTE NID is limited to SMPTE and
+         those authorities that are specifically designated by SMPTE.
+         SMPTE may designate portions of its namespace for assignment by
+         other parties.
+         Due process is followed by committees in the development of
+         SMPTE documents.  Some types of Universal Label registrations
+         and other registrations may require a fee to be paid to SMPTE.
+
+</p><p class="rfcparagraph">         All classes of SMPTE-administered ULs require for registration
+         the name and address of the applicant.  Some classes of labels
+         also require the submission of supporting technical
+         documentation for the label and may require a due process
+         evaluation through the SMPTE Engineering Committee process.
+
+</p><p class="rfcparagraph">      Process for identifier resolution:
+
+</p><p class="rfcparagraph">         SMPTE-administered ULs are resolved through publications of the
+         SMPTE Registration Authority.  Currently, publication of
+         SMPTE-administered ULs are made through a Metadata Dictionary
+         as specified in [RP210] and through the SMPTE Labels Registry
+         as specified in [RP224], both of which are currently available
+         online at http://www.smpte-ra.org/mdd/.
+
+</p><p class="rfcparagraph">         SMPTE expects to develop and maintain "URN catalogs" that map
+         all future assigned URNs in the "urn:smpte" namespace to
+         Uniform Resource Locators (URLs) to enable Web-based resolution
+         of named resources.
+
+</p><p class="rfcparagraph">      Rules for Lexical Equivalence:
+
+</p><p class="rfcparagraph">         Lexical equivalence of URNs in the "urn:smpte:ul" subnamespace
+         is defined by case-insensitive string match.
+
+</p><p class="rfcparagraph">         Lexical equivalence of URNs in additional subnamespaces of
+         "urn:smpte:" will be specified by SMPTE in the defining
+         document; in the absence of such specification, lexical
+         equivalence of URNs in the "urn:smpte:" namespace outside of
+         the "urn:smpte:ul" subnamespace is defined by exact string
+         match, according to [RFC2141].
+
+</p><p class="rfcparagraph">      Conformance with URN Syntax:
+
+</p><p class="rfcparagraph">         No special considerations beyond the syntax herein described.
+
+</p><p class="rfcparagraph">      Validation mechanism:
+
+</p><p class="rfcparagraph">         None.
+
+</p><p class="rfcparagraph">      Scope:
+
+</p><p class="rfcparagraph">         Global.
+	<a name="section-3"><h2>3.   Examples</h2></a>
+
+   Currently, only a "urn:smpte:ul" subnamespace is defined.  This is
+   the subnamespace for SMPTE Universal Labels [SMPTE298M].  SMPTE may
+   add additional subnamespaces in the future.
+
+</p><p class="rfcparagraph">   The following examples are not guaranteed to be real and are provided
+   for illustrative purposes only.
+
+</p><p class="rfcparagraph">      urn:smpte:ul:060E2B34.04010103.04010202.01011100
+
+      urn:smpte:newnss:future-urn-2105
+
+	<a name="section-4"><h2>4.   Security Considerations</h2></a>
+
+   The SMPTE URN Namespace ID shares the security considerations
+   outlined in [RFC3406], but has no other known security
+   considerations.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   Namespace Considerations and Community Considerations</h2></a>
+
+   SMPTE is an internationally-recognized standards-developing
+   organization.  As part of this effort, SMPTE also registers items
+   such as Universal Labels through the SMPTE Registration Authority.
+   The SMPTE namespace provides a uniform, unique, and effective way to
+   communicate resource names for these items, which can be used by the
+   motion imaging industry community.  This namespace is also intended
+   to be a useful mechanism to provide both human and automated access
+   to these resources through online systems.
+
+</p><p class="rfcparagraph">   The individual URNs in the namespace shall be assigned through the
+   process of development of documents by SMPTE, through definition by
+   SMPTE standards, or through the registration of Universal Labels or
+   other items by the SMPTE Registration Authority.
+
+</p><p class="rfcparagraph">   RFC 3406 states that a URN registration RFC must include a 'Namespace
+   Considerations' section, which outlines the perceived need for a new
+   namespace.  There are four areas where existing URN namespaces fall
+   short of the requirements for a SMPTE URN namespace.
+
+</p><p class="rfcparagraph">      URN assignment procedures: URNs for resources defined by SMPTE
+      standards must be assigned exclusively by SMPTE or its delegates
+      to ensure the integrity of the standards process.  No other
+      existing URN namespace has URNs assigned and managed by SMPTE.
+
+</p><p class="rfcparagraph">      URN resolution: URNs assigned by SMPTE standards must be resolved
+      by SMPTE mechanisms such as the SMPTE Registration Authority to
+      ensure the integrity of the standards process.  This resolution
+      may require the reference of databases only maintained by SMPTE.
+
+</p><p class="rfcparagraph">      Types of resources to be identified: Many resources defined by
+      SMPTE standards (such as Universal Labels) have no adequate
+      existing URN representation.
+
+</p><p class="rfcparagraph">      Types of services to be supported: SMPTE expects to establish Web
+      services for the automated resolution of resources defined by
+      SMPTE standards utilizing the SMPTE URN namespace.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.   IANA Considerations</h2></a>
+
+   This document defines a URN NID registration that has been entered
+   into the IANA registry of URN NIDs.  IANA has registered the NID
+   "smpte".
+
+</p><p class="rfcparagraph">	<a name="section-7"><h2>7.   SMPTE Registration Authority (Informative)</h2></a>
+
+   The URL of the SMPTE Registration Authority is
+   http://www.smpte-ra.org.
+
+</p><p class="rfcparagraph">	<a name="section-8"><h2>8.   References</h2></a>
+
+	<a name="section-8.1"><h3>8.1   Normative References</h3></a>
+
+   [RFC2141]   Moats, R., "URN Syntax", RFC 2141, May 1997.
+
+</p><p class="rfcparagraph">   [RFC3406]   Daigle, L., van Gulik, D., Iannella, R., and P.
+               Faltstrom, "Uniform Resource Names (URN) Namespace
+               Definition Mechanisms", BCP 66, RFC 3406, October 2002.
+
+</p><p class="rfcparagraph">   [SMPTE2029] Society of Motion Picture and Television Engineers,
+               "Uniform Resource Names for SMPTE Resources", SMPTE
+               2029-2007, <http://www.smpte.org>.
+
+</p><p class="rfcparagraph">	<a name="section-8.2"><h3>8.2   Informative References</h3></a>
+
+   [ISO8824-1] International Organization for Standardization,
+               "Information Processing - Open System Interconnection -
+               Specification of Abstract Syntax Notation One (ASN.1)",
+               ISO Standard 8824-1:1995, 1995.
+
+</p><p class="rfcparagraph">   [RFC3061]   Mealling, M., "A URN Namespace of Object Identifiers",
+               RFC 3061, February 2001.
+
+</p><p class="rfcparagraph">   [RFC4234]   Crocker, D., Ed., and P. Overell, "Augmented BNF for
+               Syntax Specifications: ABNF", RFC 4234, October 2005.
+   [RP210]     Society of Motion Picture and Television Engineers,
+               "Metadata Dictionary Registry of Metadata Element
+               Descriptions", SMPTE RP210, <http://www.smpte.org>.
+
+</p><p class="rfcparagraph">   [RP224]     Society of Motion Picture and Television Engineers,
+               "Registry of SMPTE Universal Labels", SMPTE RP224,
+               <http://www.smpte.org>.
+
+</p><p class="rfcparagraph">   [SMPTE298M] Society of Motion Picture and Television Engineers,
+               "Universal Labels for Unique Identification of Digital
+               Data", ANSI / SMPTE 298M-1997, <http://www.smpte.org>.
+
+</p><p class="rfcparagraph">   [SMPTE336M] Society of Motion Picture and Television Engineers, "Data
+               Encoding Protocol using Key-Length-Value", SMPTE 336M-
+               2001, <http://www.smpte.org>.
+
+</p><p class="rfcparagraph">Author's Address
+
+   Thomas G. Edwards
+   FOX
+   10201 West Pico Boulevard
+   Los Angeles, CA  90035
+   US
+
+   Phone: +1 310 369 7093
+   Email: thomas.edwards@fox.com
+   URI:   http://www.fox.com
+Full Copyright Statement
+
+   Copyright (C) The IETF Trust (2008).<br>
+
+</p><p class="rfcparagraph">   This document is subject to the rights, licenses and restrictions
+   contained in BCP 78, and except as set forth therein, the authors
+   retain all their rights.
+
+</p><p class="rfcparagraph">   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY, THE IETF TRUST AND
+   THE INTERNET ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS
+   OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF
+   THE INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED
+   WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Intellectual Property
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the procedures with respect to rights in RFC documents can be
+   found in BCP 78 and BCP 79.
+
+</p><p class="rfcparagraph">   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+</p><p class="rfcparagraph">   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at
+   ietf-ipr@ietf.org.
+
+</p>
+
+
+
+
+
+
+
+
+
+
+Edwards                      Informational                      [Page 9]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                          K. Toyoda<br>Request for Comments: 4143                                           PCC<br>Category: Standards Track                                     D. Crocker<br>                                                             Brandenburg<br>                                                           November 2005<br><br></p>
+                  <h1>
+          Facsimile Using Internet Mail (IFAX) Service of ENUM</h1>
+                  <h2>Status of This Memo</h2>
+
+   This document specifies an Internet standards track protocol for the
+   Internet community, and requests discussion and suggestions for
+   improvements.  Please refer to the current edition of the "Internet
+   Official Protocol Standards" (STD 1) for the standardization state
+   and status of this protocol.  Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (2005).<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This document describes the functional specification and definition
+   of the ENUM Naming Authority Pointer (NAPTR) record for IFax service.
+   IFax is "facsimile using Internet mail".  For this use, the Domain
+   Name System (DNS) returns the email address of the referenced IFax
+   system.  This mechanism allows email-based fax communication to use
+   telephone numbers instead of requiring the sender to already know the
+   recipient email address.
+
+</p><p class="rfcparagraph">	<a name="section-1"><h2>1.    Functional Specification</h2></a>
+
+   An IFax client makes a [ENUMbis] DNS query, using the target system's
+   telephone number.  The returned NAPTR record specifies an email
+   address to be used for reaching the target system.  The email address
+   is then used in accordance with Simple Mode of Facsimile using
+   Internet Mail [RFC3965], Extended Facsimile using Internet Mail
+   [RFC2532], or Full Mode Fax Profile for Internet Mail [FFPIM] is
+   applied.
+
+</p><p class="rfcparagraph">   The key words "MUST", "MUST NOT", "SHOULD", "SHOULD NOT", and "MAY"
+   in this document are to be interpreted as defined in "Key words for
+   use in RFCs to Indicate Requirement Levels" [KEYWORDS].
+	<a name="section-2"><h2>2.   IFax Service Registration</h2></a>
+
+   Service Name : "E2U+ifax"
+
+   Type: "ifax"
+
+   Subtype: "mailto"
+
+   URI Scheme: "mailto"
+   The URI Scheme is "mailto" because facsimile is a profile of standard
+   Internet mail and uses standard Internet mail addressing.
+
+</p><p class="rfcparagraph">   Functional Specification: See section 1
+
+   Security Considerations: See section 3
+
+   Intended usage: COMMON
+
+   Author: Kiyoshi Toyoda (toyoda.kiyoshi@jp.panasonic.com)
+           Dave Crocker (dcrocker@bbiw.net)
+
+	<a name="section-3"><h2>3.   Security Considerations</h2></a>
+
+   DNS, as used by ENUM, is a globally distributed database.  Thus, any
+   information stored in it is visible to anyone anonymously.  Although
+   this is not qualitatively different from publication in a telephone
+   directory, it does expose the data subject to automatic data
+   collection without any indication that this has been done or by whom.
+
+</p><p class="rfcparagraph">   Data harvesting by third parties is often used to generate lists of
+   targets for unrequested information; in short, the lists are used to
+   address "spam".  The publication of a telephone number in ENUM,
+   especially when it is an associated Internet fax service, may be used
+   to send "junk faxes", for example.
+
+</p><p class="rfcparagraph">   In the case of electronic mail, users subscribed to mailing lists can
+   have "sacrificial" email accounts.  These special-purpose addresses
+   help the user filter out unrequested email.  This is not so easy with
+   published telephone numbers.  The PSTN E.164 number assignment
+   process is much more involved and less flexible; usually a single
+   E.164 number (or a fixed range of numbers) is associated with each
+   PSTN access.  Thus, it is not possible to use a "sacrificial" phone
+   number.
+
+</p><p class="rfcparagraph">   Due to the implications of publishing data in a globally accessible
+   database, as a principle, the data subject MUST give explicit
+   informed consent to data being published in ENUM.
+   Internet Fax is based on existing use of Internet mail.  Developers
+   and users should also consider the Security Consideration sections in
+   [RFC3965] and [RFC2532].
+
+</p><p class="rfcparagraph">   In addition to the specific security considerations given above, the
+   Security Considerations section of [ENUMbis] applies to this
+   document.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   Example</h2></a>
+
+   The following is an example of the use of IFax service in a NAPTR
+   record.
+
+</p><p class="rfcparagraph">      $ORIGIN 4.3.2.1.6.7.9.8.6.4.e164.arpa
+        IN NAPTR 10 10 "u" "E2U+ifax:mailto"
+                               "!^.*$!mailto:toyo@example.com!"
+
+	<a name="section-5"><h2>5.   IANA Considerations</h2></a>
+
+   This specification creates a DNS NAPTR registration, according to the
+   terms specified in [ENUMbis].
+
+</p><p class="rfcparagraph">   The registration details are contained in section 2, Fax Service
+   Registration.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.   References</h2></a>
+
+	<a name="section-6.1"><h3>6.1   Normative References</h3></a>
+
+   [KEYWORDS] Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">   [ENUMbis]  Faltstrom, P. and M. Mealling, "The E.164 to Uniform
+              Resource Identifiers (URI) Dynamic Delegation Discovery
+              System (DDDS) Application (ENUM)", RFC 3761, April 2004.
+
+</p><p class="rfcparagraph">   [RFC3965]  Toyoda, K., Ohno, H., Murai, J., and D. Wing, "A Simple
+              Mode of Facsimile Using Internet Mail", RFC 3965, December
+              2004.
+
+</p><p class="rfcparagraph">   [RFC2532]  Masinter, L. and D. Wing, " Extended Facsimile Using
+              Internet Mail", RFC 2532, March 1999.
+
+</p><p class="rfcparagraph">   [FFPIM]    Crocker, D. and G. Klyne, "Full-mode Fax Profile for
+              Internet Mail (FFPIM)", RFC 4142, November 2005.
+Authors' Addresses
+
+   Kiyoshi Toyoda
+   Research and Development Laboratory
+   Panasonic Communications Co., Ltd.
+   4-1-62 Minoshima Hakata-ku, Fukuoka 812-8531 Japan
+
+   Phone: +81-50-3380-5181
+   EMail: toyoda.kiyoshi@jp.panasonic.com
+
+
+   Dave Crocker
+   Brandenburg InternetWorking
+   675 Spruce Drive
+   Sunnyvale, CA  94086  USA
+
+   Phone: +1.408.246.8253
+   EMail: dcrocker@bbiw.net
+Full Copyright Statement
+
+   Copyright (C) The Internet Society (2005).<br>
+
+</p><p class="rfcparagraph">   This document is subject to the rights, licenses and restrictions
+   contained in BCP 78, and except as set forth therein, the authors
+   retain all their rights.
+
+</p><p class="rfcparagraph">   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY AND THE INTERNET
+   ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED,
+   INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE
+   INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED
+   WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Intellectual Property
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the procedures with respect to rights in RFC documents can be
+   found in BCP 78 and BCP 79.
+
+</p><p class="rfcparagraph">   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+</p><p class="rfcparagraph">   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at ietf-
+   ipr@ietf.org.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is currently provided by the
+   Internet Society.
+
+</p>
+
+
+
+
+
+Toyoda & Crocker            Standards Track                     [Page 5]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                       M. Wildgrube<br>Request for Comments: 3072                                    March 2001<br>Category: Informational<br><br></p>
+                  <h1>
+                 Structured Data Exchange Format (SDXF)</h1>
+                  <h2>Status of this Memo</h2>
+
+   This memo provides information for the Internet community.  It does
+   not specify an Internet standard of any kind.  Distribution of this
+   memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (2001).  All Rights Reserved.<br>
+
+</p><p class="rfcparagraph">IESG Note
+
+   This document specifies a data exchange format and, partially, an API
+   that can be used for creating and parsing such a format.  The IESG
+   notes that the same problem space can be addressed using formats that
+   the IETF normally uses including ASN.1 and XML.  The document reader
+   is strongly encouraged to carefully read section 13 before choosing
+   SDXF over ASN.1 or XML.  Further, when storing text in SDXF, the user
+   is encourage to use the datatype for UTF-8, specified in section 2.5.
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This specification describes an all-purpose interchange format for
+   use as a file format or for net-working.  Data is organized in chunks
+   which can be ordered in hierarchical structures.  This format is
+   self-describing and CPU-independent.
+
+</p><p class="rfcparagraph">Table of Contents
+<a href="#section-1" class="">1. Introduction ................................................</a><br>
+<a href="#section-2" class="">2. Description of the SDXF data format .........................</a><br>
+<a href="#section-3" class="">3. Introduction to the SDXF functions ..........................</a><br>
+<a href="#section-3.1" class="indent-1">3.1 General remarks .............................................</a><br>
+<a href="#section-3.2" class="indent-1">3.2 Writing a SDXF buffer .......................................</a><br>
+<a href="#section-3.3" class="indent-1">3.3 Reading a SDXF buffer .......................................</a><br>
+<a href="#section-3.4" class="indent-1">3.4 Example .....................................................</a><br>
+<a href="#section-4" class="">4. Platform independence .......................................</a><br>
+<a href="#section-5" class="">5. Compression .................................................</a><br>
+<a href="#section-6" class="">6. Encryption ..................................................</a><br>
+<a href="#section-7" class="">7. Arrays.......................................................</a><br>
+<a href="#section-8" class="">8. Description of the SDXF functions ...........................</a><br>
+<a href="#section-8.1" class="indent-1">8.1 Introduction ................................................</a><br>
+<a href="#section-8.2" class="indent-1">8.2 Basic definitions ...........................................</a><br>
+<a href="#section-8.3" class="indent-1">8.3 Definitions for C++ .........................................</a><br>
+<a href="#section-8.4" class="indent-1">8.4 Common Definitions ..........................................</a><br>
+<a href="#section-8.5" class="indent-1">8.5 Special functions ...........................................</a><br>
+<a href="#section-9" class="">9. 'Support' of UTF-8 ..........................................</a><br>
+<a href="#section-10" class="">10. Security Considerations ....................................</a><br>
+<a href="#section-11" class="">11. Some general hints .........................................</a><br>
+<a href="#section-12" class="">12. IANA Considerations ........................................</a><br>
+<a href="#section-13" class="">13. Discussion .................................................</a><br>
+<a href="#section-13.1" class="indent-1">13.1 SDXF vs. ASN.1 .............................................</a><br>
+<a href="#section-13.2" class="indent-1">13.2 SDXF vs. XML ...............................................</a><br>
+<a href="#section-14" class="">14. Author's Address ...........................................</a><br>
+<a href="#section-15" class="">15. Acknowledgements ...........................................</a><br>
+<a href="#section-16" class="">16. References .................................................</a><br>
+<a href="#section-17" class="">17. Full Copyright Statement ...................................</a><br>
+
+	<a name="section-1"><h2>1.  Introduction</h2></a>
+
+   The purpose of the Structured Data eXchange Format (SDXF) is to
+   permit the interchange of an arbitrary structured data block with
+   different kinds of data (numerical, text, bitstrings).  Because data
+   is normalized to an abstract computer architecture independent
+   "network format", SDXF is usable as a network interchange data
+   format.
+
+</p><p class="rfcparagraph">   This data format is not limited to any application, the demand for
+   this format is that it is usable as a text format for word-
+   processing, as a picture format, a sound format, for remote procedure
+   calls with complex parameters, suitable for document formats, for
+   interchanging business data, etc.
+
+</p><p class="rfcparagraph">   SDXF is self-describing, every program can unpack every SDXF-data
+   without knowing the meaning of the individual data elements.
+
+</p><p class="rfcparagraph">   Together with the description of the data format a set of functions
+   will be introduced.  With the help of these functions one can create
+   and access the data elements of SDXF.  The idea is that a programmer
+   should only use these functions instead of maintaining the structure
+   by himself on the level of bits and bytes.  (In the speech of
+   object-oriented programming these functions are methods of an object
+   which works as a handle for a given SDXF data block.)
+
+   SDXF is not limited to a specific platform, along with a correct
+   preparation of the SDXF functions the SDXF data can be interchanged
+   (via network or data carrier) across the boundaries of different
+   architectures (specified by the character code like ASCII, ANSI or
+   EBCDIC and the byte order for binary data).
+   SDXF is also prepared to compress and encrypt parts or the whole
+   block of SDXF data.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.  Description of SDXF data format.</h2></a>
+
+	<a name="section-2.1"><h3>2.1  First we introduce the term "chunk".  A chunk is a data structure</h3></a>
+    with a fixed set of components.  A chunk may be "elementary" or
+    "structured".  The latter one contains itself one or more other
+    chunks.
+
+</p><p class="rfcparagraph">   A chunk consists of a header and the data body (content):
+
+</p><p class="rfcparagraph"><pre>   +----------+-----+-------+-----------------------------------+
+   | Name     | Pos.| Length| Description                       |
+   +----------+-----+-------+-----------------------------------+
+   | chunk-ID |  1  |   2   | ID of the chunk (unsigned short)  |
+   | flags    |  3  |   1   | type and properties of this chunk |
+   | length   |  4  |   3   | length  of the following data     |
+   | content  |  7  |   *)  | net data or a list of of chunks   |
+   +----------+-----+-------+-----------------------------------+
+
+   (* as stated in "length". total length of chunk is length+6.  The
+   chunk ID is a non-zero positive number.
+
+</p><p class="rfcparagraph">   or more visually:
+
+</p><p class="rfcparagraph">   +----+----+----+----+----+----+----+----+----+-...
+   | chunkID | fl | length       |  content
+   +----+----+----+----+----+----+----+----+----+-...
+
+</p><p class="rfcparagraph">   or in ASN.1 syntax:
+
+</p><p class="rfcparagraph">   chunk  ::=  SEQUENCE
+   {
+     chunkID INTEGER (1..65535),
+     flags   BIT STRING,
+     length  OCTET STRING SIZE 3, -- or: INTEGER (0..16777215)
+     content OCTET STRING
+   }
+
+	<a name="section-2.2"><h3>2.2  Structured chunk.</h3></a>
+
+   A structured chunk is marked as such by the flag byte (see 2.5).
+   Opposed to an elementary chunk its content consists of a list of
+   chunks (elementary or structured):
+   +----+-+---+-------+-------+-------+-----+-------+
+   | id |f|len| chunk | chunk | chunk | ... | chunk |
+   +----+-+---+-------+-------+-------+-----+-------+
+
+   With the help of this concept you can reproduce every hierarchically
+   structured data into a SDXF chunk.
+
+</p><p class="rfcparagraph">	<a name="section-2.3"><h3>2.3  Some Remarks about the internal representation of the chunk's</h3></a>
+    elements:
+
+</p><p class="rfcparagraph">   Binary values are always in high-order-first (big endian) format,
+   like the binary values in the IP header (network format).  A length
+   of 300 (=256 + 32 + 12) is stored as
+
+   +----+----+----+----+----+----+----+----+----+--
+   |         |    | 00   01   2C |  content
+   +----+----+----+----+----+----+----+----+----+--
+
+   in hexadecimal notation.
+
+</p><p class="rfcparagraph">   This is also valid for the chunk-ID.
+
+</p><p class="rfcparagraph">	<a name="section-2.4"><h3>2.4  Character values in the content portion are also an object of</h3></a>
+    adaptation: see chapter 4.
+
+</p><p class="rfcparagraph">	<a name="section-2.5"><h3>2.5  Meaning of the flag-bits: Let us represent the flag byte in this</h3></a>
+    manner:
+
+</p><p class="rfcparagraph">     +-+-+-+-+-+-+-+-+
+     |0|1|2|3|4|5|6|7|
+     +-+-+-+-+-+-+-+-+
+      | | | | | | | |
+      | | | | | | | +-- reserved
+      | | | | | | +---- array
+      | | | | | +------ short chunk
+      | | | | +-------- encrypted chunk
+      | | | +---------- compressed chunk
+      | | |
+      +-+-+------------ data type (0..7)
+
+   data types are:
+
+</p><p class="rfcparagraph">   0 -- pending structure (chunk is inconsistent, see also 11.1)
+   1 -- structure
+   2 -- bit string
+   3 -- numeric
+   4 -- character
+   5 -- float (ANSI/IEEE 754-1985)
+   6 -- UTF-8
+   7 -- reserved
+
+	<a name="section-2.6"><h3>2.6  A short chunk has no data body.  The 3 byte Length field is used as</h3></a>
+   data bytes instead.  This is used in order to save space when there
+   are many small chunks.
+
+</p><p class="rfcparagraph">	<a name="section-2.7"><h3>2.7  Compressed and encrypted chunks are explained in chapter 5 and 6.</h3></a>
+
+	<a name="section-2.8"><h3>2.8  Arrays are explained in chapter 7.</h3></a>
+
+	<a name="section-2.9"><h3>2.9  Handling of UTF-8 is explained in chapter 9.</h3></a>
+
+	<a name="section-2.10"><h3>2.10  Not all combinations of bits are allowed or reasonable:</h3></a>
+
+   -  the flags 'array' and 'short' are mutually exclusive.
+   -  'short' is not applicable for data type 'structure' and 'float'.
+   -  'array' is not applicable for data type 'structure'.
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.  Introduction to the SDXF functions</h2></a>
+
+	<a name="section-3.1"><h3>3.1  General remarks</h3></a>
+
+   The functionality of the SDXF concept is not bounded to any
+   programming language, but of course the functions themselves must be
+   coded in a particular language.  I discuss these functions in C and
+   C++, because in the meanwhile these languages are available on almost
+   all platforms.
+
+</p><p class="rfcparagraph">   All these functions for reading and writing SDXF chunks uses only one
+   parameter, a parameter structure.  In C++ this parameter structure is
+   part of the "SDXF class" and the SDXF functions are methods of this
+   class.
+
+</p><p class="rfcparagraph">   An exact description of the interface is given in chapter 8.
+
+</p><p class="rfcparagraph">	<a name="section-3.2"><h3>3.2  Writing a SDXF buffer</h3></a>
+
+   For to write SDXF chunks, there are following functions:
+
+</p><p class="rfcparagraph">   init    -- initialize the parameter structure
+   create  -- create a new chunk
+   leave   -- "close" a structured chunk
+	<a name="section-3.3"><h3>3.3  Reading a SDXF buffer</h3></a>
+
+   For to read SDXF chunks, there are following functions:
+
+</p><p class="rfcparagraph">   init    -- initialize the parameter structure
+   enter   -- "go into" a structured chunk
+   next    -- "go to" the next chunk inside a structured chunk
+   extract -- extract the content of an elementary chunk into
+              user's data area
+   leave   -- "go out" off a structured chunk
+
+	<a name="section-3.4"><h3>3.4  Example:</h3></a>
+
+	<a name="section-3.4.1"><h4>3.4.1  Writing:</h4></a>
+
+   For demonstration we use a reduced (outlined) C++ Form of these
+   functions with polymorph definitions:
+
+</p><p class="rfcparagraph">   void create (short chunkID); // opens a new structure,
+   void create (short chunkID, char *string);
+        // creates a new chunk with dataType character, etc.)
+
+   The sequence:
+
+</p><p class="rfcparagraph">   SDXF x(new); // create the SDXF object "x" for a new chunk
+                // includes the "init"
+   x.create (3301);   // opens a new structure<br>
+   x.create (3302, "first chunk");
+   x.create (3303, "second chunk");
+   x.create (3304);   // opens a new structure<br>
+   x.create (3305, "chunk in a structure");
+   x.create (3306, "next chunk in a structure");
+   x.leave ();        // closes the inner structure
+   x.create (3307, "third chunk");
+   x.leave ();        // closes the outer structure
+   creates a chunk which we can show graphically like:
+
+</p><p class="rfcparagraph">   3301
+    |
+    +--- 3302 = "first chunk"
+    |
+    +--- 3303 = "second chunk"
+    |
+    +--- 3304
+    |      |
+    |      +--- 3305 = "chunk in a structure"
+    |      |
+    |      +--- 3306 = "next chunk in a structure"
+    |
+    +--- 3307 = "last chunk"
+
+	<a name="section-3.4.2"><h4>3.4.2  Reading</h4></a>
+
+   A typically access to a structured SDXF chunk is a selection inside
+   a loop:
+
+</p><p class="rfcparagraph">   SDXF x(old); // defines a SDXF object "x" for an old chunk
+   x.enter ();  // enters the structure
+
+   while (x.rc == 0) // 0 == ok, rc will set by the SDXF functions
+   {
+     switch (x.chunkID)
+     {
+       case 3302:
+         x.extract (data1, maxLength1);
+                   // extr. 1st chunk into data1
+         break;
+
+</p><p class="rfcparagraph">       case 3303:
+         x.extract (data2, maxLength2);
+                   // extr. 2nd chunk into data2
+         break;
+
+</p><p class="rfcparagraph">       case 3304:  // we know this is a structure
+         x.enter (); // enters the inner structure
+
+         while (x.rc == 0) // inner loop
+         {
+           switch (x.chunkID)
+           {
+             case 3305:
+               x.extract (data3, maxLength3);
+                         // extr. the chunk inside struct.
+               break;
+             case 3306:
+               x.extract (data4, maxLength4);
+                         // extr. 2nd chunk inside struct.
+               break;
+           }
+           x.next (); // returns x.rc == 1 at end of structure
+         } // end-while
+         break;
+
+</p><p class="rfcparagraph">       case 3307:
+         x.extract (data5, maxLength5);
+                   // extract last chunk into data
+         break;
+       // default: none - ignore unknown chunks !!!
+
+     } // end-switch
+     x.next (); // returns x.rc = 1 at end of structure
+   } // end-while
+
+	<a name="section-4"><h2>4.  Platform independence</h2></a>
+
+   The very most of the computer platforms today have a 8-Bits-in-a-Byte
+   architecture, which enables data exchange between these platforms.
+   But there are two significant points in which platforms may be
+   different:
+
+</p><p class="rfcparagraph">   a) The representation of binary numerical (the short and long int and
+      floats).
+
+</p><p class="rfcparagraph">   b) The representation of characters (ASCII/ANSI vs. EBCDIC)
+
+   Point (a) is the phenomenon of "byte swapping": How is a short int
+   value 259 = 0x0103 = X'0103' be stored at address 4402?
+
+   The two flavours are:
+
+</p><p class="rfcparagraph">   4402 4403
+   01   03    the big-endian, and
+   03   01    the little-endian.
+
+</p><p class="rfcparagraph">   Point (b) is represented by a table of the assignment of the 256
+   possible values of a Byte to printable or control characters.  (In
+   ASCII the letter "A" is assigned to value (or position) 0x41 = 65, in
+   EBCDIC it is 0xC1 = 193.)
+   The solution of these problems is to normalize the data:
+
+</p><p class="rfcparagraph">   We fix:
+
+</p><p class="rfcparagraph">   (a) The internal representation of binary numerals are 2-complements
+       in big-endian order.
+
+</p><p class="rfcparagraph">   (b) The internal representation of characters is ISO 8859-1 (also
+       known as Latin 1).
+
+</p><p class="rfcparagraph">   The fixing of point (b) should be regarded as a first strike.  In
+   some environment 8859-1 seems not to be the best choice, in a greek
+   or russian environment 8859-5 or 8859-7 are appropriate.
+
+</p><p class="rfcparagraph">   Nevertheless, in a specific group (or world) of applications, that is
+   to say all the applications which wants to interchange data with a
+   defined protocol (via networking or diskette or something else), this
+   internal character table must be unique.
+
+</p><p class="rfcparagraph">   So a possibility to define a translation table (and his inversion)
+   should be given.
+
+</p><p class="rfcparagraph">   Important: You construct a SDXF chunk not for a specific addressee,
+   but you adapt your data into a normalized format (or network format).
+
+</p><p class="rfcparagraph">   This adaption is not done by the programmer, it will be done by the
+   create and extract function.  An administrator has take care of
+   defining the correct translation tables.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.  Compression</h2></a>
+
+   As stated in 2.5 there is a flag bit which declares that the
+   following data (elementary or structured) are compressed.  This data
+   is not further interpretable until it is decompressed.  Compression
+   is transparently done by the SDXF functions: "create" does the
+   compression for elementary chunks, "leave" for structured chunks,
+   "extract" does the decompression for elementary chunks, "enter" for
+   structured chunks.
+
+</p><p class="rfcparagraph">   Transparently means that the programmer has only to tell the SDXF
+   functions that he want compress the following chunk(s).
+
+</p><p class="rfcparagraph">   For choosing between different compression methods and for
+   controlling the decompressed (original) length, there is an
+   additional definition:
+   After the chunk header for a compressed chunk, a compression header
+   is following:
+
+</p><p class="rfcparagraph">   +-----------------------+---------------+---------------->
+   |      chunk header     | compr. header | compressed data
+   +---+---+---+---+---+---+---+---+---+---+---------------->
+   |chunkID|flg|   length  |md | orglength |
+   +---+---+---+---+---+---+---+---+---+---+
+</pre>
+---------------->
+
+   -  'orglength' is the original (decompressed) length of the data.
+
+</p><p class="rfcparagraph">   -  'md' is the "compression method": Two methods are described here:
+
+</p><p class="rfcparagraph">      #  method 01 for a simple (fast but not very effective)
+         "Run Length 1" or "Byte Run 1" algorithm.  (More then two
+         consecutive identical characters are replaced by the number of
+         these characters and the character itself.)
+
+         more precisely:
+
+</p><p class="rfcparagraph">         The compressed data consists of several sections of various
+         length.  Every section starts with a "counter" byte, a signed
+         "tiny" (8 bit) integer, which contains a length information.
+
+</p><p class="rfcparagraph">         If this byte contains the value "n",
+         with n >= 0 (and n <128), the next n+1 bytes will be taken
+         unchanged;
+         with n < 0 (and n > -128), the next byte will be replicated
+         -n+1 times;
+         n = -128 will be ignored.
+
+</p><p class="rfcparagraph">         Appending blanks will be cutted in general.  If these are
+         necessary, they can be reconstructed while "extract"ing with
+         the parameter field "filler" (see 8.2.1) set to space
+         character.
+
+</p><p class="rfcparagraph">      #  method 02 for the wonderful "deflate" algorithm which comes
+         from the "zip"-people.
+         The authors are:
+         Jean-loup Gailly (deflate routine),
+         Mark Adler (inflate routine), and others.
+
+</p><p class="rfcparagraph">         The deflate format is described in [DEFLATE].
+
+</p><p class="rfcparagraph">      The values for the compression method number are maintained by
+      IANA, see chap. 12.1.
+	<a name="section-6"><h2>6.  Encryption</h2></a>
+
+   As stated in 2.5 there is a flag bit which declares that the
+   following data (elementary or structured) is encrypted.  This data is
+   not interpretable until it is decrypted.  En/Decryption is
+   transparently done by the SDXF functions, "create" does the
+   encryption for elementary chunks, "leave" for structured chunks,
+   "extract" does the decryption for elementary chunks, "enter" for
+   structured chunks.  (Yes it sounds very similar to chapter 5.)  More
+   then one encryption method for a given range of applications is not
+   very reasonable. Some encryption algorithms work with block ciphering
+   algorithms. That means that the length of the data to encrypt must be
+   rounded up to the next multiple of this block length. This blocksize
+   (zero means non-blocking) is reported by the encryption interface
+   routine (addressed by the option field *encryptProc, see chapter 8.5)
+   with mode=3. If blocking is used, at least one byte is added, the
+   last byte of the lengthening data contains the number of added bytes
+   minus one. With this the decryption interface routine can calculate
+   the real data length.
+
+</p><p class="rfcparagraph">   If an application (or network connect handshaking protocol) needs to
+   negotiate an encryption method it should be used a method number
+   maintained by IANA, see chap. 12.2.
+
+</p><p class="rfcparagraph">   Even the en/decryption is done transparently, an encryption key
+   (password) must be given to the SDXF functions.  Encryption is done
+   after translating character data into, decryption is done before
+   translation from the internal ("network-") format.
+
+</p><p class="rfcparagraph">   If both, encryption and compression are applied on the same chunk,
+   compression is done first - compression on good encrypted data (same
+   strings appears as different after encryption) tends to zero
+   compression rates.
+
+</p><p class="rfcparagraph">	<a name="section-7"><h2>7.  Arrays</h2></a>
+
+   An array is a sequence of chunks with identical chunk-ID, length and
+   data type.
+
+</p><p class="rfcparagraph">   At first a hint: in principle a special definition in SDXF for such
+   an array is not really necessary:
+
+</p><p class="rfcparagraph">   It is not forbidden that there are more than one chunk with equal
+   chunk-ID within the same structured chunk.
+
+</p><p class="rfcparagraph">   Therefore with a sequence of SDX_next / SDX_extract calls one can
+   fill the destination array step by step.
+   If there are many occurrences of chunks with the same chunk-ID (and a
+   comparative small length), the overhead of the chunk-packages may be
+   significant.
+
+</p><p class="rfcparagraph">   Therefore the array flag is introduced.  An array chunk has only one
+   chunk header for the complete sequence of elementary chunks.  After
+   the chunk header for an array chunk, an array header is following:
+
+</p><p class="rfcparagraph">   This is a short integer (big endian!) which contains the number of
+   the array elements (CT).  Every element has a fixed length (EL), so
+   the chunklength (CL) is CL = EL * CT + 2.
+
+</p><p class="rfcparagraph">   The data elements follows immediately after the array header.
+
+</p><p class="rfcparagraph">   The complete array will be constructed by SDX_create, the complete
+   array will be read by SDX_extract.
+
+</p><p class="rfcparagraph">   The parameter fields (see 8.2.1) 'dataLength' and 'count' are used
+   for the SDXF functions 'extract' and 'create':
+
+</p><p class="rfcparagraph">   Field 'dataLength' is the common length of the array elements,
+   'count' is the actual dimension of the array for 'create' (input).
+
+</p><p class="rfcparagraph">   For the 'extract' function 'count' acts both as an input and output
+   parameter:
+
+</p><p class="rfcparagraph">   Input : the maximum dimension
+   output: the actual array dimension.
+
+</p><p class="rfcparagraph">   (If output count is greater than input count, the 'data cutted'
+   warning will be responded and the destination array is filled up to
+   the maximum dimension.)
+
+	<a name="section-8"><h2>8.  Description of the SDXF functions</h2></a>
+
+	<a name="section-8.1"><h3>8.1  Introduction</h3></a>
+
+   Following the principles of Object Oriented Programming, not only the
+   description of the data is necessary, but also the functions which
+   manipulate data - the "methods".
+
+</p><p class="rfcparagraph">   For the programmer knowing the methods is more important than knowing
+   the data structure, the methods has to know the exact specifications
+   of the data and guarantees the consistence of the data while creating
+   them.
+   A SDXF object is an instance of a parameter structure which acts as a
+   programming interface.  Especially it points to an actual SDXF data
+   chunk, and, while processing on this data, there is a pointer to the
+   actual inner chunk which will be the focus for the next operation.
+
+</p><p class="rfcparagraph">   The benefit of an exact interface description is the same as using
+   for example the standard C library functions: By using standard
+   interfaces your code remains platform independent.
+
+</p><p class="rfcparagraph">	<a name="section-8.2"><h3>8.2  Basic definitions</h3></a>
+
+	<a name="section-8.2.1"><h4>8.2.1  The SDXF Parameter structure</h4></a>
+
+   All SDXF access functions need only one parameter, a pointer to the
+   SDXF parameter structure:
+
+</p><p class="rfcparagraph">   First 3 prerequisite definitions:
+
+</p><p class="rfcparagraph">   typedef short int      ChunkID;
+   typedef unsigned char  Byte;
+
+</p><p class="rfcparagraph">   typedef struct Chunk
+   {
+     ChunkID    chunkID;
+     Byte       flags;
+     char       length [3];
+     Byte       data;
+   } Chunk;
+
+</p><p class="rfcparagraph">   And now the parameter structure:
+
+</p><p class="rfcparagraph">   typedef struct
+   {
+     ChunkID  chunkID;       // name (ID) of Chunk
+     Byte    *container;     // pointer to the whole Chunk
+     long     bufferSize;    // size of container
+     Chunk   *currChunk;     // pointer to actual Chunk
+     long     dataLength;    // length of data in Chunk
+     long     maxLength;     // max. length of Chunk for SDX_extract
+     long     remainingSize; // rem. size in cont. after SDX_create
+     long     value;         // for data type numeric
+     double   fvalue;        // for data type float
+     char    *function;      // name of the executed SDXF function
+     Byte    *data;          // pointer to Data
+     Byte    *cryptkey;      // pointer to Crypt Key
+     short    count;         // (max.) number of elements in an array
+     short    dataType;      // Chunk data type / init open type
+     short    ec;            // extended return-code
+     short    rc;            // return-code
+     short    level;         // level of hierarchy
+     char     filler;        // filler char for SDX_extract
+     Byte     encrypt;       // Indication if data to encrypt (0 / 1)
+     Byte     compression;   // compression method
+                             //   (00=none, 01=RL1, 02=zip/deflate)
+   } SDX_obj, *SDX_handle;
+
+</p><p class="rfcparagraph">   Only the "public" fields of the parameter structure which acts as
+   input and output for the SDXF functions is described here.  A given
+   implementation may add some "private" fields to this structure.
+
+</p><p class="rfcparagraph">	<a name="section-8.2.2"><h4>8.2.2  Basic Functions</h4></a>
+
+   All these functions works with a SDX_handle as the only formal
+   parameter.  Every function returns as output ec and rc as a report of
+   success.  For the values for ec, rc and dataType see chap. 8.4.
+
+</p><p class="rfcparagraph">    1. SDX_init : Initialize the parameter structure.
+
+</p><p class="rfcparagraph">         input : container, dataType, bufferSize (for dataType =
+                 SDX_NEW only)
+         output: currChunk, dataLength (for dataType = SDX_OLD only),
+                 ec, rc,
+                 the other fields of the parameter structure will be
+                 initialized.
+
+</p><p class="rfcparagraph">    2. SDX_enter : Enter a structured chunk.
+       You can access the first chunk inside this structured chunk.
+         input : none
+         output: currChunk, chunkID, dataLength, level, dataType,
+                 ec, rc
+
+    3. SDX_leave : Leave the actual entered structured chunk.
+         input : none
+         output: currChunk, chunkID, dataLength, level, dataType,
+                 ec, rc
+
+    4. SDX_next : Go to the next chunk inside a structured chunk.
+         input : none
+         output: currChunk, chunkID, dataLength, dataType, count, ec, rc
+
+        At the end of a structured chunk SDX_next returns rc =
+        SDX_RC_failed and ec = SDX_EC_eoc (end of chunk)
+        The actual structured chunk is SDX_leave'd automatically.
+    5. SDX_extract : Extract data of the actual chunk.
+       (If actual chunk is structured, only a copy is done, elsewhere
+       the data is converted to host format.)
+       input / output depends on the dataType:
+
+</p><p class="rfcparagraph">       if dataType is structured, binary or char:
+         input : data, maxLength, count, filler
+         output: dataLength, count, ec, rc
+
+       if dataType is numeric (float resp.):
+         input : none
+         output: value (fvalue resp.), ec, rc
+
+    6. SDX_select : Go to the (next) chunk with a given chunkID.
+         input : chunkID
+         output: currChunk, dataLength, dataType, ec, rc
+
+    7. SDX_create : Creating a new chunk (at the end of the actual
+       structured chunk).
+         input : chunkID, dataLength, data, (f)value, dataType,
+                 compression, encrypt, count
+         update: remainingSize, level
+         output: currChunk, dataLength, ec, rc
+
+    8. SDX_append : Append a complete chunk at the end of the actual
+       structured chunk).
+         input : data, maxLength, currChunk
+         update: remainingSize, level
+         output: chunkID, chunkLength, maxLength, dataType, ec, rc
+
+	<a name="section-8.3"><h3>8.3  Definitions for C++</h3></a>
+
+   This is the specification of the SDXF class in C++: (The type 'Byte'
+   is defined as "unsigned char" for bitstrings, opposed to "signed
+   char" for character strings)
+
+   class C_SDXF
+   {
+     public:
+
+</p><p class="rfcparagraph">     // constructors and destructor:
+     C_SDXF  ();                          // dummy
+     C_SDXF  (Byte *cont);                // old container
+     C_SDXF  (Byte *cont, long size);     // new container
+     C_SDXF  (long size);                 // new container
+     ~C_SDXF ();
+     // methods:
+     void init  (void);                   // old container
+     void init  (Byte *cont);             // old container
+     void init  (Byte *cont, long size);  // new container
+     void init  (long size);              // new container
+
+     void enter   (void);
+     void leave   (void);
+     void next    (void);
+     long extract (Byte *data, long length);    // chars, bits
+     long extract (void);                       // numeric data
+     void create  (ChunkID);                    // structured
+     void create  (ChunkID, long value);        // numeric
+     void create  (ChunkID, double fvalue);     // float
+     void create  (ChunkID, Byte *data, long length);// binary
+     void create  (ChunkID, char *data);             // chars
+     void set_compression (Byte compression_method);
+     void set_encryption  (Byte *encryption_key);
+
+</p><p class="rfcparagraph">     // interface:
+
+</p><p class="rfcparagraph">     ChunkID  id;        // see 8.4.1
+     short    dataType;  // see 8.4.2
+     long     length;    // length of data or chunk
+
+     long     value;
+     double   fvalue;
+     short    rc;  // the raw return code       see 8.4.3
+     short    ec;  // the extended return code  see 8.4.4
+
+     protected:
+     // implementation dependent ...
+
+</p><p class="rfcparagraph">   };
+
+</p><p class="rfcparagraph">	<a name="section-8.4"><h3>8.4  Common Definitions:</h3></a>
+
+	<a name="section-8.4.1"><h4>8.4.1  Definition of ChunkID:</h4></a>
+
+   typedef short ChunkID;
+
+</p><p class="rfcparagraph">	<a name="section-8.4.2"><h4>8.4.2  Values for dataType:</h4></a>
+
+   SDX_DT_inconsistent     = 0
+   SDX_DT_structured       = 1
+   SDX_DT_binary           = 2
+   SDX_DT_numeric          = 3
+   SDX_DT_char             = 4
+   SDX_DT_float            = 5
+   SDX_DT_UTF8             = 6
+
+    data types for SDX_init:
+   SDX_OLD                 = 1
+   SDX_NEW                 = 2
+
+	<a name="section-8.4.3"><h4>8.4.3  Values for rc:</h4></a>
+
+   SDX_RC_ok               = 0
+   SDX_RC_failed           = 1
+   SDX_RC_warning          = 1
+   SDX_RC_illegalOperation = 2
+   SDX_RC_dataError        = 3
+   SDX_RC_parameterError   = 4
+   SDX_RC_programError     = 5
+   SDX_RC_noMemory         = 6
+
+	<a name="section-8.4.4"><h4>8.4.4  Values for ec:</h4></a>
+
+   SDX_EC_ok              =  0
+   SDX_EC_eoc             =  1 // end of chunk
+   SDX_EC_notFound        =  2
+   SDX_EC_dataCutted      =  3
+   SDX_EC_overflow        =  4
+   SDX_EC_wrongInitType   =  5
+   SDX_EC_comprerr        =  6 // compression error
+   SDX_EC_forbidden       =  7
+   SDX_EC_unknown         =  8
+   SDX_EC_levelOvflw      =  9
+   SDX_EC_paramMissing    = 10
+   SDX_EC_magicError      = 11
+   SDX_EC_not_consistent  = 12
+   SDX_EC_wrongDataType   = 13
+   SDX_EC_noMemory        = 14
+   SDX_EC_error           = 99 // rc is sufficiently
+
+	<a name="section-8.5"><h3>8.5  Special functions</h3></a>
+
+   Besides the basic definitions there is a global function
+   (SDX_getOptions) which returns a pointer to a global table of
+   options.
+
+</p><p class="rfcparagraph">   With the help of these options you can adapt the behaviour of SDXF.
+   Especially you can define an alternative pair of translation tables
+   or an alternative function which reads these tables from an external
+   resource (p.e. from disk).
+   Within this table of options there is also a pointer to the function
+   which is used for encryption / decryption: You can install your own
+   encryption algorithm by setting this pointer.
+
+</p><p class="rfcparagraph">   The options pointer is received by:
+
+</p><p class="rfcparagraph">   SDX_TOptions *opt = SDX_getOptions ();
+
+</p><p class="rfcparagraph">   With:
+
+</p><p class="rfcparagraph">   typedef struct
+   {
+    Byte            *toHost;        // Trans tab net -> host
+    Byte            *toNet;         // Trans tab host -> net
+    int              maxlevel;      // highest possible level
+    int              translation;   // translation net <-> host
+                                    // is in effect=1 or not=0
+    TEncryptProc    *encryptProc;   // alternate encryption routine
+    TGetTablesProc  *getTablesProc; // alternate routine defining
+                                    // translation Tables
+    TcvtUTF8Proc    *convertUTF8;   // routine to convert to/from UTF-8
+   }  SDX_TOptions;
+
+</p><p class="rfcparagraph">   typedef long TencryptProc (
+     int   mode,   // 1= to encrypt, 2= to decrypt, 3= encrypted length
+     Byte *buffer, // data to en/decrypt
+     long  len,    // len: length of buffer
+     char *passw); // Password
+
+    // returns length of en/de-crypted data
+    // (parameter buffer and passw are ignored for mode=3)
+    // returns blocksize for mode=3 and len=0.
+    // blocksize is zero for non-blocking algorithms
+
+   typedef int TGetTablesProc (Byte **toNet, Byte **toHost);
+    // toNet, toHost: pointer to output params.  Both params
+    // points to translation tables of 256 Bytes.
+    // returns success: 1 = ok, 0 = error.
+
+</p><p class="rfcparagraph">   typedef int TcvtUTF8Proc
+   ( int   mode,     // 1 = to UTF-8, 2 = from UTF-8
+     Byte *target, int *targetlength,  // output
+     Byte *source, int sourcelength);  // input
+   // targetlength contains maximal size as input param.
+   // returns success: 1 = ok, 0 = no conversion
+	<a name="section-9"><h2>9.  'Support' of UTF-8.</h2></a>
+
+   Many systems supports [UTF-8] as a character format for transferred
+   data.  The benefit is that no fixing of a specific character set for
+   an application is needed because the set of 'all' characters is used,
+   represented by the 'Universal Character Set' UCS-2 [UCS], a double
+   byte coding for characters.
+
+</p><p class="rfcparagraph">   SDXF does not really deal with UTF-8 by itself, there are many
+   possibilities to interprete an UTF-8 sequence:  The application may:
+
+</p><p class="rfcparagraph">   -  reconstruct the UCS-2 sequence,
+   -  accepts only the pure ASCII character and maps non-ASCII to a
+      special 'non-printable' character.
+   -  target is pure ASCII, non-ASCII is replaced in a senseful manner
+      (French accented vowels replaced by vowels without accents, etc.).
+   -  target is a specific ANSI character set, the non-ASCII chars are
+      mapped as possible, other replaced to a 'non-printable'.
+   -  etc.
+
+</p><p class="rfcparagraph">   But SDXF offers an interface for the 'extract' and 'create'
+   functions:
+
+</p><p class="rfcparagraph">   A function pointer may be specified in the options table to maintain
+   this possibility (see 8.5).  Default for this pointer is NULL: No
+   further conversions are done by SDXF, the data are copied 'as is', it
+   is treated as a bit string as for data type 'binary'.
+
+</p><p class="rfcparagraph">   If this function is specified, it is used by the 'create' function
+   with the 'toUTF8' mode, and by the 'extract' function with the '
+   fromUTF8' mode.  The invoking of these functions is done by SDXF
+   transparently.
+
+</p><p class="rfcparagraph">   If the function returns zero (no conversion) SDXF copies the data
+   without conversion.
+
+</p><p class="rfcparagraph">	<a name="section-10"><h2>10.  Security Considerations</h2></a>
+
+   Any corruption of data in the chunk headers denounce the complete
+   SDXF structure.
+
+</p><p class="rfcparagraph">   Any corruption of data in a encrypted or compressed SDXF structure
+   makes this chunk unusable.  An integrity check after decryption or
+   decompression should be done by the "enter" function.
+
+</p><p class="rfcparagraph">   While using TCP/IP (more precisely: IP) as a transmission medium we
+   can trust on his CRC check on the transport layer.
+	<a name="section-11"><h2>11.  Some general hints</h2></a>
+
+   1. A consistent construction of a SDXF structure is done if every
+      "create" to a structured chunk is closed by a paired "leave".
+      While a structured chunk is under construction, his data type is
+      set to zero - that means: this chunk is inconsistent.  The
+      SDX_leave function sets the datatype to "structured".
+
+</p><p class="rfcparagraph">   2. While creating an elementary chunk a platform dependent
+      transformation to a platform independent format of the data is
+      performed - at the end of construction the content of the buffer
+      is ready to transport to another site, without any further
+      translation.
+
+</p><p class="rfcparagraph">   3. As you see no data definition in your programming language is
+      needed for to construct a specific SDXF structure.  The data is
+      created dynamically by function calls.
+
+</p><p class="rfcparagraph">   4. With SDXF as a base you can define protocols for client / server
+      applications.  These protocols may be extended in downward
+      compatibility manner by following two rules:
+
+</p><p class="rfcparagraph">      Rule 1: Ignore unknown chunkIDs.
+
+</p><p class="rfcparagraph">      Rule 2: The sequence of chunks should not be significant.
+
+</p><p class="rfcparagraph">	<a name="section-12"><h2>12.  IANA Considerations</h2></a>
+
+   The compression and encryption algorithms for SDXF is not fixed, SDXF
+   is open for various algorithms.  Therefore an agreement is necessary
+   to interprete the compression and encryption algorithm method
+   numbers.  (Encryption methods are not a semantic part of SDXF, but
+   may be used for a connection protocol to negotiate the encryption
+   method to use.)
+
+   Following two items are registered by IANA:
+
+</p><p class="rfcparagraph">	<a name="section-12.1"><h3>12.1  COMPRESSION METHODS FOR SDXF</h3></a>
+
+   The compressed SDXF chunk starts with a "compression header".  This
+   header contains the compression method as an unsigned 1-Byte integer
+   (1-255).  These numbers are assigned by IANA and listed here:
+   compression
+    method     Description                     Hints
+   ---------   ------------------------------- -------------
+<a href="#section-01" class="">01 RUN-LENGTH algorithm            see chap</a><br>
+         02    DEFLATE (ZIP)                   see [DEFLATE]
+     03-239    IANA to assign
+    240-255    private or application specific
+
+	<a name="section-12.2"><h3>12.2  ENCRYPTION METHODS FOR SDXF</h3></a>
+
+   An unique encryption method is fixed or negotiated by handshaking.
+   For the latter one a number for each encryption method is necessary.
+   These numbers are unsigned 1-Byte integers (1-255).  These numbers
+   are assigned by IANA and listed here:
+
+</p><p class="rfcparagraph">   encryption
+     method    Description
+    ---------  ------------------------------
+     01-239    IANA to assign
+    240-255    private or application specific
+
+	<a name="section-12.3"><h3>12.3  Hints for assigning a number:</h3></a>
+
+   Developers which want to register a compression or encrypt method for
+   SDXF should contact IANA for a method number.  The ASSIGNED NUMBERS
+   document should be referred to for a current list of METHOD numbers
+   and their corresponding protocols, see [IANA].  The new method SHOULD
+   be a standard published as a RFC or by a established standardization
+   organization (as OSI).
+
+</p><p class="rfcparagraph">	<a name="section-13"><h2>13.  Discussion</h2></a>
+
+   There are already some standards for Internet data exchanging, IETF
+   prefers ASN.1 and XML therefore.  So the reasons for establish a new
+   data format should be discussed.
+
+</p><p class="rfcparagraph">	<a name="section-13.1"><h3>13.1  SDXF vs. ASN.1</h3></a>
+
+   The demand of ASN.1 (see [ASN.1]) is to serve program language
+   independent means to define data structures.  The real data format
+   which is used to send the data is not defined by ASN.1 but usually
+   BER or PER (or some derivates of them like CER and DER) are used in
+   this context, see [BER] and [PER].
+   The idea behind ASN.1 is: On every platform on which a given
+   application is to develop descriptions of the used data structures
+   are available in ASN.1 notation.  Out off these notations the real
+   language dependent definitions are generated with the help of an
+   ASN.1-compiler.
+
+</p><p class="rfcparagraph">   This compiler generates also transform functions for these data
+   structures for to pack and unpack to and from the BER (or other)
+   format.
+
+</p><p class="rfcparagraph">   A direct comparison between ASN.1 and SDXF is somehow inappropriate:
+   The data format of SDXF is related rather to BER (and relatives).
+   The use of ASN.1 to define data structures is no contradiction to
+   SDXF, but: SDXF does not require a complete data structure to build
+   the message to send, nor a complete data structure will be generated
+   out off the received message.
+
+</p><p class="rfcparagraph">   The main difference lies in the concept of building and
+   interpretation of the message, I want to name it the "static" and
+   "dynamic" concept:
+
+</p><p class="rfcparagraph">   o  ASN.1 uses a "static" approach: The whole data structure must
+      exists before the message can be created.
+
+</p><p class="rfcparagraph">   o  SDXF constructs and interpretes the message in a "dynamic" way,
+      the message will be packed and unpacked step by step by SDXF
+      functions.
+
+</p><p class="rfcparagraph">   The use of static structures may be appropriate for a series of
+   applications, but for complex tasks it is often impossible to define
+   the message as a whole.  As an example try to define an ASN.1
+   description for a complex structured text document which is presented
+   in XML:  There are sections and paragraphs and text elements which
+   may recursively consist of sections with specific text attributes.
+
+</p><p class="rfcparagraph">	<a name="section-13.2"><h3>13.2  SDXF vs. XML</h3></a>
+
+   On the one hand SDXF and XML are similar as they can handle any
+   recursive complex data stream.  The main difference is the kind of
+   data which are to be maintained:
+
+</p><p class="rfcparagraph">   o  XML works with pure text data (though it should be noted that the
+      character representation is not standardized by XML).  And: a XML
+      document with all his tags is readable by human.  Binary data as
+      graphic is not included directly but may be referenced by an
+      external link as in HTML.
+      In XML there is no strong separation between informational and
+      control data, escape characters (like "<" and "&") and the
+      <![CDATA[...]]> construction are used to distinguish between these
+      two types of data.
+
+</p><p class="rfcparagraph">   o  SDXF maintains machine-readable data, it is not designed to be
+      readable by human nor to edit SDXF data with a text editor (even
+      more if compression and encryption is used).  With the help of the
+      SDXF functions you have a quick and easy access to every data
+      element.  The standard parser for a SDXF data structure follows
+      always a simple template, the "while - switch -case ID -
+      enter/extract" pattern as outlined in chap. 3.4.2.
+
+</p><p class="rfcparagraph">   Because of the complete different philosophy behind XML and SDXF (and
+   even ASN.1) a direct comparison may not be very senseful, as XML has
+   its own right to exist next to ASN.1 (and even SDXF).
+
+</p><p class="rfcparagraph">   Nevertheless there is a chance to convert a XML data stream into a
+   SDXF structure:  As a first strike, every XML tag becomes a SDXF
+   chunk ID.  An elementary sequence <tag>pure text</tag> can be
+   transformed into an elementary (non-structured) chunk with data type
+   "character".  Tags with attributes and sequences with nested tags are
+   transformed into structured chunks.  Because XML allows a tag
+   sequence everywhere in a text stream, an artificially "elementary
+   text" tag must be introduced:
+   If <t> is the tag for text elements, the sequence:
+
+</p><p class="rfcparagraph">   <t>this is a text <attr value='bold'>with</attr> attributes</t>
+
+   is to be "in thought" replaced by:
+
+</p><p class="rfcparagraph">   <t><et>this is a text </et><attr value='bold'><et>with</et></attr>
+   <et> attributes</et></t>
+
+   (With "et" as the "elementary text" tag)
+   This results in following SDXF structure:
+
+</p><p class="rfcparagraph">   ID_t
+   |
+   +-- ID_et = " this is a text "
+   |
+   +-- ID_attr
+   |   |
+   |   +-- ID_value = "bold"
+   |   |
+   |   +-- ID_et = "with"
+   |
+   +-- ID_et = " attributes"
+
+   ID_t and ID_et may be represented by the same chunk ID, only
+   distinguished by the data type ("structured" for <t> and "character"
+   for <et>)
+
+   Binary data as pictures can be directly imbedded into a SDXF
+   structure instead referencing them as an external link like in HTML.
+
+</p><p class="rfcparagraph">	<a name="section-14"><h2>14.  Author's Address</h2></a>
+
+   Max Wildgrube
+   Schlossstrasse 120
+   60486 Frankfurt
+   Germany
+
+   EMail: max@wildgrube.com
+
+	<a name="section-15"><h2>15.  Acknowledgements</h2></a>
+
+   I would like to thank Michael J. Slifcak (mslifcak@iss.net) for the
+   supporting discussions.
+
+</p><p class="rfcparagraph">	<a name="section-16"><h2>16.  References</h2></a>
+
+   [ASN.1]   Information processing systems - Open Systems
+             Interconnection, "Specification of Abstract Syntax Notation
+             One (ASN.1)", International Organization for
+             Standardization, International Standard 8824, December
+             1987.
+
+</p><p class="rfcparagraph">   [BER]     Information Processing Systems - Open Systems
+             Interconnection - "Specification of Basic Encoding Rules
+             for Abstract Notation One (ASN.1)", International
+             Organization for Standardization, International Standard
+             8825-1, December 1987.
+   [DEFLATE] Deutsch, P., "DEFLATE Compressed Data Format Specification
+             version 1.3", RFC 1951, May 1996.
+
+</p><p class="rfcparagraph">   [IANA]    Internet Assigned Numbers Authority,
+             http://www.iana.org/numbers.htm
+
+   [PER]     Information Processing Systems  - Open Systems
+             Interconnection -"Specification of Packed Encoding Rules
+             for Abstract Syntax Notation One (ASN.1)", International
+             Organization for Standardization, International Standard
+             8825-2.
+
+</p><p class="rfcparagraph">   [UCS]     ISO/IEC 10646-1:1993. International Standard -- Information
+             technology -- Universal Multiple-Octet Coded Character Set
+             (UCS)
+
+   [UTF8]    Yergeau, F., "UTF-8, a transformation format of ISO 10646",
+             RFC 2279, January 1998.
+	<a name="section-17"><h2>17.   Full Copyright Statement</h2></a>
+
+   Copyright (C) The Internet Society (2001).  All Rights Reserved.<br>
+
+</p><p class="rfcparagraph">   This document and translations of it may be copied and furnished to
+   others, and derivative works that comment on or otherwise explain it
+   or assist in its implementation may be prepared, copied, published
+   and distributed, in whole or in part, without restriction of any
+   kind, provided that the above copyright notice and this paragraph are
+   included on all such copies and derivative works.  However, this
+   document itself may not be modified in any way, such as by removing
+   the copyright notice or references to the Internet Society or other
+   Internet organizations, except as needed for the purpose of
+   developing Internet standards in which case the procedures for
+   copyrights defined in the Internet Standards process must be
+   followed, or as required to translate it into languages other than
+   English.
+
+</p><p class="rfcparagraph">   The limited permissions granted above are perpetual and will not be
+   revoked by the Internet Society or its successors or assigns.
+
+</p><p class="rfcparagraph">   This document and the information contained herein is provided on an
+   "AS IS" basis and THE INTERNET SOCIETY AND THE INTERNET ENGINEERING
+   TASK FORCE DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING
+   BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION
+   HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED WARRANTIES OF
+   MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is currently provided by the
+   Internet Society.
+
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wildgrube                    Informational                     [Page 26]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

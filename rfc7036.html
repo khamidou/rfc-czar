@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph">Internet Engineering Task Force (IETF)                        R. Housley
+Request for Comments: 7036                                Vigil Security
+Category: Informational                                     October 2013
+ISSN: 2070-1721
+
+
+                   Object Identifier Registry for the
+      Long-Term Archive and Notary Services (LTANS) Working Group
+
+<h2>Abstract</h2>
+
+   When the Long-Term Archive and Notary Services (LTANS) working group
+   was chartered, an object identifier arc was set aside for use by that
+   working group.  This document describes the object identifiers that
+   were assigned, and it establishes IANA allocation policies for any
+   future assignments within that arc.
+
+</p><p class="rfcparagraph">Status of This Memo
+
+   This document is not an Internet Standards Track specification; it is
+   published for informational purposes.
+
+</p><p class="rfcparagraph">   This document is a product of the Internet Engineering Task Force
+   (IETF).  It represents the consensus of the IETF community.  It has
+   received public review and has been approved for publication by the
+   Internet Engineering Steering Group (IESG).  Not all documents
+   approved by the IESG are a candidate for any level of Internet
+   Standard; see Section 2 of RFC 5741.
+
+</p><p class="rfcparagraph">   Information about the current status of this document, any errata,
+   and how to provide feedback on it may be obtained at
+   http://www.rfc-editor.org/info/rfc7036.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (c) 2013 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+</p><p class="rfcparagraph">   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (http://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
+   the Trust Legal Provisions and are provided without warranty as
+   described in the Simplified BSD License.
+<h2>Table of Contents</h2>
+<a href="#section-1" class="">1. Introduction ...................................................</a><br>
+<a href="#section-2" class="">2. Subordinate Object Identifier Arcs .............................</a><br>
+<a href="#section-3" class="">3. Module Identifiers .............................................</a><br>
+<a href="#section-4" class="">4. CMS Content Types ..............................................</a><br>
+<a href="#section-5" class="">5. ERS Encryption Methods .........................................</a><br>
+<a href="#section-6" class="">6. Security Considerations ........................................</a><br>
+<a href="#section-7" class="">7. IANA Considerations ............................................</a><br>
+<a href="#section-7.1" class="indent-1">7.1. SMI Security for Mechanism Codes Registry .................</a><br>
+<a href="#section-7.2" class="indent-1">7.2. SMI Security for LTANS Registry ...........................</a><br>
+<a href="#section-7.3" class="indent-1">7.3. SMI Security for LTANS Module Identifier Registry .........</a><br>
+<a href="#section-7.4" class="indent-1">7.4. SMI Security for LTANS CMS Content Type Registry ..........</a><br>
+<a href="#section-7.5" class="indent-1">7.5. SMI Security for LTANS ERS Encryption Method Registry .....</a><br>
+<a href="#section-8" class="">8. References .....................................................</a><br>
+<a href="#section-8.1" class="indent-1">8.1. Normative References ......................................</a><br>
+<a href="#section-8.2" class="indent-1">8.2. Informative References ....................................</a><br>
+<a href="#section-9" class="">9. Acknowledgements ...............................................</a><br>
+
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   When the Long-Term Archive and Notary Services (LTANS) working group
+   was chartered, an object identifier arc was set aside for use by that
+   working group.  These object identifiers are primarily used with
+   Abstract Syntax Notation One (ASN.1) [ASN1-88] [ASN1-97].
+
+</p><p class="rfcparagraph">   The LTANS object identifier arc is:
+
+</p><p class="rfcparagraph">      id-ltans OBJECT IDENTIFIER ::= { iso(1) identified-organization(3)<br>
+                                       dod(6) internet(1) security(5)<br>
+                                       mechanisms(5) ltans(11) }<br>
+
+   This document describes the object identifiers that were assigned,
+   and it establishes IANA allocation policies for any future
+   assignments within that arc.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Subordinate Object Identifier Arcs</h2></a>
+
+   Three subordinate object identifier arcs were used.  The first arc,
+   id-mod, was used to assign ASN.1 module identifiers.  The second arc,
+   id-ct, was used to assign Cryptographic Message Syntax (CMS) content
+   types.  The third arc, id-em, was set aside for Evidence Record
+   Syntax (ERS) encryption methods.
+
+</p><p class="rfcparagraph">      id-mod  OBJECT IDENTIFIER ::= { id-ltans 0 }
+      id-ct   OBJECT IDENTIFIER ::= { id-ltans 1 }
+      id-em   OBJECT IDENTIFIER ::= { id-ltans 2 }
+	<a name="section-3"><h2>3.   Module Identifiers</h2></a>
+
+   The Evidence Record Syntax (ERS) [RFC4998] includes two ASN.1
+   modules.  Both modules define the same syntax, but one module uses
+   the 1997 ASN.1 syntax, and the other module uses the 1988 ASN.1
+   syntax.  These module identifiers are:
+
+</p><p class="rfcparagraph">      id-mod-ers           OBJECT IDENTIFIER ::= { id-mod 1 }
+      id-mod-ers-v1        OBJECT IDENTIFIER ::= { id-mod 1 1 }
+      id-mod-ers88         OBJECT IDENTIFIER ::= { id-mod 2 }
+      id-mod-ers88-v1      OBJECT IDENTIFIER ::= { id-mod 2 1 }
+
+   The Long-term Archive Protocol (LTAP) [LTAP] includes two ASN.1
+   modules.  While this protocol was never published as an RFC, the
+   module identifiers were assigned to facilitate implementation.  Both
+   modules define the same syntax, but one module uses the 1997 ASN.1
+   syntax, and the other module uses the 1988 ASN.1 syntax.  These
+   module identifiers are:
+
+</p><p class="rfcparagraph">      id-mod-ltap88        OBJECT IDENTIFIER ::= { id-mod 3 }
+      id-mod-ltap88-v0     OBJECT IDENTIFIER ::= { id-mod 3 0 }
+      id-mod-ltap88-v1     OBJECT IDENTIFIER ::= { id-mod 3 1 }
+      id-mod-ltap          OBJECT IDENTIFIER ::= { id-mod 4 }
+      id-mod-ltap-v0       OBJECT IDENTIFIER ::= { id-mod 4 0 }
+      id-mod-ltap-v1       OBJECT IDENTIFIER ::= { id-mod 4 1 }
+
+   The document that describes the conventions for using the Server-
+   Based Certificate Validation Protocol (SCVP) to convey Long-Term
+   Evidence Records [RFC5276] includes one ASN.1 module.  The module
+   identifier is:
+
+</p><p class="rfcparagraph">      id-mod-ers-scvp      OBJECT IDENTIFIER ::= { id-mod 5 }
+      id-mod-ers-scvp-v1   OBJECT IDENTIFIER ::= { id-mod 5 1 }
+
+   The Data Structure for the Security Suitability of Cryptographic
+   Algorithms (DSSC) [RFC5698] includes two ASN.1 modules.  Both modules
+   define the same syntax, but one module uses the 1997 ASN.1 syntax,
+   and the other module uses the 1988 ASN.1 syntax.  These module
+   identifiers are:
+
+</p><p class="rfcparagraph">      id-mod-dssc88        OBJECT IDENTIFIER ::= { id-mod 6 }
+      id-mod-dssc88-v1     OBJECT IDENTIFIER ::= { id-mod 6 1 }
+      id-mod-dssc          OBJECT IDENTIFIER ::= { id-mod 7 }
+      id-mod-dssc-v1       OBJECT IDENTIFIER ::= { id-mod 7 1 }
+	<a name="section-4"><h2>4.   CMS Content Types</h2></a>
+
+   A CMS content type for an Evidence Record was reserved, but no
+   specification points to this value.  It remains reserved.
+
+</p><p class="rfcparagraph">      id-ct-evidence-record  OBJECT IDENTIFIER ::= { id-ct 1 }
+
+   The Data Structure for the Security Suitability of Cryptographic
+   Algorithms (DSSC) [RFC5698] specifies three CMS content types.  These
+   CMS content types are:
+
+</p><p class="rfcparagraph">      id-ct-dssc-asn1        OBJECT IDENTIFIER ::= { id-ct 2 }
+      id-ct-dssc-xml         OBJECT IDENTIFIER ::= { id-ct 3 }
+      id-ct-dssc-tbsPolicy   OBJECT IDENTIFIER ::= { id-ct 6 }
+
+   The Long-term Archive Protocol (LTAP) [LTAP] defines two CMS content
+   types.  While this protocol was never published as an RFC, the CMS
+   content types were assigned to facilitate implementation.  These CMS
+   content types are:
+
+</p><p class="rfcparagraph">      id-ct-LTAPRequest      OBJECT IDENTIFIER ::= { id-ct 4 }
+      id-ct-LTAPResponse     OBJECT IDENTIFIER ::= { id-ct 5 }
+
+	<a name="section-5"><h2>5.   ERS Encryption Methods</h2></a>
+
+   An arc was set up for Evidence Record Syntax (ERS) encryption
+   methods, and one object identifier was assigned.  However, that
+   object identifier is obsolete, and it should not be used.
+
+</p><p class="rfcparagraph">      id-em-enveloped-data OBJECT IDENTIFIER ::= { id-em 1 } -- obsolete
+
+	<a name="section-6"><h2>6.   Security Considerations</h2></a>
+
+   This document populates an IANA registry, and it raises no new
+   security considerations.  The protocols that specify these values
+   include the security considerations associated with their usage.
+
+</p><p class="rfcparagraph">	<a name="section-7"><h2>7.   IANA Considerations</h2></a>
+
+   IANA has updated one registry table and created four additional
+   tables.
+
+</p><p class="rfcparagraph">   Updates to the four new tables require Expert Review, as defined in
+   [RFC5226].  The Designated Expert is expected to ensure that any new
+   values are strongly related to the work that was done by the LTANS
+   WG.  Object identifiers for other purposes should not be assigned in
+   this arc.
+	<a name="section-7.1"><h3>7.1   SMI Security for Mechanism Codes Registry</h3></a>
+
+   The reference in the Long-Term Archive and Notary Services entry
+   (decimal value 11) has been updated so that it points to this
+   document.
+
+</p><p class="rfcparagraph">	<a name="section-7.2"><h3>7.2   SMI Security for LTANS Registry</h3></a>
+
+   Within the SMI Security Codes registry, IANA has added an "SMI
+   Security for LTANS (1.3.6.1.5.5.11)" table with three columns:
+
+</p><p class="rfcparagraph">      Decimal  Description             References
+      -------  ----------------------  ----------
+      0        module-identifiers      [RFC7036]
+      1        cms-content-types       [RFC7036]
+      2        ers-encryption-methods  [RFC7036]
+
+   Future updates to this table require Expert Review, as defined in
+   [RFC5226].
+
+</p><p class="rfcparagraph">	<a name="section-7.3"><h3>7.3   SMI Security for LTANS Module Identifier Registry</h3></a>
+
+   Within the SMI Security Codes registry, IANA has added an "SMI
+   Security for LTANS Module Identifier (1.3.6.1.5.5.11.0)" table with
+   three columns:
+
+</p><p class="rfcparagraph">      OID Value             Description          References
+      --------------------  -------------------  ----------
+      1.3.6.1.5.5.11.0.1    id-mod-ers           [RFC4998]
+      1.3.6.1.5.5.11.0.1.1  id-mod-ers-v1        [RFC4998]
+      1.3.6.1.5.5.11.0.2    id-mod-ers88         [RFC4998]
+      1.3.6.1.5.5.11.0.2.1  id-mod-ers88-v1      [RFC4998]
+      1.3.6.1.5.5.11.0.3    id-mod-ltap88        Reserved
+      1.3.6.1.5.5.11.0.3.0  id-mod-ltap88-v0     Reserved
+      1.3.6.1.5.5.11.0.3.1  id-mod-ltap88-v1     Reserved
+      1.3.6.1.5.5.11.0.4    id-mod-ltap          Reserved
+      1.3.6.1.5.5.11.0.4.0  id-mod-ltap-v0       Reserved
+      1.3.6.1.5.5.11.0.4.1  id-mod-ltap-v1       Reserved
+      1.3.6.1.5.5.11.0.5    id-mod-ers-scvp      [RFC5276]
+      1.3.6.1.5.5.11.0.5.1  id-mod-ers-scvp-v1   [RFC5276]
+      1.3.6.1.5.5.11.0.6    id-mod-dssc88        [RFC5698]
+      1.3.6.1.5.5.11.0.6.1  id-mod-dssc88-v1     [RFC5698]
+      1.3.6.1.5.5.11.0.7    id-mod-dssc          [RFC5698]
+      1.3.6.1.5.5.11.0.7.1  id-mod-dssc-v1       [RFC5698]
+
+   Future updates to this table require Expert Review, as defined in
+   [RFC5226].
+	<a name="section-7.4"><h3>7.4   SMI Security for LTANS CMS Content Type Registry</h3></a>
+
+   Within the SMI Security Codes registry, IANA has added an "SMI
+   Security for LTANS CMS Content Type (1.3.6.1.5.5.11.1)" table with
+   three columns:
+
+</p><p class="rfcparagraph">      Decimal  Description            References
+      -------  ---------------------  ----------
+      1        id-ct-evidence-record  Reserved
+      2        id-ct-dssc-asn1        [RFC5698]
+      3        id-ct-dssc-xml         [RFC5698]
+      4        id-ct-LTAPRequest      Reserved
+      5        id-ct-LTAPResponse     Reserved
+      6        id-ct-dssc-tbsPolicy   [RFC5698]
+
+   Future updates to this table require Expert Review, as defined in
+   [RFC5226].
+
+</p><p class="rfcparagraph">	<a name="section-7.5"><h3>7.5   SMI Security for LTANS ERS Encryption Method Registry</h3></a>
+
+   Within the SMI Security Codes registry, add an "SMI Security for
+   LTANS ERS Encryption Method (1.3.6.1.5.5.11.2)" table with three
+   columns:
+
+</p><p class="rfcparagraph">      Decimal  Description            References
+      -------  ---------------------  ---------------------
+      1        id-em-enveloped-data   Reserved and Obsolete
+
+   Future updates to this table require Expert Review, as defined in
+   [RFC5226].
+
+</p><p class="rfcparagraph">	<a name="section-8"><h2>8.   References</h2></a>
+
+	<a name="section-8.1"><h3>8.1   Normative References</h3></a>
+
+   [ASN1-88]  International Telephone and Telegraph Consultative
+              Committee, "Specification of Abstract Syntax Notation One
+              (ASN.1)", CCITT Recommendation X.208, 1988.
+
+</p><p class="rfcparagraph">   [ASN1-97]  International Telecommunications Union, "Abstract Syntax
+              Notation One (ASN.1): Specification of basic notation",
+              ITU-T Recommendation X.680, 1997.
+
+</p><p class="rfcparagraph">   [RFC5226]  Narten, T. and H. Alvestrand, "Guidelines for Writing an
+              IANA Considerations Section in RFCs", BCP 26, RFC 5226,
+              May 2008.
+	<a name="section-8.2"><h3>8.2   Informative References</h3></a>
+
+   [LTAP]     Jerman Blazic, A., Sylvester, P., and C. Wallace, "Long-
+              term Archive Protocol (LTAP)", Work in Progress, July
+              2009.
+
+</p><p class="rfcparagraph">   [RFC4998]  Gondrom, T., Brandner, R., and U. Pordesch, "Evidence
+              Record Syntax (ERS)", RFC 4998, August 2007.
+
+</p><p class="rfcparagraph">   [RFC5276]  Wallace, C., "Using the Server-Based Certificate
+              Validation Protocol (SCVP) to Convey Long-Term Evidence
+              Records", RFC 5276, August 2008.
+
+</p><p class="rfcparagraph">   [RFC5698]  Kunz, T., Okunick, S., and U. Pordesch, "Data Structure
+              for the Security Suitability of Cryptographic Algorithms
+              (DSSC)", RFC 5698, November 2009.
+
+</p><p class="rfcparagraph">	<a name="section-9"><h2>9.   Acknowledgements</h2></a>
+
+   Thanks to Carl Wallace, Sean Turner, Paul Hoffman, and Carsten
+   Bormann for their review and comments.
+
+</p>Author's Address
+
+   Russ Housley
+   Vigil Security, LLC
+   918 Spring Knoll Drive
+   Herndon, VA 20170
+   USA
+
+   EMail: housley@vigilsec.com
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Housley                       Informational                     [Page 7]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                          K. Sarcar<br>Request for Comments: 3827                        Sun Microsystems, Inc.<br>Category: Informational                                        June 2004<br><br></p>
+                  <h1>
+                    Additional Snoop Datalink Types</h1>
+                  <h2>Status of this Memo</h2>
+
+   This memo provides information for the Internet community.  It does
+   not specify an Internet standard of any kind.  Distribution of this
+   memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (2004).<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   The snoop file format provides a way to store and exchange datalink
+   layer packet traces.  This document describes extensions to this file
+   format to support new media.
+
+</p><p class="rfcparagraph">	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   [RFC1761] defines the snoop file format used to store captured
+   network packets for tools that capture, display, and interpret
+   network traffic.  The file format specifies a header containing the
+   Datalink Type field that identifies the network's datalink type.
+   This document defines new values for this field, as well as an IANA
+   registry for future datalink types.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   New Datalink Types</h2></a>
+
+   In addition to the Datalink Type codes listed in [RFC1761], this
+   document defines the following type codes for the corresponding
+   media:
+
+</p><p class="rfcparagraph">             Datalink Type           Code
+             -------------           ----
+
+             Fibre Channel           16
+             ATM                     17
+             ATM Classical IP        18
+             IP over Infiniband      26
+
+   The IP over Infiniband packet format is described in [IPoIB].
+	<a name="section-3"><h2>3.   IANA Considerations</h2></a>
+
+   This document created a new IANA registry named "Snoop Datalink
+   Types" to hold the various possible 32-bit (4 octet) snoop datalink
+   types.  This new registry holds the values previously defined in
+   [RFC1761] and tabulated below:
+
+</p><p class="rfcparagraph">             Datalink Type           Code
+             -------------           ----
+
+             IEEE 802.3              0
+             IEEE 802.4 Token Bus    1
+             IEEE 802.5 Token Ring   2
+             IEEE 802.6 Metro Net    3
+             Ethernet                4
+             HDLC                    5
+             Character Synchronous   6
+             IBM Channel-to-Channel  7
+             FDDI                    8
+             Other                   9
+
+   Additionally, the new registry also holds the values defined above in
+   section 2 of this document.
+
+</p><p class="rfcparagraph">   All new allocations and assignments to this registry starting from
+   code 27 will follow the First Come First Served policy outlined in
+   [BCP0026].  Type codes up to 26 not defined by this section of the
+   document (10-15 and 19-25) are considered reserved.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   Security Considerations</h2></a>
+
+   The addition of new datalink type codes to the existing file format
+   poses no known security risks.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   Acknowledgements</h2></a>
+
+   The author would like to thank Jim Carlson, Brent Callaghan, and Bill
+   Strahm for meticulously reviewing this document.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.   References</h2></a>
+
+	<a name="section-6.1"><h3>6.1   Normative References</h3></a>
+
+   [RFC1761] Callaghan, B. and R. Gilligan, "Snoop Version 2 Packet
+             Capture File Format", RFC 1761, February 1995.
+   [BCP0026] Narten, T. and H. Alvestrand, "Guidelines for Writing an
+             IANA Considerations Section in RFCs", BCP 26, RFC 2434,
+             October 1998.
+
+</p><p class="rfcparagraph">	<a name="section-6.2"><h3>6.2   Informative References</h3></a>
+
+   [IPoIB]   Kashyap, V. and H.K. Chu, "IP encapsulation and address
+             resolution over InfiniBand networks", Work in Progress,
+             April 2003.
+
+</p><p class="rfcparagraph">	<a name="section-7"><h2>7.   Author's Address</h2></a>
+
+   Kanoj Sarcar
+   Sun Microsystems, Inc.
+   14 Network Circle
+   Bldg 14, MPK14-333
+   Menlo Park, CA  94025
+
+   Phone: 1-650-786-4785
+   EMail: kanoj.sarcar@sun.com
+	<a name="section-8"><h2>8.   Full Copyright Statement</h2></a>
+
+   Copyright (C) The Internet Society (2004).  This document is subject<br>
+   to the rights, licenses and restrictions contained in BCP 78, and
+   except as set forth therein, the authors retain all their rights.
+
+</p><p class="rfcparagraph">   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY AND THE INTERNET
+   ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED,
+   INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE
+   INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED
+   WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Intellectual Property
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the procedures with respect to rights in RFC documents can be
+   found in BCP 78 and BCP 79.
+
+</p><p class="rfcparagraph">   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+</p><p class="rfcparagraph">   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at ietf-
+   ipr@ietf.org.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is currently provided by the
+   Internet Society.
+
+</p>
+
+
+
+
+
+
+
+Sarcar                       Informational                      [Page 4]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

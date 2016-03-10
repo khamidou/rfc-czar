@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph">Internet Engineering Task Force (IETF)                        J. Reschke
+Request for Comments: 7694                                    greenbytes
+Category: Standards Track                                  November 2015
+ISSN: 2070-1721
+
+
+  Hypertext Transfer Protocol (HTTP) Client-Initiated Content-Encoding
+
+<h2>Abstract</h2>
+
+   In HTTP, content codings allow for payload encodings such as for
+   compression or integrity checks.  In particular, the "gzip" content
+   coding is widely used for payload data sent in response messages.
+
+</p><p class="rfcparagraph">   Content codings can be used in request messages as well; however,
+   discoverability is not on par with response messages.  This document
+   extends the HTTP "Accept-Encoding" header field for use in responses,
+   to indicate the content codings that are supported in requests.
+
+</p><p class="rfcparagraph">Status of This Memo
+
+   This is an Internet Standards Track document.
+
+</p><p class="rfcparagraph">   This document is a product of the Internet Engineering Task Force
+   (IETF).  It represents the consensus of the IETF community.  It has
+   received public review and has been approved for publication by the
+   Internet Engineering Steering Group (IESG).  Further information on
+   Internet Standards is available in Section 2 of RFC 5741.
+
+</p><p class="rfcparagraph">   Information about the current status of this document, any errata,
+   and how to provide feedback on it may be obtained at
+   http://www.rfc-editor.org/info/rfc7694.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (c) 2015 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+</p><p class="rfcparagraph">   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (http://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
+   the Trust Legal Provisions and are provided without warranty as
+   described in the Simplified BSD License.
+<h2>Table of Contents</h2>
+<a href="#section-1" class="">1. Introduction  . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2" class="">2. Notational Conventions  . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3" class="">3. Using the 'Accept-Encoding' Header Field in Responses . . . </a><br>
+<a href="#section-4" class="">4. Example . . . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-5" class="">5. Deployment Considerations . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-6" class="">6. Security Considerations . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-7" class="">7. IANA Considerations . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-7.1" class="indent-1">7.1. Header Field Registry . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-7.2" class="indent-1">7.2. Status Code Registry  . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-8" class="">8. References  . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-8.1" class="indent-1">8.1. Normative References  . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-8.2" class="indent-1">8.2. Informative References  . . . . . . . . . . . . . . . . </a><br>
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .   7
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   7
+
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   In HTTP, content codings allow for payload encodings such as for
+   compression or integrity checks ([RFC7231], Section 3.1.2).  In
+   particular, the "gzip" content coding ([RFC7230], Section 4.2) is
+   widely used for payload data sent in response messages.
+
+</p><p class="rfcparagraph">   Content codings can be used in request messages as well; however,
+   discoverability is not on par with response messages.  This document
+   extends the HTTP "Accept-Encoding" header field ([RFC7231],
+   Section 5.3.4) for use in responses, to indicate the content codings
+   that are supported in requests.  It furthermore updates the
+   definition of status code 415 (Unsupported Media Type) ([RFC7231],
+   Section 6.5.13), recommending that the "Accept-Encoding" header field
+   be included when appropriate.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Notational Conventions</h2></a>
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in [RFC2119].
+
+</p><p class="rfcparagraph">   This document reuses terminology defined in the base HTTP
+   specifications, namely Section 2 of [RFC7230] and Section 3.1.2 of
+   [RFC7231].
+	<a name="section-3"><h2>3.   Using the 'Accept-Encoding' Header Field in Responses</h2></a>
+
+   Section 5.3.4 of [RFC7231] defines "Accept-Encoding" as a request
+   header field only.
+
+</p><p class="rfcparagraph">   This specification expands that definition to allow "Accept-Encoding"
+   as a response header field as well.  When present in a response, it
+   indicates what content codings the resource was willing to accept in
+   the associated request.  A field value that only contains "identity"
+   implies that no content codings were supported.
+
+</p><p class="rfcparagraph">   Note that this information is specific to the associated request; the
+   set of supported encodings might be different for other resources on
+   the same server and could change over time or depend on other aspects
+   of the request (such as the request method).
+
+</p><p class="rfcparagraph">   Section 6.5.13 of [RFC7231] defines status code 415 (Unsupported
+   Media Type) to apply to problems related to both media types and
+   content codings.
+
+</p><p class="rfcparagraph">   Servers that fail a request due to an unsupported content coding
+   ought to respond with a 415 status and ought to include an "Accept-
+   Encoding" header field in that response, allowing clients to
+   distinguish between issues related to content codings and media
+   types.  In order to avoid confusion with issues related to media
+   types, servers that fail a request with a 415 status for reasons
+   unrelated to content codings MUST NOT include the "Accept-Encoding"
+   header field.
+
+</p><p class="rfcparagraph">   It is expected that the most common use of "Accept-Encoding" in
+   responses will have the 415 (Unsupported Media Type) status code, in
+   response to optimistic use of a content coding by clients.  However,
+   the header field can also be used to indicate to clients that content
+   codings are supported, to optimize future interactions.  For example,
+   a resource might include it in a 2xx response when the request
+   payload was big enough to justify use of a compression coding but the
+   client failed do so.
+	<a name="section-4"><h2>4.   Example</h2></a>
+
+   A client submits a POST request using the "compress" content coding
+   ([RFC7231], Section 3.1.2.1):
+
+</p><p class="rfcparagraph">     POST /edit/ HTTP/1.1
+     Host: example.org
+     Content-Type: application/atom+xml;type=entry
+     Content-Encoding: compress
+
+     ...compressed payload...
+
+</p><p class="rfcparagraph">   The server rejects the request because it only allows the "gzip"
+   content coding:
+
+</p><p class="rfcparagraph">     HTTP/1.1 415 Unsupported Media Type
+     Date: Fri, 09 May 2014 11:43:53 GMT
+     Accept-Encoding: gzip
+     Content-Length: 68
+     Content-Type: text/plain
+
+     This resource only supports the "gzip" content coding in requests.
+
+</p><p class="rfcparagraph">   At this point, the client can retry the request with the supported
+   "gzip" content coding.
+
+</p><p class="rfcparagraph">   Alternatively, a server that does not support any content codings in
+   requests could answer with:
+
+</p><p class="rfcparagraph">     HTTP/1.1 415 Unsupported Media Type
+     Date: Fri, 09 May 2014 11:43:53 GMT
+     Accept-Encoding: identity
+     Content-Length: 61
+     Content-Type: text/plain
+
+     This resource does not support content codings in requests.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   Deployment Considerations</h2></a>
+
+   Servers that do not support content codings in requests already are
+   required to fail a request that uses a content coding.
+   Section 6.5.13 of [RFC7231] defines the status code 415 (Unsupported
+   Media Type) for this purpose, so the only change needed is to include
+   the "Accept-Encoding" header field with the value "identity" in that
+   response.
+   Servers that do support some content codings are required to fail
+   requests with unsupported content codings as well.  To be compliant
+   with this specification, servers will need to use the status code 415
+   (Unsupported Media Type) to signal the problem and will have to
+   include an "Accept-Encoding" header field that enumerates the content
+   codings that are supported.  As the set of supported content codings
+   is usually static and small, adding the header field ought to be
+   trivial.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.   Security Considerations</h2></a>
+
+   This specification only adds discovery of supported content codings
+   and diagnostics for requests failing due to unsupported content
+   codings.  As such, it doesn't introduce any new security
+   considerations over those already present in HTTP/1.1 (Section 9 of
+   [RFC7231]) and HTTP/2 (Section 10 of [RFC7540]).
+
+</p><p class="rfcparagraph">   However, the point of better discoverability and diagnostics is to
+   make it easier to use content codings in requests.  This might lead
+   to increased usage of compression codings such as gzip (Section 4.2
+   of [RFC7230]), which, when used over a secure channel, can enable
+   side-channel attacks such as BREACH (see Section 10.6 of [RFC7540]
+   and [BREACH]).  At the time of publication, it was unclear how
+   BREACH-like attacks can be applied to compression in HTTP requests.
+
+</p><p class="rfcparagraph">	<a name="section-7"><h2>7.   IANA Considerations</h2></a>
+
+	<a name="section-7.1"><h3>7.1   Header Field Registry</h3></a>
+
+   HTTP header fields are registered within the "Message Headers"
+   registry located at <http://www.iana.org/assignments/
+   message-headers>, as defined by [BCP90].
+
+</p><p class="rfcparagraph">   This document updates the definition of the "Accept-Encoding" header
+   field.  The "Permanent Message Header Field Names" registry has been
+   updated as follows:
+
+</p><p class="rfcparagraph"><pre>   +-----------------+----------+----------+---------------------------+
+   | Header Field    | Protocol | Status   | Reference                 |
+   | Name            |          |          |                           |
+   +-----------------+----------+----------+---------------------------+
+   | Accept-Encoding | http     | standard | Section 5.3.4 of          |
+   |                 |          |          | [RFC7231] and Section 3   |
+   |                 |          |          | of this document          |
+   +-----------------+----------+----------+---------------------------+
+	<a name="section-7.2"><h3>7.2   Status Code Registry</h3></a>
+
+   HTTP status codes are registered within the "HTTP Status Codes"
+   registry located at <http://www.iana.org/assignments/
+   http-status-codes>.
+
+</p><p class="rfcparagraph">   This document updates the definition of the status code 415
+   (Unsupported Media Type).  The "HTTP Status Codes" registry has been
+   updated as follows:
+
+</p><p class="rfcparagraph">   +-------+-----------------+-----------------------------------------+
+   | Value | Description     | Reference                               |
+   +-------+-----------------+-----------------------------------------+
+   | 415   | Unsupported     | Section 6.5.13 of [RFC7231] and Section |
+   |       | Media Type      | 3 of this document                      |
+   +-------+-----------------+-----------------------------------------+
+</pre>
+
+
+	<a name="section-8"><h2>8.   References</h2></a>
+
+	<a name="section-8.1"><h3>8.1   Normative References</h3></a>
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <http://www.rfc-editor.org/info/rfc2119>.
+
+</p><p class="rfcparagraph">   [RFC7230]  Fielding, R., Ed. and J. Reschke, Ed., "Hypertext Transfer
+              Protocol (HTTP/1.1): Message Syntax and Routing",
+              RFC 7230, DOI 10.17487/RFC7230, June 2014,
+              <http://www.rfc-editor.org/info/rfc7230>.
+
+</p><p class="rfcparagraph">   [RFC7231]  Fielding, R., Ed. and J. Reschke, Ed., "Hypertext Transfer
+              Protocol (HTTP/1.1): Semantics and Content", RFC 7231,
+              DOI 10.17487/RFC7231, June 2014,
+              <http://www.rfc-editor.org/info/rfc7231>.
+
+</p><p class="rfcparagraph">	<a name="section-8.2"><h3>8.2   Informative References</h3></a>
+
+   [BCP90]    Klyne, G., Nottingham, M., and J. Mogul, "Registration
+              Procedures for Message Header Fields", BCP 90, RFC 3864,
+              September 2004, <http://www.rfc-editor.org/info/bcp90>.
+
+</p><p class="rfcparagraph">   [BREACH]   Gluck, Y., Harris, N., and A. Prado, "BREACH: Reviving the
+              CRIME Attack", July 2013,
+              <http://breachattack.com/resources/
+              BREACH%20-%20SSL,%20gone%20in%2030%20seconds.pdf>.
+   [RFC7540]  Belshe, M., Peon, R., and M. Thomson, Ed., "Hypertext
+              Transfer Protocol Version 2 (HTTP/2)", RFC 7540,
+              DOI 10.17487/RFC7540, May 2015,
+              <http://www.rfc-editor.org/info/rfc7540>.
+
+</p><p class="rfcparagraph">Acknowledgements
+
+   Thanks go to the Hypertext Transfer Protocol Working Group
+   participants, namely Amos Jeffries, Ben Campbell, Mark Nottingham,
+   Pete Resnick, Stephen Farrell, and Ted Hardie.
+
+</p>Author's Address
+
+   Julian F. Reschke
+   greenbytes GmbH
+   Hafenweg 16
+   Muenster, NW  48155
+   Germany
+
+   Email: julian.reschke@greenbytes.de
+   URI:   http://greenbytes.de/tech/webdav/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Reschke                      Standards Track                    [Page 7]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

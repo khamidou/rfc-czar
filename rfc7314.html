@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph">Independent Submission                                        M. Andrews
+Request for Comments: 7314                                           ISC
+Category: Experimental                                         July 2014
+ISSN: 2070-1721
+
+
+           Extension Mechanisms for DNS (EDNS) EXPIRE Option
+
+<h2>Abstract</h2>
+
+   This document specifies a method for secondary DNS servers to honour
+   the SOA EXPIRE field as if they were always transferring from the
+   primary, even when using other secondaries to perform indirect
+   transfers and refresh queries.
+
+</p><p class="rfcparagraph">Status of This Memo
+
+   This document is not an Internet Standards Track specification; it is
+   published for examination, experimental implementation, and
+   evaluation.
+
+</p><p class="rfcparagraph">   This document defines an Experimental Protocol for the Internet
+   community.  This is a contribution to the RFC Series, independently
+   of any other RFC stream.  The RFC Editor has chosen to publish this
+   document at its discretion and makes no statement about its value for
+   implementation or deployment.  Documents approved for publication by
+   the RFC Editor are not a candidate for any level of Internet
+   Standard; see Section 2 of RFC 5741.
+
+</p><p class="rfcparagraph">   Information about the current status of this document, any errata,
+   and how to provide feedback on it may be obtained at
+   http://www.rfc-editor.org/info/rfc7314.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (c) 2014 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+</p><p class="rfcparagraph">   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (http://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document.
+<h2>Table of Contents</h2>
+<a href="#section-1" class="">1. Introduction  . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-1.1" class="indent-1">1.1. Reserved Words  . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2" class="">2. Expire EDNS Option (Query)  . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3" class="">3. Expire EDNS Option (Response) . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.1" class="indent-1">3.1. Primary Server  . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.2" class="indent-1">3.2. Secondary Server  . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.3" class="indent-1">3.3. Non-authoritative Server  . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4" class="">4. Secondary Behaviour . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-5" class="">5. IANA Considerations . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-6" class="">6. Security Considerations . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-7" class="">7. Normative References  . . . . . . . . . . . . . . . . . . . </a><br>
+
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   The expire field of a DNS zone's SOA record [RFC1035] is supposed to
+   indicate when a secondary server shall discard the contents of the
+   zone when it has been unable to contact the primary [RFC1034].
+   Current practice only works when all the secondaries contact the
+   primary directly to perform refresh queries and zone transfers.
+
+</p><p class="rfcparagraph">   While secondaries are expected to be able to, and often are
+   configured to, transfer from other secondaries for robustness reasons
+   as well as reachability constraints, there is no mechanism provided
+   to preserve the expiry behaviour when using a secondary.  Instead,
+   secondaries have to know whether they are talking directly to the
+   primary or another secondary and use that to decide whether or not to
+   update the expire timer.  This, however, fails to take into account
+   delays in transferring from one secondary to another.
+
+</p><p class="rfcparagraph">   There are also zone-transfer graphs in which the secondary never
+   talks to the primary, so the effective expiry period becomes
+   multiplied by the length of the zone-transfer graph, which is
+   infinite when it contains loops.
+
+</p><p class="rfcparagraph">   This document provides a mechanism to preserve the expiry behaviour
+   regardless of what zone-transfer graph is constructed and whether the
+   secondary is talking to the primary or another secondary.
+
+</p><p class="rfcparagraph">	<a name="section-1.1"><h3>1.1   Reserved Words</h3></a>
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in [RFC2119].
+	<a name="section-2"><h2>2.   Expire EDNS Option (Query)</h2></a>
+
+   The EDNS [RFC6891] EXPIRE option has the value <9>.  The EDNS EXPIRE
+   option MAY be included on any QUERY, though usually this is only done
+   on SOA, AXFR, and IXFR queries involved in zone maintenance.  This is
+   done by adding a zero-length EDNS EXPIRE option to the options field
+   of the OPT record when the query is made.
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   Expire EDNS Option (Response)</h2></a>
+
+	<a name="section-3.1"><h3>3.1   Primary Server</h3></a>
+
+   When the query is directed to the primary server for the zone, the
+   response will be an EDNS EXPIRE option of length 4 containing the
+   value of the SOA EXPIRE field, in seconds and network byte order.
+
+</p><p class="rfcparagraph">	<a name="section-3.2"><h3>3.2   Secondary Server</h3></a>
+
+   When the query is directed to a secondary server for the zone, then
+   the response will be an EDNS EXPIRE option of length 4 containing the
+   value of the expire timer on that server, in seconds and network byte
+   order.
+
+</p><p class="rfcparagraph">	<a name="section-3.3"><h3>3.3   Non-authoritative Server</h3></a>
+
+   If an EDNS EXPIRE option is sent to a server that is not
+   authoritative for the zone, it MUST NOT add an EDNS EXPIRE option to
+   the response.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   Secondary Behaviour</h2></a>
+
+   When a secondary server performs a zone-transfer request or a zone-
+   refresh query, it SHALL add an EDNS EXPIRE option to the query
+   message.
+
+</p><p class="rfcparagraph">   If a secondary receives an EDNS EXPIRE option in a response to an SOA
+   query, it SHALL update its expire timer to be the maximum of the
+   value returned in the EDNS EXPIRE option and the current timer value.
+   Similarly, if a secondary receives an EDNS EXPIRE option in its
+   response to an IXFR query that indicated the secondary is up to date
+   (serial matches current serial), the secondary SHALL update the
+   expire timer to be the maximum of the value returned in the EDNS
+   EXPIRE option and the current timer value.
+
+</p><p class="rfcparagraph">   If the zone is transferred or updated as the result of an AXFR or
+   IXFR query and there is an EDNS EXPIRE option with the response, then
+   the value of the EDNS EXPIRE option SHOULD be used instead of the
+   value of the SOA EXPIRE field to initialise the expire timer.
+   In all cases, if the value of the SOA EXPIRE field is less than the
+   value of the EDNS EXPIRE option, then the value of the SOA EXPIRE
+   field MUST be used and MUST be treated as a maximum when updating or
+   initialising the expire timer.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   IANA Considerations</h2></a>
+
+   IANA has assigned an EDNS option code point for the EDNS EXPIRE
+   option specified in Section 2 with "Optional" status in the "DNS
+   EDNS0 Option Codes (OPT)" registry.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.   Security Considerations</h2></a>
+
+   The method described in this document ensures that servers that no
+   longer have a connection to the primary server, direct or indirectly,
+   cease serving the zone content when SOA EXPIRE timer is reached.
+   This prevents stale data from being served indefinitely.
+
+</p><p class="rfcparagraph">   The EDNS EXPIRE option exposes how long the secondaries have been out
+   of communication with the primary server.  This is not believed to be
+   a problem and may provide some benefit to monitoring systems.
+
+</p><p class="rfcparagraph">	<a name="section-7"><h2>7.   Normative References</h2></a>
+
+   [RFC1034]  Mockapetris, P., "Domain names - concepts and facilities",
+              STD 13, RFC 1034, November 1987.
+
+</p><p class="rfcparagraph">   [RFC1035]  Mockapetris, P., "Domain names - implementation and
+              specification", STD 13, RFC 1035, November 1987.
+
+</p><p class="rfcparagraph">   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">   [RFC6891]  Damas, J., Graff, M., and P. Vixie, "Extension Mechanisms
+              for DNS (EDNS(0))", STD 75, RFC 6891, April 2013.<br>
+
+</p>Author's Address
+
+   Mark P. Andrews
+   Internet Systems Consortium
+   950 Charter Street
+   Redwood City, CA  94063
+   US
+
+   EMail: marka@isc.org
+
+
+
+
+
+
+Andrews                       Experimental                      [Page 4]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

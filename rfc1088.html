@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                  L. McLaughlin III<br>Request for Comments: 1088                                           TWG<br>                                                           February 1989<br><br></p>
+                  <h1>
+ A Standard for the Transmission of IP Datagrams over NetBIOS Networks</h1>
+                  <h2>Status of this Memo</h2>
+
+   This document specifies a standard method of encapsulating the
+   Internet Protocol [1] (IP) datagrams on NetBIOS [2] networks.
+   Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph">Introduction
+
+   The goal of this specification is to allow compatible and
+   interoperable implementations for transmitting IP datagrams over
+   NetBIOS networks.
+
+</p><p class="rfcparagraph">   NetBIOS is a standard which specifies a means of creating virtual
+   circuits and of transmitting and receiving point-to-point, multicast,
+   and broadcast datagrams.  This specification uses only the datagram
+   services.
+
+</p><p class="rfcparagraph">   Previous versions of this memo specified the use of the NetBIOS
+   broadcast datagram services instead of the NetBIOS group name
+   services to implement IP broadcasting.  These versions are now
+   obsolete.
+
+</p><p class="rfcparagraph">Description
+
+   NetBIOS networks may be used to support IP networks and subnets [3]
+   of any class.  By means of encapsulating IP datagrams within NetBIOS
+   datagrams and assigning IP numbers to the hosts on a NetBIOS network,
+   IP-based applications are supported on these hosts.  The addition of
+   a router capable of encapsulating IP packets within ordinary data-
+   link protocols (such as 802.3 [4]) as well as within NetBIOS
+   datagrams allows these NetBIOS hosts to communicate with the Internet
+   at large.
+
+</p><p class="rfcparagraph">Address Mappings
+
+   In general, NetBIOS names may be any series of 16 bytes, however, a
+   few values are reserved or used by common networking packages.
+   NetBIOS names for the IP applications on each host are chosen on the
+   basis of the internet number of that host.  Since NetBIOS names are a
+   mapping of IP addresses, no physical address query mechanism (e.g.,
+   ARP [5]) is required.
+   For these internet protocol applications, IP.XX.XX.XX.XX is the
+   NetBIOS name for any IP over NetBIOS host where XX represents the
+   ascii hexadecimal representation of that byte of the internet
+   address.
+
+</p><p class="rfcparagraph">   This addressing scheme allows for the multiplexing of standard
+   datagram protocols over NetBIOS as well as easy visual confirmation
+   of the correctness of a given packet's address.
+
+</p><p class="rfcparagraph">Broadcast and Multicast Addresses
+
+   Broadcast Internet addresses are represented by the NetBIOS group
+   name IP.FF.FF.FF.FF.  Currently, no attempt is made to provide
+   support of IP multicast addresses using NetBIOS group names.
+
+</p><p class="rfcparagraph">Maximum Transmission Unit
+
+   The maximum data size of a NetBIOS datagram, and therefore the
+   Maximum Transmission Unit (MTU) for IP over NetBIOS networks, is 512
+   bytes.  Therefore, any hosts communicating with a host on a NetBIOS
+   network may be required to reassemble fragmented datagrams.
+
+</p><p class="rfcparagraph">Implementation
+
+   To support IP on a NetBIOS host for any given IP address the
+   initialization code must:
+
+</p><p class="rfcparagraph">       1) Add IP.XX.XX.XX.XX to the host's NetBIOS name table.
+
+</p><p class="rfcparagraph">       2) Add IP.FF.FF.FF.FF to the host's NetBIOS group name table.
+
+</p><p class="rfcparagraph">       3) Submit a receive datagram request for the reception of NetBIOS
+          datagrams destined for IP.XX.XX.XX.XX.
+
+</p><p class="rfcparagraph">       4) Submit a receive datagram request for the reception of NetBIOS
+          datagrams destined for IP.FF.FF.FF.FF.
+
+</p><p class="rfcparagraph">   When a NetBIOS datagram to either address is received, it is
+   processed by the protocol stack and another receive datagram request
+   is submitted.
+
+</p><p class="rfcparagraph">   When an IP datagram is sent, it is considered to be NetBIOS datagram
+   data and sent by a send datagram request to either IP.XX.XX.XX.XX or
+   IP.FF.FF.FF.FF.
+
+</p><p class="rfcparagraph">   Optionally, the IP software may desire to make adapter status queries
+   of the NetBIOS network.  As support for SNMP becomes a requirement
+   for IP hosts, these adapter status queries may become mandatory.
+   Finally, when the IP support for a given NetBIOS host is
+   discontinued, a cancel command request should be submitted for every
+   pending receive datagram, and a delete name request should be
+   submitted for both the IP.XX.XX.XX.XX and IP.FF.FF.FF.FF address
+   added during initialization.
+
+</p><p class="rfcparagraph">Acknowledgements
+
+   This document would not have been possible without the efforts of
+   John Bartas, James Davidson, and Dan Ladermann in the early design
+   and implementation of IP over NetBIOS.
+
+</p><p class="rfcparagraph">References
+
+     [1]  Postel, J., "Internet Protocol", RFC-791, September 1981.
+
+</p><p class="rfcparagraph">     [2]  IBM PC Network Technical Reference, Document Number 6322916,
+          September 1984.
+
+</p><p class="rfcparagraph">     [3]  Mogul, J., and J. Postel, "Internet Standard Subnetting
+          Procedure", RFC-950, August 1985.
+
+</p><p class="rfcparagraph">     [4]  Postel, J., and J. Reynolds, "A Standard for the Transmission
+          of IP datagrams over IEEE 802 Networks", RFC-1042,
+          February 1988.
+
+</p><p class="rfcparagraph">     [5]  Plummer, D., "An Ethernet Address Resolution Protocol",
+          RFC-826, November 1982.
+
+</p><p class="rfcparagraph">Author's Address:
+
+</p>   Leo J. McLaughlin III
+   The Wollongong Group
+   1129 San antonio Road
+   Palo Alto, CA 94303
+
+   Phone: (415) 962-7100<br>
+
+   EMail: ljm@TWG.COM
+
+
+
+
+
+
+
+
+
+
+
+
+McLaughlin                                                      [Page 3]
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

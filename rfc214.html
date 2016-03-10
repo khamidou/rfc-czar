@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph">Network Working Group                              21 August 1971
+Request for Comments 214                           E. Harslem-Rand
+NIC 7195
+Category: F
+Obsoletes: 193, 198
+
+
+                            NETWORK CHECKOUT
+
+
+      As of August 21 we had performed the following verifications
+with the sites listed below.  These verifications were done on an
+arranged basis and do not indicate any degree of continuous
+availability.
+
+</p><p class="rfcparagraph">      In the category "NCP-107" the heading is somewhat misleading.
+It does not indicate a thorough checkout of all the NCP functions
+described in Document 1 and RFC-107.  It only indicates that the NCP
+in question functioned to the extent required to respond to a RESET (a
+necessary condition for the Rand NCP to consider the remote host "up")
+and that the NCP performed the functions necessary for an ICP.  Thus,
+this column really indicates only a small degree of NCP completeness.
+Such function as ECHO, Give Back, error message generation and so on
+were not checked.  We have checked some of these functions with UCSB
+and SDC but not exhaustively.  This is mainly due to the tedium of
+such a process.  BBN is currently writing a protocol certifier for
+their DDP-516 host that will do this automatically.
+
+</p><p class="rfcparagraph">                                  User   Server          Access
+               NCP-107  ICP-156  Telnet  Telnet  Logger  Service
+UCLA Sigma7      x        x        x       x       x       x
+UCLA /91         x        x        x       x       na      x
+SRI NIC          x        x                ?       ?       ?
+UCSB             x        x        x       x       na      x
+BBN A10          x        x                x       x       x
+BBN TIP          x        x        x       x               na
+MIT Multics      x        ?
+MIT DMCG         x        x        x       x       x       x
+SDC              x        x        x       x       ?
+LINCOLN /67      x        x        x       x       x       x
+UTAH             TENEX being installed
+
+
+LEGEND:
+
+</p><p class="rfcparagraph"> --- the function has not been verified for the host
+
+x--- the function has been verified for the host
+na-- the function is not applicable to the host due to its
+     operating system or intended network use
+
+?--- a comment follows for that function in that host
+
+
+COMMENTS:
+
+</p><p class="rfcparagraph">SRI NIC -- both a server telnet and logger exist; however, they
+           do not process the telnet messages correctly
+
+MIT Multics  -- we were only able to connect to an interim
+          logger that sent a 'ts' message
+
+SDC  -- the logger causes the system to crash following login
+
+
+      Any discrepancies should be noted via phone call.  This
+RFC will be updated in about one month.
+
+</p>
+
+
+       [ This RFC was put into machine readable form for entry ]
+          [ into the online RFC archives by Brian Court 6/97 ]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                [Page 2]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

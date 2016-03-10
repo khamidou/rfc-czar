@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                           G. Meyer<br>Request for Comments: 1581                                Spider Systems<br>Category: Informational                                    February 1994<br><br></p>
+                  <h1>
+   Protocol Analysis for Extensions to RIP to Support Demand Circuits</h1>
+                  <h2>Status of this Memo</h2>
+
+   This document provides information for the Internet community.  This
+   document does not specify an Internet standard of any kind.
+   Distribution of this document is unlimited.
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   As required by Routing Protocol Criteria [1], this report documents
+   the key features of Routing over Demand Circuits on Wide Area
+   Networks - RIP [2] and the current implementation experience.
+
+</p><p class="rfcparagraph">Acknowledgements
+
+   I would like to thank colleagues at Spider, in particular Richard
+   Edmonstone and Alan Turland who developed Spider's IP RIP and IPX RIP
+   and SAP implementations.
+
+</p><p class="rfcparagraph">	<a name="section-1"><h2>1.  Protocol Documents</h2></a>
+
+   "Extensions to RIP to Support Demand Circuits" [2] suggests an
+   enhancement to the "Routing Internet Protocol" (RIP) [3] and "RIP-2"
+   [4] to allow them to run more cost-effectively on Wide Area Networks
+   (WANs).  Network management extensions for Demand RIP are described
+   in RIP Version 2 MIB Extensions [5].
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.  Applicability</h2></a>
+
+   Demand RIP requires that there is an underlying mechanism for
+   determining unreachability in a finite predictable period.
+
+</p><p class="rfcparagraph">   The demand extensions to RIP are particularly appropriate for WANs
+   where the cost - either financial or packet overhead - would make
+   periodic transmission of routing (or service advertising) updates
+   unacceptable:
+
+</p><p class="rfcparagraph">   o  Connection oriented Public Data Networks - for example X.25 packet
+      switched networks or ISDN.
+
+</p><p class="rfcparagraph">   o  Point-to-point links supporting PPP link quality monitoring or
+      echo request to determine link failure.
+   A demand RIP implementation runs standard RIP on Local Area Networks
+   (LANs) allowing them to interoperate transparently with
+   implementations adhering to the original specifications.
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.  Key Features</h2></a>
+
+   The proposal shares the same basic algorithms as RIP or RIP-2 when
+   running on LANs or fixed point-to-point links; Packet formats,
+   broadcast frequency, triggered update operation and database timeouts
+   are all unmodified.
+
+</p><p class="rfcparagraph">   The new features operate on WANs which use switched circuits on
+   demand to achieve intermittent connectivity.  Instead of using
+   periodic 'broadcasts', information is only sent as triggered updates.
+   The proposal makes use of features of the underlying connection
+   oriented service to provide feedback on connectivity.
+
+</p><p class="rfcparagraph">	<a name="section-3.1"><h3>3.1  Triggered Updates</h3></a>
+
+   Updates are only sent on the WAN when an event changes the routing
+   database.  Each update is retransmitted until acknowledged.
+   Information received in an update is not timed out.
+
+</p><p class="rfcparagraph">   The packet format of a RIP response is modified (with a different
+   unique command field) to include sequence and fragment number
+   information.  An acknowledgement packet is also defined.
+
+</p><p class="rfcparagraph">	<a name="section-3.2"><h3>3.2  Circuit Manager</h3></a>
+
+   The circuit manager running below the IP network layer is responsible
+   for establishing a circuit to the next hop router whenever there is
+   data (or a routing update) to transfer.  After a period of inactivity
+   the circuit will be closed by the circuit manager.
+
+</p><p class="rfcparagraph">   If the circuit manager fails to make a connection a circuit down
+   indication is sent to the routing application.  The circuit manager
+   will then attempt at (increasing) intervals to establish a
+   connection.  When successful a circuit up indication is sent to the
+   routing application.
+
+</p><p class="rfcparagraph">	<a name="section-3.3"><h3>3.3  Presumption of Reachability</h3></a>
+
+   In a stable network there is no requirement to propagate routing
+   information on a circuit, so if no routing information is (being)
+   received on a circuit it is assumed that:
+   o  The most recently received information is accurate.
+
+</p><p class="rfcparagraph">   o  The intervening path is operational (although there may be no
+      current connection).
+
+</p><p class="rfcparagraph">   If the circuit manager determines that the intervening path is NOT
+   operational routing information previously received on that circuit
+   is timed out.  It is worth stressing that it can be ANY routed
+   datagram which triggers the event.
+
+</p><p class="rfcparagraph">   When the circuit manager re-establishes a connection, the application
+   exchanges full routing information with its peer.
+
+</p><p class="rfcparagraph">	<a name="section-3.4"><h3>3.4  Routing Information Flow Control</h3></a>
+
+   If the circuit manager reports a circuit as down, the routing
+   application is flow controlled from sending further information on
+   the circuit.
+
+</p><p class="rfcparagraph">   To prevent transmit queue overflow and also to avoid 'predictable'
+   circuit down messages, the routing application can also optionally
+   limit the rate of sending routing messages to an interface.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.  Implementations</h2></a>
+
+   At this stage there is only believed to be one completed
+   implementation.
+
+</p><p class="rfcparagraph">   The Spider Systems' implementation supports all the features outlined
+   for IP RIP-1, IPX RIP and IPX SAP.  RIP-2 is not currently supported.
+   It has been tested against itself on X.25 and ISDN WANs.  It has also
+   been tested in operation with various router and host RIP-1, IPX RIP
+   and IPX SAP implementations on Ethernet LANs.
+
+</p><p class="rfcparagraph">   Two other Novell-only implementations are known to be under
+   development.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.  Restrictions</h2></a>
+
+   Demand RIP relies on the ability to place a call in either direction.
+   Some dialup services - for example DTR dialing - allow calls to be
+   made in one direction only.
+
+</p><p class="rfcparagraph">   Demand RIP can not operate with third-party advertisement of routes
+   on the WAN.  The next hop IP address in RIP-2 should always be
+   0.0.0.0 for any routes advertised on the WAN.
+	<a name="section-6"><h2>6.  Security Considerations</h2></a>
+
+   Security is provided through authentication of the logical and
+   physical address of the sender of the routing update.  Incoming call
+   requests are matched by the circuit manager against a list of
+   physical addresses (used to make outgoing calls).  The routing
+   application makes a further check against the logical address of an
+   incoming update.
+
+</p><p class="rfcparagraph">   Additional security can be provided by RIP-2 authentication [2] where
+   appropriate.
+
+</p><p class="rfcparagraph">	<a name="section-7"><h2>7.  References</h2></a>
+
+   [1] Hinden, R., "Internet Engineering Task Force Internet Routing
+       Protocol Standardization Criteria", RFC 1264, Bolt Beranek and
+       Newman, Inc, October 1991.
+
+</p><p class="rfcparagraph">   [2] Meyer. G., "Extensions to RIP to Support Demand Circuits", RFC
+       1582, Spider Systems, February 1994.
+
+</p><p class="rfcparagraph">   [3] Hedrick. C., "Routing Information Protocol", STD 34, RFC 1058,
+       Rutgers University, June 1988.
+
+</p><p class="rfcparagraph">   [4] Malkin. G., "RIP Version 2 - Carrying Additional Information",
+       RFC 1388, Xylogics, January 1993.
+
+</p><p class="rfcparagraph">   [5] Malkin. G., and F. Baker, "RIP Version 2 MIB Extensions", RFC
+       1389, Xylogics, ACC, January 1993.
+
+</p>Author's  Address
+
+       Gerry Meyer
+       Spider Systems
+       Stanwell Street
+       Edinburgh EH6 5NG
+       Scotland, UK
+
+       Phone: (UK) 31 554 9424
+       Fax:   (UK) 31 554 0649
+       EMail: gerry@spider.co.uk
+
+
+
+
+
+
+
+
+
+
+Meyer                                                           [Page 4]
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

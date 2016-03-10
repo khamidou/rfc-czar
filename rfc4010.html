@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                            J. Park<br>Request for Comments: 4010                                        S. Lee<br>Category: Standards Track                                         J. Kim<br>                                                                  J. Lee<br>                                                                    KISA<br>                                                           February 2005<br><br></p>
+                  <h1>
+                  Use of the SEED Encryption Algorithm
+                 in Cryptographic Message Syntax (CMS)</h1>
+                  <h2>Status of This Memo</h2>
+
+   This document specifies an Internet standards track protocol for the
+   Internet community, and requests discussion and suggestions for
+   improvements.  Please refer to the current edition of the "Internet
+   Official Protocol Standards" (STD 1) for the standardization state
+   and status of this protocol.  Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (2005).<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This document specifies the conventions for using the SEED encryption
+   algorithm for encryption with the Cryptographic Message Syntax (CMS).
+
+</p><p class="rfcparagraph">   SEED is added to the set of optional symmetric encryption algorithms
+   in CMS by providing two classes of unique object identifiers (OIDs).
+   One OID class defines the content encryption algorithms and the other
+   defines the key encryption algorithms.
+
+</p><p class="rfcparagraph">	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   This document specifies the conventions for using the SEED encryption
+   algorithm [SEED][TTASSEED] for encryption with the Cryptographic
+   Message Syntax (CMS)[CMS].  The relevant object identifiers (OIDs)
+   and processing steps are provided so that SEED may be used in the CMS
+   specification (RFC 3852, RFC 3370) for content and key encryption.
+	<a name="section-1.1"><h3>1.1   SEED</h3></a>
+
+   SEED is a symmetric encryption algorithm developed by KISA (Korea
+   Information Security Agency) and a group of experts since 1998.  The
+   input/output block size and key length of SEED is 128-bits.  SEED has
+   the 16-round Feistel structure.  A 128-bit input is divided into two
+   64-bit blocks and the right 64-bit block is an input to the round
+   function, with a 64-bit subkey generated from the key scheduling.
+
+</p><p class="rfcparagraph">   SEED is easily implemented in various software and hardware because
+   it takes less memory to implement than other algorithms and generates
+   keys without degrading the security of the algorithm.  In particular,
+   it can be effectively adopted in a computing environment with a
+   restricted resources, such as mobile devices and smart cards.
+
+</p><p class="rfcparagraph">   SEED is robust against known attacks including DC (Differential
+   cryptanalysis), LC (Linear cryptanalysis), and related key attacks.
+   SEED has gone through wide public scrutinizing procedures.  It has
+   been evaluated and is considered cryptographically secure by credible
+   organizations such as ISO/IEC JTC 1/SC 27 and Japan CRYPTREC
+   (Cryptography Research and Evaluation Committees)
+   [ISOSEED][CRYPTREC].
+
+</p><p class="rfcparagraph">   SEED is a national industrial association standard [TTASSEED] and is
+   widely used in South Korea for electronic commerce and financial
+   services operated on wired and wireless communications.
+
+</p><p class="rfcparagraph">	<a name="section-1.2"><h3>1.2   Terminology</h3></a>
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHOULD", "SHOULD NOT",
+   "RECOMMENDED", "MAY", and "OPTIONAL" in this document (in uppercase,
+   as shown) are to be interpreted as described in [RFC2119].
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Object Identifiers for Content and Key Encryption</h2></a>
+
+   This section provides the OIDs and processing information necessary
+   for SEED to be used for content and key encryption in CMS.  SEED is
+   added to the set of optional symmetric encryption algorithms in CMS
+   by providing two classes of unique object identifiers (OIDs).  One
+   OID class defines the content encryption algorithms and the other
+   defines the key encryption algorithms.  Thus, a CMS agent can apply
+   SEED either for content or key encryption by selecting the
+   corresponding object identifier, supplying the required parameter,
+   and starting the program code.
+	<a name="section-2.1"><h3>2.1   OIDs for Content Encryption</h3></a>
+
+   SEED is added to the set of symmetric content encryption algorithms
+   defined in [CMSALG].  The SEED content-encryption algorithm in Cipher
+   Block Chaining (CBC) mode has the following object identifier:
+
+</p><p class="rfcparagraph">      id-seedCBC OBJECT IDENTIFIER ::=
+        { iso(1) member-body(2) korea(410) kisa(200004)<br>
+          algorithm(1) seedCBC(4) }<br>
+
+   The AlgorithmIdentifier parameters field MUST be present, and the
+   parameters field MUST contain the value of Initialization Vector
+   (IV):
+
+</p><p class="rfcparagraph">      SeedCBCParameter ::= SeedIV  --  Initialization Vector
+
+      SeedIV ::= OCTET STRING (SIZE(16))<br>
+
+   The plain text is padded according to Section 6.3 of [CMS].
+
+</p><p class="rfcparagraph">	<a name="section-2.2"><h3>2.2   OIDs for Key Encryption</h3></a>
+
+   The key-wrap/unwrap procedures used to encrypt/decrypt a SEED
+   content-encryption key (CEK) with a SEED key-encryption key (KEK) are
+   specified in Section 3.  Generation and distribution of key-
+   encryption keys are beyond the scope of this document.
+
+</p><p class="rfcparagraph">   The SEED key-encryption algorithm has the following object
+   identifier:
+
+</p><p class="rfcparagraph">      id-npki-app-cmsSeed-wrap OBJECT IDENTIFIER ::=
+        { iso(1) member-body(2) korea(410) kisa(200004) npki-app(7)<br>
+          smime(1) alg(1) cmsSEED-wrap(1) }<br>
+
+   The parameter associated with this object identifier MUST be absent,
+   because the key wrapping procedure itself defines how and when to use
+   an IV.
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   Key Wrap Algorithm</h2></a>
+
+   SEED key wrapping and unwrapping is done in conformance with the AES
+   key wrap algorithm [RFC3394].
+
+</p><p class="rfcparagraph">	<a name="section-3.1"><h3>3.1   Notation and Definitions</h3></a>
+
+   The following notation is used in the description of the key wrapping
+   algorithms:
+         SEED(K, W)    Encrypt W using the SEED codebook with key K
+         SEED-1(K, W)  Decrypt W using the SEED codebook with key K
+         MSB(j, W)     Return the most significant j bits of W
+         LSB(j, W)     Return the least significant j bits of W
+         B1 ^ B2       The bitwise exclusive or (XOR) of B1 and B2
+         B1 | B2       Concatenate B1 and B2
+         K             The key-encryption key K
+         n             The number of 64-bit key data blocks
+         s             The number of steps in the wrapping process,
+                       s = 6n
+         P[i]          The ith plaintext key data block
+         C[i]          The ith ciphertext data block
+         A             The 64-bit integrity check register
+         R[i]          An array of 64-bit registers where
+                       i = 0, 1, 2, ..., n
+         A[t], R[i][t] The contents of registers A and R[i] after
+                       encryption step t.
+         IV            The 64-bit initial value used during the
+                       wrapping process.
+
+</p><p class="rfcparagraph">   In the key wrap algorithm, the concatenation function will be used to
+   concatenate 64-bit quantities to form the 128-bit input to the SEED
+   codebook.  The extraction functions will be used to split the 128-bit
+   output from the SEED codebook into two 64-bit quantities.
+
+</p><p class="rfcparagraph">	<a name="section-3.2"><h3>3.2   SEED Key Wrap</h3></a>
+
+   Key wrapping with SEED is identical to Section 2.2.1 of [RFC3394]
+   with "AES" replaced by "SEED".
+
+</p><p class="rfcparagraph">   The inputs to the key wrapping process are the KEK and the plaintext
+   to be wrapped.  The plaintext consists of n 64-bit blocks containing
+   the key data being wrapped.  The key wrapping process is described
+   below.
+
+</p><p class="rfcparagraph">     Inputs:  Plaintext, n 64-bit values {P[1], P[2], ..., P[n]}, and
+              Key, K (the KEK).
+     Outputs: Ciphertext, (n+1) 64-bit values {C[0], C[1], ..., C[n]}.
+
+</p><p class="rfcparagraph">   1) Initialize variables.
+
+</p><p class="rfcparagraph">     Set A[0] to an initial value (see Section 3.4)
+     For i = 1 to n
+       R[0][i] = P[i]
+   2) Calculate intermediate values.
+
+</p><p class="rfcparagraph">     For t = 1 to s, where s = 6n
+       A[t] = MSB(64, SEED(K, A[t-1] | R[t-1][1])) ^ t
+       For i = 1 to n-1
+         R[t][i] = R[t-1][i+1]
+       R[t][n] = LSB(64, SEED(K, A[t-1] | R[t-1][1]))
+
+   3) Output the results.
+
+</p><p class="rfcparagraph">     Set C[0] = A[s]
+     For i = 1 to n
+       C[i] = R[s][i]
+
+   An alternative description of the key wrap algorithm involves
+   indexing rather than shifting.  This approach allows one to calculate
+   the wrapped key in place, avoiding the rotation in the previous
+   description.  This produces identical results and is more easily
+   implemented in software.
+
+</p><p class="rfcparagraph">     Inputs:  Plaintext, n 64-bit values {P[1], P[2], ..., P[n]}, and
+              Key, K (the KEK).
+     Outputs: Ciphertext, (n+1) 64-bit values {C[0], C[1], ..., C[n]}.
+
+</p><p class="rfcparagraph">   1) Initialize variables.
+
+</p><p class="rfcparagraph">     Set A = IV, an initial value (see Section 3.4)
+     For i = 1 to n
+       R[i] = P[i]
+
+   2) Calculate intermediate values.
+
+</p><p class="rfcparagraph">     For j = 0 to 5
+       For i=1 to n
+         B = SEED(K, A | R[i])
+         A = MSB(64, B) ^ t where t = (n*j)+i
+         R[i] = LSB(64, B)
+
+   3) Output the results.
+
+</p><p class="rfcparagraph">      Set C[0] = A
+      For i = 1 to n
+        C[i] = R[i]
+	<a name="section-3.3"><h3>3.3   SEED Key Unwrap</h3></a>
+
+   Key unwrapping with SEED is identical to Section 2.2.2 of [RFC3394],
+   with "AES" replaced by "SEED".
+
+</p><p class="rfcparagraph">   The inputs to the unwrap process are the KEK and (n+1) 64-bit blocks
+   of ciphertext consisting of previously wrapped key.  It returns n
+   blocks of plaintext consisting of the n 64-bit blocks of the
+   decrypted key data.
+
+</p><p class="rfcparagraph">     Inputs:  Ciphertext, (n+1) 64-bit values {C[0], C[1], ..., C[n]},
+              and Key, K (the KEK).
+     Outputs: Plaintext, n 64-bit values {P[1], P[2], ..., P[n]}.
+
+</p><p class="rfcparagraph">   1) Initialize variables.
+
+</p><p class="rfcparagraph">     Set A[s] = C[0] where s = 6n
+     For i = 1 to n
+       R[s][i] = C[i]
+
+   2) Calculate the intermediate values.
+
+</p><p class="rfcparagraph">     For t = s to 1
+       A[t-1] = MSB(64, SEED-1(K, ((A[t] ^ t) | R[t][n]))
+       R[t-1][1] = LSB(64, SEED-1(K, ((A[t]^t) | R[t][n]))
+       For i = 2 to n
+         R[t-1][i] = R[t][i-1]
+
+   3) Output the results.
+
+</p><p class="rfcparagraph">     If A[0] is an appropriate initial value (see Section 3.4),
+     Then
+       For i = 1 to n
+         P[i] = R[0][i]
+     Else
+       Return an error
+
+   The unwrap algorithm can also be specified as an index based
+   operation, allowing the calculations to be carried out in place.
+   Again, this produces the same results as the register shifting
+   approach.
+
+</p><p class="rfcparagraph">     Inputs:  Ciphertext, (n+1) 64-bit values {C[0], C[1], ..., C[n]},
+              and Key, K (the KEK).
+     Outputs: Plaintext, n 64-bit values {P[0], P[1], ..., P[n]}.
+   1) Initialize variables.
+
+</p><p class="rfcparagraph">     Set A = C[0]
+     For i = 1 to n
+       R[i] = C[i]
+
+   2) Compute intermediate values.
+
+</p><p class="rfcparagraph">     For j = 5 to 0
+       For i = n to 1
+         B = SEED-1(K, (A ^ t) | R[i]) where t = n*j+i
+         A = MSB(64, B)
+         R[i] = LSB(64, B)
+
+   3) Output results.
+
+</p><p class="rfcparagraph">     If A is an appropriate initial value (see Section 3.4),
+     Then
+       For i = 1 to n
+         P[i] = R[i]
+     Else
+       Return an error
+
+	<a name="section-3.4"><h3>3.4   Key Data Integrity -- the Initial Value</h3></a>
+
+   The initial value (IV) refers to the value assigned to A[0] in the
+   first step of the wrapping process.  This value is used to obtain an
+   integrity check on the key data.  In the final step of the unwrapping
+   process, the recovered value of A[0] is compared to the expected
+   value of A[0].  If there is a match, the key is accepted as valid,
+   and the unwrapping algorithm returns it.  If there is not a match,
+   then the key is rejected, and the unwrapping algorithm returns an
+   error.
+
+</p><p class="rfcparagraph">   The exact properties achieved by this integrity check depend on the
+   definition of the initial value.  Different applications may call for
+   somewhat different properties; for example, whether there is a need
+   to determine the integrity of key data throughout its lifecycle or
+   just when it is unwrapped.  This specification defines a default
+   initial value that supports the integrity of the key data during the
+   period it is wrapped (in Section 3.4.1).  Provision is also made to
+   support alternative initial values (in Section 3.4.2).
+	<a name="section-3.4.1"><h4>3.4.1   Default Initial Value</h4></a>
+
+   The default initial value (IV) is defined to be the hexadecimal
+   constant:
+
+</p><p class="rfcparagraph">     A[0] = IV = A6A6A6A6A6A6A6A6
+
+   The use of a constant as the IV supports a strong integrity check on
+   the key data during the period that it is wrapped.  If unwrapping
+   produces A[0] = A6A6A6A6A6A6A6A6, then the chance that the key data
+   is corrupt is 2^-64.  If unwrapping produces A[0] = any other value,
+   then the unwrap must return an error and not return any key data.
+
+</p><p class="rfcparagraph">	<a name="section-3.4.2"><h4>3.4.2   Alternative Initial Values</h4></a>
+
+   When the key wrap is used as part of a larger key management protocol
+   or system, the desired scope for data integrity may be more than just
+   the key data, and the desired duration may be more than just the
+   period that it is wrapped.  Also, if the key data is not just a SEED
+   key, it may not always be a multiple of 64 bits.  Alternative
+   definitions of the initial value can be used to address such
+   problems.  According to RFC 3394 [RFC3394], NIST will define
+   alternative initial values in future key management publications as
+   they are needed.  To accommodate a set of alternatives that may
+   evolve over time, non-application-specific key wrap implementations
+   will require some flexibility in the way the initial value is set and
+   tested.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   SMIMECapabilities Attribute</h2></a>
+
+   An S/MIME client SHOULD announce the set of cryptographic functions
+   it supports by using the S/MIME capabilities attribute.  This
+   attribute provides a partial list of OIDs of cryptographic functions
+   and MUST be signed by the client.  The functions' OIDs SHOULD be
+   logically separated in functional categories and MUST be ordered with
+   respect to their preference.
+
+</p><p class="rfcparagraph">   RFC 3851 [RFC3851], Section 2.5.2 defines the SMIMECapabilities
+   signed attribute (defined as a SEQUENCE of SMIMECapability SEQUENCEs)
+   to be used to specify a partial list of algorithms that the software
+   announcing the SMIMECapabilities can support.
+
+</p><p class="rfcparagraph">   If an S/MIME client is required to support symmetric encryption with
+   SEED, the capabilities attribute MUST contain the SEED OID specified
+   above in the category of symmetric algorithms.  The parameter
+   associated with this OID MUST be SeedSMimeCapability.
+
+</p><p class="rfcparagraph">     SeedSMimeCapabilty ::= NULL
+   The SMIMECapability SEQUENCE representing SEED MUST be DER-encoded as
+   the following hexadecimal strings:
+
+</p><p class="rfcparagraph">     30 0C 06 08 2A 83 1A 8C 9A 44 01 04 05 00
+
+   When a sending agent creates an encrypted message, it has to decide
+   which type of encryption algorithm to use.  In general, the decision
+   process involves information obtained from the capabilities lists
+   included in messages received from the recipient, as well as other
+   information, such as private agreements, user preferences and legal
+   restrictions.  If local policy requires the use of SEED for symmetric
+   encryption, then both the sending and receiving S/MIME clients must
+   support it, and SEED must be configured as the preferred symmetric
+   algorithm.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   Security Considerations</h2></a>
+
+   This document specifies the use of SEED for encrypting the content of
+   a CMS message and for encrypting the symmetric key used to encrypt
+   the content of a CMS message, with the other mechanisms being the
+   same as the existing ones.  Therefore, the security considerations
+   described in the CMS specifications [CMS][CMSALG] and the AES key
+   wrap algorithm [RFC3394] can be applied to this document.  No
+   security problem has been found on SEED [CRYPTREC].
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.   References</h2></a>
+
+	<a name="section-6.1"><h3>6.1   Normative References</h3></a>
+
+   [TTASSEED]  Telecommunications Technology Association (TTA), South
+               Korea, "128-bit Symmetric Block Cipher (SEED)", TTAS.KO-
+               12.0004, September, 1998 (In Korean)
+               http://www.tta.or.kr/English/new/main/index.htm
+
+   [CMS]       Housley, R., "Cryptographic Message Syntax (CMS)", RFC
+               3852, July 2004.
+
+</p><p class="rfcparagraph">   [CMSALG]    Housley, R., "Cryptographic Message Syntax (CMS)
+               Algorithms", RFC 3370, August 2002.
+
+</p><p class="rfcparagraph">   [RFC3851]   Ramsdell, B., "Secure/Multipurpose Internet Mail
+               Extensions (S/MIME) Version 3.1 Message Specification",
+               RFC 3851, July 2004.
+
+</p><p class="rfcparagraph">   [RFC3394]   Schaad, J. and R. Housley, "Advanced Encryption Standard
+               (AES) Key Wrap Algorithm", RFC 3394, September 2002.
+   [RFC2119]   Bradner, S., "Key words for use in RFCs to Indicate
+               Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">	<a name="section-6.2"><h3>6.2   Informative References</h3></a>
+
+   [SEED]      Park, J., Lee, S., Kim, J., and J. Lee, "The SEED
+               Encryption Algorithm", RFC 4009, February 2005.
+
+</p><p class="rfcparagraph">   [ISOSEED]   ISO/IEC, ISO/IEC JTC1/SC 27 N 256r1, "National Body
+               contributions on NP 18033 Encryption algorithms in
+               response to document SC 27 N 2563", October, 2000
+
+   [CRYPTREC]  Information-technology Promotion Agency (IPA), Japan,
+               CRYPTREC. "SEED Evaluation Report", February, 2002
+               http://www.kisa.or.kr
+Appendix A.  ASN.1 Module
+
+     SeedEncryptionAlgorithmInCMS
+         { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1)<br>
+           pkcs9(9) smime(16) modules(0) id-mod-cms-seed(24) }<br>
+
+
+     DEFINITIONS IMPLICIT TAGS ::=
+
+     BEGIN
+
+       id-seedCBC OBJECT IDENTIFIER ::=
+        { iso(1) member-body(2) korea(410) kisa(200004)<br>
+          algorithm(1) seedCBC(4) }<br>
+
+       --  Initialization Vector (IV)
+
+       SeedCBCParameter ::= SeedIV
+       SeedIV ::= OCTET STRING (SIZE(16))<br>
+
+       -- SEED Key Wrap Algorithm identifiers - Parameter is absent.
+
+</p><p class="rfcparagraph">       id-npki-app-cmsSeed-wrap OBJECT IDENTIFIER ::=
+         { iso(1) member-body(2) korea(410) kisa(200004) npki-app(7)<br>
+           smime(1) alg(1) cmsSEED-wrap(1) }<br>
+
+       -- SEED S/MIME Capability parameter
+
+       SeedSMimeCapability ::= NULL
+
+     END
+Authors' Addresses
+
+   Jongwook Park
+   Korea Information Security Agency
+   78, Garak-Dong, Songpa-Gu, Seoul, 138-803
+   REPUBLIC OF KOREA
+
+   Phone: +82-2-405-5432
+   FAX  : +82-2-405-5499
+   EMail: khopri@kisa.or.kr
+
+
+   Sungjae Lee
+   Korea Information Security Agency
+
+   Phone: +82-2-405-5243
+   FAX  : +82-2-405-5499
+   EMail: sjlee@kisa.or.kr
+
+
+   Jeeyeon Kim
+   Korea Information Security Agency
+
+   Phone: +82-2-405-5238
+   FAX  : +82-2-405-5499
+   EMail: jykim@kisa.or.kr
+
+
+   Jaeil Lee
+   Korea Information Security Agency
+   Phone: +82-2-405-5300
+   FAX  : +82-2-405-5499
+   EMail: jilee@kisa.or.kr
+Full Copyright Statement
+
+   Copyright (C) The Internet Society (2005).<br>
+
+</p><p class="rfcparagraph">   This document is subject to the rights, licenses and restrictions
+   contained in BCP 78, and except as set forth therein, the authors
+   retain all their rights.
+
+</p><p class="rfcparagraph">   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY AND THE INTERNET
+   ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED,
+   INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE
+   INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED
+   WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Intellectual Property
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the IETF's procedures with respect to rights in IETF Documents can
+   be found in BCP 78 and BCP 79.
+
+</p><p class="rfcparagraph">   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+</p><p class="rfcparagraph">   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at ietf-
+   ipr@ietf.org.
+
+</p><p class="rfcparagraph">
+Acknowledgement
+
+   Funding for the RFC Editor function is currently provided by the
+   Internet Society.
+
+</p>
+
+
+
+
+Park, et al.                Standards Track                    [Page 13]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

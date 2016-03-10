@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                       F. Johansson<br>Request for Comments: 3846                                   ipUnplugged<br>Category: Standards Track                                   T. Johansson<br>                                                              Bytemobile<br>                                                               June 2004<br><br></p>
+                  <h1>
+     Mobile IPv4 Extension for Carrying Network Access Identifiers</h1>
+                  <h2>Status of this Memo</h2>
+
+   This document specifies an Internet standards track protocol for the
+   Internet community, and requests discussion and suggestions for
+   improvements.  Please refer to the current edition of the "Internet
+   Official Protocol Standards" (STD 1) for the standardization state
+   and status of this protocol.  Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (2004).<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   When a mobile node moves between two foreign networks, it has to be
+   re-authenticated.  If the home network has both multiple
+   Authentication Authorization and Accounting (AAA) servers and Home
+   Agents (HAs) in use, the Home AAA server may not have sufficient
+   information to process the re-authentication correctly (i.e., to
+   ensure that the same HA continues to be used).  This document defines
+   a Mobile IP extension that carries identities for the Home AAA and HA
+   servers in the form of Network Access Identifiers (NAIs).  The
+   extension allows a Home Agent to pass its identity (and that of the
+   Home AAA server) to the mobile node, which can then pass it on to the
+   local AAA server when changing its point of attachment.  This
+   extension may also be used in other situations requiring
+   communication of a NAI between Mobile IP nodes.
+
+</p><p class="rfcparagraph">Table of Contents
+<a href="#section-1" class="">1. Introduction . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2" class="">2. Requirements terminology . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3" class="">3. NAI Carrying Extension . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.1" class="indent-1">3.1. Processing of the NAI Carrying Extension . . . . . . . </a><br>
+<a href="#section-4" class="">4. HA Identity subtype  . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-5" class="">5. AAAH Identity subtype  . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-6" class="">6. Security Considerations  . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-7" class="">7. IANA Considerations  . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-8" class="">8. Acknowledgements . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-9" class="">9. Normative References . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-10" class="">10. Authors' Addresses . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-11" class="">11. Full Copyright Statement . . . . . . . . . . . . . . . . . . </a><br>
+
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   When building networks one would like to be able to have redundancy.
+   In order to achieve this, one might place multiple AAA servers in one
+   domain.  When a mobile node registers via a visited network, the
+   authentication will be handled by one of the AAA servers in the home
+   domain.  At a later point, when the mobile node moves to another
+   visited domain it again has to be authenticated.  However, due to the
+   redundancy offered by the AAA protocol, it can not be guaranteed that
+   the authentication will be handled by the same AAAH server as the
+   previous one, which can result in the new AAAH not knowing to which
+   HA the session was assigned.  This document defines a Mobile IP
+   extension which can be used to distribute the information needed to
+   resolve this.
+
+</p><p class="rfcparagraph">   Furthermore, the only information that is normally available about
+   the home agent in the registration request is the IP address as
+   defined in RFC 3344 [5].  Unfortunately this may not be enough since
+   some AAA infrastructures (such as Diameter [6]) use realm based
+   routing; such a AAA infrastructure needs to know the FQDN identity of
+   the home agent to be able to correctly handle the assignment of the
+   home agent.  A reverse DNS lookup would only disclose the identity of
+   the Mobile IP interface for that HA IP address, which may or may not
+   have a one-to-one correspondence with the home agent FQDN identity.
+   This is a reason for the HA to also include its own identity in the
+   registration reply.  The MIP v4 extension defined in this document
+   also has a subtype defined by which this may be done.  The HA
+   identity can then be included by the mobile node in later
+   registration requests when changing the point of attachment.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Requirements terminology</h2></a>
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in BCP 14, RFC 2119 [1].
+
+</p><p class="rfcparagraph">   The Mobile IP related terminology described in RFC 3344 [5] is used
+   in this document.  In addition, the following terms are used:
+
+</p><p class="rfcparagraph">   AAAH
+      One of several possible AAA Servers in the Home Network
+   FQDN
+      Fully Qualified Domain Name.
+
+</p><p class="rfcparagraph">   Identity
+      The identity of a node is equal to its FQDN.
+
+</p><p class="rfcparagraph">   NAI
+      Network Access Identifier [2].
+
+</p><p class="rfcparagraph">
+	<a name="section-3"><h2>3.   NAI Carrying Extension</h2></a>
+
+   This section defines the NAI Carrying Extension which may be used in
+   Mobile IP Registration Request and Reply messages, and also in Mobile
+   IP Agent Advertisements [5].  The extension may be used by any node
+   that wants to send identity information in the form of a NAI [4].
+   This document also defines some subtype numbers which identify the
+   specific type of NAI carried in Sections 4 and 5.  It is expected
+   that other types of NAI will be defined by other documents in the
+   future.
+
+</p><p class="rfcparagraph">     0                   1                   2                   3
+     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    |     Type      |   Length      |   Sub-Type    |    NAI ...
+    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+   Type      136 (skippable) [5].
+
+</p><p class="rfcparagraph">   Length    8-bit unsigned integer.  Length of the extension, in
+      octets, excluding the extension Type and the extension Length
+      fields.  This field MUST be set to 1 plus the total length of the
+      NAI field.
+
+</p><p class="rfcparagraph">   Sub-Type  This field describes the particular type NAI which is
+      carried in the NAI field.
+
+</p><p class="rfcparagraph">   NAI       Contains the NAI [2] in a string format.
+
+</p><p class="rfcparagraph">	<a name="section-3.1"><h3>3.1   Processing of the NAI Carrying Extension</h3></a>
+
+   When a mobile node or home agent adds a NAI Carrying Extension to a
+   registration message, the extension MUST appear prior to any
+   authentication extensions.
+   In the event the foreign agent adds a NAI Carrying Extension to a
+   registration message, the extension MUST appear prior to any
+   authentication extensions added by the FA.
+
+</p><p class="rfcparagraph">   If an HA has appended a NAI Carrying Extension to a Registration
+   Reply to an MN, and does not receive the NAI extension in subsequent
+   Registration Request messages from the MN, the HA can assume that the
+   MN does not understand this NAI extension.  In this case, the HA
+   SHOULD NOT append this NAI extension to further Registration Reply
+   messages to the MN.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   HA Identity subtype</h2></a>
+
+   The HA identity uses subtype 1 of the NAI Carrying Extension.  It
+   contains the NAI of the HA in the form hostname@realm.  Together the
+   hostname and realm form the complete FQDN (hostname.realm) of the HA.
+
+</p><p class="rfcparagraph">   A Home Agent using this extension MUST provide it in the first
+   Registration Reply sent to a Mobile Node which is not currently
+   registered.  The extension only need to be included in subsequent
+   Registration Replies if the same extension is included in
+   Registration Requests received from the same Mobile Node.
+
+</p><p class="rfcparagraph">   A mobile node using this extension MUST, if it receives it in a
+   registration reply message, provide it in every subsequent
+   registration request when re-authentication is needed.  Failure to
+   re-authenticate, for instance because no AAAH can be reached, will
+   result in termination of the Mobile-IP session.  Upon initiation of a
+   new session a new HA Identity NAI may be provided to the Mobile node,
+   and the requirement above will apply to the newly received NAI.
+
+</p><p class="rfcparagraph">   If the mobile node requires a specific home agent and it has the NAI
+   available it MUST provide this extension in its initial registration
+   request.
+
+</p><p class="rfcparagraph">   A foreign agent which receives the Home Agent NAI by this extension
+   in a registration request SHOULD include the Home Agent NAI when
+   requesting Mobile Node authentication through the AAA infrastructure
+   if the AAA protocol used can carry the information.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   AAAH Identity subtype</h2></a>
+
+   The AAAH identity uses subtype 2 of the NAI Carrying Extension.  It
+   contains the NAI of the home AAA server in the form hostname@realm.
+   Together the hostname and realm form the complete FQDN
+   (hostname.realm) of the home AAA server.
+   If several AAA servers exist in the Home Network, a Home Agent
+   providing AAAH selection support according to this document MUST
+   provide the AAAH identity in the first Registration Reply sent to the
+   Mobile Node.  The extension only needs to be included in subsequent
+   Registration Replies if the same extension is included in
+   Registration Requests received from the same Mobile Node.
+
+</p><p class="rfcparagraph">   A mobile node SHOULD save the latest AAAH Identity received in a
+   registration reply message and SHOULD provide the AAAH Identity in
+   every registration request sent when re-authenticating, for
+   efficiency reasons.  Failure to reach the indicated AAAH during re-
+   authentication will result in a new AAAH Identity NAI being returned
+   (which should then be saved and provided in subsequent registration
+   requests).  Similarly, failure to re-authenticate, for instance
+   because no AAAH can be reached, will result in termination of the
+   Mobile-IP session; on initiation of a new session, a new AAAH
+   Identity NAI may be provided to the Mobile Node for re-use during
+   later re-registrations.
+
+</p><p class="rfcparagraph">   A foreign agent which receives the AAAH NAI by this extension in a
+   registration request SHOULD include the AAAH NAI provided when
+   requesting Mobile Node authentication through the AAA infrastructure
+   if the AAA protocol used can carry the information.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.   Security Considerations</h2></a>
+
+   This specification introduces new Mobile IP extensions that are used
+   to carry mobility agent and AAA server identities, in the form of
+   Network Access Identifiers.  The Mobile IP messages that carry this
+   extension MUST be authenticated as described in [4], unless other
+   authentication methods have been agreed upon.  Therefore, this
+   specification does not lessen the security of Mobile IP messages.
+
+</p><p class="rfcparagraph">   It should be noted that the identities sent in the extensions
+   specified herein MAY be sent in the clear over the network.  However,
+   the authors do not envision that this information would create
+   security issues.
+
+</p><p class="rfcparagraph">	<a name="section-7"><h2>7.   IANA Considerations</h2></a>
+
+   This document defines one new mobile IP extension, and one new Mobile
+   IP extension sub-type numbering space to be managed by IANA.
+
+</p><p class="rfcparagraph">   Section 3 defines a new Mobile IP extension, the Mobile IP NAI
+   Carrying Extension.  The type number for this extension is 136.  This
+   extension introduces a new sub-type numbering space where the values
+   1 and 2 have been assigned in this document.  Approval of new Mobile
+   IP NAI Carrying Extension sub-type numbers is subject to Expert
+   Review, and a specification is required [3].
+
+</p><p class="rfcparagraph">   The content and format for this extension is not specific to AAA
+   NAIs, so if in the future new NAIs are defined which do not strictly
+   fall within the category of AAA NAIs, they may nevertheless be
+   accommodated within the subtype numbering space defined for the NAI
+   Carrying Extension defined in this document.
+
+</p><p class="rfcparagraph">   The NAI Carrying Extension should be assigned a type value from both
+   the IANA number space for Mobile IPv4 skippable extensions and from
+   the IANA number space for Mobile IPv4 advertisement extensions.
+   Ideally, the numbers assigned from these two numbering spaces should
+   have the same value.
+
+</p><p class="rfcparagraph">	<a name="section-8"><h2>8.   Acknowledgements</h2></a>
+
+   Thanks to the original authors of the GNAIE document, Mohamed M
+   Khalil, Emad Qaddoura, Haseeb Akhtar, and Pat R. Calhoun.  The
+   original document was removed from the MIP WG charter when no use was
+   seen for the extension.  The original ideas have been reused in this
+   document.  Also thanks to Henrik Levkowetz and Kevin Purser for
+   valuable feedback and help when writing this document.
+
+</p><p class="rfcparagraph">	<a name="section-9"><h2>9.   Normative References</h2></a>
+
+   [1]  Bradner, S., "Key words for use in RFCs to Indicate Requirement
+        Levels", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">   [2]  Aboba, B. and M. Beadles, "The Network Access Identifier", RFC
+        2486, January 1999.
+
+</p><p class="rfcparagraph">   [3]  Narten, T. and H. Alvestrand, "Guidelines for Writing an IANA
+        Considerations Section in RFCs", BCP 26, RFC 2434, October 1998.
+
+</p><p class="rfcparagraph">   [4]  Calhoun, P. and C. Perkins, "Mobile IP Network Access Identifier
+        Extension for IPv4", RFC 2794, March 2000.
+
+</p><p class="rfcparagraph">   [5]  Perkins, C., "IP Mobility Support for IPv4", RFC 3344, August
+        2002.
+
+</p><p class="rfcparagraph">   [6]  Calhoun, P., Loughney, J., Guttman, E., Zorn, G. and J. Arkko,
+        "Diameter Base Protocol", RFC 3588, September 2003.
+	<a name="section-10"><h2>10.   Authors' Addresses</h2></a>
+
+   Fredrik Johansson
+   ipUnplugged AB
+   Arenavagen 23
+   Stockholm  S-121 28
+   SWEDEN
+
+   Phone: +46 8 725 5916
+   EMail: fredrik@ipunplugged.com
+
+
+   Tony Johansson
+   Bytemobile Inc
+   2029 Stierlin Court
+   Mountain View, CA  94043
+   USA
+
+   Phone: +1 650 862 0523
+   EMail: tony.johansson@bytemobile.com
+	<a name="section-11"><h2>11.   Full Copyright Statement</h2></a>
+
+   Copyright (C) The Internet Society (2004).  This document is subject<br>
+   to the rights, licenses and restrictions contained in BCP 78, and
+   except as set forth therein, the authors retain all their rights.
+
+</p><p class="rfcparagraph">   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY AND THE INTERNET
+   ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED,
+   INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE
+   INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED
+   WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Intellectual Property
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the procedures with respect to rights in RFC documents can be
+   found in BCP 78 and BCP 79.
+
+</p><p class="rfcparagraph">   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+</p><p class="rfcparagraph">   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at ietf-
+   ipr@ietf.org.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is currently provided by the
+   Internet Society.
+
+</p>
+
+
+
+
+
+
+
+Jhansson & Johansson        Standards Track                     [Page 8]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

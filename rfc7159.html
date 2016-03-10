@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph">Internet Engineering Task Force (IETF)                      T. Bray, Ed.
+Request for Comments: 7159                                  Google, Inc.
+Obsoletes: 4627, 7158                                         March 2014
+Category: Standards Track
+ISSN: 2070-1721
+
+
+     The JavaScript Object Notation (JSON) Data Interchange Format
+
+<h2>Abstract</h2>
+
+   JavaScript Object Notation (JSON) is a lightweight, text-based,
+   language-independent data interchange format.  It was derived from
+   the ECMAScript Programming Language Standard.  JSON defines a small
+   set of formatting rules for the portable representation of structured
+   data.
+
+</p><p class="rfcparagraph">   This document removes inconsistencies with other specifications of
+   JSON, repairs specification errors, and offers experience-based
+   interoperability guidance.
+
+</p><p class="rfcparagraph">Status of This Memo
+
+   This is an Internet Standards Track document.
+
+</p><p class="rfcparagraph">   This document is a product of the Internet Engineering Task Force
+   (IETF).  It represents the consensus of the IETF community.  It has
+   received public review and has been approved for publication by the
+   Internet Engineering Steering Group (IESG).  Further information on
+   Internet Standards is available in Section 2 of RFC 5741.
+
+</p><p class="rfcparagraph">   Information about the current status of this document, any errata,
+   and how to provide feedback on it may be obtained at
+   http://www.rfc-editor.org/info/rfc7159.
+<h2>Copyright Notice</h2>
+
+   Copyright (c) 2014 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+</p><p class="rfcparagraph">   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (http://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
+   the Trust Legal Provisions and are provided without warranty as
+   described in the Simplified BSD License.
+
+</p><p class="rfcparagraph">   This document may contain material from IETF Documents or IETF
+   Contributions published or made publicly available before November
+   10, 2008.  The person(s) controlling the copyright in some of this
+   material may not have granted the IETF Trust the right to allow
+   modifications of such material outside the IETF Standards Process.
+   Without obtaining an adequate license from the person(s) controlling
+   the copyright in such materials, this document may not be modified
+   outside the IETF Standards Process, and derivative works of it may
+   not be created outside the IETF Standards Process, except to format
+   it for publication as an RFC or to translate it into languages other
+   than English.
+<h2>Table of Contents</h2>
+<a href="#section-1" class="">1. Introduction ...................................................</a><br>
+<a href="#section-1.1" class="indent-1">1.1. Conventions Used in This Document .........................</a><br>
+<a href="#section-1.2" class="indent-1">1.2. Specifications of JSON ....................................</a><br>
+<a href="#section-1.3" class="indent-1">1.3. Introduction to This Revision .............................</a><br>
+<a href="#section-2" class="">2. JSON Grammar ...................................................</a><br>
+<a href="#section-3" class="">3. Values .........................................................</a><br>
+<a href="#section-4" class="">4. Objects ........................................................</a><br>
+<a href="#section-5" class="">5. Arrays .........................................................</a><br>
+<a href="#section-6" class="">6. Numbers ........................................................</a><br>
+<a href="#section-7" class="">7. Strings ........................................................</a><br>
+<a href="#section-8" class="">8. String and Character Issues ....................................</a><br>
+<a href="#section-8.1" class="indent-1">8.1. Character Encoding ........................................</a><br>
+<a href="#section-8.2" class="indent-1">8.2. Unicode Characters ........................................</a><br>
+<a href="#section-8.3" class="indent-1">8.3. String Comparison .........................................</a><br>
+<a href="#section-9" class="">9. Parsers .......................................................</a><br>
+<a href="#section-10" class="">10. Generators ...................................................</a><br>
+<a href="#section-11" class="">11. IANA Considerations ..........................................</a><br>
+<a href="#section-12" class="">12. Security Considerations ......................................</a><br>
+<a href="#section-13" class="">13. Examples .....................................................</a><br>
+<a href="#section-14" class="">14. Contributors .................................................</a><br>
+<a href="#section-15" class="">15. References ...................................................</a><br>
+<a href="#section-15.1" class="indent-1">15.1. Normative References ....................................</a><br>
+<a href="#section-15.2" class="indent-1">15.2. Informative References ..................................</a><br>
+   Appendix A. Changes from RFC 4627 .................................15
+
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   JavaScript Object Notation (JSON) is a text format for the
+   serialization of structured data.  It is derived from the object
+   literals of JavaScript, as defined in the ECMAScript Programming
+   Language Standard, Third Edition [ECMA-262].
+
+</p><p class="rfcparagraph">   JSON can represent four primitive types (strings, numbers, booleans,
+   and null) and two structured types (objects and arrays).
+
+</p><p class="rfcparagraph">   A string is a sequence of zero or more Unicode characters [UNICODE].
+   Note that this citation references the latest version of Unicode
+   rather than a specific release.  It is not expected that future
+   changes in the UNICODE specification will impact the syntax of JSON.
+
+</p><p class="rfcparagraph">   An object is an unordered collection of zero or more name/value
+   pairs, where a name is a string and a value is a string, number,
+   boolean, null, object, or array.
+
+</p><p class="rfcparagraph">   An array is an ordered sequence of zero or more values.
+   The terms "object" and "array" come from the conventions of
+   JavaScript.
+
+</p><p class="rfcparagraph">   JSON's design goals were for it to be minimal, portable, textual, and
+   a subset of JavaScript.
+
+</p><p class="rfcparagraph">	<a name="section-1.1"><h3>1.1   Conventions Used in This Document</h3></a>
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in [RFC2119].
+
+</p><p class="rfcparagraph">   The grammatical rules in this document are to be interpreted as
+   described in [RFC5234].
+
+</p><p class="rfcparagraph">	<a name="section-1.2"><h3>1.2   Specifications of JSON</h3></a>
+
+   This document updates [RFC4627], which describes JSON and registers
+   the media type "application/json".
+
+</p><p class="rfcparagraph">   A description of JSON in ECMAScript terms appears in Version 5.1 of
+   the ECMAScript specification [ECMA-262], Section 15.12.  JSON is also
+   described in [ECMA-404].
+
+</p><p class="rfcparagraph">   All of the specifications of JSON syntax agree on the syntactic
+   elements of the language.
+
+</p><p class="rfcparagraph">	<a name="section-1.3"><h3>1.3   Introduction to This Revision</h3></a>
+
+   In the years since the publication of RFC 4627, JSON has found very
+   wide use.  This experience has revealed certain patterns, which,
+   while allowed by its specifications, have caused interoperability
+   problems.
+
+</p><p class="rfcparagraph">   Also, a small number of errata have been reported (see RFC Errata IDs
+   607 [Err607] and 3607 [Err3607]).
+
+</p><p class="rfcparagraph">   This document's goal is to apply the errata, remove inconsistencies
+   with other specifications of JSON, and highlight practices that can
+   lead to interoperability problems.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   JSON Grammar</h2></a>
+
+   A JSON text is a sequence of tokens.  The set of tokens includes six
+   structural characters, strings, numbers, and three literal names.
+
+</p><p class="rfcparagraph">   A JSON text is a serialized value.  Note that certain previous
+   specifications of JSON constrained a JSON text to be an object or an
+   array.  Implementations that generate only objects or arrays where a
+   JSON text is called for will be interoperable in the sense that all
+   implementations will accept these as conforming JSON texts.
+
+</p><p class="rfcparagraph">      JSON-text = ws value ws
+
+   These are the six structural characters:
+
+</p><p class="rfcparagraph">      begin-array     = ws %x5B ws  ; [ left square bracket
+
+      begin-object    = ws %x7B ws  ; { left curly bracket
+
+      end-array       = ws %x5D ws  ; ] right square bracket
+
+      end-object      = ws %x7D ws  ; } right curly bracket
+
+      name-separator  = ws %x3A ws  ; : colon
+
+      value-separator = ws %x2C ws  ; , comma
+
+   Insignificant whitespace is allowed before or after any of the six
+   structural characters.
+
+</p><p class="rfcparagraph">      ws = *(
+              %x20 /              ; Space
+              %x09 /              ; Horizontal tab
+              %x0A /              ; Line feed or New line
+              %x0D )              ; Carriage return
+
+	<a name="section-3"><h2>3.   Values</h2></a>
+
+   A JSON value MUST be an object, array, number, or string, or one of
+   the following three literal names:
+
+</p><p class="rfcparagraph">      false null true
+
+   The literal names MUST be lowercase.  No other literal names are
+   allowed.
+
+</p><p class="rfcparagraph">      value = false / null / true / object / array / number / string
+
+      false = %x66.61.6c.73.65   ; false
+
+      null  = %x6e.75.6c.6c      ; null
+
+      true  = %x74.72.75.65      ; true
+	<a name="section-4"><h2>4.   Objects</h2></a>
+
+   An object structure is represented as a pair of curly brackets
+   surrounding zero or more name/value pairs (or members).  A name is a
+   string.  A single colon comes after each name, separating the name
+   from the value.  A single comma separates a value from a following
+   name.  The names within an object SHOULD be unique.
+
+</p><p class="rfcparagraph">      object = begin-object [ member *( value-separator member ) ]
+               end-object
+
+      member = string name-separator value
+
+   An object whose names are all unique is interoperable in the sense
+   that all software implementations receiving that object will agree on
+   the name-value mappings.  When the names within an object are not
+   unique, the behavior of software that receives such an object is
+   unpredictable.  Many implementations report the last name/value pair
+   only.  Other implementations report an error or fail to parse the
+   object, and some implementations report all of the name/value pairs,
+   including duplicates.
+
+</p><p class="rfcparagraph">   JSON parsing libraries have been observed to differ as to whether or
+   not they make the ordering of object members visible to calling
+   software.  Implementations whose behavior does not depend on member
+   ordering will be interoperable in the sense that they will not be
+   affected by these differences.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   Arrays</h2></a>
+
+   An array structure is represented as square brackets surrounding zero
+   or more values (or elements).  Elements are separated by commas.
+
+</p><p class="rfcparagraph">   array = begin-array [ value *( value-separator value ) ] end-array
+
+   There is no requirement that the values in an array be of the same
+   type.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.   Numbers</h2></a>
+
+   The representation of numbers is similar to that used in most
+   programming languages.  A number is represented in base 10 using
+   decimal digits.  It contains an integer component that may be
+   prefixed with an optional minus sign, which may be followed by a
+   fraction part and/or an exponent part.  Leading zeros are not
+   allowed.
+
+</p><p class="rfcparagraph">   A fraction part is a decimal point followed by one or more digits.
+   An exponent part begins with the letter E in upper or lower case,
+   which may be followed by a plus or minus sign.  The E and optional
+   sign are followed by one or more digits.
+
+</p><p class="rfcparagraph">   Numeric values that cannot be represented in the grammar below (such
+   as Infinity and NaN) are not permitted.
+
+</p><p class="rfcparagraph">      number = [ minus ] int [ frac ] [ exp ]
+
+      decimal-point = %x2E       ; .
+
+</p><p class="rfcparagraph">      digit1-9 = %x31-39         ; 1-9
+
+      e = %x65 / %x45            ; e E
+
+      exp = e [ minus / plus ] 1*DIGIT
+
+      frac = decimal-point 1*DIGIT
+
+      int = zero / ( digit1-9 *DIGIT )
+
+      minus = %x2D               ; -
+
+      plus = %x2B                ; +
+
+      zero = %x30                ; 0
+
+   This specification allows implementations to set limits on the range
+   and precision of numbers accepted.  Since software that implements
+   IEEE 754-2008 binary64 (double precision) numbers [IEEE754] is
+   generally available and widely used, good interoperability can be
+   achieved by implementations that expect no more precision or range
+   than these provide, in the sense that implementations will
+   approximate JSON numbers within the expected precision.  A JSON
+   number such as 1E400 or 3.141592653589793238462643383279 may indicate
+   potential interoperability problems, since it suggests that the
+   software that created it expects receiving software to have greater
+   capabilities for numeric magnitude and precision than is widely
+   available.
+
+</p><p class="rfcparagraph">   Note that when such software is used, numbers that are integers and
+   are in the range [-(2**53)+1, (2**53)-1] are interoperable in the
+   sense that implementations will agree exactly on their numeric
+   values.
+	<a name="section-7"><h2>7.   Strings</h2></a>
+
+   The representation of strings is similar to conventions used in the C
+   family of programming languages.  A string begins and ends with
+   quotation marks.  All Unicode characters may be placed within the
+   quotation marks, except for the characters that must be escaped:
+   quotation mark, reverse solidus, and the control characters (U+0000
+   through U+001F).
+
+</p><p class="rfcparagraph">   Any character may be escaped.  If the character is in the Basic
+   Multilingual Plane (U+0000 through U+FFFF), then it may be
+   represented as a six-character sequence: a reverse solidus, followed
+   by the lowercase letter u, followed by four hexadecimal digits that
+   encode the character's code point.  The hexadecimal letters A though
+   F can be upper or lower case.  So, for example, a string containing
+   only a single reverse solidus character may be represented as
+   "\u005C".
+
+</p><p class="rfcparagraph">   Alternatively, there are two-character sequence escape
+   representations of some popular characters.  So, for example, a
+   string containing only a single reverse solidus character may be
+   represented more compactly as "\\".
+
+</p><p class="rfcparagraph">   To escape an extended character that is not in the Basic Multilingual
+   Plane, the character is represented as a 12-character sequence,
+   encoding the UTF-16 surrogate pair.  So, for example, a string
+   containing only the G clef character (U+1D11E) may be represented as
+   "\uD834\uDD1E".
+
+</p><p class="rfcparagraph">      string = quotation-mark *char quotation-mark
+
+      char = unescaped /
+          escape (
+              %x22 /          ; "    quotation mark  U+0022
+              %x5C /          ; \    reverse solidus U+005C
+              %x2F /          ; /    solidus         U+002F
+              %x62 /          ; b    backspace       U+0008
+              %x66 /          ; f    form feed       U+000C
+              %x6E /          ; n    line feed       U+000A
+              %x72 /          ; r    carriage return U+000D
+              %x74 /          ; t    tab             U+0009
+              %x75 4HEXDIG )  ; uXXXX                U+XXXX
+
+      escape = %x5C              ; \
+
+      quotation-mark = %x22      ; "
+
+      unescaped = %x20-21 / %x23-5B / %x5D-10FFFF
+	<a name="section-8"><h2>8.   String and Character Issues</h2></a>
+
+	<a name="section-8.1"><h3>8.1   Character Encoding</h3></a>
+
+   JSON text SHALL be encoded in UTF-8, UTF-16, or UTF-32.  The default
+   encoding is UTF-8, and JSON texts that are encoded in UTF-8 are
+   interoperable in the sense that they will be read successfully by the
+   maximum number of implementations; there are many implementations
+   that cannot successfully read texts in other encodings (such as
+   UTF-16 and UTF-32).
+
+</p><p class="rfcparagraph">   Implementations MUST NOT add a byte order mark to the beginning of a
+   JSON text.  In the interests of interoperability, implementations
+   that parse JSON texts MAY ignore the presence of a byte order mark
+   rather than treating it as an error.
+
+</p><p class="rfcparagraph">	<a name="section-8.2"><h3>8.2   Unicode Characters</h3></a>
+
+   When all the strings represented in a JSON text are composed entirely
+   of Unicode characters [UNICODE] (however escaped), then that JSON
+   text is interoperable in the sense that all software implementations
+   that parse it will agree on the contents of names and of string
+   values in objects and arrays.
+
+</p><p class="rfcparagraph">   However, the ABNF in this specification allows member names and
+   string values to contain bit sequences that cannot encode Unicode
+   characters; for example, "\uDEAD" (a single unpaired UTF-16
+   surrogate).  Instances of this have been observed, for example, when
+   a library truncates a UTF-16 string without checking whether the
+   truncation split a surrogate pair.  The behavior of software that
+   receives JSON texts containing such values is unpredictable; for
+   example, implementations might return different values for the length
+   of a string value or even suffer fatal runtime exceptions.
+
+</p><p class="rfcparagraph">	<a name="section-8.3"><h3>8.3   String Comparison</h3></a>
+
+   Software implementations are typically required to test names of
+   object members for equality.  Implementations that transform the
+   textual representation into sequences of Unicode code units and then
+   perform the comparison numerically, code unit by code unit, are
+   interoperable in the sense that implementations will agree in all
+   cases on equality or inequality of two strings.  For example,
+   implementations that compare strings with escaped characters
+   unconverted may incorrectly find that "a\\b" and "a\u005Cb" are not
+   equal.
+	<a name="section-9"><h2>9.   Parsers</h2></a>
+
+   A JSON parser transforms a JSON text into another representation.  A
+   JSON parser MUST accept all texts that conform to the JSON grammar.
+   A JSON parser MAY accept non-JSON forms or extensions.
+
+</p><p class="rfcparagraph">   An implementation may set limits on the size of texts that it
+   accepts.  An implementation may set limits on the maximum depth of
+   nesting.  An implementation may set limits on the range and precision
+   of numbers.  An implementation may set limits on the length and
+   character contents of strings.
+
+</p><p class="rfcparagraph">	<a name="section-10"><h2>10.   Generators</h2></a>
+
+   A JSON generator produces JSON text.  The resulting text MUST
+   strictly conform to the JSON grammar.
+
+</p><p class="rfcparagraph">	<a name="section-11"><h2>11.   IANA Considerations</h2></a>
+
+   The MIME media type for JSON text is application/json.
+
+</p><p class="rfcparagraph">   Type name:  application
+
+   Subtype name:  json
+
+   Required parameters:  n/a
+
+   Optional parameters:  n/a
+
+   Encoding considerations:  binary
+
+   Security considerations:  See [RFC7159], Section 12.
+
+</p><p class="rfcparagraph">   Interoperability considerations:  Described in [RFC7159]
+
+   Published specification:  [RFC7159]
+
+   Applications that use this media type:
+      JSON has been used to exchange data between applications written
+      in all of these programming languages: ActionScript, C, C#,
+      Clojure, ColdFusion, Common Lisp, E, Erlang, Go, Java, JavaScript,
+      Lua, Objective CAML, Perl, PHP, Python, Rebol, Ruby, Scala, and
+      Scheme.
+   Additional information:
+      Magic number(s): n/a
+      File extension(s): .json
+      Macintosh file type code(s): TEXT
+
+   Person & email address to contact for further information:
+      IESG
+      <iesg@ietf.org>
+
+   Intended usage:  COMMON
+
+   Restrictions on usage:  none
+
+   Author:
+      Douglas Crockford
+      <douglas@crockford.com>
+
+   Change controller:
+      IESG
+      <iesg@ietf.org>
+
+   Note:  No "charset" parameter is defined for this registration.
+      Adding one really has no effect on compliant recipients.
+
+</p><p class="rfcparagraph">	<a name="section-12"><h2>12.   Security Considerations</h2></a>
+
+   Generally, there are security issues with scripting languages.  JSON
+   is a subset of JavaScript but excludes assignment and invocation.
+
+</p><p class="rfcparagraph">   Since JSON's syntax is borrowed from JavaScript, it is possible to
+   use that language's "eval()" function to parse JSON texts.  This
+   generally constitutes an unacceptable security risk, since the text
+   could contain executable code along with data declarations.  The same
+   consideration applies to the use of eval()-like functions in any
+   other programming language in which JSON texts conform to that
+   language's syntax.
+	<a name="section-13"><h2>13.   Examples</h2></a>
+
+   This is a JSON object:
+
+</p><p class="rfcparagraph">      {
+        "Image": {
+            "Width":  800,
+            "Height": 600,
+            "Title":  "View from 15th Floor",
+            "Thumbnail": {
+                "Url":    "http://www.example.com/image/481989943",
+                "Height": 125,
+                "Width":  100
+            },
+            "Animated" : false,
+            "IDs": [116, 943, 234, 38793]
+          }
+      }
+
+   Its Image member is an object whose Thumbnail member is an object and
+   whose IDs member is an array of numbers.
+
+</p><p class="rfcparagraph">   This is a JSON array containing two objects:
+
+</p><p class="rfcparagraph">      [
+        {
+           "precision": "zip",
+           "Latitude":  37.7668,
+           "Longitude": -122.3959,
+           "Address":   "",
+           "City":      "SAN FRANCISCO",
+           "State":     "CA",
+           "Zip":       "94107",
+           "Country":   "US"
+        },
+        {
+           "precision": "zip",
+           "Latitude":  37.371991,
+           "Longitude": -122.026020,
+           "Address":   "",
+           "City":      "SUNNYVALE",
+           "State":     "CA",
+           "Zip":       "94085",
+           "Country":   "US"
+        }
+      ]
+   Here are three small JSON texts containing only values:
+
+</p><p class="rfcparagraph">   "Hello world!"
+
+   42
+
+   true
+
+	<a name="section-14"><h2>14.   Contributors</h2></a>
+
+   RFC 4627 was written by Douglas Crockford.  This document was
+   constructed by making a relatively small number of changes to that
+   document; thus, the vast majority of the text here is his.
+
+</p><p class="rfcparagraph">	<a name="section-15"><h2>15.   References</h2></a>
+
+	<a name="section-15.1"><h3>15.1   Normative References</h3></a>
+
+   [IEEE754]  IEEE, "IEEE Standard for Floating-Point Arithmetic", IEEE
+              Standard 754, August 2008,
+              <http://grouper.ieee.org/groups/754/>.
+
+</p><p class="rfcparagraph">   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">   [RFC5234]  Crocker, D. and P. Overell, "Augmented BNF for Syntax
+              Specifications: ABNF", STD 68, RFC 5234, January 2008.
+
+</p><p class="rfcparagraph">   [UNICODE]  The Unicode Consortium, "The Unicode Standard",
+              <http://www.unicode.org/versions/latest/>.
+
+</p><p class="rfcparagraph">	<a name="section-15.2"><h3>15.2   Informative References</h3></a>
+
+   [ECMA-262] Ecma International, "ECMAScript Language Specification
+              Edition 5.1", Standard ECMA-262, June 2011,
+              <http://www.ecma-international.org/publications/standards/
+              Ecma-262.htm>.
+
+</p><p class="rfcparagraph">   [ECMA-404] Ecma International, "The JSON Data Interchange Format",
+              Standard ECMA-404, October 2013,
+              <http://www.ecma-international.org/publications/standards/
+              Ecma-404.htm>.
+
+</p><p class="rfcparagraph">   [Err3607]  RFC Errata, Errata ID 3607, RFC 3607,
+              <http://www.rfc-editor.org>.
+   [Err607]   RFC Errata, Errata ID 607, RFC 607,
+              <http://www.rfc-editor.org>.
+
+</p><p class="rfcparagraph">   [RFC4627]  Crockford, D., "The application/json Media Type for
+              JavaScript Object Notation (JSON)", RFC 4627, July 2006.
+Appendix A.  Changes from RFC 4627
+
+   This section lists changes between this document and the text in RFC
+   4627.
+
+</p><p class="rfcparagraph">   o  Changed the title and abstract of the document.
+
+</p><p class="rfcparagraph">   o  Changed the reference to [UNICODE] to be not version specific.
+
+</p><p class="rfcparagraph">   o  Added a "Specifications of JSON" section.
+
+</p><p class="rfcparagraph">   o  Added an "Introduction to This Revision" section.
+
+</p><p class="rfcparagraph">   o  Changed the definition of "JSON text" so that it can be any JSON
+      value, removing the constraint that it be an object or array.
+
+</p><p class="rfcparagraph">   o  Added language about duplicate object member names, member
+      ordering, and interoperability.
+
+</p><p class="rfcparagraph">   o  Clarified the absence of a requirement that values in an array be
+      of the same JSON type.
+
+</p><p class="rfcparagraph">   o  Applied erratum #607 from RFC 4627 to correctly align the artwork
+      for the definition of "object".
+
+</p><p class="rfcparagraph">   o  Changed "as sequences of digits" to "in the grammar below" in the
+      "Numbers" section, and made base-10-ness explicit.
+
+</p><p class="rfcparagraph">   o  Added language about number interoperability as a function of
+      IEEE754, and added an IEEE754 reference.
+
+</p><p class="rfcparagraph">   o  Added language about interoperability and Unicode characters and
+      about string comparisons.  To do this, turned the old "Encoding"
+      section into a "String and Character Issues" section, with three
+      subsections: "Character Encoding", "Unicode Characters", and
+      "String Comparison".
+
+</p><p class="rfcparagraph">   o  Changed guidance in the "Parsers" section to point out that
+      implementations may set limits on the range "and precision" of
+      numbers.
+
+</p><p class="rfcparagraph">   o  Updated and tidied the "IANA Considerations" section.
+
+</p><p class="rfcparagraph">   o  Made a real "Security Considerations" section and lifted the text
+      out of the previous "IANA Considerations" section.
+   o  Applied erratum #3607 from RFC 4627 by removing the security
+      consideration that begins "A JSON text can be safely passed" and
+      the JavaScript code that went with that consideration.
+
+</p><p class="rfcparagraph">   o  Added a note to the "Security Considerations" section pointing out
+      the risks of using the "eval()" function in JavaScript or any
+      other language in which JSON texts conform to that language's
+      syntax.
+
+</p><p class="rfcparagraph">   o  Added a note to the "IANA Considerations" clarifying the absence
+      of a "charset" parameter for the application/json media type.
+
+</p><p class="rfcparagraph">   o  Changed "100" to 100 and added a boolean field, both in the first
+      example.
+
+</p><p class="rfcparagraph">   o  Added examples of JSON texts with simple values, neither objects
+      nor arrays.
+
+</p><p class="rfcparagraph">   o  Added a "Contributors" section crediting Douglas Crockford.
+
+</p><p class="rfcparagraph">   o  Added a reference to RFC 4627.
+
+</p><p class="rfcparagraph">   o  Moved the ECMAScript reference from Normative to Informative and
+      updated it to reference ECMAScript 5.1, and added a reference to
+      ECMA 404.
+
+</p><p class="rfcparagraph">Author's Address
+
+   Tim Bray (editor)
+   Google, Inc.
+
+</p>   EMail: tbray@textuality.com
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Bray                         Standards Track                   [Page 16]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

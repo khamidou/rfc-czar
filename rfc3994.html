@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                     H. Schulzrinne<br>Request for Comments: 3994                                   Columbia U.<br>Category: Standards Track                                   January 2005<br><br></p>
+                  <h1>
+        Indication of Message Composition for Instant Messaging</h1>
+                  <h2>Status of This Memo</h2>
+
+   This document specifies an Internet standards track protocol for the
+   Internet community, and requests discussion and suggestions for
+   improvements.  Please refer to the current edition of the "Internet
+   Official Protocol Standards" (STD 1) for the standardization state
+   and status of this protocol.  Distribution of this memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (2005).<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   In instant messaging (IM) systems, it is useful to know during an IM
+   conversation whether the other party is composing a message; e.g.,
+   typing or recording an audio message.  This document defines a new
+   status message content type and XML namespace that conveys
+   information about a message being composed.  The status message can
+   indicate the composition of a message of any type, including text,
+   voice, or video.  The status messages are delivered to the instant
+   messaging recipient in the same manner as the instant messages
+   themselves.
+<h2>Table of Contents</h2>
+<a href="#section-1" class="">1. Introduction . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2" class="">2. Terminology and Conventions  . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3" class="">3. Description  . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.1" class="indent-1">3.1. Overview . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.2" class="indent-1">3.2. Message Composer Behavior  . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.3" class="indent-1">3.3. Status Message Receiver Behavior . . . . . . . . . . . </a><br>
+<a href="#section-3.4" class="indent-1">3.4. Message Content  . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3.5" class="indent-1">3.5. Additional Status Information  . . . . . . . . . . . . </a><br>
+<a href="#section-4" class="">4. Using the Status Message . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-5" class="">5. Examples . . . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-6" class="">6. XML Document Format  . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-6.1" class="indent-1">6.1. XML Schema . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-7" class="">7. Security Considerations  . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-8" class="">8. IANA Considerations  . . . . . . . . . . . . . . . . . . . . </a><br>
+       8.1.  Content-Type Registration for
+             'application/im-iscomposing+xml' . . . . . . . . . . . . 10
+       8.2.  URN Sub-Namespace Registration for
+             'urn:ietf:params:xml:ns:im-iscomposing'  . . . . . . . . 11
+<a href="#section-8.3" class="indent-1">8.3. Schema Registration  . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-9" class="">9. Acknowledgements . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-10" class="">10. References . . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-10.1" class="indent-1">10.1. Normative References . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-10.2" class="indent-1">10.2. Informative References . . . . . . . . . . . . . . . . </a><br>
+   Author's Address . . . . . . . . . . . . . . . . . . . . . . . . . 12
+   Full Copyright Statement . . . . . . . . . . . . . . . . . . . . . 13
+
+	<a name="section-1"><h2>1.   Introduction</h2></a>
+
+   By definition, instant messaging (IM) is message based:  A user
+   composes a message by, for example, typing, speaking, or recording a
+   video clip.  This message is then sent to one or more recipients.
+   Unlike email, instant messaging is often conversational, so the other
+   party is waiting for a response.  If no response is forthcoming, a
+   participant in an instant messaging conversation may erroneously
+   assume either that the communication partner has left or that it is
+   her turn to type again, leading to two messages "crossing on the
+   wire".
+
+</p><p class="rfcparagraph">   To avoid this uncertainty, a number of commercial instant messaging
+   systems feature an "is-typing" indication sent as soon as one party
+   starts typing a message.  In this document, we describe a generalized
+   version of this indication, called the isComposing status message.
+   As described in Section 3 in more detail, a status message is
+   delivered to the instant message recipient in the same manner as are
+   the messages themselves.  The isComposing status messages can
+   announce the composition of any media type, not just text.  For
+   example, it might be used if somebody is recording an audio or video
+   clip.  In addition, it can be extended to convey other instant
+   messaging user states in the future.  Below, we will call these
+   messages "status messages" for brevity.
+
+</p><p class="rfcparagraph">   The status messages are carried as XML, as instances of the XML
+   schema defined in Section 6, and labeled as an
+   application/im-iscomposing+xml content type.
+
+</p><p class="rfcparagraph">   These status messages can be considered somewhat analogous to the
+   comfort noise packets that are transmitted in silence-suppressed
+   interactive voice conversations.
+
+</p><p class="rfcparagraph">      Events and extensions to presence, such as PIDF [6], were also
+      considered but have a number of disadvantages.  They add more
+      overhead, as an explicit and periodic subscription is required.
+      For page-mode delivery, subscribing to the right user agent and
+      set of messages may not be easy.  An in-band, message-based
+      mechanism is also easier to translate across heterogeneous instant
+      messaging systems.
+
+</p><p class="rfcparagraph">   The mechanism described here aims to satisfy the requirements in [7].
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.   Terminology and Conventions</h2></a>
+
+   This memo makes use of the vocabulary defined in the IMPP Model
+   document [1].  In this memo, terms such as CLOSED, INSTANT MESSAGE,
+   OPEN, PRESENCE SERVICE, PRESENTITY, WATCHER, and WATCHER USER AGENT
+   are used with the same meaning defined therein.  The key words MUST,
+   MUST NOT, REQUIRED, SHOULD, SHOULD NOT, RECOMMENDED, MAY, and
+   OPTIONAL in this document are to be interpreted as described in BCP
+   14, RFC 2119 [2].
+
+</p><p class="rfcparagraph">   This document discusses two kinds of messages; namely, the instant
+   message (IM) conveying actual content between two or more users
+   engaged in an instant messaging conversation, and the status message,
+   described in this document, which indicates the current composing
+   status to the other participants in a conversation.  We use the terms
+   "content message" and "status message" for these two message types.
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.   Description</h2></a>
+
+	<a name="section-3.1"><h3>3.1   Overview</h3></a>
+
+   We model the user of an instant messaging system as being in one of
+   several states, in this document limited to "idle" and "active".  By
+   default, the user is in "idle" state, both before starting to compose
+   a message and after sending it.
+	<a name="section-3.2"><h3>3.2   Message Composer Behavior</h3></a>
+
+   Only the instant messaging user agent actively composing a content
+   message generates status messages indicating the current state.  When
+   the user starts composing a content message (the actual instant
+   message), the state becomes "active", and an isComposing status
+   message containing a <state> element indicating "active" is sent to
+   the recipient of the content message being composed.  As long as the
+   user continues to produce instant message content, the user remains
+   in state "active".
+
+</p><p class="rfcparagraph">   There are two sender timers: the active-state refresh interval, and
+   the idle time-out interval.
+
+</p><p class="rfcparagraph">   The active-state refresh interval determines how often "active" state
+   messages are sent while the composer remains in "active" state.  The
+   interval is chosen by the composing user and indicated in the
+   <refresh> element in the status message, expressed in integer
+   seconds.  Each transmission of the isComposing message resets the
+   timer.  The interval SHOULD be no shorter than 60 seconds.  A message
+   composer MAY decide not to send active-state refresh messages at all.
+   This is indicated by omitting the refresh interval; this will cause
+   the receiver to assume that it has gone idle after 120 seconds.  (In
+   most cases, the content message will have been sent by then.)  No
+   refresh messages are sent in "idle" state.
+
+</p><p class="rfcparagraph">      The active-state refresh mechanism deals with the case in which
+      the user logs off or the application crashes before the content
+      message is completed.
+
+</p><p class="rfcparagraph">   If the user stops composing for more than a configured time interval,
+   the idle timeout, the state transitions to "idle", and an "idle"
+   status message is sent.  If the user starts composing again while in
+   "idle" state, the state transitions to "active", and the
+   corresponding status message is sent.  Unless otherwise configured by
+   the user, the idle timeout SHOULD have a default value of 15 seconds.
+
+</p><p class="rfcparagraph">   If a content message is sent before the idle threshold expires, no
+   "idle" state indication is needed.  Thus, in most cases, only one
+   status message is generated for each content message.  In any event,
+   the message rate is limited to one status message per refresh
+   threshold interval.
+   The state transitions are shown in Figure 1.
+
+</p><p class="rfcparagraph"><pre>                      +-------------+
+                      |+-----------+|
+                      ||           ||
+               +------>|   idle    |<--------+
+               |      ||           ||        |
+               |      |+-----------+|        |
+               |      +------+------+        |
+   content     |             |               | idle timeout
+   msg. sent   |             | composing     | w/o activity
+   ----------- |             | ------------- | ------------------
+    --         |             | "active" msg. | "idle" status msg.
+               |             |               |
+               |      +------V------+        |
+               |      |             |        |
+               |      |             |        |
+               |      |             |        |
+               +------+   active    +--------+
+                      |             |
+                      |             |------+
+                      +------^------+      | refresh timeout
+                             |             | --------------------
+                             |             | "active" status msg.
+                             +-------------+
+
+                   Figure 1. Sender State Diagram
+
+	<a name="section-3.3"><h3>3.3   Status Message Receiver Behavior</h3></a>
+
+   The status message receiver uses the status messages to determine the
+   state of the content message sender.  If the most recent "active"
+   status message contained a <refresh> value, the refresh time-out is
+   set to that value; otherwise, it is 120 seconds.  The state at the
+   receiver transitions from "active" to "idle" under three conditions:
+
+</p><p class="rfcparagraph">      1.  A status message with status "idle" is received.
+      2.  A content message is received.
+      3.  The refresh interval expires.
+
+</p><p class="rfcparagraph">   Receivers MUST be able to handle multiple consecutive isComposing
+   messages with "active" state, regardless of the refresh interval.
+   The state transitions are shown in Figure 2.
+
+</p><p class="rfcparagraph">                           +-------------+
+                           |+-----------+|
+                           ||           ||
+                    +------>|   idle    |<------+
+                    |      ||           ||      |
+                    |      |+-----------+|      |
+                    |      +------+------+      |
+                    |             |             |
+       "idle" recd. |             |"active" msg.| refresh timeout
+   or content recd. |             |             | or 120s
+                    |             |             |
+                    |      +------V------+      |
+                    |      |             |      |
+                    |      |             |      |
+                    |      |             |      |
+                    +------+   active    +------+
+                           |             |
+                           |             |
+                           +-------------+
+</pre>
+
+
+                 Figure 2. Receiver State Diagram
+
+	<a name="section-3.4"><h3>3.4   Message Content</h3></a>
+
+   We briefly describe the message content to summarize the discussion
+   above.  This description is non-normative.  The schema (Section 6)
+   should be consulted for the normative message format.
+
+</p><p class="rfcparagraph">   The message consists of an <isComposing> element, with a mandatory
+   <state> element indicating the composer state; i.e., idle or active.
+   In addition, there are three optional elements: <lastactive>,
+   indicating the time of last activity; <contenttype>, the type of
+   message being created; and <refresh>, the time interval after which
+   the receiver can expect an update from the composer.  Details are
+   given in the following section.
+
+</p><p class="rfcparagraph">	<a name="section-3.5"><h3>3.5   Additional Status Information</h3></a>
+
+   The status message contains additional optional elements to provide
+   further details on the composition activity.  Any of these can appear
+   in both "active" and "idle" state messages.
+   The optional <lastactive> element describes the absolute time when
+   the user last added or edited content.
+
+</p><p class="rfcparagraph">   The optional <contenttype> element indicates the type of medium in
+   which the messaging terminal is currently composing.  It can contain
+   either just a MIME media type, such as "audio" or "text", or a media
+   type and subtype, such as "text/html".  It is best understood as a
+   hint to the user, not a guarantee, that the actual content message
+   will indeed contain only the content indicated.  It allows the human
+   recipient to be prepared for the likely message format.
+
+</p><p class="rfcparagraph">   To further describe message composition, the XML schema or the set of
+   allowable state names can be extended in future documents.
+   Recipients of status messages implementing this specification without
+   extensions MUST treat state tokens other than "idle" and "active" as
+   "idle".  Additional elements MUST use their own namespaces and MUST
+   be designed so that receivers can safely ignore such extensions.
+   Adding elements to the namespace defined in this document is not
+   permitted.
+
+</p><p class="rfcparagraph">   The isComposing status message MAY be carried in CPIM messages [3].
+
+</p><p class="rfcparagraph">      Such a wrapper is particularly useful if messages are relayed by a
+      conference server since the CPIM message maintains the identity of
+      the original composer.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.   Using the Status Message</h2></a>
+
+   The isComposing status message can be used with either page mode or
+   session mode, although session mode is a more natural fit.  In
+   session mode, the status message is sent as part of the messaging
+   stream.  Its usage is negotiated just like any other media type in
+   that stream, with details depending on the session mode protocol.
+
+</p><p class="rfcparagraph">   Sending the status messages within the session-mode messaging stream
+   has at least three benefits.  First, it ensures proper ordering and
+   synchronization with the actual content messages being composed.  In
+   messaging systems that guarantee in-order delivery of messages, this
+   approach avoids having an active indication appear at the receiver
+   after the actual message has been delivered, due to message
+   reordering across two delivery mechanisms.
+
+</p><p class="rfcparagraph">   Secondly, end-to-end security can be applied to the messages.
+   Thirdly, session negotiation mechanisms can be used to turn it on and
+   off at any time, and even to negotiate its use in a single direction
+   at a time.
+   Usage with page mode is also straightforward: The status message is
+   carried as the body of a page mode message.  In SIP-based IM, The
+   composer MUST cease transmitting status messages if the receiver
+   returned a 415 status code (Unsupported Media Type) in response to a
+   MESSAGE request containing the status indication.
+
+</p><p class="rfcparagraph">   The sender cannot be assured that the status message is delivered
+   before the actual content being composed arrives.  However, SIP page
+   mode is limited to one unacknowledged message, so out-of-order
+   delivery is unlikely, albeit still possible if proxies are involved.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.   Examples</h2></a>
+
+   <?xml version="1.0" encoding="UTF-8"?>
+   <isComposing xmlns="urn:ietf:params:xml:ns:im-iscomposing"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="urn:ietf:params:xml:ns:im-composing
+   iscomposing.xsd">
+     <state>active</state>
+     <contenttype>text/plain</contenttype>
+     <refresh>90</refresh>
+   </isComposing>
+
+   <?xml version="1.0" encoding="UTF-8"?>
+   <isComposing xmlns="urn:ietf:params:xml:ns:im-iscomposing"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="urn:ietf:params:xml:ns:im-composing
+   iscomposing.xsd">
+     <state>idle</state>
+     <lastactive>2003-01-27T10:43:00Z</lastactive>
+     <contenttype>audio</contenttype>
+   </isComposing>
+
+	<a name="section-6"><h2>6.   XML Document Format</h2></a>
+
+   An isComposing document is an XML document that MUST be well formed
+   and SHOULD be valid.  isComposing documents MUST be based on XML 1.0
+   and MUST be encoded by using UTF-8.  This specification makes use of
+   XML namespaces for identifying isComposing documents.  The namespace
+   URI for elements defined for this purpose is a URN using the
+   namespace identifier 'ietf'.  This URN is:
+
+</p><p class="rfcparagraph">      urn:ietf:params:xml:ns:im-iscomposing
+	<a name="section-6.1"><h3>6.1   XML Schema</h3></a>
+
+   <?xml version="1.0" encoding="UTF-8"?>
+   <xs:schema targetNamespace="urn:ietf:params:xml:ns:im-iscomposing"
+     elementFormDefault="qualified"
+     attributeFormDefault="unqualified"
+     xmlns:xs="http://www.w3.org/2001/XMLSchema"
+     xmlns:tns="urn:ietf:params:xml:ns:im-iscomposing">
+     <xs:element name="isComposing">
+       <xs:complexType>
+         <xs:sequence>
+           <xs:element name="state" type="xs:string"/>
+           <xs:element name="lastactive" type="xs:dateTime"
+             minOccurs="0"/>
+           <xs:element name="contenttype" type="xs:string"
+             minOccurs="0"/>
+           <xs:element name="refresh" type="xs:positiveInteger"
+             minOccurs="0"/>
+           <xs:any namespace="##other" processContents="lax"
+             minOccurs="0" maxOccurs="unbounded"/>
+         </xs:sequence>
+       </xs:complexType>
+     </xs:element>
+   </xs:schema>
+
+	<a name="section-7"><h2>7.   Security Considerations</h2></a>
+
+   The isComposing indication provides a fine-grained view of the
+   activity of the entity composing and thus deserves particularly
+   careful confidentiality protection so that only the intended
+   recipient of the message will receive the isComposing indication.
+
+</p><p class="rfcparagraph">   Since the status messages are carried by using the IM protocol
+   itself, all security considerations of the underlying IM protocol
+   also apply to the isComposing status messages.
+
+</p><p class="rfcparagraph">   There are potential privacy issues in sending isComposing status
+   messages before an actual conversation has been established between
+   the communicating users.  A status message may be sent even if the
+   user later abandons the message.  It is RECOMMENDED that isComposing
+   indications in page mode are only sent when a message is being
+   composed as a reply to an earlier message.  This document does not
+   prescribe how an implementation detects whether a message is in
+   response to an earlier one in page mode, but elapsed time or user
+   interface behavior might be used as hints.
+	<a name="section-8"><h2>8.   IANA Considerations</h2></a>
+
+	<a name="section-8.1"><h3>8.1   Content-Type Registration for 'application/im-iscomposing+xml'</h3></a>
+
+   To: ietf-types@iana.org
+   Subject: Registration of MIME media type application/
+      im-iscomposing+xml
+   MIME media type name: application
+   MIME subtype name: im-iscomposing+xml
+   Required parameters: (none)
+   Optional parameters: charset; Indicates the character encoding of
+      enclosed XML.  Default is UTF-8.
+   Encoding considerations: Uses XML, which can employ 8-bit characters,
+      depending on the character encoding used.  See RFC 3023 [4],
+      section 3.2.
+   Security considerations: This content type is designed to carry
+      information about current user activity, which may be considered
+      private information.  Appropriate precautions should be adopted to
+      limit disclosure of this information.
+   Interoperability considerations: This content type provides a common
+      format for exchange of composition activity information.
+   Published specification: RFC 3994
+   Applications which use this media type: Instant messaging systems.
+   Additional information: none
+   Person & email address to contact for further information: Henning
+      Schulzrinne, hgs@cs.columbia.edu
+   Intended usage: LIMITED USE
+   Author/Change controller: This specification is a work item of the
+      IETF SIMPLE working group, with the mailing list address
+      simple@ietf.org.
+   Other information: This media type is a specialization of
+      application/xml RFC 3023 [4], and many of the considerations
+      described there also apply to application/im-iscomposing+xml.
+	<a name="section-8.2"><h3>8.2   URN Sub-Namespace Registration for</h3></a>
+      'urn:ietf:params:xml:ns:im-iscomposing'
+
+   URI: urn:ietf:params:xml:ns:im-iscomposing
+   Description: This is the XML namespace for XML elements defined by
+      RFC 3994 to describe composition activity by an instant messaging
+      client using the application/im-iscomposing+xml content type.
+   Registrant Contact: IETF, SIMPLE working group, simple@ietf.org,
+      Henning Schulzrinne, hgs@cs.columbia.edu
+   XML:
+
+</p><p class="rfcparagraph">    BEGIN
+      <?xml version="1.0"?>
+      <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.0//EN"
+      "http://www.w3.org/TR/xhtml-basic/xhtml-basic10.dtd">
+      <html xmlns="http://www.w3.org/1999/xhtml">
+      <head>
+           <meta http-equiv="content-type"
+           content="text/html;charset=iso-8859-1"/>
+           <title>Is-composing Indication for Instant Messaging</title>
+      </head>
+      <body>
+          <h1>Namespace for SIMPLE iscomposing extension</h1>
+          <h2>urn:ietf:params:xml:ns:im-composing</h2>
+          <p>See <a href="[URL of published RFC]">RFC3994</a>.</p>
+       </body>
+       </html>
+      END
+
+	<a name="section-8.3"><h3>8.3   Schema Registration</h3></a>
+
+   This section registers a new XML schema per the procedures in [5].
+
+</p><p class="rfcparagraph">   URI: urn:ietf:params:xml:schema:im-composing
+   Registrant Contact: IETF, SIMPLE working group, (simple@ietf.org),
+      Henning Schulzrinne (hgs@cs.columbia.edu).
+
+</p><p class="rfcparagraph">   The XML for this schema can be found as the sole content of Section
+   6.1.
+
+</p><p class="rfcparagraph">	<a name="section-9"><h2>9.   Acknowledgements</h2></a>
+
+   Ben Campbell, Miguel Garcia, Scott Hollenbeck, Christian Jansson,
+   Cullen Jennings, Hisham Khartabil, Allison Mankin, Aki Niemi,
+   Jonathan Rosenberg, and Xiaotao Wu provided helpful comments.
+	<a name="section-10"><h2>10.   References</h2></a>
+
+	<a name="section-10.1"><h3>10.1   Normative References</h3></a>
+
+   [1]  Day, M., Rosenberg, J., and H. Sugano, "A Model for Presence and
+        Instant Messaging", RFC 2778, February 2000.
+
+</p><p class="rfcparagraph">   [2]  Bradner, S., "Key words for use in RFCs to Indicate Requirement
+        Levels", BCP 14, RFC 2119, March 1997.
+
+</p><p class="rfcparagraph">   [3]  Klyne, G. and D. Atkins, "Common Presence and Instant Messaging
+        (CPIM): Message Format", RFC 3862, August 2004.
+
+</p><p class="rfcparagraph">   [4]  Murata, M., St. Laurent, S., and D. Kohn, "XML Media Types", RFC
+        3023, January 2001.
+
+</p><p class="rfcparagraph">   [5]  Mealling, M., "The IETF XML Registry", BCP 81, RFC 3688, January
+        2004.
+
+</p><p class="rfcparagraph">	<a name="section-10.2"><h3>10.2   Informative References</h3></a>
+
+   [6]  Sugano, H., Fujimoto, S., Klyne, G., Bateman, A., Carr, W., and
+        J. Peterson, "Presence Information Data Format (PIDF)", RFC
+        3863, August 2004.
+
+</p><p class="rfcparagraph">   [7]  Rosenberg, J., "Advanced Instant Messaging Requirements for the
+        Session Initiation Protocol  (SIP)", Work in Progress, February
+        2004.
+
+</p><p class="rfcparagraph">Author's Address
+
+   Henning Schulzrinne
+   Columbia University
+   Department of Computer Science
+   450 Computer Science Building
+   New York, NY  10027
+   US
+
+   Phone: +1 212 939 7004
+   EMail: hgs@cs.columbia.edu
+   URI:   http://www.cs.columbia.edu/~hgs
+Full Copyright Statement
+
+   Copyright (C) The Internet Society (2005).<br>
+
+</p><p class="rfcparagraph">   This document is subject to the rights, licenses and restrictions
+   contained in BCP 78, and except as set forth therein, the authors
+   retain all their rights.
+
+</p><p class="rfcparagraph">   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY AND THE INTERNET
+   ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED,
+   INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE
+   INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED
+   WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Intellectual Property
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the IETF's procedures with respect to rights in IETF Documents can
+   be found in BCP 78 and BCP 79.
+
+</p><p class="rfcparagraph">   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+</p><p class="rfcparagraph">   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at ietf-
+   ipr@ietf.org.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is currently provided by the
+   Internet Society.
+
+</p>
+
+
+
+
+
+Schulzrinne                 Standards Track                    [Page 13]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

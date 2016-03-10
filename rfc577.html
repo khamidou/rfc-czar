@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph">Network Working Group                                         D. Crocker
+Request for Comments: 577                                       UCLA-NMC
+NIC: 19356                                                  October 1973
+References: RFC 524, 539, 555
+
+
+                             Mail Priority
+
+   In RFC 539 (NIC--17644,3d:gy) Postel and I suggested that mail
+   senders be allowed to assign a degree of priority to their mail.
+   White (RFC 555--17993,6c:gy) objected to defining shades of urgency,
+   without having their effects upon the Mail Protocol server also
+   defined.
+
+</p><p class="rfcparagraph">   If priority levels were to be assigned by automata, I would agree
+   with Jim.  Unfortunately, the human sender of the mail will usually
+   be the one to assign the priority, and humans will not be consistent
+   in that assignment.
+
+</p><p class="rfcparagraph">   Also unfortunately, the concept of urgency is an integral part of
+   communication.  If it weren't, we could ignore its inclusion into the
+   MP.
+
+</p><p class="rfcparagraph">   Since distinctions in urgency are useful (necessary?) and since
+   humans will be the ones assigning specific degrees of urgency
+   (thereby making it impossible for server processes to automatically
+   do the "right thing" in response), we suggested only including the
+   INFORMATION as part of the protocol.  Let the human and server-
+   process receivers decide between themselves how the server-process
+   should deal with that information.
+
+</p><p class="rfcparagraph">   Now that I have argued all that, let me suggest interpretations for
+   urgency values.  This is so that programmers can have automata-
+   generated mail (e.g., notification of the status of previously sent
+   mail) carry reasonable urgency values:
+
+</p>      10  Phone in the middle of the night, if necessary.
+<a href="#section-9" class="">9 8  Deliver to user's terminal NOW</a><br>
+       6  Deliver to user's terminal only if user is at "exec"
+          level.
+<a href="#section-5" class="">5 4  Deliver immediately after sign-on or before sign-off</a><br>
+<a href="#section-2" class="">2 Deliver into standard mailbox</a><br>
+       0  Junk Mail
+         [ This RFC was put into machine readable form for entry ]
+         [ into the online RFC archives by  Martin Lyngvig 7/99 ]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Crocker                                                         [Page 2]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

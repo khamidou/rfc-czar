@@ -1,0 +1,1508 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title></title>
+  <link rel="stylesheet" href="rfc.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1></h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-'>
+      <td class=docs>
+        <p class="rfcparagraph"><p>Network Working Group                                         C. Elliott<br>Request for Comments: 3216                                 Cisco Systems<br>Category: Informational                                    D. Harrington<br>                                                      Enterasys Networks<br>                                                                J. Jason<br>                                                       Intel Corporation<br>                                                        J. Schoenwaelder<br>                                                              F. Strauss<br>                                                         TU Braunschweig<br>                                                                W. Weiss<br>                                                       Ellacoya Networks<br>                                                           December 2001<br><br></p>
+                  <h1>
+                            SMIng Objectives</h1>
+                  <h2>Status of this Memo</h2>
+
+   This memo provides information for the Internet community.  It does
+   not specify an Internet standard of any kind.  Distribution of this
+   memo is unlimited.
+
+</p><p class="rfcparagraph"><h2>Copyright Notice</h2>
+
+   Copyright (C) The Internet Society (2001).  All Rights Reserved.<br>
+
+</p><p class="rfcparagraph"><h2>Abstract</h2>
+
+   This document describes the objectives for a new data definition
+   language, suitable for the modeling of network management constructs,
+   that can be directly mapped into SNMP and COPS-PR protocol
+   operations.
+
+</p><p class="rfcparagraph">   The purpose of this document is to serve as a set of objectives that
+   a subsequent language specification should try to address.  It
+   captures the results of the working group discussions towards
+   consensus on the SMIng objectives.
+
+</p><p class="rfcparagraph">Table of Contents
+<a href="#section-1" class="">1. Introduction . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-2" class="">2. Motivation . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-3" class="">3. Background . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4" class="">4. Specific Objectives for SMIng  . . . . . . . . . . . . . </a><br>
+<a href="#section-4.1" class="indent-1">4.1 Accepted Objectives  . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.1.1" class="indent-2">4.1.1 The Set of Specification Documents . . . . . . . . . . . </a><br>
+<a href="#section-4.1.2" class="indent-2">4.1.2 Textual Representation . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.1.3" class="indent-2">4.1.3 Human Readability  . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.1.4" class="indent-2">4.1.4 Rigorously Defined Syntax  . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.1.5" class="indent-2">4.1.5 Accessibility  . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.1.6" class="indent-2">4.1.6 Language Extensibility . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.1.7" class="indent-2">4.1.7 Special Characters in Text . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.1.8" class="indent-2">4.1.8 Naming . . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.1.9" class="indent-2">4.1.9 Namespace Control  . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.1.10" class="indent-2">4.1.10 Modules  . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.1.11" class="indent-2">4.1.11 Module Conformance . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.1.12" class="indent-2">4.1.12 Arbitrary Unambiguous Identities . . . . . . . . . . . . </a><br>
+<a href="#section-4.1.13" class="indent-2">4.1.13 Protocol Independence  . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.1.14" class="indent-2">4.1.14 Protocol Mapping . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.1.15" class="indent-2">4.1.15 Translation to Other Data Definition Languages . . . . . </a><br>
+<a href="#section-4.1.16" class="indent-2">4.1.16 Base Data Types  . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.1.17" class="indent-2">4.1.17 Enumerations . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.1.18" class="indent-2">4.1.18 Discriminated Unions . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.1.19" class="indent-2">4.1.19 Instance Pointers  . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.1.20" class="indent-2">4.1.20 Row Pointers . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.1.21" class="indent-2">4.1.21 Constraints on Pointers  . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.1.22" class="indent-2">4.1.22 Base Type Set  . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.1.23" class="indent-2">4.1.23 Extended Data Types  . . . . . . . . . . . . . . . . . . </a><br>
+   4.1.24 Units, Formats, and Default Values of Defined Types and
+          Attributes . . . . . . . . . . . . . . . . . . . . . . . .  13
+<a href="#section-4.1.25" class="indent-2">4.1.25 Table Existence Relationships  . . . . . . . . . . . . . </a><br>
+   4.1.26 Table Existence Relationships (2)  . . . . . . . . . . . .  14<br>
+<a href="#section-4.1.27" class="indent-2">4.1.27 Attribute Groups . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.1.28" class="indent-2">4.1.28 Containment  . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.1.29" class="indent-2">4.1.29 Single Inheritance . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.1.30" class="indent-2">4.1.30 Reusable vs. Final Attribute Groups  . . . . . . . . . . </a><br>
+<a href="#section-4.1.31" class="indent-2">4.1.31 Events . . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.1.32" class="indent-2">4.1.32 Creation/Deletion  . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.1.33" class="indent-2">4.1.33 Range and Size Constraints . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.1.34" class="indent-2">4.1.34 Uniqueness . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.1.35" class="indent-2">4.1.35 Extension Rules  . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.1.36" class="indent-2">4.1.36 Deprecate Use of IMPLIED Keyword . . . . . . . . . . . . </a><br>
+<a href="#section-4.1.37" class="indent-2">4.1.37 No Redundancy  . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.1.38" class="indent-2">4.1.38 Compliance and Conformance . . . . . . . . . . . . . . . </a><br>
+   4.1.39 Allow Refinement of All Definitions in Conformance
+          Statements . . . . . . . . . . . . . . . . . . . . . . . .  18
+<a href="#section-4.1.40" class="indent-2">4.1.40 Categories . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.1.41" class="indent-2">4.1.41 Core Language Keywords vs. Defined Identifiers . . . . . </a><br>
+<a href="#section-4.1.42" class="indent-2">4.1.42 Instance Naming  . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.1.43" class="indent-2">4.1.43 Length of Identifiers  . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.1.44" class="indent-2">4.1.44 Assign OIDs in the Protocol Mappings . . . . . . . . . . </a><br>
+<a href="#section-4.2" class="indent-1">4.2 Nice-to-Have Objectives  . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.2.1" class="indent-2">4.2.1 Methods  . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.2.2" class="indent-2">4.2.2 Unions . . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.2.3" class="indent-2">4.2.3 Float Data Types . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.2.4" class="indent-2">4.2.4 Comments . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.2.5" class="indent-2">4.2.5 Referencing Tagged Rows  . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.2.6" class="indent-2">4.2.6 Arrays . . . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.2.7" class="indent-2">4.2.7 Internationalization . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.2.8" class="indent-2">4.2.8 Separate Data Modelling from Management Protocol Mapping </a><br>
+<a href="#section-4.3" class="indent-1">4.3 Rejected Objectives  . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.3.1" class="indent-2">4.3.1 Incomplete Translations  . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.3.2" class="indent-2">4.3.2 Attribute Value Constraints  . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.3.3" class="indent-2">4.3.3 Attribute Transaction Constraints  . . . . . . . . . . . </a><br>
+<a href="#section-4.3.4" class="indent-2">4.3.4 Method Constraints . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.3.5" class="indent-2">4.3.5 Agent Capabilities . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.3.6" class="indent-2">4.3.6 Relationships  . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.3.7" class="indent-2">4.3.7 Procedures . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.3.8" class="indent-2">4.3.8 Associations . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.3.9" class="indent-2">4.3.9 Association Cardinalities  . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.3.10" class="indent-2">4.3.10 Categories of Modules  . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.3.11" class="indent-2">4.3.11 Mapping Modules to Files . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.3.12" class="indent-2">4.3.12 Simple Grammar . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.3.13" class="indent-2">4.3.13 Place of Module Information  . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.3.14" class="indent-2">4.3.14 Module Namespace . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-4.3.15" class="indent-2">4.3.15 Hyphens in Identifiers . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-5" class="">5. Security Considerations  . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-6" class="">6. Acknowledgements . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-7" class="">7. References . . . . . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-8" class="">8. Authors' Addresses . . . . . . . . . . . . . . . . . . . </a><br>
+<a href="#section-9" class="">9. Full Copyright Statement . . . . . . . . . . . . . . . . </a><br>
+
+	<a name="section-1"><h2>1.  Introduction</h2></a>
+
+   This document describes the objectives for a new data definition
+   language that can be mapped into SNMP [1], [2] and COPS-PR [3]
+   protocol operations.  It may also be translated into SMIv2 [4], [5],
+   [6] MIBs and SPPI [7] PIBs.  Concepts such as attributes, attribute
+   groups, methods, conventions for organization into reusable data
+   structures, and mechanisms for representing relationships are
+   discussed.
+
+</p><p class="rfcparagraph">	<a name="section-2"><h2>2.  Motivation</h2></a>
+
+   As networking technology has evolved, a diverse set of technologies
+   has been deployed to manage the resulting products.  These vary from
+   Web based products, to standard management protocols and text
+   scripts.  The underlying systems to be manipulated are represented in
+   varying ways including implicitly in the system programming, via
+   proprietary data descriptions, or with standardized descriptions
+   using a range of technologies including MIBs, PIBs, or LDAP schemas.
+   The result is that management interfaces for network protocols,
+   services, and applications such as Differentiated Services may be
+   represented in many different, inconsistent fashions.
+   The SMIng working group has been chartered to define a new data
+   definition language that will eliminate the need for a separate SMIv2
+   and SPPI language.  That is, the new language should address the
+   needs for the current SMIv2 and SPPI languages so that over time we
+   can all use the new language instead.
+
+</p><p class="rfcparagraph">   Another motivation is to permit a more expressive and complete
+   representation of the modeled information.  Examples of additional
+   expressiveness and completeness that are considered are the ability
+   to formally define table existence relationships, the expression of
+   instance creation/deletion capabilities, and the ability to define
+   attribute groups using inheritance.  These additional features are
+   discussed in subsequent sections.
+
+</p><p class="rfcparagraph">   It has been recognized that the two main goals of (a) merging
+   SMIv2/SPPI and (b) enhancing the state of art in network management
+   data modeling can lead to conflicts.  In such cases, the SMIng
+   working group's consensus is to focus on enhancing the state of art
+   in network management data modeling.
+
+</p><p class="rfcparagraph">	<a name="section-3"><h2>3.  Background</h2></a>
+
+   The Network Management Research Group (NMRG) of the Internet Research
+   Task Force (IRTF) has researched the issues of creating a protocol-
+   independent data definition language that could be used by multiple
+   protocols.  Because SMIv2 and SPPI are very similar, the NMRG focused
+   on merging these two languages, but also researched ways to abstract
+   the objectives to produce a language that could be used for other
+   protocols, such as LDAP and Diameter.  The NMRG has published the
+   results of their work in a meanwhile expired Internet Draft, but has
+   submitted their specification as one proposal to consider in the
+   development of the SMIng language.
+
+</p><p class="rfcparagraph">   The SMIng Working Group has accepted their submission for
+   consideration, and to use their proposal to better understand the
+   objectives and possible obstacles to be overcome.  Where useful, the
+   NMRG proposal has been referenced in the details below.
+
+</p><p class="rfcparagraph">	<a name="section-4"><h2>4.  Specific Objectives for SMIng</h2></a>
+
+   The following sections define the objectives for the definition of a
+   new data definition language.  The objectives have been organized as
+   follows: accepted objectives (Section 4.1), nice-to-have objectives
+   (Section 4.2), and rejected objectives (Section 4.3).  Each objective
+   has the following information:
+
+</p><p class="rfcparagraph">   o  Type: a field that identifies the type of objective, using one of
+      the following values:
+      *  basic: considered a basic objective for SMIng and is contained
+         in SMIv2 and/or SPPI.
+
+</p><p class="rfcparagraph">      *  align: supported in different ways in SMIv2 and SPPI and they
+         must be aligned.
+
+</p><p class="rfcparagraph">      *  fix: considered a fix for a known problem in SMIv2 and/or SPPI.
+
+</p><p class="rfcparagraph">      *  new: considered a new feature.
+
+</p><p class="rfcparagraph">   o  From: a field that defines the origin of the objective and that
+      contains one or more of the following values:
+
+</p><p class="rfcparagraph">      *  SMI: exists in SMIv2.
+
+</p><p class="rfcparagraph">      *  SPPI: exists in SPPI.
+
+</p><p class="rfcparagraph">      *  NMRG: exists in the NMRG proposal, but not in SMIv2 or SPPI.
+
+</p><p class="rfcparagraph">      *  Charter: exists in working group charter.
+
+</p><p class="rfcparagraph">      *  WG: proposed during working group discussions.
+
+</p><p class="rfcparagraph">   o  Description: a quick description of the objective.
+
+</p><p class="rfcparagraph">   o  Motivation: rationale for the objective.
+
+</p><p class="rfcparagraph">   o  Notes: optional notes about an objective.  For example, for nice-
+      to-have or rejected this may contain reasoning why this objective
+      is not required by the SMIng working group, but justification why
+      it should be considered anyway.  Notes may be the opinions of the
+      participants in the discussion on objectives and as such should
+      not be taken as consensus of the working group or the
+      recommendation of the objectives editing team.
+
+</p><p class="rfcparagraph">	<a name="section-4.1"><h3>4.1  Accepted Objectives</h3></a>
+
+   This section represents the list of objectives that have been
+   accepted by the SMIng working group as worthwhile and therefore
+   deserving of further consideration.  Each of these objectives must be
+   evaluated by the working group to determine if the benefit incurs an
+   acceptable level of cost.  An accepted objective may subsequently be
+   rejected if the cost/benefit analysis determines that the benefit
+   does not justify the cost or that the objective is in direct conflict
+   with one or more other accepted objectives that are deemed more
+   important.
+	<a name="section-4.1.1"><h4>4.1.1  The Set of Specification Documents</h4></a>
+
+   Type: new
+
+   From: NMRG
+
+   Description: SMIv2 is defined in three documents, based on an
+      obsolete ITU ASN.1 specification.  SPPI is defined in one
+      document, based on SMIv2.  The core of SMIng must be defined in
+      one document and must be independent of external specifications.
+
+</p><p class="rfcparagraph">   Motivation: Self-containment.
+
+</p><p class="rfcparagraph">	<a name="section-4.1.2"><h4>4.1.2  Textual Representation</h4></a>
+
+   Type: basic
+
+   From: SMI, SPPI, WG
+
+   Description: SMIng definitions must be represented in a textual
+      format.
+
+</p><p class="rfcparagraph">   Motivation: General IETF consensus.
+
+</p><p class="rfcparagraph">	<a name="section-4.1.3"><h4>4.1.3  Human Readability</h4></a>
+
+   Type: basic
+
+   From: WG
+
+   Description: The syntax must make it easy for humans to directly read
+      and write SMIng modules.  It must be possible for SMIng module
+      authors to produce SMIng modules with text editing tools.
+
+</p><p class="rfcparagraph">   Motivation: The syntax must make it easy for humans to read and write
+      SMIng modules.
+
+</p><p class="rfcparagraph">	<a name="section-4.1.4"><h4>4.1.4  Rigorously Defined Syntax</h4></a>
+
+   Type: new
+
+   From: NMRG
+
+   Description: There must be a rigorously defined syntax for the SMIng
+      language.
+   Motivation: An unambiguous language promotes consistency across
+      vendors so that different parsers produce the same results.  It
+      also provides authoritative rules to SMIng modules designers.
+
+</p><p class="rfcparagraph">	<a name="section-4.1.5"><h4>4.1.5  Accessibility</h4></a>
+
+   Type: align
+
+   From: SMI, SPPI
+
+   Description: Attribute definitions must indicate whether attributes
+      can be read, written, created, deleted, and whether they are
+      accessible for notifications, or are not accessible.  Align PIB-
+      ACCESS and MAX-ACCESS, and PIB-MIN-ACCESS and MIN-ACCESS.
+
+</p><p class="rfcparagraph">   Motivation: Alignment of SMIv2 and SPPI.
+
+</p><p class="rfcparagraph">	<a name="section-4.1.6"><h4>4.1.6  Language Extensibility</h4></a>
+
+   Type: new
+
+   From: NMRG
+
+   Description: The language must have characteristics, so that future
+      modules can contain information of future syntax without breaking
+      original SMIng parsers.
+
+</p><p class="rfcparagraph">      E.g., when SMIv2 introduced REFERENCEs it would have been nice if
+      it would not have broken SMIv1 parsers.
+
+</p><p class="rfcparagraph">   Motivation: Achieve language extensibility without breaking core
+      compatibility.
+
+</p><p class="rfcparagraph">	<a name="section-4.1.7"><h4>4.1.7  Special Characters in Text</h4></a>
+
+   Type: new
+
+   From: WG
+
+   Description: Allow an escaping mechanism to encode special
+      characters, e.g. double quotes and new-line characters, in text
+      such as DESCRIPTIONs or REFERENCEs.
+
+</p><p class="rfcparagraph">   Motivation: ABNF can contain literal characters enclosed in double
+      quotes; to provide the ABNF grammar, there must be the ability to
+      escape special characters.
+	<a name="section-4.1.8"><h4>4.1.8  Naming</h4></a>
+
+   Type: basic
+
+   From: SMI, SPPI
+
+   Description: SMIng must provide mechanisms to uniquely identify
+      attributes, groups of attributes, and events.  It is necessary to
+      specify how name collisions are handled.
+
+</p><p class="rfcparagraph">   Motivation: Already in SMIv2 and SPPI.
+
+</p><p class="rfcparagraph">	<a name="section-4.1.9"><h4>4.1.9  Namespace Control</h4></a>
+
+   Type: basic
+
+   From: SMI, SPPI
+
+   Description: There must be a hierarchical, centrally-controlled
+      namespace for standard named items, and a distributed namespace
+      must be supported to allow vendor-specific naming and to assure
+      unique module names across vendors and organizations.
+
+</p><p class="rfcparagraph">   Motivation: Need to unambiguously identify definitions of various
+      kinds.  Some SMI implementations have problems with different
+      objects from multiple modules but with the same name.
+      Furthermore, the probability of module name clashes rises over
+      time (for example, different vendors defining their own SYSTEM-
+      MIB).
+
+</p><p class="rfcparagraph">   Notes: An example naming scheme is the one employed by the Java
+      programming language with a central naming authority assigning the
+      top-level names.
+
+</p><p class="rfcparagraph">	<a name="section-4.1.10"><h4>4.1.10  Modules</h4></a>
+
+   Type: basic
+
+   From: SMI, SPPI
+
+   Description: SMIng must provide a mechanism for uniquely identifying
+      a module, and specifying the status, contact person, revision
+      information, and the purpose of a module.
+
+</p><p class="rfcparagraph">      SMIng must provide mechanisms to group definitions into modules
+      and it must provide rules for referencing definitions from other
+      modules.
+   Motivation: Modularity and independent advancement of documents.
+
+</p><p class="rfcparagraph">   Notes: Text about module conformance has been moved to Section
+      4.1.11.
+
+</p><p class="rfcparagraph">	<a name="section-4.1.11"><h4>4.1.11  Module Conformance</h4></a>
+
+   Type: basic
+
+   From: SMI, SPPI
+
+   Description: SMIng must provide mechanisms to detail the minimum
+      requirements implementers must meet to claim conformance to a
+      standard based on the module.
+
+</p><p class="rfcparagraph">   Motivation: Ability to convey conformance requirements.
+
+</p><p class="rfcparagraph">	<a name="section-4.1.12"><h4>4.1.12  Arbitrary Unambiguous Identities</h4></a>
+
+   Type: basic
+
+   From: SMI
+
+   Description: SMI allows the use of OBJECT-IDENTITIES to define
+      unambiguous identities without the need of a central registry.
+      SMI uses OIDs to represent values that represent references to
+      such identities.  SMIng needs a similar mechanism (a statement to
+      register identities, and a base type to represent values).
+
+</p><p class="rfcparagraph">   Motivation: SMI Compatibility.
+
+</p><p class="rfcparagraph">   Notes: This is an obvious objective.  Additionally, everything not on
+      the wire, such as modules, will still be assigned OIDs.
+
+</p><p class="rfcparagraph">      It is yet to be determined whether the assignment of the OID
+      occurs within the core or within a protocol-specific mapping.
+
+</p><p class="rfcparagraph">	<a name="section-4.1.13"><h4>4.1.13  Protocol Independence</h4></a>
+
+   Type: basic
+
+   From: Charter
+
+   Description: SMIng must define data definitions in support of the
+      SNMP and COPS-PR protocols.  SMIng may define data definitions in
+      support of other protocols.
+   Motivation: So data definitions may be used with multiple protocols
+      and multiple versions of those protocols.
+
+</p><p class="rfcparagraph">	<a name="section-4.1.14"><h4>4.1.14  Protocol Mapping</h4></a>
+
+   Type: basic
+
+   From: Charter
+
+   Description: The SMIng working group, in accordance with the working
+      group charter, will define mappings of protocol independent data
+      definitions to protocols based upon installed implementations.
+      The SMIng working group can define mappings to other protocols as
+      long as this does not impede the progress on other objectives.
+
+</p><p class="rfcparagraph">   Motivation: SMIng working group charter.
+
+</p><p class="rfcparagraph">	<a name="section-4.1.15"><h4>4.1.15  Translation to Other Data Definition Languages</h4></a>
+
+   Type: basic
+
+   From: Charter
+
+   Description: SMIng language constructs must, wherever possible, be
+      translatable to SMIv2 and SPPI.  At the time of standardization of
+      a SMIng language, existing SMIv2 MIBs and SPPI PIBs on the
+      standards track will not be required to be translated to the SMIng
+      language.  New MIBs/PIBs will be defined using the SMIng language.
+
+</p><p class="rfcparagraph">   Motivation: Provide best-effort backwards compatibility for existing
+      tools while not placing an unnecessary burden on MIBs/PIBs that
+      are already on the standards track.
+
+</p><p class="rfcparagraph">	<a name="section-4.1.16"><h4>4.1.16  Base Data Types</h4></a>
+
+   Type: basic
+
+   From: SMI, SPPI
+
+   Description: SMIng must support the base data types Integer32,
+      Unsigned32, Integer64, Unsigned64, Enumeration, Bits, OctetString,
+      and OID.
+
+</p><p class="rfcparagraph">   Motivation: Most are already common.  Unsigned64 and Integer64 are in
+      SPPI, must fix in SMI.  Note that Counter and Gauge types can be
+      regarded as derived types instead of base types.
+	<a name="section-4.1.17"><h4>4.1.17  Enumerations</h4></a>
+
+   Type: basic
+
+   From: SMI, SPPI
+
+   Description: SMIng must provide support for enumerations.  Enumerated
+      values must be a part of the enumeration definition.
+
+</p><p class="rfcparagraph">   Motivation: SMIv2 already has enumerated numbers.
+
+</p><p class="rfcparagraph">   Notes: Enumerations have the implicit constraint that the attribute
+      is constrained to the values for the enumeration.
+
+</p><p class="rfcparagraph">	<a name="section-4.1.18"><h4>4.1.18  Discriminated Unions</h4></a>
+
+   Type: new
+
+   From: WG
+
+   Description: SMIng must support discriminated unions.
+
+</p><p class="rfcparagraph">   Motivation: Allows to group related attributes together, such as
+      InetAddressType (discriminator) and InetAddress, InetAddressIPv4,
+      InetAddressIPv6 (union).  The lack of discriminated unions has
+      also lead to relatively complex sparse table work-around in some
+      DISMAN mid-level manager MIBs.
+
+</p><p class="rfcparagraph">   Notes: Discriminated unions have the property that the union
+      attribute type is constrained by the value of the discriminator
+      attribute.
+
+</p><p class="rfcparagraph">	<a name="section-4.1.19"><h4>4.1.19  Instance Pointers</h4></a>
+
+   Type: basic
+
+   From: SMI, SPPI
+
+   Description: SMIng must allow specifying pointers to instances (i.e.,
+      a pointer to a particular attribute in a row).
+
+</p><p class="rfcparagraph">   Motivation: It is common practice in MIBs and PIBs to point to other
+      instances.
+	<a name="section-4.1.20"><h4>4.1.20  Row Pointers</h4></a>
+
+   Type: align
+
+   From: SMI, SPPI
+
+   Description: SMIng must allow specifying pointers to rows.
+
+</p><p class="rfcparagraph">   Motivation: It is common practice in MIBs and PIBs to point to other
+      rows (see RowPointer, PIB-REFERENCES).
+
+</p><p class="rfcparagraph">	<a name="section-4.1.21"><h4>4.1.21  Constraints on Pointers</h4></a>
+
+   Type: align
+
+   From: SPPI
+
+   Description: SMIng must allow specifying the types of objects to
+      which a pointer may point.
+
+</p><p class="rfcparagraph">   Motivation: Allows code generators to detect and reject illegal
+      pointers automatically.  Can also be used to automatically
+      generate more reasonable implementation-specific data structures.
+
+</p><p class="rfcparagraph">   Notes: Pointer constraints are a special case of attribute value
+      constraints (Section 4.3.2) in which the prefix of the OID (row or
+      instance pointer) value is limited to be only from a particular
+      table.
+
+</p><p class="rfcparagraph">	<a name="section-4.1.22"><h4>4.1.22  Base Type Set</h4></a>
+
+   Type: basic
+
+   From: SMI, SPPI
+
+   Description: SMIng must support a fixed set of base types of fixed
+      size and precision.  The list of base types must not be extensible
+      unless the SMI itself changes.
+
+</p><p class="rfcparagraph">   Motivation: Interoperability.
+
+</p><p class="rfcparagraph">	<a name="section-4.1.23"><h4>4.1.23  Extended Data Types</h4></a>
+
+   Type: align
+
+   From: SMI, SPPI
+   Description: SMIng must support a mechanism to derive new types,
+      which provide additional semantics (e.g., Counters, Gauges,
+      Strings, etc.), from base types.  It may be desirable to also
+      allow the derivation of new types from derived types.  New types
+      must be as restrictive or more restrictive than the types that
+      they are specializing.
+
+</p><p class="rfcparagraph">   Motivation: SMI uses application types and textual conventions.  SPPI
+      uses derived types.
+
+</p><p class="rfcparagraph">	<a name="section-4.1.24"><h4>4.1.24  Units, Formats, and Default Values of Defined Types and</h4></a>
+       Attributes
+
+   Type: fix
+
+   From: NMRG
+
+   Description: In SMIv2 OBJECT-TYPE definitions may contain UNITS and
+      DEFVAL clauses and TEXTUAL-CONVENTIONs may contain DISPLAY-HINTs.
+      In a similar fashion units and default values must be applicable
+      to defined types and format information must be applicable to
+      attributes.
+
+</p><p class="rfcparagraph">   Motivation: Some MIBs introduce TCs such as KBytes and every usage of
+      the TC then specifies the UNITS "KBytes".  It would simplify
+      things if the UNITS were attached to the type definition itself.
+
+</p><p class="rfcparagraph">   Notes: The SMIng WG must clarify the behavior if an attribute uses a
+      defined type and both, the attribute and the defined type, have
+      units/default/format information.
+
+</p><p class="rfcparagraph">	<a name="section-4.1.25"><h4>4.1.25  Table Existence Relationships</h4></a>
+
+   Type: align
+
+   From: SMI, SPPI
+
+   Description: SMIng must support INDEX, AUGMENTS, and EXTENDS in the
+      SNMP/COPS-PR protocol mappings.
+
+</p><p class="rfcparagraph">   Motivation: These three table existence relationships exist either in
+      the SMIv2 or the SPPI.
+	<a name="section-4.1.26"><h4>4.1.26  Table Existence Relationships (2)</h4></a><br>
+
+   Type: new
+
+   From: NMRG
+
+   Description: SMIng must support EXPANDS and REORDERS relationships in
+      the SNMP/COPS-PR protocol mappings.
+
+</p><p class="rfcparagraph">   Motivation: A REORDERS statement allows indexing orders to be
+      swapped.  An EXPANDS statement formally states that there is a 1:n
+      existence relationship between table rows.
+
+</p><p class="rfcparagraph">	<a name="section-4.1.27"><h4>4.1.27  Attribute Groups</h4></a>
+
+   Type: new
+
+   From: NMRG
+
+   Description: An attribute group is a named, reusable set of
+      attributes that are meaningful together.  It can be reused as the
+      type of attributes in other attribute groups (see also Section
+      4.1.28).  This is similar to `structs' in C.
+
+</p><p class="rfcparagraph">   Motivation: Required to map the same grouping of attributes into SNMP
+      and COPS-PR tables.  Allows to do index reordering without having
+      to redefine the attribute group.  Allows to group related
+      attributes together (e.g. InetAddressType, InetAddress).
+
+</p><p class="rfcparagraph">      The ability to group attributes provides an indication that the
+      attributes are meaningful together.
+
+</p><p class="rfcparagraph">	<a name="section-4.1.28"><h4>4.1.28  Containment</h4></a>
+
+   Type: new
+
+   From: NMRG
+
+   Description: SMIng must provide support for the creation of new
+      attribute groups from attributes of more basic types and
+      potentially other attribute groups.
+
+</p><p class="rfcparagraph">   Motivation: Simplifies the reuse of attribute groups such as
+      InetAddressType and InetAddress pairs.
+   Notes: Containment has the implicit existence constraint that if an
+      instance of a contained attribute group exists, then the
+      corresponding instance of the containing attribute group must also
+      exist.
+
+</p><p class="rfcparagraph">	<a name="section-4.1.29"><h4>4.1.29  Single Inheritance</h4></a>
+
+   Type: new
+
+   From: NMRG
+
+   Description: SMIng must provide support for mechanisms to extend
+      attribute groups through single inheritance.
+
+</p><p class="rfcparagraph">   Motivation: Allows to extend attribute groups, like a generic
+      DiffServ scheduler, with attributes for a specific scheduler,
+      without cut&paste.
+
+</p><p class="rfcparagraph">   Notes: Single inheritance with multiple levels (e.g., C derives from
+      B, and B derives from A) must be allowed.
+
+</p><p class="rfcparagraph">      Inheritance has the implicit existence constraint that if an
+      instance of a derived attribute group exists, then the
+      corresponding instance of the base attribute group must also
+      exist.
+
+</p><p class="rfcparagraph">      Inheritance could help to add attributes to an attribute group
+      that are specific to a certain protocol mapping and do not appear
+      in the protocol-neutral attribute group.
+
+</p><p class="rfcparagraph">	<a name="section-4.1.30"><h4>4.1.30  Reusable vs. Final Attribute Groups</h4></a>
+
+   Type: new
+
+   From: NMRG, WG
+
+   Description: SMIng must differentiate between "final" and reusable
+      attribute groups, where the reuse of attribute groups covers
+      inheritance and containment.
+
+</p><p class="rfcparagraph">   Motivation: This information gives people more information how
+      attribute groups can and should be used.  It hinders them from
+      misusing them.
+
+</p><p class="rfcparagraph">   Notes: This objective attempts to convey the idea that some attribute
+      groups are not meant to stand on their own and instead only make
+      sense if contained within another attribute group.
+	<a name="section-4.1.31"><h4>4.1.31  Events</h4></a>
+
+   Type: basic
+
+   From: SMI, SPPI
+
+   Description: SMIng must provide mechanisms to define events which
+      identify significant state changes.
+
+</p><p class="rfcparagraph">   Motivation: These represent the protocol-independent events that lead
+      to SMI notifications or SPPI reports.
+
+</p><p class="rfcparagraph">	<a name="section-4.1.32"><h4>4.1.32  Creation/Deletion</h4></a>
+
+   Type: align
+
+   From: SMI, SPPI
+
+   Description: SMIng must support a mechanism to define
+      creation/deletion operations for instances.  Specific
+      creation/deletion errors, such as INSTALL-ERRORS, must be
+      supported.
+
+</p><p class="rfcparagraph">   Motivation: Available for row creation in SMI, and available in SPPI.
+
+</p><p class="rfcparagraph">	<a name="section-4.1.33"><h4>4.1.33  Range and Size Constraints</h4></a>
+
+   Type: basic
+
+   From: SMI, SPPI
+
+   Description: SMIng must allow specifying range and size constraints
+      where applicable.
+
+</p><p class="rfcparagraph">   Motivation: The SMI and SPPI both support range and size constraints.
+
+</p><p class="rfcparagraph">	<a name="section-4.1.34"><h4>4.1.34  Uniqueness</h4></a>
+
+   Type: basic
+
+   From: SPPI
+
+   Description: SMIng must allow the specification of uniqueness
+      constraints on attributes.  SMIng must allow the specification of
+      multiple independent uniqueness constraints.
+   Motivation: Knowledge of the uniqueness constraints on attributes
+      allows to verify protocol specific mappings (e.g. INDEX clauses).
+      The knowledge can also be used by code generators to improve
+      generated implementation-specific data structures.
+
+</p><p class="rfcparagraph">	<a name="section-4.1.35"><h4>4.1.35  Extension Rules</h4></a>
+
+   Type: basic
+
+   From: SMI, SPPI
+
+   Description: SMIng must provide clear rules how one can extend SMIng
+      modules without causing interoperability problems "over the wire".
+
+</p><p class="rfcparagraph">   Motivation: SMIv2 and SPPI have extension rules.
+
+</p><p class="rfcparagraph">	<a name="section-4.1.36"><h4>4.1.36  Deprecate Use of IMPLIED Keyword</h4></a>
+
+   Type: fix
+
+   From: WG
+
+   Description: The SMIng SNMP mapping must deprecate the use of the
+      IMPLIED indexing schema.
+
+</p><p class="rfcparagraph">   Motivation: IMPLIED is confusing and most people don't understand it.
+      The solution (IMPLIED) is worse than the problem it is trying to
+      solve and therefore for the sake of simplicity, the use of IMPLIED
+      should be deprecated.
+
+</p><p class="rfcparagraph">	<a name="section-4.1.37"><h4>4.1.37  No Redundancy</h4></a>
+
+   Type: fix
+
+   From: NMRG
+
+   Description: The SMIng language must avoid redundancy.
+
+</p><p class="rfcparagraph">   Motivation: Remove any textual redundancy for things like table
+      entries and SEQUENCE definitions, which only increase
+      specifications without providing any value.
+
+</p><p class="rfcparagraph">	<a name="section-4.1.38"><h4>4.1.38  Compliance and Conformance</h4></a>
+
+   Type: basic
+
+   From: SMI, SPPI
+   Description: SMIng must provide a mechanism for compliance and
+      conformance specifications for protocol-independent definitions as
+      well as for protocol mappings.
+
+</p><p class="rfcparagraph">   Motivation: This capability exists in SMIv2 and SPPI.  The NMRG
+      proposal has the ability to express much of this information at
+      the protocol-dependent layer.  Some compliance or conformance
+      information may be protocol-independent, therefore there is also a
+      need to be able to express this information protocol-independent
+      part.
+
+</p><p class="rfcparagraph">	<a name="section-4.1.39"><h4>4.1.39  Allow Refinement of All Definitions in Conformance Statements</h4></a>
+
+   Type: fix
+
+   From: WG
+
+   Description: SMIv2, RFC 2580, Section 3.1 says:
+
+</p><p class="rfcparagraph">         The OBJECTS clause, which must be present, is used to specify
+         each object contained in the conformance group.  Each of the
+         specified objects must be defined in the same information
+         module as the OBJECT-GROUP macro appears, and must have a MAX-
+         ACCESS clause value of "accessible-for-notify", "read-only",
+         "read-write", or "read-create".
+
+</p><p class="rfcparagraph">      The last sentence forbids to put a not-accessible INDEX object
+      into an OBJECT-GROUP.  Hence, you can not refine its syntax in a
+      compliance definition.  For more details, see
+      http://www.ibr.cs.tu-bs.de/ietf/smi-errata/
+
+   Motivation: This error should not be repeated in SMIng.
+
+</p><p class="rfcparagraph">	<a name="section-4.1.40"><h4>4.1.40  Categories</h4></a>
+
+   Type: basic
+
+   From: SPPI
+
+   Description: SMIng must provide a mechanism to group definitions into
+      subject categories.  Concrete instances may only exist in the
+      scope of a given subject category or context.
+
+</p><p class="rfcparagraph">   Motivation: To scope the categories to which a module applies.  In
+      SPPI this is used to allow a division of labor between multiple
+      client types.
+	<a name="section-4.1.41"><h4>4.1.41  Core Language Keywords vs. Defined Identifiers</h4></a>
+
+   Type: fix
+
+   From: NMRG
+
+   Description: In SMI and SPPI modules some language keywords (macros
+      and a number of basetypes) have to be imported from different SMI
+      language defining modules, e.g. OBJECT-TYPE, MODULE-IDENTITY,
+      Integer32 must to be imported from SNMPv2-SMI and TEXTUAL-
+      CONVENTION must be imported from SNMPv2-TC, if used.  MIB authors
+      are continuously confused about these import rules.  In SMIng only
+      defined identifiers must be imported.  All SMIng language keywords
+      must be implicitly known and there must not be a need to import
+      them from any module.
+
+</p><p class="rfcparagraph">   Motivation: Reduce confusion.  Clarify the set of language keywords.
+
+</p><p class="rfcparagraph">	<a name="section-4.1.42"><h4>4.1.42  Instance Naming</h4></a>
+
+   Type: align
+
+   From: SMI, SPPI
+
+   Description: Instance naming in SMIv2 and SPPI is different.  SMIng
+      must align the instance naming (either in the protocol neutral
+      model or the protocol mappings).
+
+</p><p class="rfcparagraph">   Motivation: COPS-PR and SNMP have different instance identification
+      schemes that must be handled.
+
+</p><p class="rfcparagraph">   Notes: A solution requires to investigate how close the naming
+      schemes dictated by the protocols are.  Perhaps it is feasible to
+      have a single instance naming scheme in both SNMP and COPS-PR,
+      even though the current SPPI and SMIv2 are different.
+
+</p><p class="rfcparagraph">	<a name="section-4.1.43"><h4>4.1.43  Length of Identifiers</h4></a>
+
+   Type: fix
+
+   From: NMRG
+
+   Description: The allowed length of the various kinds of identifiers
+      must be extended from the current `should not exceed 32' (maybe
+      even from the `must not exceed 64') rule.
+
+</p><p class="rfcparagraph">   Motivation: Reflect current practice of definitions.
+   Notes: The 32-rule was added back in the days where compilers could
+      not deal with long identifiers.  This rule is continuously
+      violated these days and it does not make sense to keep it.
+
+</p><p class="rfcparagraph">	<a name="section-4.1.44"><h4>4.1.44  Assign OIDs in the Protocol Mappings</h4></a>
+
+   Type: new
+
+   From: NMRG
+
+   Description: SMIng must not assign OIDs to reusable definition of
+      attributes, attribute groups, events, etc.  Instead, SNMP and
+      COPS-PR mappings must assign OIDs to the mapped items.
+
+</p><p class="rfcparagraph">   Motivation: Assignment of OIDs in protocol neutral definitions can
+      complicate reuse.  OIDs of synonymous attributes are not the same
+      in SMI and SPPI definitions.  MIBs and PIBs are already registered
+      in different parts of the OID namespace.
+
+</p><p class="rfcparagraph">	<a name="section-4.2"><h3>4.2  Nice-to-Have Objectives</h3></a>
+
+   This section represents the list of recommended objectives that would
+   be nice to have.  However, these are not automatically thought of as
+   accepted objectives as, for example, they may entail a non-trivial
+   amount of work in underlying protocols to support or they may be
+   regarded as less important than other contradicting objectives that
+   are accepted.
+
+</p><p class="rfcparagraph">	<a name="section-4.2.1"><h4>4.2.1  Methods</h4></a>
+
+   Type: new
+
+   From: WG
+
+   Description: SMIng should support a mechanism to define method
+      signatures (parameters, return values, exception) that are
+      implemented on agents.
+
+</p><p class="rfcparagraph">   Motivation: Methods are needed to support the definition of
+      operational interfaces such as found in [RFC2925] (ping,
+      traceroute and lookup operations).  Also, the ability to define
+      constructor/destructor interfaces could address issues such as
+      encountered with SNMP's RowStatus solution.
+
+</p><p class="rfcparagraph">   Notes: Is it possible to do methods without changing the underlying
+      protocol?  There is agreement that methods are useful, but
+      disagreement upon the impact - one end of the spectrum sees this
+      as a documentation tool for existing SNMP capabilities, while the
+      other end sees this as a protocol update, moving forward, to
+      natively support methods.  The proposal is to wait and see if this
+      is practical to implement as a syntax that is useful and can map
+      to the protocol.
+
+</p><p class="rfcparagraph">	<a name="section-4.2.2"><h4>4.2.2  Unions</h4></a>
+
+   Type: new
+
+   From: WG
+
+   Description: SMIng should support a standard format for unions.
+
+</p><p class="rfcparagraph">   Motivation: Allows an attribute to contain one of many types of
+      values.  The lack of unions has also lead to relatively complex
+      sparse table work-around in some DISMAN mid-level managers.
+      Despite from discriminated unions (see Section 4.1.18), this kind
+      of union has no accompanied explicit discriminator attribute that
+      selects the union's type of value.
+
+</p><p class="rfcparagraph">   Notes: The thought is that SNMP and COPS-PR can already support
+      unions because they do not care about what data type goes with a
+      particular OID.
+
+</p><p class="rfcparagraph">	<a name="section-4.2.3"><h4>4.2.3  Float Data Types</h4></a>
+
+   Type: new
+
+   From: WG, NMRG
+
+   Description: SMIng should support the base data types Float32,
+      Float64, Float128.
+
+</p><p class="rfcparagraph">   Motivation: Missing base types can hurt later on, because they cannot
+      be added without changing the language, even as an SMIng
+      extension.  Lesson learned from the SMIv1/v2 debate about
+      Counter64/Integer64/...
+
+</p><p class="rfcparagraph">   Notes: There is no mention as to whether or not the underlying
+      protocols will have to natively support float data types.  This is
+      left to the mapping.  However, it seems imperative that the float
+      data type needs to be added to the set of intrinsic types in the
+      SMIng language at the creation of the language as it will be
+      impossible to add them later without changing the language.
+	<a name="section-4.2.4"><h4>4.2.4  Comments</h4></a>
+
+   Type: fix
+
+   From: NMRG
+
+   Description: The syntax of comments should be well defined,
+      unambiguous and intuitive to most people, e.g., the C++/Java `//'
+      syntax.
+
+</p><p class="rfcparagraph">   Motivation: ASN.1 Comments (and thus SMI and SPPI comments) have been
+      a constant source of confusion.  People use arbitrary lengthy
+      strings of dashes (`-----------') in the wrong assumption that
+      this is always treated as a comment.  Some implementations try to
+      accept these syntactically wrong constructs which even raises
+      confusion.  We should get rid of this problem.
+
+</p><p class="rfcparagraph">   Notes: If the SMIng working group adopts a C-like syntax, then the
+      C++/Java single-line comment should be adopted as well.
+
+</p><p class="rfcparagraph">	<a name="section-4.2.5"><h4>4.2.5  Referencing Tagged Rows</h4></a>
+
+   Type: align
+
+   From: SPPI
+
+   Description: PIB and MIB row attributes reference a group of entries
+      in another table.  SPPI formalizes this by introducing PIB-TAG and
+      PIB-REFERENCES clauses.  This functionality should be retained in
+      SMIng.
+
+</p><p class="rfcparagraph">   Motivation: SPPI formalizes tag references.  Some MIBs also use tag
+      references (see SNMP-TARGET-MIB in RFC2573) even though SMIv2 does
+      not provide a formal notation.
+
+</p><p class="rfcparagraph">	<a name="section-4.2.6"><h4>4.2.6  Arrays</h4></a>
+
+   Type: new
+
+   From: WG
+
+   Description: SMIng should allow the definition of a SEQUENCE OF
+      attributes or attribute groups (Section 4.1.27).
+
+</p><p class="rfcparagraph">   Motivation: The desire for the ability to have variable-length,
+      multi-valued objects.
+   Notes: Some issues with arrays are still unclear.  As long as there
+      are no concepts to solve the problems with access semantics (how
+      to achieve atomic access to arbitrary-sized arrays) and their
+      mappings to SNMP and COPS-PR protocol operations, arrays cannot be
+      more than a nice to have objective.
+
+</p><p class="rfcparagraph">	<a name="section-4.2.7"><h4>4.2.7  Internationalization</h4></a>
+
+   Type: new
+
+   From: WG
+
+   Description: Informational text (DESCRIPTION, REFERENCE, ...) should
+      allow i18nized encoding, probably UTF-8.
+
+</p><p class="rfcparagraph">   Motivation: There has been some demand for i18n in the past.  The BCP
+      RFC 2277 demands for internationalization.
+
+</p><p class="rfcparagraph">   Notes: Although English is the language of IETF documents, SMIng
+      should allow other languages for private use.
+
+</p><p class="rfcparagraph">	<a name="section-4.2.8"><h4>4.2.8  Separate Data Modelling from Management Protocol Mapping</h4></a>
+
+   Type: new
+
+   From: NMRG
+
+   Description: It should be possible to separate the domain specific
+      data modelling work from the network management protocol specific
+      work.
+
+</p><p class="rfcparagraph">   Motivation: Today, working groups designing new protocols are forced
+      to care about the design of SNMP MIBs and maybe COPR-PR PIBs to
+      manage the new protocol.  This means that experts in a specific
+      domain are faced with details of at least one foreign (network
+      management) technology.  This leads to hard work and long revision
+      processes.  It would be a win to separate the task of pure data
+      modelling which can be done by the domain experts easily from the
+      network management protocol specific mappings.  The mapping to
+      SNMP and/or COPS-PR can be done (a) later separately and (b) by
+      network management experts.  This required NM expertise no longer
+      hinders the progress of the domain specific working groups.
+	<a name="section-4.3"><h3>4.3  Rejected Objectives</h3></a>
+
+   This section represents the list of objectives that were rejected
+   during the discussion on the objectives.  Those objectives that have
+   been rejected need not be addressed by SMIng.  This does not imply
+   that they must not be addressed.
+
+</p><p class="rfcparagraph">	<a name="section-4.3.1"><h4>4.3.1  Incomplete Translations</h4></a>
+
+   Type: basic
+
+   From: WG
+
+   Description: Reality sucks.  All information expressed in SMIng may
+      not be directly translatable to a MIB or PIB construct, but all
+      information should be able to be conveyed in documentation or via
+      other mechanisms.
+
+</p><p class="rfcparagraph">   Motivation: SMIng working group requires this to ease transition.
+
+</p><p class="rfcparagraph">   Notes: The SMIng language itself cannot require what compilers do
+      that translate SMIng into something else.  So this seems to fall
+      out of the scope of the current working group charter.
+
+</p><p class="rfcparagraph">	<a name="section-4.3.2"><h4>4.3.2  Attribute Value Constraints</h4></a>
+
+   Type: new
+
+   From: WG
+
+   Description: SMIng should provide mechanisms to formally specify
+      constraints between values of multiple attributes.
+
+</p><p class="rfcparagraph">   Motivation: Constraints on attribute values occur where one or more
+      attributes may affect the value or range of values for another
+      attribute.  One such relationship exists in IPsec, where the type
+      of security algorithm determines the range of possible values for
+      other attributes such as the corresponding key size.
+
+</p><p class="rfcparagraph">   Notes: This objective as is has been rejected as too general, and
+      therefore virtually impossible to implement.  However, constraints
+      that are implicit with discriminated unions (Section 4.1.18),
+      enumerated types (Section 4.1.17), pointer constraints (Section
+      4.1.21)), etc., are accepted and these implicit constraints are
+      mentioned in the respective objectives.
+	<a name="section-4.3.3"><h4>4.3.3  Attribute Transaction Constraints</h4></a>
+
+   Type: new
+
+   From: WG
+
+   Description: SMIng should provide a mechanism to formally express
+      that certain sets of attributes can only be modified in
+      combination.
+
+</p><p class="rfcparagraph">   Motivation: COPS-PR always does operations on table rows in a single
+      transaction.  There are SMIv2 attribute combinations that need to
+      be modified together (such as InetAddressType, InetAddress).
+
+</p><p class="rfcparagraph">   Notes: Alternative is to either use Methods (Section 4.2.1) or assume
+      that all attributes in an attribute group (Section 4.1.27) are to
+      be considered atomic.
+
+</p><p class="rfcparagraph">	<a name="section-4.3.4"><h4>4.3.4  Method Constraints</h4></a>
+
+   Type: new
+
+   From: WG
+
+   Description: Method definitions should provide constraints on
+      parameters.
+
+</p><p class="rfcparagraph">   Motivation: None.
+
+</p><p class="rfcparagraph">   Notes: Unless methods (Section 4.2.1) are done, there is no use for
+      this.  Furthermore, this objective has not been motivated by any
+      proponent.
+
+</p><p class="rfcparagraph">	<a name="section-4.3.5"><h4>4.3.5  Agent Capabilities</h4></a>
+
+   Type: basic
+
+   From: SMI
+
+   Description: SMIng should provide mechanisms to describe agent
+      implementations.
+
+</p><p class="rfcparagraph">   Motivation: To permit manager to determine variations from the
+      standard for an implementation.
+
+</p><p class="rfcparagraph">   Notes: Agent capabilities should not be part of SMIng, but should
+      instead be a separate capabilities table.
+	<a name="section-4.3.6"><h4>4.3.6  Relationships</h4></a>
+
+   Type: new
+
+   From: NMRG, WG
+
+   Description: Ability to formally depict existence dependency, value
+      dependency, aggregation, containment, and other relationships
+      between attributes or attribute groups.
+
+</p><p class="rfcparagraph">   Motivation: Helps humans to understand the conceptual model of a
+      module.  Helps implementers of MIB compilers to generate more
+      `intelligent' code.
+
+</p><p class="rfcparagraph">   Notes: This objective was deemed too general to be useful and instead
+      the individual types of relationship objectives (e.g., pointers,
+      inheritance, containment, etc.)  are evaluated on a case-by-case
+      basis with the specific relationships deemed useful being included
+      as accepted objectives.
+
+</p><p class="rfcparagraph">	<a name="section-4.3.7"><h4>4.3.7  Procedures</h4></a>
+
+   Type: new
+
+   From: WG
+
+   Description: SMIng should support a mechanism to formally define
+      procedures that are used by managers when interacting with an
+      agent.
+
+</p><p class="rfcparagraph">   Motivation: None.
+
+</p><p class="rfcparagraph">   Notes: This objective has not been motivated by any proponent.
+
+</p><p class="rfcparagraph">	<a name="section-4.3.8"><h4>4.3.8  Associations</h4></a>
+
+   Type: new
+
+   From: WG
+
+   Description: SMIng should provide mechanisms to explicitly specify
+      associations.
+
+</p><p class="rfcparagraph">   Motivation: None.
+
+</p><p class="rfcparagraph">   Notes: This objective has not been motivated by any proponent.
+	<a name="section-4.3.9"><h4>4.3.9  Association Cardinalities</h4></a>
+
+   Type: new
+
+   From: WG
+
+   Description: Cardinalities between associations should be formally
+      defined.
+
+</p><p class="rfcparagraph">   Motivation: If you have an association between attribute groups A and
+      B, the cardinality of A indicates how many instances of A may be
+      associated with a single instance of B.  Our discussions in
+      Minneapolis indicated that we want to convey "how many" instances
+      are associated in order to define the best mapping algorithm -
+      whether a new table, a single pointer, etc.  For example, do we
+      use RowPointer or an integer index into another table? Do we map
+      to a table that holds instances of the association/relationship
+      itself?
+
+   Notes: Without associations (Section 4.3.8), this has no use.
+
+</p><p class="rfcparagraph">	<a name="section-4.3.10"><h4>4.3.10  Categories of Modules</h4></a>
+
+   Type: new
+
+   From: WG
+
+   Description: The SMIng documents should give clear guidance on which
+      kind of information (with respect to generality, type/attribute
+      group/extension/..) should be put in which kind of a module.
+
+</p><p class="rfcparagraph">      E.g., in SMIv2 we don't like to import Utf8String from SYSAPPL-
+      MIB, but we also do not like to introduce a redundant definition.
+
+</p><p class="rfcparagraph">      A module review process should probably be described that ensures
+      that generally useful definitions do not go into device or service
+      specific modules.
+
+</p><p class="rfcparagraph">   Motivation: Bad experience with SMIv2.
+
+</p><p class="rfcparagraph">   Notes: It is not clear how this can be done with the language to be
+      created by SMIng WG.
+
+</p><p class="rfcparagraph">	<a name="section-4.3.11"><h4>4.3.11  Mapping Modules to Files</h4></a>
+
+   Type: new
+
+   From: NMRG
+   Description: There should be a clear statement how SMIng modules are
+      mapped to files (1:1, n:1?) and how files should be named (by
+      module name in case of 1:1 mapping?).
+
+</p><p class="rfcparagraph">   Motivation: SMI implementations show up a variety of filename
+      extensions (.txt, .smi, .my, none).  Some expect all modules in a
+      single file, others don't.  This makes it more difficult to
+      exchange modules.
+
+</p><p class="rfcparagraph">   Notes: This is just an implementation detail and is best left to a
+      BCP and not made a part of the language definition.
+
+</p><p class="rfcparagraph">	<a name="section-4.3.12"><h4>4.3.12  Simple Grammar</h4></a>
+
+   Type: new
+
+   From: NMRG
+
+   Description: The grammar of the language should be as simple as
+      possible.  It should be free of exception rules.  A measurement of
+      simplicity is shortness of the ABNF grammar.
+
+</p><p class="rfcparagraph">   Motivation: Ease of implementation.  Ease of learning/understanding.
+
+</p><p class="rfcparagraph">   Notes: This seems like an obvious objective, however shortness of the
+      ABNF grammar is not necessarily a reflection of the simplicity of
+      the grammar.
+
+</p><p class="rfcparagraph">	<a name="section-4.3.13"><h4>4.3.13  Place of Module Information</h4></a>
+
+   Type: fix
+
+   From: NMRG
+
+   Description: Module specific information (organization, contact,
+      description, revision information) should be bound to the module
+      itself and not to an artificial node (like SMIv2 MODULE-IDENTITY).
+
+</p><p class="rfcparagraph">   Motivation: Simplicity and design cleanup.
+
+</p><p class="rfcparagraph">   Notes: This does not seem to be a problem with the current SMI.
+      Although simplification is a good thing, this detail is not
+      considered an objective.
+	<a name="section-4.3.14"><h4>4.3.14  Module Namespace</h4></a>
+
+   Type: new
+
+   From: WG
+
+   Description: Currently the namespace of modules is flat and there is
+      no structure in module naming causing the potential risk of name
+      clashes.  Possible solutions:
+
+</p><p class="rfcparagraph">      *  Assume module names are globally unique (just as SMIv1/v2),
+         just give some recommendations on module names.
+
+</p><p class="rfcparagraph">      *  Force all organizations, WGs and vendors to apply a name prefix
+         (e.g. CISCO-GAGA-MIB, IETF-DISMAN-SCRIPT-MIB?).
+
+</p><p class="rfcparagraph">      *  Force enterprises to apply a prefix based on the enterprise
+         number (e.g. ENT2021-SOME-MIB).
+
+</p><p class="rfcparagraph">      *  Put module names in a hierarchical domain based namespace (e.g.
+         DISMAN-SCRIPT-MIB.ietf.org).
+
+</p><p class="rfcparagraph">   Motivation: Reduce risk of module name clashes.
+
+</p><p class="rfcparagraph">   Notes: Some aspects of this objective overlap with other objectives
+      (namespace control (Section 4.1.9)) and other aspects were thought
+      best left to a BCP.
+
+</p><p class="rfcparagraph">	<a name="section-4.3.15"><h4>4.3.15  Hyphens in Identifiers</h4></a>
+
+   Type: fix
+
+   From: NMRG
+
+   Description: There has been some confusion whether hyphens are
+      allowed in SMIv2 identifiers: Module names are allowed to contain
+      hyphens.  Node identifiers usually are not.  But for example
+      `mib-2' is a frequently used identifier that contains a hyphen due
+      to its SMIv1 origin, when hyphen were not disallowed.  Similarly,
+      a number of named numbers of enumeration types contain hyphens
+      violating an SMIv2 rule.
+
+</p><p class="rfcparagraph">      SMIng should simply allow hyphens in all kinds of identifiers.  No
+      exceptions.
+
+</p><p class="rfcparagraph">   Motivation: Reduce confusion and exceptions.  Requires, however, that
+      implementation mappings properly quote hyphens where appropriate.
+   Notes: This nit-picking is not worth to be subject to the discussion
+      on objectives.  However, SMIng should care about the fact that
+      compilers have to map SMIng to programming languages where a
+      hyphen is a minus and thus not allowed in identifiers.
+
+</p><p class="rfcparagraph">	<a name="section-5"><h2>5.  Security Considerations</h2></a>
+
+   This document defines objectives for a language with which to write
+   and read descriptions of management information.  The language itself
+   has no security impact on the Internet.
+
+</p><p class="rfcparagraph">	<a name="section-6"><h2>6.  Acknowledgements</h2></a>
+
+   Thanks to Dave Durham, whose work on the original NIM (Network
+   Information Model) draft was used in generating this document.
+
+</p><p class="rfcparagraph">   Thanks to Andrea Westerinen for her contributions on the original NIM
+   requirements and SMIng objectives drafts.
+
+</p><p class="rfcparagraph">	<a name="section-7"><h2>7.  References</h2></a>
+
+   [1] Case, J., Fedor, M., Schoffstall, M. and J. Davin, "Simple
+       Network Management Protocol (SNMP)", STD 15, RFC 1157, May 1990.
+
+</p><p class="rfcparagraph">   [2] McCloghrie, K., Case, J., Rose, M. and S. Waldbusser, "Protocol
+       Operations for Version 2 of the Simple Network Management
+       Protocol (SNMPv2)", RFC 1905, January 1996.
+
+</p><p class="rfcparagraph">   [3] Chan, K., Seligson, J., Durham, D., Gai, S., McCloghrie, K.,
+       Herzog, S., Reichmeyer, F., Yavatkar, R. and A. Smith, "COPS
+       Usage for Policy Provisioning (COPS-PR)", RFC 3084, March 2001.
+
+</p><p class="rfcparagraph">   [4] McCloghrie, K., Perkins, D., Schoenwaelder, J., Case, J., Rose,
+       M. and S. Waldbusser, "Structure of Management Information
+       Version 2 (SMIv2)", STD 58, RFC 2578, April 1999.
+
+</p><p class="rfcparagraph">   [5] McCloghrie, K., Perkins, D., Schoenwaelder, J., Case, J., Rose,
+       M. and S. Waldbusser, "Textual Conventions for SMIv2", STD 58,
+       RFC 2579, April 1999.
+
+</p><p class="rfcparagraph">   [6] McCloghrie, K., Perkins, D. and J. Schoenwaelder, "Conformance
+       Statements for SMIv2", STD 58, RFC 2580, April 1999.
+
+</p><p class="rfcparagraph">   [7] McCloghrie, K., Fine, M., Seligson, J., Chan, K., Hahn, S.,
+       Sahita, R., Smith, A. and F. Reichmeyer, "Structure of Policy
+       Provisioning Information (SPPI)", RFC 3159, August 2001.
+	<a name="section-8"><h2>8.  Authors' Addresses</h2></a>
+
+   Chris Elliott
+   Cisco Systems
+   7025 Kit Creek Road
+   Research Triangle Park, NC 27709
+   USA
+
+   EMail: chelliot@cisco.com
+
+
+   David Harrington
+   Enterasys Networks
+   35 Industrial Way
+   P.O. Box 5005
+   Rochester, NH 03866-5005
+   USA
+
+   EMail: dbh@enterasys.com
+
+
+   Jamie Jason
+   Intel Corporation
+   MS JF3-206
+   2111 NE 25th Ave.
+   Hillsboro, OR 97124
+   USA
+
+   EMail: jamie.jason@intel.com
+
+
+   Juergen Schoenwaelder
+   TU Braunschweig
+   Muehlenpfordtstr. 23
+   38106 Braunschweig
+   Germany
+
+   EMail: schoenw@ibr.cs.tu-bs.de
+   URI:   http://www.ibr.cs.tu-bs.de/
+   Frank Strauss
+   TU Braunschweig
+   Muehlenpfordtstr. 23
+   38106 Braunschweig
+   Germany
+
+   EMail: strauss@ibr.cs.tu-bs.de
+   URI:   http://www.ibr.cs.tu-bs.de/
+
+
+   Walter Weiss
+   Ellacoya Networks
+   7 Henry Clay Dr.
+   Merrimack, NH. 03054
+   USA
+
+   EMail: wweiss@ellacoya.com
+	<a name="section-9"><h2>9.  Full Copyright Statement</h2></a>
+
+   Copyright (C) The Internet Society (2001).  All Rights Reserved.<br>
+
+</p><p class="rfcparagraph">   This document and translations of it may be copied and furnished to
+   others, and derivative works that comment on or otherwise explain it
+   or assist in its implementation may be prepared, copied, published
+   and distributed, in whole or in part, without restriction of any
+   kind, provided that the above copyright notice and this paragraph are
+   included on all such copies and derivative works.  However, this
+   document itself may not be modified in any way, such as by removing
+   the copyright notice or references to the Internet Society or other
+   Internet organizations, except as needed for the purpose of
+   developing Internet standards in which case the procedures for
+   copyrights defined in the Internet Standards process must be
+   followed, or as required to translate it into languages other than
+   English.
+
+</p><p class="rfcparagraph">   The limited permissions granted above are perpetual and will not be
+   revoked by the Internet Society or its successors or assigns.
+
+</p><p class="rfcparagraph">   This document and the information contained herein is provided on an
+   "AS IS" basis and THE INTERNET SOCIETY AND THE INTERNET ENGINEERING
+   TASK FORCE DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING
+   BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION
+   HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED WARRANTIES OF
+   MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+</p><p class="rfcparagraph">Acknowledgement
+
+   Funding for the RFC Editor function is currently provided by the
+   Internet Society.
+
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Elliott, et al.              Informational                     [Page 33]
+
+
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                
+            </ul>
+            -->
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>
