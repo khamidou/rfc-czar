@@ -5,6 +5,7 @@
 import re
 import sys
 import json
+import codecs
 from jinja2 import Environment, FileSystemLoader
 
 # A dictionary containing metadata about the RFC. We
@@ -173,7 +174,7 @@ def main():
     infile = sys.argv[1]
     outfile = sys.argv[2]
 
-    with open(outfile, 'w+') as fd:
+    with codecs.open(outfile, 'w+', 'utf-8-sig') as fd:
         fd.write(render_rfc(infile))
 
     json_filename = outfile.split('.')[0] + '.json'

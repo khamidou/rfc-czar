@@ -1,64 +1,73 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta http-equiv="content-type" content="text/html;charset=utf-8">
-  <title>RFC Czar: RFC for the rest of us.</title>
-  <link rel="stylesheet" href="static/css/rfc.css">
-  <link rel="stylesheet" href="static/css/awesomplete.css">
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  <title>RFCSpot: RFCs for the rest of us.</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href="static/css/normalize.css">
+  <link rel="stylesheet" href="static/css/skeleton.css">
+  <link rel="stylesheet" href="static/css/home.css">
+
 </head>
 <body>
-  <div id="background"></div>
-  <table cellspacing=0 cellpadding=0>
-  <thead>
-    <tr>
-      <th class=docs><h1>RFCSpot</h1></th>
-      <th class=code></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr id='section-{{ num }}'>
-      <td class=docs>
-          <h3>RFCs for the rest of us</h3>
 
-            <form id='searchForm'>
-                <input list="rfcs" />
-                <datalist id="rfcs">
-                {% for rfc in rfcs %}
-                <option label="RFC{{ rfc['rfc'] }} {{ rfc['title'] }}" value="{{ rfc['rfc'] }}"></option>
-                {% endfor %}
-                </datalist>
-                <input type="submit" />
-            </form>
-      </td>
-      <td class=code>
-        <div class='highlight'>
-            <!--
-            <b>Related Stack Overflow questions:</b>
-            <ul>
-                {% for question in questions %}
-                    <li><a href={{ question['url'] }}>{{ question['title'] }}</a></li>
-                {% endfor %}
-            </ul>
-            -->
-        </div>
-      </td>
-    </tr>
-  </table>
-    <script type='text/javascript' src='static/js/jquery-1.12.1.min.js'></script>
-    <script type='text/javascript' src='static/js/awesomplete.min.js'></script>
-    <script type='text/javascript'>
-        $(document).ready(function() {
-            var handleSearches = function() {
-                var val = $('rfcs').val()
-                debugger
-                if (val == null)
-                    return;
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div class="container">
+    <div class="row">
+      <div class="three columns" style="margin-top: 20%"></div>
+      <div class="eight columns" style="margin-top: 20%">
+        <h4>RFCSpot</h4>
+        <p>
+            RFCSpot hosts thousands of RFCs in a simple, easy-to-read format.<br>
+            <a href="rfc2616.html">Read an example RFC.</a>
+        </p>
 
-                alert('rfc' + val + '.html');
-            };
+        <form id='searchForm'>
+            <input list="rfcs" class="searchBar"/>
+            <datalist id="rfcs">
+            {% for rfc in rfcs %}
+            <option value="RFC{{ rfc['rfc'] }} {{ rfc['title'] }}" data-rfc='{{ rfc['rfc'] }}'></option>
+            {% endfor %}
+            </datalist>
+            <input type="submit" class="btn-primary"/>
+        </form>
 
-            $('#searchForm').click(handleSearches);
-        });
-    </script>
+      </div>
+    </div>
+  </div>
+  <script type='text/javascript' src='static/js/jquery-1.12.1.min.js'></script>
+  <script type='text/javascript'>
+      $(document).ready(function() {
+          var handleSearches = function() {
+            /* terrible hacks galore */
+            var re = /RFC(\d+)/;
+            var str = $('.searchBar').val()
+            var m;
+
+            if ((m = re.exec(str)) !== null) {
+                if (m.index === re.lastIndex) {
+                        re.lastIndex++;
+                }
+            }
+
+            window.location.href = 'http://rfcspot.com/rfc' + m[1] + '.html';
+          }
+          $('#searchForm').submit(handleSearches);
+      });
+  </script>
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 </body>
 </html>
