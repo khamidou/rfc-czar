@@ -6,14 +6,11 @@ import sys
 import subprocess
 from os import listdir
 from os.path import isfile, join, getmtime
-from convert_txt_rfc_to_html import convert_rfc_html
-from src.format_rfc import format_rfc, ProcessingError
 
-TMP_DIR = 'html_rfcs'
 
 def list_files(directory):
     return [f for f in listdir(directory)
-              if isfile(join(directory, f)) and f.endswith('.html')]
+              if isfile(join(directory, f))]
 
 def execute(command):
     return subprocess.call(command)
@@ -21,10 +18,7 @@ def execute(command):
 def build_file(infile, outfile):
     print "Building {}".format(outfile)
 
-    try:
-        format_rfc(infile, outfile)
-    except ProcessingError:
-        print "Skipping {}".format(infile)
+    execute(['python', 'src/render_rfc.py', infile, outfile])
 
 def copy_static(out_dir):
     print "Copying static files."
@@ -44,6 +38,9 @@ def build_rfcs(src_dir, dest_dir):
         src_path = join(src_dir, filename)
         dest_path = join(dest_dir, filename)
 
+        if '.txt' in dest_path:
+            dest_path = dest_path.split('.txt')[0] + '.html'
+
         if filename not in dest_files:
             build_file(src_path, dest_path)
 
@@ -59,8 +56,7 @@ def main():
     src_dir = sys.argv[1]
     dest_dir = sys.argv[2]
 
-    #convert_rfc_html(src_dir, TMP_DIR)
-    #build_rfcs(TMP_DIR, dest_dir)
+    #build_rfcs(src_dir, dest_dir)
     copy_static(dest_dir)
     generate_site_index(dest_dir)
 

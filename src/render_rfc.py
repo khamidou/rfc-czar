@@ -13,20 +13,20 @@ metadata = dict()
 
 
 def cleanup_author_header(data, **kwargs):
-    rfc_number_regexp = re.compile(r'^Request for Comments:\s+(\d+)', re.MULTILINE)
-    rfc_number = rfc_number_regexp.match(data)
+    rfc_number_regexp = re.compile(r'Request for Comments:\s+(\d+)', re.MULTILINE | re.IGNORECASE)
+    rfc_number = rfc_number_regexp.search(data)
 
     if rfc_number is not None:
         metadata['rfc'] = int(rfc_number.group(1))
 
-    header_regexp = re.compile('(^Network Working Group.+?\n\n)(.+)\n\n(Status of this Memo)', re.MULTILINE | re.DOTALL)
+    header_regexp = re.compile('(^Network Working Group.+?\n\n)(.+)\n\n(Status of this Memo)', re.MULTILINE | re.DOTALL | re.IGNORECASE)
 
     def format_match(match):
         header = match.group(1).replace('\n', '<br>')
         title = match.group(2)
         status = match.group(3)
 
-        metadata['title'] = title.strip()
+        metadata['title'] = title.strip().replace('\n', '')
 
         return """<p>{}</p>
                   <h1>{}</h1>
@@ -36,10 +36,10 @@ def cleanup_author_header(data, **kwargs):
 
 
     # Clean up abstract and copyright notice
-    copyright_regex = re.compile('(^Copyright Notice)', re.MULTILINE)
+    copyright_regex = re.compile('(^Copyright Notice)', re.MULTILINE | re.IGNORECASE)
     data = copyright_regex.sub(r'<h2>\1</h2>', data)
 
-    abstract_regex = re.compile('(^Abstract)', re.MULTILINE)
+    abstract_regex = re.compile('(^Abstract)', re.MULTILINE | re.IGNORECASE)
     data = abstract_regex.sub(r'<h2>\1</h2>', data)
 
     return data
@@ -130,7 +130,6 @@ def anchor_titles(data, **kwargs):
     # and lvl3_title_rx.
     lvl4_title_rx = re.compile(r"^(\d+)\.(\d+)\.(\d+)\.(\d+)\.*(.*)$", re.MULTILINE)
     lvl4_template = r"""<a name="section-\1.\2.\3.\4"><h4>\1.\2.\3.\4 \5</h4></a>
-                        <a href="raw/{}" class="rawLink">raw</a>
                     """.format(filename)
 
     data = lvl4_title_rx.sub(lvl4_template, data)

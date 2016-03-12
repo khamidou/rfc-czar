@@ -4,20 +4,60 @@
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
   <title>RFC Czar: RFC for the rest of us.</title>
   <link rel="stylesheet" href="static/css/rfc.css">
+  <link rel="stylesheet" href="static/css/awesomplete.css">
 </head>
 <body>
-    <div class="homepage">
-        <h2 class="centered">
-            RFCs for the rest of us.<br>
-        </h2>
-        <div>
-            <input type="text" placeholder="Type an RFC name or keywords"></input>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1>RFCSpot</h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-{{ num }}'>
+      <td class=docs>
+          <h3>RFCs for the rest of us</h3>
+
+            <form id='searchForm'>
+                <input list="rfcs" />
+                <datalist id="rfcs">
+                {% for rfc in rfcs %}
+                <option label="RFC{{ rfc['rfc'] }} {{ rfc['title'] }}" value="{{ rfc['rfc'] }}"></option>
+                {% endfor %}
+                </datalist>
+                <input type="submit" />
+            </form>
+      </td>
+      <td class=code>
+        <div class='highlight'>
+            <!--
+            <b>Related Stack Overflow questions:</b>
+            <ul>
+                {% for question in questions %}
+                    <li><a href={{ question['url'] }}>{{ question['title'] }}</a></li>
+                {% endfor %}
+            </ul>
+            -->
         </div>
-    </div>
-    <script type='text/javascript' src='rfc.js'></script>
+      </td>
+    </tr>
+  </table>
+    <script type='text/javascript' src='static/js/jquery-1.12.1.min.js'></script>
+    <script type='text/javascript' src='static/js/awesomplete.min.js'></script>
     <script type='text/javascript'>
         $(document).ready(function() {
-                $("p.rfcparagraph").append('<a>raw</a>').click(function() { alert('YOLO') });
+            var handleSearches = function() {
+                var val = $('rfcs').val()
+                debugger
+                if (val == null)
+                    return;
+
+                alert('rfc' + val + '.html');
+            };
+
+            $('#searchForm').click(handleSearches);
         });
     </script>
 </body>
