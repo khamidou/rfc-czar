@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
@@ -506,7 +506,6 @@
 	<a name="section-5.3.1"><h4>5.3.1   Source Block Construction</h4></a>
 
 <a name="section-5.3.1.1"><h4>5.3.1.1   General</h4></a>
-                        <a href="raw/text/rfc5053.txt" class="rawLink">raw</a>
                     
 
    In order to apply the Raptor encoder to a source object, the object
@@ -533,7 +532,6 @@
    described in Section 5.3.1.2 below.
 
 </p><p class="rfcparagraph"><a name="section-5.3.1.2"><h4>5.3.1.2   Source Block and Sub-Block Partitioning</h4></a>
-                        <a href="raw/text/rfc5053.txt" class="rawLink">raw</a>
                     
 
    The construction of source blocks and sub-blocks is determined based
@@ -690,7 +688,6 @@
 </p><p class="rfcparagraph">	<a name="section-5.4.2"><h4>5.4.2   First Encoding Step: Intermediate Symbol Generation</h4></a>
 
 <a name="section-5.4.2.1"><h4>5.4.2.1   General</h4></a>
-                        <a href="raw/text/rfc5053.txt" class="rawLink">raw</a>
                     
 
    The first encoding step is a pre-coding step to generate the L
@@ -710,7 +707,6 @@
    Section 5.4.2.4
 
 <a name="section-5.4.2.2"><h4>5.4.2.2   Source Symbol Triples</h4></a>
-                        <a href="raw/text/rfc5053.txt" class="rawLink">raw</a>
                     
 
    Each of the K source symbols is associated with a triple (d[i], a[i],
@@ -722,7 +718,6 @@
          (d[i], a[i], b[i]) = Trip[K, i]
 
 <a name="section-5.4.2.3"><h4>5.4.2.3   Pre-Coding Relationships</h4></a>
-                        <a href="raw/text/rfc5053.txt" class="rawLink">raw</a>
                     
 
    The pre-coding relationships amongst the L intermediate symbols are
@@ -794,11 +789,9 @@
             C[j].
 
 </p><p class="rfcparagraph"><a name="section-5.4.2.4"><h4>5.4.2.4   Intermediate Symbols</h4></a>
-                        <a href="raw/text/rfc5053.txt" class="rawLink">raw</a>
                     
 
 <a name="section-5.4.2.4"><h4>5.4.2.4 1.  Definition</h4></a>
-                        <a href="raw/text/rfc5053.txt" class="rawLink">raw</a>
                     
 
    Given the K source symbols C'[0], C'[1],..., C'[K-1] the L
@@ -815,7 +808,6 @@
       pre-coding relationships defined in Section 5.4.2.3.
 
 </p><p class="rfcparagraph"><a name="section-5.4.2.4"><h4>5.4.2.4 2.  Example Method for Calculation of Intermediate Symbols</h4></a>
-                        <a href="raw/text/rfc5053.txt" class="rawLink">raw</a>
                     
 
    This subsection describes a possible method for calculation of the L
@@ -927,7 +919,6 @@
 	<a name="section-5.4.4"><h4>5.4.4   Generators</h4></a>
 
 <a name="section-5.4.4.1"><h4>5.4.4.1   Random Generator</h4></a>
-                        <a href="raw/text/rfc5053.txt" class="rawLink">raw</a>
                     
 
    The random number generator Rand[X, i, m] is defined as follows,
@@ -943,7 +934,6 @@
       % m
 
 <a name="section-5.4.4.2"><h4>5.4.4.2   Degree Generator</h4></a>
-                        <a href="raw/text/rfc5053.txt" class="rawLink">raw</a>
                     
 
    The degree generator Deg[v] is defined as follows, where v is an
@@ -969,7 +959,6 @@
        Table 1: Defines the degree distribution for encoding symbols
 
 <a name="section-5.4.4.3"><h4>5.4.4.3   LT Encoding Symbol Generator</h4></a>
-                        <a href="raw/text/rfc5053.txt" class="rawLink">raw</a>
                     
 
    The encoding symbol generator LTEnc[K, (C[0], C[1],..., C[L-1]), (d,
@@ -1009,7 +998,6 @@
       Return result
 
 <a name="section-5.4.4.4"><h4>5.4.4.4   Triple Generator</h4></a>
-                        <a href="raw/text/rfc5053.txt" class="rawLink">raw</a>
                     
 
    The triple generator Trip[K,X] takes the following inputs:
@@ -1062,7 +1050,6 @@
 </p><p class="rfcparagraph">	<a name="section-5.5.2"><h4>5.5.2   Decoding a Source Block</h4></a>
 
 <a name="section-5.5.2.1"><h4>5.5.2.1   General</h4></a>
-                        <a href="raw/text/rfc5053.txt" class="rawLink">raw</a>
                     
 
    It is assumed that the decoder knows the structure of the source
@@ -1156,7 +1143,6 @@
    relatively efficient.
 
 </p><p class="rfcparagraph"><a name="section-5.5.2.2"><h4>5.5.2.2   First Phase</h4></a>
-                        <a href="raw/text/rfc5053.txt" class="rawLink">raw</a>
                     
 
    The first phase of the Gaussian elimination, the matrix A, is
@@ -1238,7 +1224,6 @@
    and u is incremented by r-1, which completes the step.
 
 </p><p class="rfcparagraph"><a name="section-5.5.2.3"><h4>5.5.2.3   Second Phase</h4></a>
-                        <a href="raw/text/rfc5053.txt" class="rawLink">raw</a>
                     
 
    The submatrix U is further partitioned into the first i rows,
@@ -1251,7 +1236,6 @@
    has L rows and L columns.
 
 </p><p class="rfcparagraph"><a name="section-5.5.2.4"><h4>5.5.2.4   Third Phase</h4></a>
-                        <a href="raw/text/rfc5053.txt" class="rawLink">raw</a>
                     
 
    After the second phase, the only portion of A that needs to be zeroed
@@ -1270,7 +1254,6 @@
    columns.  Note that U' is not formally a part of matrix A, but will
    be used in the fourth phase to zero out U_upper.
 <a name="section-5.5.2.5"><h4>5.5.2.5   Fourth Phase</h4></a>
-                        <a href="raw/text/rfc5053.txt" class="rawLink">raw</a>
                     
 
    For each of the first i rows of A, for each group of 8 columns in the

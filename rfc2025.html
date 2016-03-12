@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
@@ -913,7 +913,6 @@
            dir-ind  BOOLEAN  -- a direction indicator
    }
 <a name="section-3.2.1.1"><h4>3.2.1.1  Checksum</h4></a>
-                        <a href="raw/text/rfc2025.txt" class="rawLink">raw</a>
                     
 
    Checksum calculation procedure (common to all algorithms -- note that
@@ -938,7 +937,6 @@
    cksum field.
 
 </p><p class="rfcparagraph"><a name="section-3.2.1.2"><h4>3.2.1.2  Sequence Number</h4></a>
-                        <a href="raw/text/rfc2025.txt" class="rawLink">raw</a>
                     
 
    It is assumed that the underlying transport layers (of whatever
@@ -963,7 +961,6 @@
    context acceptor).  After constructing a gss_sign/getMIC() or
    gss_seal/wrap() token, the sender's seq. number is incremented by 1.
 <a name="section-3.2.1.3"><h4>3.2.1.3  Sequence Number Processing</h4></a>
-                        <a href="raw/text/rfc2025.txt" class="rawLink">raw</a>
                     
 
    The receiver of the token will verify the sequence number field by
@@ -1039,7 +1036,6 @@
 
 
 <a name="section-3.2.2.1"><h4>3.2.2.1 : Confounding</h4></a>
-                        <a href="raw/text/rfc2025.txt" class="rawLink">raw</a>
                     
 
    As in [KRB5], an 8-byte random confounder is prepended to the data to
@@ -1047,7 +1043,6 @@
    The result is referred to as the "confounded" data field.
 
 </p><p class="rfcparagraph"><a name="section-3.2.2.2"><h4>3.2.2.2  Checksum</h4></a>
-                        <a href="raw/text/rfc2025.txt" class="rawLink">raw</a>
                     
 
    Checksum calculation procedure (common to all algorithms): Checksums
@@ -1086,14 +1081,12 @@
    field of Wrap-Body as the integrity checksum.
 
 </p><p class="rfcparagraph"><a name="section-3.2.2.3"><h4>3.2.2.3  Sequence Number</h4></a>
-                        <a href="raw/text/rfc2025.txt" class="rawLink">raw</a>
                     
 
    Sequence numbers are computed and processed for gss_wrap() exactly as
    specified in 3.2.1.2 and 3.2.1.3.
 
 </p><p class="rfcparagraph"><a name="section-3.2.2.4"><h4>3.2.2.4 : Data Encryption</h4></a>
-                        <a href="raw/text/rfc2025.txt" class="rawLink">raw</a>
                     
 
    The following procedure is followed unless (a) conf-alg is NULL (no
@@ -1231,7 +1224,6 @@
 </p><p class="rfcparagraph">	<a name="section-5.1.1"><h4>5.1.1  Non-SPKM-specific codes (Minor Status Code MSB, bit 31, SET)</h4></a>
 
 <a name="section-5.1.1.1"><h4>5.1.1.1  GSS-Related codes (Minor Status Code bit 30 SET)</h4></a>
-                        <a href="raw/text/rfc2025.txt" class="rawLink">raw</a>
                     
 
    GSS_S_G_VALIDATE_FAILED
@@ -1248,7 +1240,6 @@
        /* "Unavailable quality of protection specified" */
 
 <a name="section-5.1.1.2"><h4>5.1.1.2  Implementation-Related codes (Minor Status Code bit 30 OFF)</h4></a>
-                        <a href="raw/text/rfc2025.txt" class="rawLink">raw</a>
                     
 
    GSS_S_G_MEMORY_ALLOC

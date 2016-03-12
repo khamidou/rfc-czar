@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
@@ -701,7 +701,6 @@
    are described in detail in the following subsections.
 
 </p><p class="rfcparagraph"><a name="section-4.1.1.1"><h4>4.1.1.1   tbsCertificate</h4></a>
-                        <a href="raw/text/rfc2459.txt" class="rawLink">raw</a>
                     
 
    The field contains the names of the subject and issuer, a public key
@@ -711,7 +710,6 @@
    section 4.2.
 
 </p><p class="rfcparagraph"><a name="section-4.1.1.2"><h4>4.1.1.2   signatureAlgorithm</h4></a>
-                        <a href="raw/text/rfc2459.txt" class="rawLink">raw</a>
                     
 
    The signatureAlgorithm field contains the identifier for the
@@ -733,7 +731,6 @@
    signature field in the sequence tbsCertificate (see sec. 4.1.2.3).
 
 </p><p class="rfcparagraph"><a name="section-4.1.1.3"><h4>4.1.1.3   signatureValue</h4></a>
-                        <a href="raw/text/rfc2459.txt" class="rawLink">raw</a>
                     
 
    The signatureValue field contains a digital signature computed upon
@@ -761,7 +758,6 @@
    4.2.
 
 </p><p class="rfcparagraph"><a name="section-4.1.2.1"><h4>4.1.2.1   Version</h4></a>
-                        <a href="raw/text/rfc2459.txt" class="rawLink">raw</a>
                     
 
    This field describes the version of the encoded certificate.  When
@@ -778,7 +774,6 @@
    implementations based on this profile.
 
 </p><p class="rfcparagraph"><a name="section-4.1.2.2"><h4>4.1.2.2   Serial number</h4></a>
-                        <a href="raw/text/rfc2459.txt" class="rawLink">raw</a>
                     
 
    The serial number is an integer assigned by the CA to each
@@ -787,7 +782,6 @@
    certificate).
 
 </p><p class="rfcparagraph"><a name="section-4.1.2.3"><h4>4.1.2.3   Signature</h4></a>
-                        <a href="raw/text/rfc2459.txt" class="rawLink">raw</a>
                     
 
    This field contains the algorithm identifier for the algorithm used
@@ -800,7 +794,6 @@
    supported signature algorithms.
 
 </p><p class="rfcparagraph"><a name="section-4.1.2.4"><h4>4.1.2.4   Issuer</h4></a>
-                        <a href="raw/text/rfc2459.txt" class="rawLink">raw</a>
                     
 
    The issuer field identifies the entity who has signed and issued the
@@ -952,7 +945,6 @@
    matches recognized by the algorithm specified above.
 
 </p><p class="rfcparagraph"><a name="section-4.1.2.5"><h4>4.1.2.5   Validity</h4></a>
-                        <a href="raw/text/rfc2459.txt" class="rawLink">raw</a>
                     
 
    The certificate validity period is the time interval during which the
@@ -967,7 +959,6 @@
    validity dates through the year 2049 as UTCTime; certificate validity
    dates in 2050 or later MUST be encoded as GeneralizedTime.
 <a name="section-4.1.2.5"><h4>4.1.2.5 1  UTCTime</h4></a>
-                        <a href="raw/text/rfc2459.txt" class="rawLink">raw</a>
                     
 
    The universal time type, UTCTime, is a standard ASN.1 type intended
@@ -988,7 +979,6 @@
       Where YY is less than 50, the year shall be interpreted as 20YY.
 
 </p><p class="rfcparagraph"><a name="section-4.1.2.5"><h4>4.1.2.5 2  GeneralizedTime</h4></a>
-                        <a href="raw/text/rfc2459.txt" class="rawLink">raw</a>
                     
 
    The generalized time type, GeneralizedTime, is a standard ASN.1 type
@@ -1002,7 +992,6 @@
    GeneralizedTime values MUST NOT include fractional seconds.
 
 </p><p class="rfcparagraph"><a name="section-4.1.2.6"><h4>4.1.2.6   Subject</h4></a>
-                        <a href="raw/text/rfc2459.txt" class="rawLink">raw</a>
                     
 
    The subject field identifies the entity associated with the public
@@ -1055,7 +1044,6 @@
    deprecated but permitted.
 
 </p><p class="rfcparagraph"><a name="section-4.1.2.7"><h4>4.1.2.7   Subject Public Key Info</h4></a>
-                        <a href="raw/text/rfc2459.txt" class="rawLink">raw</a>
                     
 
    This field is used to carry the public key and identify the algorithm
@@ -1065,7 +1053,6 @@
    encoding the public key materials (public key and parameters) are
    specified in section 7.3.
 <a name="section-4.1.2.8"><h4>4.1.2.8   Unique Identifiers</h4></a>
-                        <a href="raw/text/rfc2459.txt" class="rawLink">raw</a>
                     
 
    These fields may only appear if the version is 2 or 3 (see sec.
@@ -1079,7 +1066,6 @@
    identifiers and making comparisons.
 
 </p><p class="rfcparagraph"><a name="section-4.1.2.9"><h4>4.1.2.9   Extensions</h4></a>
-                        <a href="raw/text/rfc2459.txt" class="rawLink">raw</a>
                     
 
    This field may only appear if the version is 3 (see sec. 4.1.2.1).
@@ -1146,7 +1132,6 @@
 </p><p class="rfcparagraph">   id-ce   OBJECT IDENTIFIER ::=  {joint-iso-ccitt(2) ds(5) 29}<br>
 
 <a name="section-4.2.1.1"><h4>4.2.1.1   Authority Key Identifier</h4></a>
-                        <a href="raw/text/rfc2459.txt" class="rawLink">raw</a>
                     
 
    The authority key identifier extension provides a means of
@@ -1187,7 +1172,6 @@
    KeyIdentifier ::= OCTET STRING
 
 <a name="section-4.2.1.2"><h4>4.2.1.2   Subject Key Identifier</h4></a>
-                        <a href="raw/text/rfc2459.txt" class="rawLink">raw</a>
                     
 
    The subject key identifier extension provides a means of identifying
@@ -1240,7 +1224,6 @@
    SubjectKeyIdentifier ::= KeyIdentifier
 
 <a name="section-4.2.1.3"><h4>4.2.1.3   Key Usage</h4></a>
-                        <a href="raw/text/rfc2459.txt" class="rawLink">raw</a>
                     
 
    The key usage extension defines the purpose (e.g., encipherment,
@@ -1314,7 +1297,6 @@
    are specified in section 7.3.
 
 </p><p class="rfcparagraph"><a name="section-4.2.1.4"><h4>4.2.1.4   Private Key Usage Period</h4></a>
-                        <a href="raw/text/rfc2459.txt" class="rawLink">raw</a>
                     
 
    This profile recommends against the use of this extension.  CAs
@@ -1343,7 +1325,6 @@
         notAfter        [1]     GeneralizedTime OPTIONAL }
 
 <a name="section-4.2.1.5"><h4>4.2.1.5   Certificate Policies</h4></a>
-                        <a href="raw/text/rfc2459.txt" class="rawLink">raw</a>
                     
 
    The certificate policies extension contains a sequence of one or more
@@ -1446,7 +1427,6 @@
         utf8String       UTF8String     (SIZE (1..200)) }
 
 <a name="section-4.2.1.6"><h4>4.2.1.6   Policy Mappings</h4></a>
-                        <a href="raw/text/rfc2459.txt" class="rawLink">raw</a>
                     
 
    This extension is used in CA certificates.  It lists one or more
@@ -1469,7 +1449,6 @@
         subjectDomainPolicy     CertPolicyId }
 
 <a name="section-4.2.1.7"><h4>4.2.1.7   Subject Alternative Name</h4></a>
-                        <a href="raw/text/rfc2459.txt" class="rawLink">raw</a>
                     
 
    The subject alternative names extension allows additional identities
@@ -1580,7 +1559,6 @@
            partyName               [1]     DirectoryString }
 
 <a name="section-4.2.1.8"><h4>4.2.1.8   Issuer Alternative Names</h4></a>
-                        <a href="raw/text/rfc2459.txt" class="rawLink">raw</a>
                     
 
    As with 4.2.1.7, this extension is used to associate Internet style
@@ -1594,7 +1572,6 @@
       IssuerAltName ::= GeneralNames
 
 <a name="section-4.2.1.9"><h4>4.2.1.9   Subject Directory Attributes</h4></a>
-                        <a href="raw/text/rfc2459.txt" class="rawLink">raw</a>
                     
 
    The subject directory attributes extension is not recommended as an
@@ -1605,7 +1582,6 @@
    SubjectDirectoryAttributes ::= SEQUENCE SIZE (1..MAX) OF Attribute
 
 <a name="section-4.2.1.10"><h4>4.2.1.10   Basic Constraints</h4></a>
-                        <a href="raw/text/rfc2459.txt" class="rawLink">raw</a>
                     
 
    The basic constraints extension identifies whether the subject of the
@@ -1631,7 +1607,6 @@
         pathLenConstraint       INTEGER (0..MAX) OPTIONAL }
 
 <a name="section-4.2.1.11"><h4>4.2.1.11   Name Constraints</h4></a>
-                        <a href="raw/text/rfc2459.txt" class="rawLink">raw</a>
                     
 
    The name constraints extension, which MUST be used only in a CA
@@ -1726,7 +1701,6 @@
       BaseDistance ::= INTEGER (0..MAX)
 
 <a name="section-4.2.1.12"><h4>4.2.1.12   Policy Constraints</h4></a>
-                        <a href="raw/text/rfc2459.txt" class="rawLink">raw</a>
                     
 
    The policy constraints extension can be used in certificates issued
@@ -1768,7 +1742,6 @@
    SkipCerts ::= INTEGER (0..MAX)
 
 <a name="section-4.2.1.13"><h4>4.2.1.13   Extended key usage field</h4></a>
-                        <a href="raw/text/rfc2459.txt" class="rawLink">raw</a>
                     
 
    This field indicates one or more purposes for which the certified
@@ -1837,7 +1810,6 @@
    --                         nonRepudiation
 
 <a name="section-4.2.1.14"><h4>4.2.1.14   CRL Distribution Points</h4></a>
-                        <a href="raw/text/rfc2459.txt" class="rawLink">raw</a>
                     
 
    The CRL distribution points extension identifies how CRL information
@@ -1902,7 +1874,6 @@
       id-pe  OBJECT IDENTIFIER  ::=  { id-pkix 1 }
 
 <a name="section-4.2.2.1"><h4>4.2.2.1   Authority Information Access</h4></a>
-                        <a href="raw/text/rfc2459.txt" class="rawLink">raw</a>
                     
 
    The authority information access extension indicates how to access CA
@@ -2029,7 +2000,6 @@
    The CertificateList is a SEQUENCE of three required fields. The
    fields are described in detail in the following subsections.
 <a name="section-5.1.1.1"><h4>5.1.1.1   tbsCertList</h4></a>
-                        <a href="raw/text/rfc2459.txt" class="rawLink">raw</a>
                     
 
    The first field in the sequence is the tbsCertList.  This field is
@@ -2040,7 +2010,6 @@
    number, revocation date, and optional CRL entry extensions.
 
 </p><p class="rfcparagraph"><a name="section-5.1.1.2"><h4>5.1.1.2   signatureAlgorithm</h4></a>
-                        <a href="raw/text/rfc2459.txt" class="rawLink">raw</a>
                     
 
    The signatureAlgorithm field contains the algorithm identifier for
@@ -2054,7 +2023,6 @@
    signature field in the sequence tbsCertList (see sec. 5.1.2.2).
 
 </p><p class="rfcparagraph"><a name="section-5.1.1.3"><h4>5.1.1.3   signatureValue</h4></a>
-                        <a href="raw/text/rfc2459.txt" class="rawLink">raw</a>
                     
 
    The signatureValue field contains a digital signature computed upon
@@ -2078,7 +2046,6 @@
    has issued.  The profile requires conforming CAs to use the CRL
    extension cRLNumber in all CRLs issued.
 <a name="section-5.1.2.1"><h4>5.1.2.1   Version</h4></a>
-                        <a href="raw/text/rfc2459.txt" class="rawLink">raw</a>
                     
 
    This optional field describes the version of the encoded CRL.  When
@@ -2086,7 +2053,6 @@
    present and MUST specify version 2 (the integer value is 1).
 
 </p><p class="rfcparagraph"><a name="section-5.1.2.2"><h4>5.1.2.2   Signature</h4></a>
-                        <a href="raw/text/rfc2459.txt" class="rawLink">raw</a>
                     
 
    This field contains the algorithm identifier for the algorithm used
@@ -2098,7 +2064,6 @@
    5.1.1.2).
 
 </p><p class="rfcparagraph"><a name="section-5.1.2.3"><h4>5.1.2.3   Issuer Name</h4></a>
-                        <a href="raw/text/rfc2459.txt" class="rawLink">raw</a>
                     
 
    The issuer name identifies the entity who has signed and issued the
@@ -2110,7 +2075,6 @@
    name field in the certificate (see sec. 4.1.2.4).
 
 </p><p class="rfcparagraph"><a name="section-5.1.2.4"><h4>5.1.2.4   This Update</h4></a>
-                        <a href="raw/text/rfc2459.txt" class="rawLink">raw</a>
                     
 
    This field indicates the issue date of this CRL. ThisUpdate may be
@@ -2127,7 +2091,6 @@
    defined in section 4.1.2.5.2.
 
 </p><p class="rfcparagraph"><a name="section-5.1.2.5"><h4>5.1.2.5   Next Update</h4></a>
-                        <a href="raw/text/rfc2459.txt" class="rawLink">raw</a>
                     
 
    This field indicates the date by which the next CRL will be issued.
@@ -2152,7 +2115,6 @@
    defined in section 4.1.2.5.2.
 
 </p><p class="rfcparagraph"><a name="section-5.1.2.6"><h4>5.1.2.6   Revoked Certificates</h4></a>
-                        <a href="raw/text/rfc2459.txt" class="rawLink">raw</a>
                     
 
    Revoked certificates are listed.  The revoked certificates are named
@@ -2164,7 +2126,6 @@
    discussed in section 5.3.
 
 </p><p class="rfcparagraph"><a name="section-5.1.2.7"><h4>5.1.2.7   Extensions</h4></a>
-                        <a href="raw/text/rfc2459.txt" class="rawLink">raw</a>
                     
 
    This field may only appear if the version is 2 (see sec. 5.1.2.1).

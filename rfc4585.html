@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
@@ -1617,7 +1617,6 @@
 </p><p class="rfcparagraph">   There MUST be exactly one PLI contained in the FCI field.
 
 </p><p class="rfcparagraph"><a name="section-6.3.1.1"><h4>6.3.1.1   Semantics</h4></a>
-                        <a href="raw/text/rfc4585.txt" class="rawLink">raw</a>
                     
 
    With the Picture Loss Indication message, a decoder informs the
@@ -1640,7 +1639,6 @@
    format, if this is required by that payload format.
 
 </p><p class="rfcparagraph"><a name="section-6.3.1.2"><h4>6.3.1.2   Message Format</h4></a>
-                        <a href="raw/text/rfc4585.txt" class="rawLink">raw</a>
                     
 
    PLI does not require parameters.  Therefore, the length field MUST be
@@ -1649,7 +1647,6 @@
 </p><p class="rfcparagraph">   The semantics of this FB message is independent of the payload type.
 
 </p><p class="rfcparagraph"><a name="section-6.3.1.3"><h4>6.3.1.3   Timing Rules</h4></a>
-                        <a href="raw/text/rfc4585.txt" class="rawLink">raw</a>
                     
 
    The timing follows the rules outlined in Section 3.  In systems that
@@ -1658,7 +1655,6 @@
    delay critical as other FB types.
 
 </p><p class="rfcparagraph"><a name="section-6.3.1.4"><h4>6.3.1.4   Remarks</h4></a>
-                        <a href="raw/text/rfc4585.txt" class="rawLink">raw</a>
                     
 
    PLI messages typically trigger the sending of full intra-pictures.
@@ -1683,7 +1679,6 @@
    SLI.
 
 </p><p class="rfcparagraph"><a name="section-6.3.2.1"><h4>6.3.2.1   Semantics</h4></a>
-                        <a href="raw/text/rfc4585.txt" class="rawLink">raw</a>
                     
 
    With the Slice Loss Indication, a decoder can inform an encoder that
@@ -1694,7 +1689,6 @@
    an encoder cannot always identify the corrupted spatial region.
 
 </p><p class="rfcparagraph"><a name="section-6.3.2.2"><h4>6.3.2.2   Format</h4></a>
-                        <a href="raw/text/rfc4585.txt" class="rawLink">raw</a>
                     
 
    The Slice Loss Indication uses one additional FCI field, the content
@@ -1732,7 +1726,6 @@
    provided.
 
 </p><p class="rfcparagraph"><a name="section-6.3.2.3"><h4>6.3.2.3   Timing Rules</h4></a>
-                        <a href="raw/text/rfc4585.txt" class="rawLink">raw</a>
                     
 
    The efficiency of algorithms using the Slice Loss Indication is
@@ -1742,7 +1735,6 @@
    discussed in Section 3 is highly recommended.
 
 </p><p class="rfcparagraph"><a name="section-6.3.2.4"><h4>6.3.2.4   Remarks</h4></a>
-                        <a href="raw/text/rfc4585.txt" class="rawLink">raw</a>
                     
 
    The term Slice is defined and used here in the sense of MPEG-1 -- a
@@ -1783,7 +1775,6 @@
 </p><p class="rfcparagraph">   There MUST be exactly one RPSI contained in the FCI field.
 
 </p><p class="rfcparagraph"><a name="section-6.3.3.1"><h4>6.3.3.1   Semantics</h4></a>
-                        <a href="raw/text/rfc4585.txt" class="rawLink">raw</a>
                     
 
    Modern video coding standards such as MPEG-4 visual version 2 [16] or
@@ -1809,7 +1800,6 @@
    feedback about individual reference pictures at RTCP intervals is not
    expected to be of much use anyway).
 <a name="section-6.3.3.2"><h4>6.3.3.2   Format</h4></a>
-                        <a href="raw/text/rfc4585.txt" class="rawLink">raw</a>
                     
 
    The FCI for the RPSI message follows the format depicted in Figure 7:
@@ -1844,7 +1834,6 @@
       MUST be indicated by the PB field.
 
 </p><p class="rfcparagraph"><a name="section-6.3.3.3"><h4>6.3.3.3   Timing Rules</h4></a>
-                        <a href="raw/text/rfc4585.txt" class="rawLink">raw</a>
                     
 
    RPSI is even more critical to delay than algorithms using SLI.  This

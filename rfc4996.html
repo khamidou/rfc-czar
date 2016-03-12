@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
@@ -524,7 +524,6 @@
    of data will be sent using larger compressed headers.
 
 </p><p class="rfcparagraph"><a name="section-5.2.1.1"><h4>5.2.1.1   Optimistic Approach</h4></a>
-                        <a href="raw/text/rfc4996.txt" class="rawLink">raw</a>
                     
 
    The optimistic approach is the principle by which a compressor sends
@@ -543,7 +542,6 @@
    condition used.
 
 </p><p class="rfcparagraph"><a name="section-5.2.1.2"><h4>5.2.1.2   Periodic Context Refreshes</h4></a>
-                        <a href="raw/text/rfc4996.txt" class="rawLink">raw</a>
                     
 
    When the optimistic approach is used, there will always be a
@@ -564,7 +562,6 @@
    Section 5.2.4.1 of [RFC4995].
 
 </p><p class="rfcparagraph"><a name="section-5.2.2.1"><h4>5.2.2.1   Optional Acknowledgments (ACKs)</h4></a>
-                        <a href="raw/text/rfc4996.txt" class="rawLink">raw</a>
                     
 
    The compressor MAY use acknowledgment feedback (ACKs) to move to a
@@ -580,7 +577,6 @@
    established for that flow.
 
 </p><p class="rfcparagraph"><a name="section-5.2.2.2"><h4>5.2.2.2   Negative Acknowledgments (NACKs)</h4></a>
-                        <a href="raw/text/rfc4996.txt" class="rawLink">raw</a>
                     
 
    The compressor uses feedback from the decompressor to move to a lower
@@ -647,7 +643,6 @@
       +-----<------<------<-----+        +-----<------<------<-----+
 
 <a name="section-5.3.1.1"><h4>5.3.1.1   Reconstruction and Verification</h4></a>
-                        <a href="raw/text/rfc4996.txt" class="rawLink">raw</a>
                     
 
    When decompressing an IR or an IR-DYN packet, the decompressor MUST
@@ -678,7 +673,6 @@
    correctness of its header was successfully verified.
 
 </p><p class="rfcparagraph"><a name="section-5.3.1.2"><h4>5.3.1.2   Detecting Context Damage</h4></a>
-                        <a href="raw/text/rfc4996.txt" class="rawLink">raw</a>
                     
 
    All header formats carry a CRC and are context updating.  A packet
@@ -727,7 +721,6 @@
    packet types.
 
 </p><p class="rfcparagraph"><a name="section-5.3.1.3"><h4>5.3.1.3   No Context (NC) State</h4></a>
-                        <a href="raw/text/rfc4996.txt" class="rawLink">raw</a>
                     
 
    Initially, while working in the No Context (NC) state, the
@@ -750,7 +743,6 @@
    Once a packet has been validated and decompressed correctly, the
    decompressor MUST transit to the FC state.
 <a name="section-5.3.1.4"><h4>5.3.1.4   Static Context (SC) State</h4></a>
-                        <a href="raw/text/rfc4996.txt" class="rawLink">raw</a>
                     
 
    When the decompressor is in the Static Context (SC) state, only the
@@ -780,7 +772,6 @@
    decompressor MUST transit to the FC state.
 
 </p><p class="rfcparagraph"><a name="section-5.3.1.5"><h4>5.3.1.5   Full Context (FC) State</h4></a>
-                        <a href="raw/text/rfc4996.txt" class="rawLink">raw</a>
                     
 
    In the Full Context (FC) state, both the static and the dynamic parts
@@ -1488,7 +1479,6 @@
    and residue values are established for the different fields.
 
 </p><p class="rfcparagraph"><a name="section-6.4.8.1"><h4>6.4.8.1   Scaled TCP Sequence Number Encoding</h4></a>
-                        <a href="raw/text/rfc4996.txt" class="rawLink">raw</a>
                     
 
    For some TCP flows, such as data transfers, the payload size will be
@@ -1517,7 +1507,6 @@
    formats, in Section 8.2.
 
 </p><p class="rfcparagraph"><a name="section-6.4.8.2"><h4>6.4.8.2   Scaled Acknowledgment Number Encoding</h4></a>
-                        <a href="raw/text/rfc4996.txt" class="rawLink">raw</a>
                     
 
    Similar to the pattern exhibited by the TCP Sequence Number, the
@@ -4047,7 +4036,6 @@
    FEEDBACK-2.
 
 </p><p class="rfcparagraph"><a name="section-8.3.2.1"><h4>8.3.2.1   The REJECT Option</h4></a>
-                        <a href="raw/text/rfc4996.txt" class="rawLink">raw</a>
                     
 
    The REJECT option informs the compressor that the decompressor does
@@ -4064,7 +4052,6 @@
    the compressor MUST discard the entire feedback element.
 
 </p><p class="rfcparagraph"><a name="section-8.3.2.2"><h4>8.3.2.2   The MSN-NOT-VALID Option</h4></a>
-                        <a href="raw/text/rfc4996.txt" class="rawLink">raw</a>
                     
 
    The MSN-NOT-VALID option indicates that the MSN of the feedback is
@@ -4085,7 +4072,6 @@
    feedback element.
 
 </p><p class="rfcparagraph"><a name="section-8.3.2.3"><h4>8.3.2.3   The MSN Option</h4></a>
-                        <a href="raw/text/rfc4996.txt" class="rawLink">raw</a>
                     
 
    The MSN option provides 2 additional bits of MSN.
@@ -4106,7 +4092,6 @@
    feedback element.
 
 </p><p class="rfcparagraph"><a name="section-8.3.2.4"><h4>8.3.2.4   The CONTEXT_MEMORY Feedback Option</h4></a>
-                        <a href="raw/text/rfc4996.txt" class="rawLink">raw</a>
                     
 
    The CONTEXT_MEMORY option means that the decompressor does not have
@@ -4128,7 +4113,6 @@
    feedback element.
 
 </p><p class="rfcparagraph"><a name="section-8.3.2.5"><h4>8.3.2.5   Unknown Option Types</h4></a>
-                        <a href="raw/text/rfc4996.txt" class="rawLink">raw</a>
                     
 
    If an option type unknown to the compressor is encountered, the

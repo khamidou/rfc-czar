@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
@@ -564,7 +564,6 @@ ISSN: 2070-1721                                           Aruba Networks
                      Figure 5: SLAPP Discover Request
 
 <a name="section-4.5.1.1"><h4>4.5.1.1   Transaction ID</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    The transaction ID is a randomly generated, 32-bit number that is
@@ -576,7 +575,6 @@ ISSN: 2070-1721                                           Aruba Networks
    field as in the request frame.
 
 </p><p class="rfcparagraph"><a name="section-4.5.1.2"><h4>4.5.1.2   WTP Identifier</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    This field allows the WTP to specify a unique identifier for itself.
@@ -584,7 +582,6 @@ ISSN: 2070-1721                                           Aruba Networks
    other string such as a serial number.
 
 </p><p class="rfcparagraph"><a name="section-4.5.1.3"><h4>4.5.1.3   Flags</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    The Flags field is used to indicate certain things about the discover
@@ -605,7 +602,6 @@ ISSN: 2070-1721                                           Aruba Networks
       Must be ignored by the receiver
 
 <a name="section-4.5.1.4"><h4>4.5.1.4   WTP Vendor ID</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    This 32-bit field is the WTP vendor's Structure of Management
@@ -613,7 +609,6 @@ ISSN: 2070-1721                                           Aruba Networks
    enterprise codes can be obtained from, and registered with, IANA).
 
 </p><p class="rfcparagraph"><a name="section-4.5.1.5"><h4>4.5.1.5   WTP HW Version</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    This 32-bit field indicates the version of hardware present in the
@@ -621,14 +616,12 @@ ISSN: 2070-1721                                           Aruba Networks
    choose.
 
 </p><p class="rfcparagraph"><a name="section-4.5.1.6"><h4>4.5.1.6   WTP SW Version</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    This 32-bit field indicates the version of software present in the
    WTP.  This is a number that is totally left to the WTP vendor to
    choose.
 <a name="section-4.5.1.7"><h4>4.5.1.7   Number of Control Types</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    This 8-bit field indicates the number of 8-bit control protocol
@@ -637,7 +630,6 @@ ISSN: 2070-1721                                           Aruba Networks
    supporting.  This number MUST be at least one (1).<br>
 
 </p><p class="rfcparagraph"><a name="section-4.5.1.8"><h4>4.5.1.8   Control Types</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    This 8-bit field indicates the type of control protocol the WTP
@@ -692,28 +684,24 @@ ISSN: 2070-1721                                           Aruba Networks
    hardware, and software versions in the response.
 
 </p><p class="rfcparagraph"><a name="section-4.5.2.1"><h4>4.5.2.1   Transaction ID</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    The value of the Transaction ID field should be identical to its
    value in the SLAPP discover request packet sent by the WTP.
 
 </p><p class="rfcparagraph"><a name="section-4.5.2.2"><h4>4.5.2.2   WTP Identifier</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    The WTP Identifier that was sent in the corresponding SLAPP discover
    request frame.
 
 </p><p class="rfcparagraph"><a name="section-4.5.2.3"><h4>4.5.2.3   Flags</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    This field is unused by this version of SLAPP.  It MUST be set to
    zero (0) on transmission and ignored upon receipt.<br>
 
 </p><p class="rfcparagraph"><a name="section-4.5.2.4"><h4>4.5.2.4   AC Vendor ID</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    If the value of the Status field is a 1, indicating that the AC is
@@ -723,7 +711,6 @@ ISSN: 2070-1721                                           Aruba Networks
    this field should be set to 0 by the AC and ignored by the WTP.
 
 </p><p class="rfcparagraph"><a name="section-4.5.2.5"><h4>4.5.2.5   AC HW Version</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    If the value of the Status field is 1, then this 32-bit field
@@ -732,7 +719,6 @@ ISSN: 2070-1721                                           Aruba Networks
    then this field should be set to 0 by the AC and ignored by the WTP.
 
 </p><p class="rfcparagraph"><a name="section-4.5.2.6"><h4>4.5.2.6   AC SW Version</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    If the value of the Status field is 1, then this 32-bit field
@@ -740,7 +726,6 @@ ISSN: 2070-1721                                           Aruba Networks
    chosen by the AC vendor.  If the value of the Status field is not 1,
    then this field should be set to 0 by the AC and ignored by the WTP.
 <a name="section-4.5.2.7"><h4>4.5.2.7   Control Type</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    The control type that the AC will use to communicate with the WTP.
@@ -1003,7 +988,6 @@ ISSN: 2070-1721                                           Aruba Networks
       6.1.2.
 
 </p><p class="rfcparagraph"><a name="section-6.1.1.1"><h4>6.1.1.1   Local MAC</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    The Local MAC architecture as documented in the CAPWAP architecture
@@ -1014,7 +998,6 @@ ISSN: 2070-1721                                           Aruba Networks
    of 802.11 frames is implemented at the WTP.
 
 </p><p class="rfcparagraph"><a name="section-6.1.1.1"><h4>6.1.1.1 1.  Bridged Mode</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    In this sub-mode of the Local MAC architecture, the 802.11 frames are
@@ -1022,7 +1005,6 @@ ISSN: 2070-1721                                           Aruba Networks
    the WTP.  These frames may be tagged with 802.1Q VLAN tags assigned
    by the AC.
 <a name="section-6.1.1.1"><h4>6.1.1.1 2.  Tunneled Mode</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    In this sub-mode of the Local MAC architecture, the 802.11 frames are
@@ -1032,7 +1014,6 @@ ISSN: 2070-1721                                           Aruba Networks
    by the AC.
 
 </p><p class="rfcparagraph"><a name="section-6.1.1.2"><h4>6.1.1.2   Split MAC</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    In the Split MAC architecture, the MAC functions of an 802.11 AP are
@@ -1049,7 +1030,6 @@ ISSN: 2070-1721                                           Aruba Networks
    Section 6.1.3
 
 <a name="section-6.1.1.2"><h4>6.1.1.2 1.  L2 Crypto at the WTP</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    For this sub-mode of the Split MAC architecture, the 802.11 AP
@@ -1078,7 +1058,6 @@ ISSN: 2070-1721                                           Aruba Networks
    802.3 frames between the AC and the WTP.
 
 </p><p class="rfcparagraph"><a name="section-6.1.1.2"><h4>6.1.1.2 2.  L2 Crypto at the AC</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    For this sub-mode of the Split MAC architecture, the 802.11 AP
@@ -1129,7 +1108,6 @@ ISSN: 2070-1721                                           Aruba Networks
    fragmentation and reassembly are handled by [5].
 
 </p><p class="rfcparagraph"><a name="section-6.1.2.1"><h4>6.1.2.1   SLAPP 802.11 Control Protocol Header</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    When using the 802.11 Control Protocol, the type of SLAPP message is
@@ -1210,14 +1188,12 @@ ISSN: 2070-1721                                           Aruba Networks
    document.
 
 </p><p class="rfcparagraph"><a name="section-6.1.3.1"><h4>6.1.3.1   Information Elements</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    Information elements (IEs) are used to communicate capability,
    configuration, status, and statistics information between the AC and
    the WTP.
 <a name="section-6.1.3.1"><h4>6.1.3.1 1.  Structure of an Information Element</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    The structure of an information element is show below.  The element
@@ -1232,7 +1208,6 @@ ISSN: 2070-1721                                           Aruba Networks
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
 <a name="section-6.1.3.1"><h4>6.1.3.1 2.  CAPWAP Mode</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    This element defines the MAC architecture modes (Section 6.1.1).
@@ -1262,7 +1237,6 @@ ISSN: 2070-1721                                           Aruba Networks
    then exactly one of bits 0-4 MUST be set.
 
 </p><p class="rfcparagraph"><a name="section-6.1.3.1"><h4>6.1.3.1 3.  Number of WLAN Interfaces</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    This element refers to the number of 802.11 WLANs present in the WTP.
@@ -1273,7 +1247,6 @@ ISSN: 2070-1721                                           Aruba Networks
       Value : 0-255
 
 <a name="section-6.1.3.1"><h4>6.1.3.1 4.  WLAN Interface Index</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    This element is used to refer to a particular instance of a WLAN
@@ -1288,7 +1261,6 @@ ISSN: 2070-1721                                           Aruba Networks
       Value : 0 - (Number of WLAN interfaces - 1)
 
 <a name="section-6.1.3.1"><h4>6.1.3.1 5.  WLAN Interface Hardware Vendor ID</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    This element is the WLAN Interface hardware vendor's SMI enterprise
@@ -1303,7 +1275,6 @@ ISSN: 2070-1721                                           Aruba Networks
       Value : 32-bit value
 
 <a name="section-6.1.3.1"><h4>6.1.3.1 6.  WLAN Interface Type ID</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    This element is an ID assigned by the WLAN Interface hardware vendor
@@ -1317,7 +1288,6 @@ ISSN: 2070-1721                                           Aruba Networks
       Length : 4
 
 <a name="section-6.1.3.1"><h4>6.1.3.1 7.  Regulatory Domain</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    If a regulatory domain is provisioned in the WTP, then the WTP
@@ -1333,7 +1303,6 @@ ISSN: 2070-1721                                           Aruba Networks
       Value : ISO code assigned to the regulatory domain
 
 <a name="section-6.1.3.1"><h4>6.1.3.1 8.  802.11 PHY Mode and Channel Information</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    This element indicates the list of 802.11 Physical Layer (PHY) modes
@@ -1377,7 +1346,6 @@ ISSN: 2070-1721                                           Aruba Networks
    level.  The Channel field has exactly one 2-octet value indicating
    the desired or current operating frequency.
 <a name="section-6.1.3.1"><h4>6.1.3.1 9.  Cryptographic Capability</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    In the capabilities message, this element contains the list of
@@ -1401,7 +1369,6 @@ ISSN: 2070-1721                                           Aruba Networks
          Bits 3-7 : Reserved
 
 <a name="section-6.1.3.1"><h4>6.1.3.1 10.  Other IEEE 802.11 Standards Support</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    This element contains a bitmap indicating support at the WTP for
@@ -1425,7 +1392,6 @@ ISSN: 2070-1721                                           Aruba Networks
 
          Bits 5-32 : Reserved
 <a name="section-6.1.3.1"><h4>6.1.3.1 11.  Antenna Information Element</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    In the capabilities message, this element is formatted as follows
@@ -1467,7 +1433,6 @@ ISSN: 2070-1721                                           Aruba Networks
 </p><p class="rfcparagraph">         Bits 9-31 : Reserved
 
 <a name="section-6.1.3.1"><h4>6.1.3.1 12.  Number of BSSIDs</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    This element indicates the number of BSSIDs supported by the WLAN
@@ -1483,7 +1448,6 @@ ISSN: 2070-1721                                           Aruba Networks
       supporting.
 
 </p><p class="rfcparagraph"><a name="section-6.1.3.1"><h4>6.1.3.1 13.  BSSID Index</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    This element is used when sending configuration or status specific to
@@ -1496,7 +1460,6 @@ ISSN: 2070-1721                                           Aruba Networks
       Valid values are from 0 to (Number of BSSIDs -1)
 
 <a name="section-6.1.3.1"><h4>6.1.3.1 14.  ESSID</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    This element is used in configuration and status messages to either
@@ -1512,7 +1475,6 @@ ISSN: 2070-1721                                           Aruba Networks
 </p><p class="rfcparagraph">   There is no default value for this parameter.
 
 </p><p class="rfcparagraph"><a name="section-6.1.3.1"><h4>6.1.3.1 15.  ESSID Announcement Policy</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    This element is used in configuration and status messages to control
@@ -1536,7 +1498,6 @@ ISSN: 2070-1721                                           Aruba Networks
 </p><p class="rfcparagraph">      Bit 2-7 : Reserved
 
 <a name="section-6.1.3.1"><h4>6.1.3.1 16.  Beacon Interval</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    This element is used to configure the beacon interval on a BSSID on
@@ -1552,7 +1513,6 @@ ISSN: 2070-1721                                           Aruba Networks
    The default value for this parameter is 100.
 
 </p><p class="rfcparagraph"><a name="section-6.1.3.1"><h4>6.1.3.1 17.  DTIM period</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    This element is used to configure the DTIM period on a BSSID present
@@ -1568,7 +1528,6 @@ ISSN: 2070-1721                                           Aruba Networks
 </p><p class="rfcparagraph">   The default value for this parameter is 1.
 
 </p><p class="rfcparagraph"><a name="section-6.1.3.1"><h4>6.1.3.1 18.  Basic Rates</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    Configure or report the configured set of basic rates.
@@ -1608,7 +1567,6 @@ ISSN: 2070-1721                                           Aruba Networks
          Bits 12-31 : Reserved
 
 <a name="section-6.1.3.1"><h4>6.1.3.1 19.  Supported Rates</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    Configure or report the configured set of basic rates.
@@ -1648,7 +1606,6 @@ ISSN: 2070-1721                                           Aruba Networks
          Bits 12-31 : Reserved
 
 <a name="section-6.1.3.1"><h4>6.1.3.1 20.  802.11 Retry Count</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    This element is used to configure long and short retries for each
@@ -1665,7 +1622,6 @@ ISSN: 2070-1721                                           Aruba Networks
 </p><p class="rfcparagraph">         Bits 8-15 : Long retry count, default value is 3.
 
 </p><p class="rfcparagraph"><a name="section-6.1.3.1"><h4>6.1.3.1 21.  Fragmentation Threshold</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    This element is used to configure the fragmentation threshold on a
@@ -1680,7 +1636,6 @@ ISSN: 2070-1721                                           Aruba Networks
 
 </p><p class="rfcparagraph">   The default value for this parameter is 2346.
 <a name="section-6.1.3.1"><h4>6.1.3.1 22.  RTS Threshold</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    This element is used to configure the Request to Send (RTS) threshold
@@ -1695,7 +1650,6 @@ ISSN: 2070-1721                                           Aruba Networks
 </p><p class="rfcparagraph">   The default value for this parameter is 2346.
 
 </p><p class="rfcparagraph"><a name="section-6.1.3.1"><h4>6.1.3.1 23.  Short/Long Preamble</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    This element is used to configure the preamble type used for
@@ -1716,7 +1670,6 @@ ISSN: 2070-1721                                           Aruba Networks
    The default value for this parameter is 0.
 
 </p><p class="rfcparagraph"><a name="section-6.1.3.1"><h4>6.1.3.1 24.  802.1Q Tag</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    This element is used to configure the tagging of packets belonging to
@@ -1734,7 +1687,6 @@ ISSN: 2070-1721                                           Aruba Networks
    assume that no tagging is required and should expect to receive
    untagged frames on frames destined towards the wireless interface.
 <a name="section-6.1.3.1"><h4>6.1.3.1 25.  SLAPP Registration ID</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    A successful registration response from an AC to a WTP MUST contain
@@ -1749,7 +1701,6 @@ ISSN: 2070-1721                                           Aruba Networks
       Value : A 32-bit unsigned number allocated by the AC
 
 <a name="section-6.1.3.1"><h4>6.1.3.1 26.  WTP Name</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    The AC uses this element to assign a string of ASCII characters to
@@ -1762,7 +1713,6 @@ ISSN: 2070-1721                                           Aruba Networks
       Value : A variable length string of ASCII characters
 
 <a name="section-6.1.3.1"><h4>6.1.3.1 27.  Event Filter</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    The AC uses this element to assign importance to events, enable or
@@ -1804,7 +1754,6 @@ ISSN: 2070-1721                                           Aruba Networks
          Bits 24 - 31: Reserved
 
 <a name="section-6.1.3.1"><h4>6.1.3.1 28.  Radio Mode</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    The AC uses this element to indicate the mode of operation for the
@@ -1823,7 +1772,6 @@ ISSN: 2070-1721                                           Aruba Networks
          2-255 : Reserved
 
 <a name="section-6.1.3.1"><h4>6.1.3.1 29.  IEEE 802.11e Element</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    The AC uses this element to configure 802.11e functions at the WTP.
@@ -1842,7 +1790,6 @@ ISSN: 2070-1721                                           Aruba Networks
          Bits 3-32 : Reserved
 
 <a name="section-6.1.3.1"><h4>6.1.3.1 30.  Configuration Statistics</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    This element defines the statistics relating to configuration and
@@ -1873,7 +1820,6 @@ ISSN: 2070-1721                                           Aruba Networks
       *  De-Registration Responses : 4 octets
 
 <a name="section-6.1.3.1"><h4>6.1.3.1 31.  Transmit Frame Counters</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    This information element contains a set of counters relating to the
@@ -1926,7 +1872,6 @@ ISSN: 2070-1721                                           Aruba Networks
       *  Power-save unicast frames : 4 octets
 
 <a name="section-6.1.3.1"><h4>6.1.3.1 32.  Received Frame Counters</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    This information element includes all statistics related to the
@@ -1973,7 +1918,6 @@ ISSN: 2070-1721                                           Aruba Networks
       *  Frames dropped due to other reasons : 4 octets
 
 <a name="section-6.1.3.1"><h4>6.1.3.1 33.  Association Statistics</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    This element includes information about the current stations
@@ -2007,7 +1951,6 @@ ISSN: 2070-1721                                           Aruba Networks
          +  WMM/U-APSD state : 1 octet
 
 <a name="section-6.1.3.1"><h4>6.1.3.1 34.  Status Element</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    The status IE is included in the status response message sent by the
@@ -2027,7 +1970,6 @@ ISSN: 2070-1721                                           Aruba Networks
 </p><p class="rfcparagraph">         Noise Floor : 1 octet
 
 <a name="section-6.1.3.1"><h4>6.1.3.1 35.  Event Configuration</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    This element is used by the AC to configure the set of events that it
@@ -2067,7 +2009,6 @@ ISSN: 2070-1721                                           Aruba Networks
 </p><p class="rfcparagraph">         +  All other bits are reserved.
 
 </p><p class="rfcparagraph"><a name="section-6.1.3.1"><h4>6.1.3.1 36.  Radar Detection Event</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    This element is used by the WTP to notify the AC of the detection of
@@ -2089,7 +2030,6 @@ ISSN: 2070-1721                                           Aruba Networks
 </p><p class="rfcparagraph">         New Channel : 2 octets.  The new channel to which the WTP moved
          as a result of the detection of radar interference.
 <a name="section-6.1.3.1"><h4>6.1.3.1 37.  Excessive Retry Event</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    This element is used by the WTP to indicate excessive retry events on
@@ -2108,7 +2048,6 @@ ISSN: 2070-1721                                           Aruba Networks
          Length of last burst of excessive retries : 2 octets.
 
 </p><p class="rfcparagraph"><a name="section-6.1.3.1"><h4>6.1.3.1 38.  Noise Floor Event</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    This element is used by the WTP to notify the AC of the current noise
@@ -2128,7 +2067,6 @@ ISSN: 2070-1721                                           Aruba Networks
          Current Noise Floor : 2 octets
 
 <a name="section-6.1.3.1"><h4>6.1.3.1 39.  Raw 802.11 Frame</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    This element provides a generic capability for either a WTP or an AC
@@ -2142,7 +2080,6 @@ ISSN: 2070-1721                                           Aruba Networks
 
       Value : A raw 802.11 frame
 <a name="section-6.1.3.1"><h4>6.1.3.1 40.  Vendor-Specific Element</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    This element is used to transfer vendor-specific information between
@@ -2157,7 +2094,6 @@ ISSN: 2070-1721                                           Aruba Networks
       octets that are specific to the vendor represented by the OUI.
 
 </p><p class="rfcparagraph"><a name="section-6.1.3.1"><h4>6.1.3.1 41.  Recursion Element</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    This element type can be used to recursively define a variable-length
@@ -2173,7 +2109,6 @@ ISSN: 2070-1721                                           Aruba Networks
       more elements defined in this section.
 
 </p><p class="rfcparagraph"><a name="section-6.1.3.1"><h4>6.1.3.1 42.  Pad Element</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    This is a generic element type that can be used to pad the packets,
@@ -2186,11 +2121,9 @@ ISSN: 2070-1721                                           Aruba Networks
       Value : A variable-length element that MUST be filled with all 0s
       at the source and MUST be ignored at the destination.
 <a name="section-6.1.3.2"><h4>6.1.3.2   SLAPP 802.11 Control Protocol Messages</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
 <a name="section-6.1.3.2"><h4>6.1.3.2 1.  Registration Request</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    At the start of the SLAPP 802.11 Control Protocol, the WTP sends a
@@ -2253,7 +2186,6 @@ ISSN: 2070-1721                                           Aruba Networks
          253 : Vendor-Specific Element
 
 <a name="section-6.1.3.2"><h4>6.1.3.2 2.  Registration Response</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    Upon receiving a registration request, the AC may either chose to
@@ -2309,7 +2241,6 @@ ISSN: 2070-1721                                           Aruba Networks
 </p><p class="rfcparagraph">      24 : SLAPP registration ID
 
 <a name="section-6.1.3.2"><h4>6.1.3.2 3.  De-Registration Request</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
     0                   1                   2                   3
@@ -2339,7 +2270,6 @@ ISSN: 2070-1721                                           Aruba Networks
 </p><p class="rfcparagraph">         All other values are reserved.
 
 </p><p class="rfcparagraph"><a name="section-6.1.3.2"><h4>6.1.3.2 4.  De-Registration Response</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    The De-Registration Response is a simple ACK from the recipient of
@@ -2367,7 +2297,6 @@ ISSN: 2070-1721                                           Aruba Networks
 </p><p class="rfcparagraph">      Reason Code : The same reason code used in the corresponding
       request.
 <a name="section-6.1.3.2"><h4>6.1.3.2 5.  Configuration Request</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    The Configuration Request message is used by the WTP to request a set
@@ -2392,7 +2321,6 @@ ISSN: 2070-1721                                           Aruba Networks
    the WTP is interested in obtaining configuration information for.
 
 </p><p class="rfcparagraph"><a name="section-6.1.3.2"><h4>6.1.3.2 6.  Configuration Response</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    The Configuration Response message is used by the AC to respond to a
@@ -2468,7 +2396,6 @@ ISSN: 2070-1721                                           Aruba Networks
    message, then their default values are applied by the WTP.
 
 </p><p class="rfcparagraph"><a name="section-6.1.3.2"><h4>6.1.3.2 7.  Configuration Update</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    The Configuration Update message is initiated by the AC to push
@@ -2493,7 +2420,6 @@ ISSN: 2070-1721                                           Aruba Networks
    message is the same as that for the Configuration Response message.
 
 </p><p class="rfcparagraph"><a name="section-6.1.3.2"><h4>6.1.3.2 8.  Configuration Acknowledgment</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    The Configuration Acknowledgment message is used by the WTP to inform
@@ -2523,7 +2449,6 @@ ISSN: 2070-1721                                           Aruba Networks
       the AC and MUST be de-registered at the AC.
 
 </p><p class="rfcparagraph"><a name="section-6.1.3.2"><h4>6.1.3.2 9.  Status Request</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    The status request message is used by the AC to request the
@@ -2547,7 +2472,6 @@ ISSN: 2070-1721                                           Aruba Networks
    the AC requests status.
 
 </p><p class="rfcparagraph"><a name="section-6.1.3.2"><h4>6.1.3.2 10.  Status Response</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    The status response message is used by the WTP to respond to a status
@@ -2579,7 +2503,6 @@ ISSN: 2070-1721                                           Aruba Networks
 </p><p class="rfcparagraph">   The status IE is mandatory in a status response message.
 
 </p><p class="rfcparagraph"><a name="section-6.1.3.2"><h4>6.1.3.2 11.  Statistics Request</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    The Statistics request message is used by the AC to request
@@ -2607,7 +2530,6 @@ ISSN: 2070-1721                                           Aruba Networks
 </p><p class="rfcparagraph">      All other bits are reserved and MUST be set to 0 by the source and
       ignored by the destination.
 <a name="section-6.1.3.2"><h4>6.1.3.2 12.  Statistics Response</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
     0                   1                   2                   3
@@ -2639,7 +2561,6 @@ ISSN: 2070-1721                                           Aruba Networks
 </p><p class="rfcparagraph">      All other bits are reserved.
 
 </p><p class="rfcparagraph"><a name="section-6.1.3.2"><h4>6.1.3.2 13.  Keepalive</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    The keepalive messages can be initiated by either the WTP or the AC.
@@ -2672,7 +2593,6 @@ ISSN: 2070-1721                                           Aruba Networks
       ignored at the destination.
 
 </p><p class="rfcparagraph"><a name="section-6.1.3.2"><h4>6.1.3.2 14.  Key Configuration</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    In CAPWAP mode 5, the 802.11 crypto functions are performed at the
@@ -2687,7 +2607,6 @@ ISSN: 2070-1721                                           Aruba Networks
    determines the contents of the Key Configuration Request following
    the SLAPP Registration ID.
 <a name="section-6.1.3.2"><h4>6.1.3.2 14.1.  Unicast Key Configuration Request</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    The Unicast Key Configuration Request is used by the AC to inform the
@@ -2719,7 +2638,6 @@ ISSN: 2070-1721                                           Aruba Networks
    multicast frames.
 
 </p><p class="rfcparagraph"><a name="section-6.1.3.2"><h4>6.1.3.2 14.2.  Broadcast/Multicast Key Configuration Request</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
     0                   1                   2                   3
@@ -2742,7 +2660,6 @@ ISSN: 2070-1721                                           Aruba Networks
    reserved and MUST be set to zero by the AC and ignored by the WTP.
 
 </p><p class="rfcparagraph"><a name="section-6.1.3.2"><h4>6.1.3.2 14.3.  Unicast Key Configuration Response</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    The WTP acknowledges receipt of a Unicast Key Configuration Request
@@ -2767,7 +2684,6 @@ ISSN: 2070-1721                                           Aruba Networks
 
                Figure 24: Unicast Key Configuration Response
 <a name="section-6.1.3.2"><h4>6.1.3.2 14.4.  Multicast Key Configuration Response</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    The WTP acknowledges receipt of a Multicast Key Configuration Request
@@ -2791,7 +2707,6 @@ ISSN: 2070-1721                                           Aruba Networks
                 Figure 25: Group Key Configuration Response
 
 <a name="section-6.1.3.3"><h4>6.1.3.3   Monitoring and Statistics</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    An AC may want to periodically monitor the health of a WTP, collect
@@ -2804,7 +2719,6 @@ ISSN: 2070-1721                                           Aruba Networks
    information.
 
 </p><p class="rfcparagraph"><a name="section-6.1.3.3"><h4>6.1.3.3 1.  Statistics Collection Procedure</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    The simple statistics collection procedure defined here does not
@@ -2817,7 +2731,6 @@ ISSN: 2070-1721                                           Aruba Networks
    about some specific statistics, it is the responsibility of the AC to
    poll the WTP at the appropriate intervals.
 <a name="section-6.1.3.3"><h4>6.1.3.3 2.  Events Procedure</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    The event notification process includes the following: 1) Event
@@ -2829,7 +2742,6 @@ ISSN: 2070-1721                                           Aruba Networks
    part of a event registration are given in Section 6.1.3.3.3.
 
 </p><p class="rfcparagraph"><a name="section-6.1.3.3"><h4>6.1.3.3 3.  WTP Events</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    This section defines a set of WTP events along with the event-
@@ -2869,11 +2781,9 @@ ISSN: 2070-1721                                           Aruba Networks
    The SLAPP 802.11 Control Protocol operation is described in this
    section.
 <a name="section-6.1.4.1"><h4>6.1.4.1   SLAPP 802.11 Control Protocol State Machine</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
 <a name="section-6.1.4.1"><h4>6.1.4.1 1.  At the WTP</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
        +-------------+
@@ -2948,7 +2858,6 @@ ISSN: 2070-1721                                           Aruba Networks
             Figure 26: SLAPP 802.11 Control Protocol at the WTP
 
 <a name="section-6.1.4.1"><h4>6.1.4.1 1.1.  State Machine Explanation</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    Unregistered: The transition into this state is from the securing
@@ -2999,7 +2908,6 @@ ISSN: 2070-1721                                           Aruba Networks
       from the AC.  It sends a de-register response to the AC and moves
       to the discovering state.
 <a name="section-6.1.4.1"><h4>6.1.4.1 2.  At the AC</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
             +----------+
@@ -3058,7 +2966,6 @@ ISSN: 2070-1721                                           Aruba Networks
             Figure 27: SLAPP 802.11 Control Protocol at the AC
 
 <a name="section-6.1.4.1"><h4>6.1.4.1 2.1.  State Machine Explanation</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    The states "securing" and "discovering" are described in Figure 3.
@@ -3262,7 +3169,6 @@ ISSN: 2070-1721                                           Aruba Networks
    transitions out of it go to the "acquire" state.  See Figure 3.
 
 </p><p class="rfcparagraph"><a name="section-6.2.4.1"><h4>6.2.4.1   AC</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    The AC's state machine for the Image Download protocol is shown in
@@ -3347,7 +3253,6 @@ ISSN: 2070-1721                                           Aruba Networks
       timer is canceled.
 
 </p><p class="rfcparagraph"><a name="section-6.2.4.2"><h4>6.2.4.2   WTP</h4></a>
-                        <a href="raw/text/rfc5413.txt" class="rawLink">raw</a>
                     
 
    The WTP's state machine for the Image Download protocol is shown in

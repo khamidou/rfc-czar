@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
@@ -614,13 +614,11 @@ Short  Long Form                               Functionality
    to each command is in Appendix C.
 
 </p><p class="rfcparagraph"><a name="section-2.2.1.1"><h4>2.2.1.1   The COMMANDS command</h4></a>
-                        <a href="raw/text/rfc1835.txt" class="rawLink">raw</a>
                     
 
    The COMMANDS command returns a list of commands that the server
    supports. The response is formatted as a FULL response.
 <a name="section-2.2.1.2"><h4>2.2.1.2   The CONSTRAINTS command</h4></a>
-                        <a href="raw/text/rfc1835.txt" class="rawLink">raw</a>
                     
 
    The CONSTRAINTS command returns a list of constraints and the values
@@ -641,28 +639,24 @@ Short  Long Form                               Functionality
        is numerical, as a pair of numbers separated with a hyphen.
 
 </p><p class="rfcparagraph"><a name="section-2.2.1.3"><h4>2.2.1.3   The DESCRIBE command</h4></a>
-                        <a href="raw/text/rfc1835.txt" class="rawLink">raw</a>
                     
 
    The DESCRIBE command gives a brief description about the server in a
    "Services" template. The result is formatted as a FULL response.
 
 </p><p class="rfcparagraph"><a name="section-2.2.1.4"><h4>2.2.1.4   The HELP command</h4></a>
-                        <a href="raw/text/rfc1835.txt" class="rawLink">raw</a>
                     
 
    The HELP command takes an optional argument as subject to get help
    for.
 
 </p><p class="rfcparagraph"><a name="section-2.2.1.5"><h4>2.2.1.5   The LIST command</h4></a>
-                        <a href="raw/text/rfc1835.txt" class="rawLink">raw</a>
                     
 
    The LIST command returns the name of the templates available on the
    server. The answer is formatted FULL format response.
 
 </p><p class="rfcparagraph"><a name="section-2.2.1.6"><h4>2.2.1.6   The POLLED-BY command</h4></a>
-                        <a href="raw/text/rfc1835.txt" class="rawLink">raw</a>
                     
 
    The POLLED-BY command returns a list of servers and the templates and
@@ -672,7 +666,6 @@ Short  Long Form                               Functionality
    fields polled.  An empty result means either that the server is not
    polled by anyone, or that it doesn't support indexing.
 <a name="section-2.2.1.7"><h4>2.2.1.7   The POLLED-FOR command</h4></a>
-                        <a href="raw/text/rfc1835.txt" class="rawLink">raw</a>
                     
 
    The POLLED-FOR command returns a list of servers that this server has
@@ -682,7 +675,6 @@ Short  Long Form                               Functionality
    that it doesn't support indexing.
 
 </p><p class="rfcparagraph"><a name="section-2.2.1.8"><h4>2.2.1.8   The SHOW command</h4></a>
-                        <a href="raw/text/rfc1835.txt" class="rawLink">raw</a>
                     
 
    The SHOW command takes a template name as argument and returns
@@ -690,7 +682,6 @@ Short  Long Form                               Functionality
    The answer is formatted as a blank template with the requested name.
 
 </p><p class="rfcparagraph"><a name="section-2.2.1.9"><h4>2.2.1.9   The VERSION command</h4></a>
-                        <a href="raw/text/rfc1835.txt" class="rawLink">raw</a>
                     
 
    The output format is a FULL response containg a record with template
@@ -736,7 +727,6 @@ Short  Long Form                               Functionality
    out, thus creating custom views.
 
 </p><p class="rfcparagraph"><a name="section-2.2.2.1"><h4>2.2.2.1   Format of a Search Term</h4></a>
-                        <a href="raw/text/rfc1835.txt" class="rawLink">raw</a>
                     
 
    Each search term consists of one of the following:
@@ -808,7 +798,6 @@ Short  Long Form                               Functionality
 </p><p class="rfcparagraph">     -------------------------------------------------------------------
 
 <a name="section-2.2.2.2"><h4>2.2.2.2   Format of a Search String</h4></a>
-                        <a href="raw/text/rfc1835.txt" class="rawLink">raw</a>
                     
 
    Special characters that need to be quoted are preceeded by a
@@ -908,7 +897,6 @@ Short  Long Form                               Functionality
 
 </p><p class="rfcparagraph">  ----------------------------------------------------------------------
 <a name="section-2.3.2.1"><h4>2.3.2.1   The SEARCH Constraint</h4></a>
-                        <a href="raw/text/rfc1835.txt" class="rawLink">raw</a>
                     
 
    The SEARCH constraint is used for specifying the method that is to be
@@ -940,7 +928,6 @@ Short  Long Form                               Functionality
                    with the search string.
 
 </p><p class="rfcparagraph"><a name="section-2.3.2.2"><h4>2.3.2.2   The FORMAT Constraint</h4></a>
-                        <a href="raw/text/rfc1835.txt" class="rawLink">raw</a>
                     
 
    The FORMAT constraint describes what format the result will be in.
@@ -948,7 +935,6 @@ Short  Long Form                               Functionality
    Response Modes below.
 
 </p><p class="rfcparagraph"><a name="section-2.3.2.3"><h4>2.3.2.3   The MAXFULL Constraint</h4></a>
-                        <a href="raw/text/rfc1835.txt" class="rawLink">raw</a>
                     
 
    The MAXFULL constraint sets the limit of the number of matching
@@ -962,21 +948,18 @@ Short  Long Form                               Functionality
    server will change the response format to SUMMARY when the number of
    matching records equals or exceeds this value.
 <a name="section-2.3.2.4"><h4>2.3.2.4   The MAXHITS Constraint</h4></a>
-                        <a href="raw/text/rfc1835.txt" class="rawLink">raw</a>
                     
 
    The MAXHITS constraint sets the maximum number of records the client
    can get in a search respone.
 
 </p><p class="rfcparagraph"><a name="section-2.3.2.5"><h4>2.3.2.5   The CASE Constraint</h4></a>
-                        <a href="raw/text/rfc1835.txt" class="rawLink">raw</a>
                     
 
    The CASE constraint defines if the search should be done case
    sensistive or not. Default value is to have case ignored.
 
 </p><p class="rfcparagraph"><a name="section-2.3.2.6"><h4>2.3.2.6   The AUTHENTICATE Constraint</h4></a>
-                        <a href="raw/text/rfc1835.txt" class="rawLink">raw</a>
                     
 
    The AUTHENTICATE constraint describes which authentication method to
@@ -989,7 +972,6 @@ Short  Long Form                               Functionality
    "password" need to be set.
 
 </p><p class="rfcparagraph"><a name="section-2.3.2.7"><h4>2.3.2.7   The NAME Constraint</h4></a>
-                        <a href="raw/text/rfc1835.txt" class="rawLink">raw</a>
                     
 
    The NAME constraint is only used together with some authentication
@@ -1001,7 +983,6 @@ Short  Long Form                               Functionality
    login program.
 
 </p><p class="rfcparagraph"><a name="section-2.3.2.8"><h4>2.3.2.8   The PASSWORD Constraint</h4></a>
-                        <a href="raw/text/rfc1835.txt" class="rawLink">raw</a>
                     
 
    The PASSWORD constraint is only used together with some
@@ -1013,7 +994,6 @@ Short  Long Form                               Functionality
    similar tothe UNIX login program.
 
 </p><p class="rfcparagraph"><a name="section-2.3.2.9"><h4>2.3.2.9   The LANGUAGE Constraint</h4></a>
-                        <a href="raw/text/rfc1835.txt" class="rawLink">raw</a>
                     
 
    The LANGUAGE constraints can be used as an extra information to the
@@ -1024,7 +1004,6 @@ Short  Long Form                               Functionality
    constraint.  In these, the case of the letters are insignigicant.
 
 </p><p class="rfcparagraph"><a name="section-2.3.2.10"><h4>2.3.2.10   The INCHARSET Constraint</h4></a>
-                        <a href="raw/text/rfc1835.txt" class="rawLink">raw</a>
                     
 
    The INCHARSET constraint tells the server in which character set the
@@ -1032,7 +1011,6 @@ Short  Long Form                               Functionality
    8859-1.
 
 </p><p class="rfcparagraph"><a name="section-2.3.2.11"><h4>2.3.2.11   The IGNORE Constraint</h4></a>
-                        <a href="raw/text/rfc1835.txt" class="rawLink">raw</a>
                     
 
    The IGNORE constraint specifies which attributes to NOT include in
@@ -1044,7 +1022,6 @@ Short  Long Form                               Functionality
    system message must be "% 205 Requested constraint not fulfilled".
 
 </p><p class="rfcparagraph"><a name="section-2.3.2.12"><h4>2.3.2.12   The INCLUDE Constraint</h4></a>
-                        <a href="raw/text/rfc1835.txt" class="rawLink">raw</a>
                     
 
    The INCLUDE constraint specifies which attributes to include in the
@@ -1161,7 +1138,6 @@ Short  Long Form                               Functionality
         The details of each are specified in the following sections:
 
 </p><p class="rfcparagraph"><a name="section-2.4.3.1"><h4>2.4.3.1   A FULL format response</h4></a>
-                        <a href="raw/text/rfc1835.txt" class="rawLink">raw</a>
                     
 
    A FULL format response consists of a series of responses, each
@@ -1183,7 +1159,6 @@ Short  Long Form                               Functionality
    attribute, and a newline.
 
 </p><p class="rfcparagraph"><a name="section-2.4.3.2"><h4>2.4.3.2   ABRIDGED Format Response</h4></a>
-                        <a href="raw/text/rfc1835.txt" class="rawLink">raw</a>
                     
 
    Each ABRIDGED format response consists of a START line, a single line
@@ -1202,7 +1177,6 @@ Short  Long Form                               Functionality
    record and a newline pair.
 
 </p><p class="rfcparagraph"><a name="section-2.4.3.3"><h4>2.4.3.3   HANDLE Format Response</h4></a>
-                        <a href="raw/text/rfc1835.txt" class="rawLink">raw</a>
                     
 
    A HANDLE response consists of a single START line, which shall start
@@ -1213,7 +1187,6 @@ Short  Long Form                               Functionality
    a terminating newline.
 
 </p><p class="rfcparagraph"><a name="section-2.4.3.4"><h4>2.4.3.4   SUMMARY Format Response</h4></a>
-                        <a href="raw/text/rfc1835.txt" class="rawLink">raw</a>
                     
 
    A SUMMARY format response consists of a single set of responses,
@@ -1235,7 +1208,6 @@ Short  Long Form                               Functionality
    instead of a space.
 
 </p><p class="rfcparagraph"><a name="section-2.4.3.5"><h4>2.4.3.5   SERVER-TO-ASK Response</h4></a>
-                        <a href="raw/text/rfc1835.txt" class="rawLink">raw</a>
                     
 
    A SERVER-TO-ASK response consists of information to the client about

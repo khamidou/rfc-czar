@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
@@ -914,7 +914,6 @@ ISSN: 2070-1721                                                    Avaya
    cached shared secrets are not affected.
 
 </p><p class="rfcparagraph"><a name="section-4.4.1.1"><h4>4.4.1.1   Hash Commitment in Diffie-Hellman Mode</h4></a>
-                        <a href="raw/text/rfc6189.txt" class="rawLink">raw</a>
                     
 
    From the intersection of the algorithms in the sent and received
@@ -980,7 +979,6 @@ ISSN: 2070-1721                                                    Avaya
    either of the two parties.
 
 </p><p class="rfcparagraph"><a name="section-4.4.1.2"><h4>4.4.1.2   Responder Behavior in Diffie-Hellman Mode</h4></a>
-                        <a href="raw/text/rfc6189.txt" class="rawLink">raw</a>
                     
 
    Upon receipt of the Commit message, the responder generates its own
@@ -1019,7 +1017,6 @@ ISSN: 2070-1721                                                    Avaya
 </p><p class="rfcparagraph">      DHResult = pvi^svr mod p
 
 <a name="section-4.4.1.3"><h4>4.4.1.3   Initiator Behavior in Diffie-Hellman Mode</h4></a>
-                        <a href="raw/text/rfc6189.txt" class="rawLink">raw</a>
                     
 
    Upon receipt of the DHPart1 message, the initiator checks that the
@@ -1038,7 +1035,6 @@ ISSN: 2070-1721                                                    Avaya
 </p><p class="rfcparagraph">      DHResult = pvr^svi mod p
 
 <a name="section-4.4.1.4"><h4>4.4.1.4   Shared Secret Calculation for DH Mode</h4></a>
-                        <a href="raw/text/rfc6189.txt" class="rawLink">raw</a>
                     
 
    A hash of the received and sent ZRTP messages in the current ZRTP
@@ -1177,7 +1173,6 @@ ISSN: 2070-1721                                                    Avaya
    earlier session by a DH exchange, as discussed in Section 4.9.
 
 </p><p class="rfcparagraph"><a name="section-4.4.2.1"><h4>4.4.2.1   Commitment in Preshared Mode</h4></a>
-                        <a href="raw/text/rfc6189.txt" class="rawLink">raw</a>
                     
 
    Preshared mode is selected by setting the Key Agreement Type to
@@ -1196,7 +1191,6 @@ ISSN: 2070-1721                                                    Avaya
    digital signature on the sashash (Section 7.2).
 
 </p><p class="rfcparagraph"><a name="section-4.4.2.2"><h4>4.4.2.2   Initiator Behavior in Preshared Mode</h4></a>
-                        <a href="raw/text/rfc6189.txt" class="rawLink">raw</a>
                     
 
    The Commit message (Figure 7) is sent by the initiator of the ZRTP
@@ -1235,7 +1229,6 @@ ISSN: 2070-1721                                                    Avaya
       have disastrous security consequences.
 
 </p><p class="rfcparagraph"><a name="section-4.4.2.3"><h4>4.4.2.3   Responder Behavior in Preshared Mode</h4></a>
-                        <a href="raw/text/rfc6189.txt" class="rawLink">raw</a>
                     
 
    The responder uses the received keyID to search for matching key
@@ -1276,7 +1269,6 @@ ISSN: 2070-1721                                                    Avaya
    as described below.
 
 </p><p class="rfcparagraph"><a name="section-4.4.2.4"><h4>4.4.2.4   Shared Secret Calculation for Preshared Mode</h4></a>
-                        <a href="raw/text/rfc6189.txt" class="rawLink">raw</a>
                     
 
    Preshared mode requires that the s0 and ZRTPSess keys be derived from
@@ -1343,7 +1335,6 @@ ISSN: 2070-1721                                                    Avaya
    media streams, matching the ZID used in the first media stream.
 
 </p><p class="rfcparagraph"><a name="section-4.4.3.1"><h4>4.4.3.1   Commitment in Multistream Mode</h4></a>
-                        <a href="raw/text/rfc6189.txt" class="rawLink">raw</a>
                     
 
    Multistream mode is selected by the initiator setting the Key
@@ -1385,7 +1376,6 @@ ISSN: 2070-1721                                                    Avaya
    SRTP keys, as described below.
 
 </p><p class="rfcparagraph"><a name="section-4.4.3.2"><h4>4.4.3.2   Shared Secret Calculation for Multistream Mode</h4></a>
-                        <a href="raw/text/rfc6189.txt" class="rawLink">raw</a>
                     
 
    In Multistream mode, each media stream requires that a set of keys be
@@ -1707,7 +1697,6 @@ ISSN: 2070-1721                                                    Avaya
    each media stream, the corresponding s0 MUST be erased.
 
 </p><p class="rfcparagraph"><a name="section-4.6.1.1"><h4>4.6.1.1   Cache Update Following a Cache Mismatch</h4></a>
-                        <a href="raw/text/rfc6189.txt" class="rawLink">raw</a>
                     
 
    If a shared secret cache mismatch (as defined in Section 4.3.2) is
@@ -1831,7 +1820,6 @@ ISSN: 2070-1721                                                    Avaya
    old days of secure PSTN phones.
 
 </p><p class="rfcparagraph"><a name="section-4.7.2.1"><h4>4.7.2.1   Key Destruction for GoClear Message</h4></a>
-                        <a href="raw/text/rfc6189.txt" class="rawLink">raw</a>
                     
 
    All SRTP session key material MUST be erased by the receiver of the
@@ -2164,7 +2152,6 @@ ISSN: 2070-1721                                                    Avaya
    successor to the SHA-2 hashes in [FIPS-180-3].
 
 </p><p class="rfcparagraph"><a name="section-5.1.2.1"><h4>5.1.2.1   Negotiated Hash and MAC Algorithm</h4></a>
-                        <a href="raw/text/rfc6189.txt" class="rawLink">raw</a>
                     
 
    ZRTP makes use of message authentication codes (MACs) that are keyed
@@ -2195,7 +2182,6 @@ ISSN: 2070-1721                                                    Avaya
    negotiated MAC, new Hash Types must be used.
 
 </p><p class="rfcparagraph"><a name="section-5.1.2.2"><h4>5.1.2.2   Implicit Hash and MAC Algorithm</h4></a>
-                        <a href="raw/text/rfc6189.txt" class="rawLink">raw</a>
                     
 
    While most of the hash and MAC usage in ZRTP is defined by the

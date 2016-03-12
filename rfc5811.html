@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
@@ -411,7 +411,6 @@ ISSN: 2070-1721                                          NTT Corporation
    higher-, medium-, and lower-priority channels, respectively.
 
 </p><p class="rfcparagraph"><a name="section-4.2.1.1"><h4>4.2.1.1   Justifying Choice of Three Sockets</h4></a>
-                        <a href="raw/text/rfc5811.txt" class="rawLink">raw</a>
                     
 
    SCTP allows up to 64 K streams to be sent over a single socket
@@ -429,7 +428,6 @@ ISSN: 2070-1721                                          NTT Corporation
    stream within a single socket).
 
 </p><p class="rfcparagraph"><a name="section-4.2.1.2"><h4>4.2.1.2   Higher-Priority, Reliable Channel</h4></a>
-                        <a href="raw/text/rfc5811.txt" class="rawLink">raw</a>
                     
 
    The higher-priority (HP) channel uses a standard SCTP reliable socket
@@ -472,7 +470,6 @@ ISSN: 2070-1721                                          NTT Corporation
    MUST have a config-response from the FE with priority 5.
 
 </p><p class="rfcparagraph"><a name="section-4.2.1.3"><h4>4.2.1.3   Medium-Priority, Semi-Reliable Channel</h4></a>
-                        <a href="raw/text/rfc5811.txt" class="rawLink">raw</a>
                     
 
    The medium-priority (MP) channel uses SCTP-PR on port 6705.  SCTP
@@ -495,7 +492,6 @@ ISSN: 2070-1721                                          NTT Corporation
    then the PL message MUST be dropped.
 
 </p><p class="rfcparagraph"><a name="section-4.2.1.4"><h4>4.2.1.4   Lower-Priority, Unreliable Channel</h4></a>
-                        <a href="raw/text/rfc5811.txt" class="rawLink">raw</a>
                     
 
    The lower-priority (LP) channel uses SCTP port 6706.  SCTP PPID 23 is
@@ -532,7 +528,6 @@ ISSN: 2070-1721                                          NTT Corporation
    then the PL message MUST be dropped.
 
 </p><p class="rfcparagraph"><a name="section-4.2.1.5"><h4>4.2.1.5   Scheduling of the Three Channels</h4></a>
-                        <a href="raw/text/rfc5811.txt" class="rawLink">raw</a>
                     
 
    In processing the sending and receiving of the PL messages, the TML
@@ -612,7 +607,6 @@ ISSN: 2070-1721                                          NTT Corporation
             Figure 5: SCTP TML Strict Priority Scheduling
 
 <a name="section-4.2.1.6"><h4>4.2.1.6   SCTP TML Parameterization</h4></a>
-                        <a href="raw/text/rfc5811.txt" class="rawLink">raw</a>
                     
 
    The following is a list of parameters needed for booting the TML.  It
@@ -639,21 +633,18 @@ ISSN: 2070-1721                                          NTT Corporation
    This section describes how the SCTP TML satisfies those requirements.
 
 </p><p class="rfcparagraph"><a name="section-4.2.2.1"><h4>4.2.2.1   Satisfying Reliability Requirement</h4></a>
-                        <a href="raw/text/rfc5811.txt" class="rawLink">raw</a>
                     
 
    As mentioned earlier, a shade of reliability ranges is possible in
    SCTP.  Therefore, this requirement is met.
 
 </p><p class="rfcparagraph"><a name="section-4.2.2.2"><h4>4.2.2.2   Satisfying Congestion Control Requirement</h4></a>
-                        <a href="raw/text/rfc5811.txt" class="rawLink">raw</a>
                     
 
    Congestion control is built into SCTP.  Therefore, this requirement
    is met.
 
 </p><p class="rfcparagraph"><a name="section-4.2.2.3"><h4>4.2.2.3   Satisfying Timeliness and Prioritization Requirement</h4></a>
-                        <a href="raw/text/rfc5811.txt" class="rawLink">raw</a>
                     
 
    By using three sockets in conjunction with the partial-reliability
@@ -661,7 +652,6 @@ ISSN: 2070-1721                                          NTT Corporation
    are addressed.
 
 </p><p class="rfcparagraph"><a name="section-4.2.2.4"><h4>4.2.2.4   Satisfying Addressing Requirement</h4></a>
-                        <a href="raw/text/rfc5811.txt" class="rawLink">raw</a>
                     
 
    There are no extra headers required for SCTP to fulfill this
@@ -671,7 +661,6 @@ ISSN: 2070-1721                                          NTT Corporation
    multicast and broadcast PL addresses.
 
 </p><p class="rfcparagraph"><a name="section-4.2.2.5"><h4>4.2.2.5   Satisfying High-Availability Requirement</h4></a>
-                        <a href="raw/text/rfc5811.txt" class="rawLink">raw</a>
                     
 
    Transport link resiliency is one of SCTP's strongest points.  Failure
@@ -696,7 +685,6 @@ ISSN: 2070-1721                                          NTT Corporation
       of one FE to another.
 
 </p><p class="rfcparagraph"><a name="section-4.2.2.6"><h4>4.2.2.6   Satisfying Node Overload Prevention Requirement</h4></a>
-                        <a href="raw/text/rfc5811.txt" class="rawLink">raw</a>
                     
 
    The architecture of this TML defines three separate channels, one per
@@ -733,7 +721,6 @@ ISSN: 2070-1721                                          NTT Corporation
    congestion and node overload implicitly together.
 
 </p><p class="rfcparagraph"><a name="section-4.2.2.7"><h4>4.2.2.7   Satisfying Encapsulation Requirement</h4></a>
-                        <a href="raw/text/rfc5811.txt" class="rawLink">raw</a>
                     
 
    The SCTP TML sets SCTP PPIDs to identify channels used as described

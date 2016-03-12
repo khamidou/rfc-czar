@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
@@ -326,7 +326,6 @@
    STATIC-NACK.
 
 </p><p class="rfcparagraph"><a name="section-3.3.3.1"><h4>3.3.3.1   Selection of Base Context, Upward Transition</h4></a>
-                        <a href="raw/text/rfc4164.txt" class="rawLink">raw</a>
                     
 
    The compressor may initiate a transition from the IR state to the CR
@@ -373,7 +372,6 @@
    acknowledged packet.
 
 </p><p class="rfcparagraph"><a name="section-3.3.3.2"><h4>3.3.3.2   Optimistic Approach, Upward Transition</h4></a>
-                        <a href="raw/text/rfc4164.txt" class="rawLink">raw</a>
                     
 
    Transition to a higher order state can be carried out according to
@@ -387,7 +385,6 @@
    sending several IR-CR packets with the same information.
 
 </p><p class="rfcparagraph"><a name="section-3.3.3.3"><h4>3.3.3.3   Optional Acknowledgements (ACKs), Upward Transition</h4></a>
-                        <a href="raw/text/rfc4164.txt" class="rawLink">raw</a>
                     
 
    An ACK may be sent by the decompressor to indicate that a context has
@@ -398,7 +395,6 @@
    state (e.g., IR state) to a higher compression state.
 
 </p><p class="rfcparagraph"><a name="section-3.3.3.4"><h4>3.3.3.4   Negative ACKs (NACKs), Downward Transition</h4></a>
-                        <a href="raw/text/rfc4164.txt" class="rawLink">raw</a>
                     
 
    A STATIC-NACK sent by the decompressor may indicate that the
@@ -542,7 +538,6 @@
    information in the IR-CR packet.  This is necessary to allow a
    decompressor to verify that the replication process has succeeded.
 <a name="section-3.5.1.1"><h4>3.5.1.1   7-bit CRC</h4></a>
-                        <a href="raw/text/rfc4164.txt" class="rawLink">raw</a>
                     
 
    The 7-bit CRC in the IR-CR packet is calculated over all octets of
@@ -555,7 +550,6 @@
 </p><p class="rfcparagraph">      C(x) = 1 + x + x^2 + x^3 + x^6 + x^7
 
 <a name="section-3.5.1.2"><h4>3.5.1.2   8-bit CRC</h4></a>
-                        <a href="raw/text/rfc4164.txt" class="rawLink">raw</a>
                     
 
    The coverage of the 8-bit CRC in the IR-CR packet is not profile

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
@@ -598,7 +598,6 @@
    and ARTT require a more general and sophisticated filtering approach.
 
 </p><p class="rfcparagraph"><a name="section-3.2.2.1"><h4>3.2.2.1   Average loss probability</h4></a>
-                        <a href="raw/text/rfc3738.txt" class="rawLink">raw</a>
                     
 
    The design of TFRC [9] reflects that, because the average packet loss
@@ -701,7 +700,6 @@
 
          Z = 1/a
 <a name="section-3.2.2.2"><h4>3.2.2.2   Average round-trip time</h4></a>
-                        <a href="raw/text/rfc3738.txt" class="rawLink">raw</a>
                     
 
    The receiver maintains an average round-trip time, ARTT, as a
@@ -744,14 +742,12 @@
    variability in the measurements.
 
 </p><p class="rfcparagraph"><a name="section-3.2.2.3"><h4>3.2.2.3   Rate Equation</h4></a>
-                        <a href="raw/text/rfc3738.txt" class="rawLink">raw</a>
                     
 
    The receiver calculates the reception rate REQN based on the TCP
    equation as follows: REQN = 1/(ARTT*sqrt{LOSSP}(0.816 +
    7.35*LOSSP*(1+32*LOSSP^2))).  This equation comes from TFRC [9].
 <a name="section-3.2.2.4"><h4>3.2.2.4   Epochs</h4></a>
-                        <a href="raw/text/rfc3738.txt" class="rawLink">raw</a>
                     
 
    The receiver makes decisions on whether or not to join another wave
@@ -762,7 +758,6 @@
    the recommended setting of TSD = 10, it is RECOMMENDED that EL = 0.5.
 
 </p><p class="rfcparagraph"><a name="section-3.2.2.5"><h4>3.2.2.5   Average reception rate</h4></a>
-                        <a href="raw/text/rfc3738.txt" class="rawLink">raw</a>
                     
 
    There are two averaged reception rates maintained by the receiver:
@@ -844,7 +839,6 @@
    + sqrt(P)).  In normal operation, it is RECOMMENDED that Beta = 1 -
    (P/(1+P))^(EL/TSD) and Zeta = 2*EL/(4+TSD).
 <a name="section-3.2.2.6"><h4>3.2.2.6   Slow start</h4></a>
-                        <a href="raw/text/rfc3738.txt" class="rawLink">raw</a>
                     
 
    WEBRC uses a slow start mechanism to quickly ramp up its rate at both
@@ -898,7 +892,6 @@
    value of ARTT, equal TRR_P.
 
 </p><p class="rfcparagraph"><a name="section-3.2.2.7"><h4>3.2.2.7   Target rate</h4></a>
-                        <a href="raw/text/rfc3738.txt" class="rawLink">raw</a>
                     
 
    In typical operation, SSR_P has a finite value and the target rate
@@ -913,7 +906,6 @@
    a channel, and exceptional time-outs.
 
 </p><p class="rfcparagraph"><a name="section-3.2.3.1"><h4>3.2.3.1   Packet reception</h4></a>
-                        <a href="raw/text/rfc3738.txt" class="rawLink">raw</a>
                     
 
    Most packet reception events require the receiver to merely register
@@ -927,7 +919,6 @@
    or the CN and PSN of the packet indicate a packet loss.
 
 </p><p class="rfcparagraph"><a name="section-3.2.3.2"><h4>3.2.3.2   First packet after join</h4></a>
-                        <a href="raw/text/rfc3738.txt" class="rawLink">raw</a>
                     
 
    When channel i is the most recently joined channel and the Boolean
@@ -939,7 +930,6 @@
    initialization of ARR_P and TRR_P as described in Section 3.2.2.5.
 
 </p><p class="rfcparagraph"><a name="section-3.2.3.3"><h4>3.2.3.3   Time slot change</h4></a>
-                        <a href="raw/text/rfc3738.txt" class="rawLink">raw</a>
                     
 
    This is an event that is triggered by the reception of a packet with
@@ -963,7 +953,6 @@
    than T-Q/2, should also not trigger a time slot change.
 
 </p><p class="rfcparagraph"><a name="section-3.2.3.4"><h4>3.2.3.4   Loss event</h4></a>
-                        <a href="raw/text/rfc3738.txt" class="rawLink">raw</a>
                     
 
    Each time the receiver detects a lost packet (based on the sequence
@@ -979,7 +968,6 @@
    packets without inferring a loss.
 
 </p><p class="rfcparagraph"><a name="section-3.2.3.5"><h4>3.2.3.5   Epoch change</h4></a>
-                        <a href="raw/text/rfc3738.txt" class="rawLink">raw</a>
                     
 
    This is an event that is triggered by the passage of time at the
@@ -989,7 +977,6 @@
    higher layer as described in Section 3.2.3.6.
 
 </p><p class="rfcparagraph"><a name="section-3.2.3.6"><h4>3.2.3.6   Join the next higher layer</h4></a>
-                        <a href="raw/text/rfc3738.txt" class="rawLink">raw</a>
                     
 
    At the beginning of each epoch, after updating the values of ARR_P
@@ -1056,7 +1043,6 @@
    as described in Section 3.2.2.2.
 
 </p><p class="rfcparagraph"><a name="section-3.2.3.7"><h4>3.2.3.7   Join timeout</h4></a>
-                        <a href="raw/text/rfc3738.txt" class="rawLink">raw</a>
                     
 
    When no packet arrives in response to the join of channel for a long
@@ -1068,7 +1054,6 @@
    seconds.
 
 </p><p class="rfcparagraph"><a name="section-3.2.3.8"><h4>3.2.3.8   Exceptional timeouts</h4></a>
-                        <a href="raw/text/rfc3738.txt" class="rawLink">raw</a>
                     
 
    These are timeouts when the packet reception behavior is far from

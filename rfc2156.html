@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
@@ -879,7 +879,6 @@ Chapter 1 -- Overview
    request will be ignored.
 
 </p><p class="rfcparagraph"><a name="section-2.3.1.1"><h4>2.3.1.1   Basic Interpersonal Messaging Service</h4></a>
-                        <a href="raw/text/rfc2156.txt" class="rawLink">raw</a>
                     
 
    These are the mandatory IPM services as listed in Section 19.8 of
@@ -927,7 +926,6 @@ Chapter 1 -- Overview
       N/A (local).
 
 </p><p class="rfcparagraph"><a name="section-2.3.1.2"><h4>2.3.1.2   IPM Service Optional User Facilities</h4></a>
-                        <a href="raw/text/rfc2156.txt" class="rawLink">raw</a>
                     
 
    This section describes support for the optional (user selectable) IPM
@@ -1212,7 +1210,6 @@ Chapter 1 -- Overview
 	<a name="section-2.3.2"><h4>2.3.2   Reception by X.400</h4></a>
 
 <a name="section-2.3.2.1"><h4>2.3.2.1   Standard Mandatory Services</h4></a>
-                        <a href="raw/text/rfc2156.txt" class="rawLink">raw</a>
                     
 
    The following standard IPM mandatory user facilities are required for
@@ -1234,7 +1231,6 @@ Chapter 1 -- Overview
 
    Typed Body
 <a name="section-2.3.2.2"><h4>2.3.2.2   Standard Optional Services</h4></a>
-                        <a href="raw/text/rfc2156.txt" class="rawLink">raw</a>
                     
 
    The following standard IPM optional user facilities are required for
@@ -1255,7 +1251,6 @@ Chapter 1 -- Overview
    Subject Indication
 
 <a name="section-2.3.2.3"><h4>2.3.2.3   New Services</h4></a>
-                        <a href="raw/text/rfc2156.txt" class="rawLink">raw</a>
                     
 
    A new X.400 service "RFC 822 Header Field" is defined using the
@@ -2547,7 +2542,6 @@ MTS.TerminalType                     T-TY             I     18.3.24   23
 
    c=gb; a=BTglobal; P=relay; dd.rfc-822=postmaster(a)UK.alter.net;
 <a name="section-4.3.4.1"><h4>4.3.4.1   Heuristic for mapping RFC 822 to X.400</h4></a>
-                        <a href="raw/text/rfc2156.txt" class="rawLink">raw</a>
                     
 
    The following heuristic, which  relates to ordering of address
@@ -2883,7 +2877,6 @@ MTS.TerminalType                     T-TY             I     18.3.24   23
    fields. In some cases a (positive) delivery report will be generated.
 
 </p><p class="rfcparagraph"><a name="section-4.6.2.1"><h4>4.6.2.1   SMTP Mappings</h4></a>
-                        <a href="raw/text/rfc2156.txt" class="rawLink">raw</a>
                     
 
    Use the basic ORAddress mapping, to generate the SMTP originator
@@ -2906,7 +2899,6 @@ MTS.TerminalType                     T-TY             I     18.3.24   23
       This is unacceptable, and so layering is violated.
 
 </p><p class="rfcparagraph"><a name="section-4.6.2.2"><h4>4.6.2.2   Generation of RFC 822 Headers</h4></a>
-                        <a href="raw/text/rfc2156.txt" class="rawLink">raw</a>
                     
 
    Not all per-recipient information can be passed at the SMTP level.
@@ -3015,7 +3007,6 @@ MTS.TerminalType                     T-TY             I     18.3.24   23
        "(Proof of Delivery Requested)".
 
 </p><p class="rfcparagraph"><a name="section-4.6.2.3"><h4>4.6.2.3   Delivery Report Generation</h4></a>
-                        <a href="raw/text/rfc2156.txt" class="rawLink">raw</a>
                     
 
    If SMTP is used, the behaviour is specified in Appendix A.  In other
@@ -3170,7 +3161,6 @@ MTS.TerminalType                     T-TY             I     18.3.24   23
    clashes is low enough to be treated as impossible.
 
 </p><p class="rfcparagraph"><a name="section-4.7.3.1"><h4>4.7.3.1   822.msg-id represented in X.400</h4></a>
-                        <a href="raw/text/rfc2156.txt" class="rawLink">raw</a>
                     
 
    IPMS.IPMIdentifier.user is omitted.  The IPMS.IPMIdentifier.user-
@@ -3180,7 +3170,6 @@ MTS.TerminalType                     T-TY             I     18.3.24   23
    discussed in Section 5.1.3.
 
 </p><p class="rfcparagraph"><a name="section-4.7.3.2"><h4>4.7.3.2   IPMS.IPMIdentifier represented in RFC 822</h4></a>
-                        <a href="raw/text/rfc2156.txt" class="rawLink">raw</a>
                     
 
    The 822.domain of 822.msg-id is set to the value "MHS". The
@@ -3197,7 +3186,6 @@ MTS.TerminalType                     T-TY             I     18.3.24   23
 </p><p class="rfcparagraph">         <"147*/S=Dietrich/O=Siemens/ADMD=DBP/C=DE/"@MHS>
 
 <a name="section-4.7.3.3"><h4>4.7.3.3   822.msg-id -> IPMS.IPMIdentifier</h4></a>
-                        <a href="raw/text/rfc2156.txt" class="rawLink">raw</a>
                     
 
    If the 822.local-part can be parsed as:
@@ -3216,7 +3204,6 @@ MTS.TerminalType                     T-TY             I     18.3.24   23
    IPMS.IPMID.user.
 
 </p><p class="rfcparagraph"><a name="section-4.7.3.4"><h4>4.7.3.4   IPMS.IPMIdentifier -> 822.msg-id</h4></a>
-                        <a href="raw/text/rfc2156.txt" class="rawLink">raw</a>
                     
 
    If IPMS.IPMIdentifier.user is absent, and IPMS.IPMIdentifier.user-
@@ -3234,7 +3221,6 @@ MTS.TerminalType                     T-TY             I     18.3.24   23
    generated with this 822.local-part, and "MHS" as the 822.domain.
 
 </p><p class="rfcparagraph"><a name="section-4.7.3.5"><h4>4.7.3.5   Phrase form</h4></a>
-                        <a href="raw/text/rfc2156.txt" class="rawLink">raw</a>
                     
 
    In "In-Reply-To:" and "References:", the encoding 822.phrase may be
@@ -3247,7 +3233,6 @@ MTS.TerminalType                     T-TY             I     18.3.24   23
    MHS.
 
 </p><p class="rfcparagraph"><a name="section-4.7.3.6"><h4>4.7.3.6   RFC 987 backwards compatibility</h4></a>
-                        <a href="raw/text/rfc2156.txt" class="rawLink">raw</a>
                     
 
    The mapping defined here is different to that used in RFC 987, as the
@@ -3698,7 +3683,6 @@ MTS.TerminalType                     T-TY             I     18.3.24   23
 	<a name="section-5.1.8"><h4>5.1.8   Mapping Delivery Status Notifications to X.400</h4></a>
 
 <a name="section-5.1.8.1"><h4>5.1.8.1   Basic Model</h4></a>
-                        <a href="raw/text/rfc2156.txt" class="rawLink">raw</a>
                     
 
    Internet Mail delivery status notifications (DSN) are mapped to X.400
@@ -3732,7 +3716,6 @@ MTS.TerminalType                     T-TY             I     18.3.24   23
    mechanism will ensure that information is not lost at the gateway.
 
 </p><p class="rfcparagraph"><a name="section-5.1.8.2"><h4>5.1.8.2   DSN Extensions</h4></a>
-                        <a href="raw/text/rfc2156.txt" class="rawLink">raw</a>
                     
 
    Two X.400 MTS extensions are defined as follows:
@@ -3751,7 +3734,6 @@ MTS.TerminalType                     T-TY             I     18.3.24   23
    not allow user extensions at the MTS level).
 
 </p><p class="rfcparagraph"><a name="section-5.1.8.3"><h4>5.1.8.3   DSN to Delivery Report Mapping</h4></a>
-                        <a href="raw/text/rfc2156.txt" class="rawLink">raw</a>
                     
 
    Some DSNs are mapped to Delivery Reports and some to IPMs, according
@@ -3865,7 +3847,6 @@ MTS.TerminalType                     T-TY             I     18.3.24   23
       All of these fields are added to the per recipient extension list.
 
 </p><p class="rfcparagraph"><a name="section-5.1.8.4"><h4>5.1.8.4   Status Value Mappings</h4></a>
-                        <a href="raw/text/rfc2156.txt" class="rawLink">raw</a>
                     
 
    Status values are mapped to X.400 reason and diagnostic codes as
@@ -3937,7 +3918,6 @@ X.7.6     Cryptographic algorithm not supported 1/46
 X.7.7     Message integrity failure             1/46
 
 <a name="section-5.1.8.5"><h4>5.1.8.5   DSNs that originated in X.400</h4></a>
-                        <a href="raw/text/rfc2156.txt" class="rawLink">raw</a>
                     
 
    The mapping of X.400 delivery reports to DSNs will in general provide
@@ -4001,7 +3981,6 @@ X.7.7     Message integrity failure             1/46
 </p><p class="rfcparagraph">	<a name="section-5.3.3"><h4>5.3.3   Basic Mappings</h4></a>
 
 <a name="section-5.3.3.1"><h4>5.3.3.1   Encoded Information Types</h4></a>
-                        <a href="raw/text/rfc2156.txt" class="rawLink">raw</a>
                     
 
    This mapping from MTS.EncodedInformationTypes is needed in several
@@ -4027,7 +4006,6 @@ X.7.7     Message integrity failure             1/46
    and RFC 987), and other types are mapped onto EBNF.object-identifier.
 
 </p><p class="rfcparagraph"><a name="section-5.3.3.2"><h4>5.3.3.2   Global Domain Identifier</h4></a>
-                        <a href="raw/text/rfc2156.txt" class="rawLink">raw</a>
                     
 
    The following simple EBNF is used to represent
@@ -4160,13 +4138,11 @@ autosubmitted   = "not-auto-submitted"
    IPMS-Extensions:".
 
 </p><p class="rfcparagraph"><a name="section-5.3.4.1"><h4>5.3.4.1   Mapping the IPMS Body</h4></a>
-                        <a href="raw/text/rfc2156.txt" class="rawLink">raw</a>
                     
 
    The mapping of the IPMS Body is defined in RFC 2157.
 
 </p><p class="rfcparagraph"><a name="section-5.3.4.2"><h4>5.3.4.2   Example Message</h4></a>
-                        <a href="raw/text/rfc2156.txt" class="rawLink">raw</a>
                     
 
    An example message, illustrating a number of aspects is given below.
@@ -4636,7 +4612,6 @@ Dear Mr Harrison......
    defined by NOTARY [28].
 
 </p><p class="rfcparagraph"><a name="section-5.3.8.1"><h4>5.3.8.1   MTS Mappings</h4></a>
-                        <a href="raw/text/rfc2156.txt" class="rawLink">raw</a>
                     
 
    A Delivery Report service will be represented as
@@ -4956,7 +4931,6 @@ Dear Mr Harrison......
    to the MIME specifications as content type message/rfc822.
 
 </p><p class="rfcparagraph"><a name="section-5.3.8.2"><h4>5.3.8.2   Status Code Mappings</h4></a>
-                        <a href="raw/text/rfc2156.txt" class="rawLink">raw</a>
                     
 
    This section defines the mappings from X.400 diagnostic and status
@@ -5021,7 +4995,6 @@ Dear Mr Harrison......
                                                       expired
 
 <a name="section-5.3.8.3"><h4>5.3.8.3   MTA Mappings</h4></a>
-                        <a href="raw/text/rfc2156.txt" class="rawLink">raw</a>
                     
 
    The single SMTP recipient is constructed from
@@ -5058,7 +5031,6 @@ Dear Mr Harrison......
       trace element comes first.
 
 </p><p class="rfcparagraph"><a name="section-5.3.8.4"><h4>5.3.8.4   Example Delivery Reports</h4></a>
-                        <a href="raw/text/rfc2156.txt" class="rawLink">raw</a>
                     
 
    This section contains sample delivery reports.   These are the same

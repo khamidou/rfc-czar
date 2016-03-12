@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
@@ -401,7 +401,6 @@
    follows:
 
 </p><p class="rfcparagraph"><a name="section-3.6.1.1"><h4>3.6.1.1  Simple S2K</h4></a>
-                        <a href="raw/text/rfc2440.txt" class="rawLink">raw</a>
                     
 
    This directly hashes the string to produce the key data.  See below
@@ -431,7 +430,6 @@
    first hash leftmost, to produce the key data, with any excess octets
    on the right discarded.
 <a name="section-3.6.1.2"><h4>3.6.1.2  Salted S2K</h4></a>
-                        <a href="raw/text/rfc2440.txt" class="rawLink">raw</a>
                     
 
    This includes a "salt" value in the S2K specifier -- some arbitrary
@@ -447,7 +445,6 @@
    specifier, followed by the passphrase.
 
 </p><p class="rfcparagraph"><a name="section-3.6.1.3"><h4>3.6.1.3  Iterated and Salted S2K</h4></a>
-                        <a href="raw/text/rfc2440.txt" class="rawLink">raw</a>
                     
 
    This includes both a salt and an octet count.  The salt is combined
@@ -492,7 +489,6 @@
    dictionary attacks.
 
 </p><p class="rfcparagraph"><a name="section-3.6.2.1"><h4>3.6.2.1  Secret key encryption</h4></a>
-                        <a href="raw/text/rfc2440.txt" class="rawLink">raw</a>
                     
 
    An S2K specifier can be stored in the secret keyring to specify how
@@ -524,7 +520,6 @@
    values themselves.
 
 </p><p class="rfcparagraph"><a name="section-3.6.2.2"><h4>3.6.2.2  Symmetric-key message encryption</h4></a>
-                        <a href="raw/text/rfc2440.txt" class="rawLink">raw</a>
                     
 
    OpenPGP can create a Symmetric-key Encrypted Session Key (ESK) packet
@@ -620,7 +615,6 @@
        issuer, Partial Body Length headers encode a packet of
        indeterminate length, effectively making it a stream.
 <a name="section-4.2.2.1"><h4>4.2.2.1  One-Octet Lengths</h4></a>
-                        <a href="raw/text/rfc2440.txt" class="rawLink">raw</a>
                     
 
    A one-octet Body Length header encodes a length of from 0 to 191
@@ -630,7 +624,6 @@
 </p><p class="rfcparagraph">       bodyLen = 1st_octet;
 
 </p><p class="rfcparagraph"><a name="section-4.2.2.2"><h4>4.2.2.2  Two-Octet Lengths</h4></a>
-                        <a href="raw/text/rfc2440.txt" class="rawLink">raw</a>
                     
 
    A two-octet Body Length header encodes a length of from 192 to 8383
@@ -640,7 +633,6 @@
 </p><p class="rfcparagraph">       bodyLen = ((1st_octet - 192) << 8) + (2nd_octet) + 192
 
 <a name="section-4.2.2.3"><h4>4.2.2.3  Five-Octet Lengths</h4></a>
-                        <a href="raw/text/rfc2440.txt" class="rawLink">raw</a>
                     
 
    A five-octet Body Length header consists of a single octet holding
@@ -651,7 +643,6 @@
                  (4th_octet << 8)  | 5th_octet
 
 <a name="section-4.2.2.4"><h4>4.2.2.4  Partial Body Lengths</h4></a>
-                        <a href="raw/text/rfc2440.txt" class="rawLink">raw</a>
                     
 
    A Partial Body Length header is one octet long and encodes the length
@@ -1026,7 +1017,6 @@
    are described in a section below.
 
 </p><p class="rfcparagraph"><a name="section-5.2.3.1"><h4>5.2.3.1  Signature Subpacket Specification</h4></a>
-                        <a href="raw/text/rfc2440.txt" class="rawLink">raw</a>
                     
 
    The subpacket fields consist of zero or more signature subpackets.
@@ -1098,7 +1088,6 @@
 </p><p class="rfcparagraph">   Implementations SHOULD implement "preferences".
 
 </p><p class="rfcparagraph"><a name="section-5.2.3.2"><h4>5.2.3.2  Signature Subpacket Types</h4></a>
-                        <a href="raw/text/rfc2440.txt" class="rawLink">raw</a>
                     
 
    A number of subpackets are currently defined.  Some subpackets apply
@@ -1135,7 +1124,6 @@
    information in it cannot be considered definitive because it is not
    part of the signature proper.
 <a name="section-5.2.3.3"><h4>5.2.3.3  Signature creation time</h4></a>
-                        <a href="raw/text/rfc2440.txt" class="rawLink">raw</a>
                     
 
    (4 octet time field)
@@ -1145,7 +1133,6 @@
 </p><p class="rfcparagraph">   MUST be present in the hashed area.
 
 </p><p class="rfcparagraph"><a name="section-5.2.3.4"><h4>5.2.3.4  Issuer</h4></a>
-                        <a href="raw/text/rfc2440.txt" class="rawLink">raw</a>
                     
 
    (8 octet key ID)
@@ -1153,7 +1140,6 @@
    The OpenPGP key ID of the key issuing the signature.
 
 </p><p class="rfcparagraph"><a name="section-5.2.3.5"><h4>5.2.3.5  Key expiration time</h4></a>
-                        <a href="raw/text/rfc2440.txt" class="rawLink">raw</a>
                     
 
    (4 octet time field)
@@ -1164,7 +1150,6 @@
    a self-signature.
 
 </p><p class="rfcparagraph"><a name="section-5.2.3.6"><h4>5.2.3.6  Preferred symmetric algorithms</h4></a>
-                        <a href="raw/text/rfc2440.txt" class="rawLink">raw</a>
                     
 
    (sequence of one-octet values)
@@ -1177,7 +1162,6 @@
    signature.
 
 </p><p class="rfcparagraph"><a name="section-5.2.3.7"><h4>5.2.3.7  Preferred hash algorithms</h4></a>
-                        <a href="raw/text/rfc2440.txt" class="rawLink">raw</a>
                     
 
    (array of one-octet values)
@@ -1187,7 +1171,6 @@
    algorithms, the list is ordered. Algorithm numbers are in section 6.
    This is only found on a self-signature.
 <a name="section-5.2.3.8"><h4>5.2.3.8  Preferred compression algorithms</h4></a>
-                        <a href="raw/text/rfc2440.txt" class="rawLink">raw</a>
                     
 
    (array of one-octet values)
@@ -1201,7 +1184,6 @@
    a self-signature.
 
 </p><p class="rfcparagraph"><a name="section-5.2.3.9"><h4>5.2.3.9  Signature expiration time</h4></a>
-                        <a href="raw/text/rfc2440.txt" class="rawLink">raw</a>
                     
 
    (4 octet time field)
@@ -1211,7 +1193,6 @@
    is not present or has a value of zero, it never expires.
 
 </p><p class="rfcparagraph"><a name="section-5.2.3.10"><h4>5.2.3.10  Exportable Certification</h4></a>
-                        <a href="raw/text/rfc2440.txt" class="rawLink">raw</a>
                     
 
    (1 octet of exportability, 0 for not, 1 for exportable)
@@ -1240,7 +1221,6 @@
    (for example, a key server). Such implementations always trim local
    certifications from any key they handle.
 <a name="section-5.2.3.11"><h4>5.2.3.11  Revocable</h4></a>
-                        <a href="raw/text/rfc2440.txt" class="rawLink">raw</a>
                     
 
    (1 octet of revocability, 0 for not, 1 for revocable)
@@ -1253,7 +1233,6 @@
    the signature is revocable.
 
 </p><p class="rfcparagraph"><a name="section-5.2.3.12"><h4>5.2.3.12  Trust signature</h4></a>
-                        <a href="raw/text/rfc2440.txt" class="rawLink">raw</a>
                     
 
    (1 octet "level" (depth), 1 octet of trust amount)
@@ -1272,7 +1251,6 @@
    of 60 for partial trust and 120 for complete trust.
 
 </p><p class="rfcparagraph"><a name="section-5.2.3.13"><h4>5.2.3.13  Regular expression</h4></a>
-                        <a href="raw/text/rfc2440.txt" class="rawLink">raw</a>
                     
 
    (null-terminated regular expression)
@@ -1286,7 +1264,6 @@
    the syntax is found in a section below.
 
 </p><p class="rfcparagraph"><a name="section-5.2.3.14"><h4>5.2.3.14  Revocation key</h4></a>
-                        <a href="raw/text/rfc2440.txt" class="rawLink">raw</a>
                     
 
    (1 octet of class, 1 octet of algid, 20 octets of fingerprint)
@@ -1308,7 +1285,6 @@
    combined with other subpackets that need to be exported.
 
 </p><p class="rfcparagraph"><a name="section-5.2.3.15"><h4>5.2.3.15  Notation Data</h4></a>
-                        <a href="raw/text/rfc2440.txt" class="rawLink">raw</a>
                     
 
        (4 octets of flags, 2 octets of name length (M),
@@ -1331,7 +1307,6 @@
        Other octets: none.
 
 </p><p class="rfcparagraph"><a name="section-5.2.3.16"><h4>5.2.3.16  Key server preferences</h4></a>
-                        <a href="raw/text/rfc2440.txt" class="rawLink">raw</a>
                     
 
    (N octets of flags)
@@ -1346,7 +1321,6 @@
 
 </p><p class="rfcparagraph">   This is found only on a self-signature.
 <a name="section-5.2.3.17"><h4>5.2.3.17  Preferred key server</h4></a>
-                        <a href="raw/text/rfc2440.txt" class="rawLink">raw</a>
                     
 
    (String)
@@ -1358,7 +1332,6 @@
    finger, etc.
 
 </p><p class="rfcparagraph"><a name="section-5.2.3.18"><h4>5.2.3.18  Primary user id</h4></a>
-                        <a href="raw/text/rfc2440.txt" class="rawLink">raw</a>
                     
 
    (1 octet, boolean)
@@ -1371,7 +1344,6 @@
    implementation may resolve the ambiguity in any way it sees fit.
 
 </p><p class="rfcparagraph"><a name="section-5.2.3.19"><h4>5.2.3.19  Policy URL</h4></a>
-                        <a href="raw/text/rfc2440.txt" class="rawLink">raw</a>
                     
 
    (String)
@@ -1380,7 +1352,6 @@
    that the signature was issued under.
 
 </p><p class="rfcparagraph"><a name="section-5.2.3.20"><h4>5.2.3.20  Key Flags</h4></a>
-                        <a href="raw/text/rfc2440.txt" class="rawLink">raw</a>
                     
 
    (Octet string)
@@ -1427,7 +1398,6 @@
    the flag applies to.
 
 </p><p class="rfcparagraph"><a name="section-5.2.3.21"><h4>5.2.3.21  Signer's User ID</h4></a>
-                        <a href="raw/text/rfc2440.txt" class="rawLink">raw</a>
                     
 
    This subpacket allows a keyholder to state which user id is
@@ -1437,7 +1407,6 @@
    state which of their roles is making a signature.
 
 </p><p class="rfcparagraph"><a name="section-5.2.3.22"><h4>5.2.3.22  Reason for Revocation</h4></a>
-                        <a href="raw/text/rfc2440.txt" class="rawLink">raw</a>
                     
 
    (1 octet of revocation code, N octets of reason string)
@@ -1504,7 +1473,6 @@
    packet.
 
 </p><p class="rfcparagraph"><a name="section-5.2.4.1"><h4>5.2.4.1  Subpacket Hints</h4></a>
-                        <a href="raw/text/rfc2440.txt" class="rawLink">raw</a>
                     
 
    An implementation SHOULD put the two mandatory subpackets, creation
@@ -1620,14 +1588,12 @@
 </p><p class="rfcparagraph">	<a name="section-5.5.1"><h4>5.5.1  Key Packet Variants</h4></a>
 
 <a name="section-5.5.1.1"><h4>5.5.1.1  Public Key Packet (Tag 6)</h4></a>
-                        <a href="raw/text/rfc2440.txt" class="rawLink">raw</a>
                     
 
    A Public Key packet starts a series of packets that forms an OpenPGP
    key (sometimes called an OpenPGP certificate).
 
 </p><p class="rfcparagraph"><a name="section-5.5.1.2"><h4>5.5.1.2  Public Subkey Packet (Tag 14)</h4></a>
-                        <a href="raw/text/rfc2440.txt" class="rawLink">raw</a>
                     
 
    A Public Subkey packet (tag 14) has exactly the same format as a
@@ -1642,7 +1608,6 @@
    Public Subkey packets are ignored by PGP 2.6.x and do not cause it to
    fail, providing a limited degree of backward compatibility.
 <a name="section-5.5.1.3"><h4>5.5.1.3  Secret Key Packet (Tag 5)</h4></a>
-                        <a href="raw/text/rfc2440.txt" class="rawLink">raw</a>
                     
 
    A Secret Key packet contains all the information that is found in a
@@ -1650,7 +1615,6 @@
    includes the secret key material after all the public key fields.
 
 </p><p class="rfcparagraph"><a name="section-5.5.1.4"><h4>5.5.1.4  Secret Subkey Packet (Tag 7)</h4></a>
-                        <a href="raw/text/rfc2440.txt" class="rawLink">raw</a>
                     
 
    A Secret Subkey packet (tag 7) is the subkey analog of the Secret Key

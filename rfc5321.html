@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
@@ -1477,7 +1477,6 @@
    having invalid syntax.
 
 </p><p class="rfcparagraph"><a name="section-4.1.1.1"><h4>4.1.1.1   Extended HELLO (EHLO) or HELLO (HELO)</h4></a>
-                        <a href="raw/text/rfc5321.txt" class="rawLink">raw</a>
                     
 
    These commands are used to identify the SMTP client to the SMTP
@@ -1556,7 +1555,6 @@
    Private-use commands MAY be listed.
 
 </p><p class="rfcparagraph"><a name="section-4.1.1.2"><h4>4.1.1.2   MAIL (MAIL)</h4></a>
-                        <a href="raw/text/rfc5321.txt" class="rawLink">raw</a>
                     
 
    This command is used to initiate a mail transaction in which the mail
@@ -1585,7 +1583,6 @@
                                        [SP Mail-parameters] CRLF
 
 <a name="section-4.1.1.3"><h4>4.1.1.3   RECIPIENT (RCPT)</h4></a>
-                        <a href="raw/text/rfc5321.txt" class="rawLink">raw</a>
                     
 
    This command is used to identify an individual recipient of the mail
@@ -1653,7 +1650,6 @@
                   treated as case-insensitive.
 
 </p><p class="rfcparagraph"><a name="section-4.1.1.4"><h4>4.1.1.4   DATA (DATA)</h4></a>
-                        <a href="raw/text/rfc5321.txt" class="rawLink">raw</a>
                     
 
    The receiver normally sends a 354 response to DATA, and then treats
@@ -1722,7 +1718,6 @@
 
 </p><p class="rfcparagraph">      data = "DATA" CRLF
 <a name="section-4.1.1.5"><h4>4.1.1.5   RESET (RSET)</h4></a>
-                        <a href="raw/text/rfc5321.txt" class="rawLink">raw</a>
                     
 
    This command specifies that the current mail transaction will be
@@ -1753,7 +1748,6 @@
 </p><p class="rfcparagraph">      rset = "RSET" CRLF
 
 <a name="section-4.1.1.6"><h4>4.1.1.6   VERIFY (VRFY)</h4></a>
-                        <a href="raw/text/rfc5321.txt" class="rawLink">raw</a>
                     
 
    This command asks the receiver to confirm that the argument
@@ -1767,7 +1761,6 @@
 
 </p><p class="rfcparagraph">      vrfy = "VRFY" SP String CRLF
 <a name="section-4.1.1.7"><h4>4.1.1.7   EXPAND (EXPN)</h4></a>
-                        <a href="raw/text/rfc5321.txt" class="rawLink">raw</a>
                     
 
    This command asks the receiver to confirm that the argument
@@ -1785,7 +1778,6 @@
 </p><p class="rfcparagraph">      expn = "EXPN" SP String CRLF
 
 <a name="section-4.1.1.8"><h4>4.1.1.8   HELP (HELP)</h4></a>
-                        <a href="raw/text/rfc5321.txt" class="rawLink">raw</a>
                     
 
    This command causes the server to send helpful information to the
@@ -1803,7 +1795,6 @@
 
 </p><p class="rfcparagraph">      help = "HELP" [ SP String ] CRLF
 <a name="section-4.1.1.9"><h4>4.1.1.9   NOOP (NOOP)</h4></a>
-                        <a href="raw/text/rfc5321.txt" class="rawLink">raw</a>
                     
 
    This command does not affect any parameters or previously entered
@@ -1819,7 +1810,6 @@
 </p><p class="rfcparagraph">      noop = "NOOP" [ SP String ] CRLF
 
 <a name="section-4.1.1.10"><h4>4.1.1.10   QUIT (QUIT)</h4></a>
-                        <a href="raw/text/rfc5321.txt" class="rawLink">raw</a>
                     
 
    This command specifies that the receiver MUST send a "221 OK" reply,
@@ -1844,7 +1834,6 @@
 </p><p class="rfcparagraph">      quit = "QUIT" CRLF
 
 <a name="section-4.1.1.11"><h4>4.1.1.11   Mail-Parameter and Rcpt-Parameter Error Responses</h4></a>
-                        <a href="raw/text/rfc5321.txt" class="rawLink">raw</a>
                     
 
    If the server SMTP does not recognize or cannot implement one or more
@@ -2868,7 +2857,6 @@
 </p><p class="rfcparagraph">	<a name="section-4.5.3"><h4>4.5.3   Sizes and Timeouts</h4></a>
 
 <a name="section-4.5.3.1"><h4>4.5.3.1   Size Limits and Minimums</h4></a>
-                        <a href="raw/text/rfc5321.txt" class="rawLink">raw</a>
                     
 
    There are several objects that have required minimum/maximum sizes.
@@ -2886,27 +2874,23 @@
    intended.
 
 </p><p class="rfcparagraph"><a name="section-4.5.3.1"><h4>4.5.3.1 1.  Local-part</h4></a>
-                        <a href="raw/text/rfc5321.txt" class="rawLink">raw</a>
                     
 
    The maximum total length of a user name or other local-part is 64
    octets.
 
 </p><p class="rfcparagraph"><a name="section-4.5.3.1"><h4>4.5.3.1 2.  Domain</h4></a>
-                        <a href="raw/text/rfc5321.txt" class="rawLink">raw</a>
                     
 
    The maximum total length of a domain name or number is 255 octets.
 
 </p><p class="rfcparagraph"><a name="section-4.5.3.1"><h4>4.5.3.1 3.  Path</h4></a>
-                        <a href="raw/text/rfc5321.txt" class="rawLink">raw</a>
                     
 
    The maximum total length of a reverse-path or forward-path is 256
    octets (including the punctuation and element separators).
 
 </p><p class="rfcparagraph"><a name="section-4.5.3.1"><h4>4.5.3.1 4.  Command Line</h4></a>
-                        <a href="raw/text/rfc5321.txt" class="rawLink">raw</a>
                     
 
    The maximum total length of a command line including the command word
@@ -2914,7 +2898,6 @@
    increase this limit.
 
 </p><p class="rfcparagraph"><a name="section-4.5.3.1"><h4>4.5.3.1 5.  Reply Line</h4></a>
-                        <a href="raw/text/rfc5321.txt" class="rawLink">raw</a>
                     
 
    The maximum total length of a reply line including the reply code and
@@ -2922,7 +2905,6 @@
    multiple-line replies.
 
 </p><p class="rfcparagraph"><a name="section-4.5.3.1"><h4>4.5.3.1 6.  Text Line</h4></a>
-                        <a href="raw/text/rfc5321.txt" class="rawLink">raw</a>
                     
 
    The maximum total length of a text line including the <CRLF> is 1000
@@ -2930,7 +2912,6 @@
    This number may be increased by the use of SMTP Service Extensions.
 
 </p><p class="rfcparagraph"><a name="section-4.5.3.1"><h4>4.5.3.1 7.  Message Content</h4></a>
-                        <a href="raw/text/rfc5321.txt" class="rawLink">raw</a>
                     
 
    The maximum total length of a message content (including any message
@@ -2943,7 +2924,6 @@
    SMTP client systems that will send large messages SHOULD utilize it
    when possible.
 <a name="section-4.5.3.1"><h4>4.5.3.1 8.  Recipients Buffer</h4></a>
-                        <a href="raw/text/rfc5321.txt" class="rawLink">raw</a>
                     
 
    The minimum total number of recipients that MUST be buffered is 100
@@ -2962,7 +2942,6 @@
    message.
 
 </p><p class="rfcparagraph"><a name="section-4.5.3.1"><h4>4.5.3.1 9.  Treatment When Limits Exceeded</h4></a>
-                        <a href="raw/text/rfc5321.txt" class="rawLink">raw</a>
                     
 
    Errors due to exceeding these limits may be reported by using the
@@ -2983,7 +2962,6 @@
       552 Too much mail data.
 
 </p><p class="rfcparagraph"><a name="section-4.5.3.1"><h4>4.5.3.1 10.  Too Many Recipients Code</h4></a>
-                        <a href="raw/text/rfc5321.txt" class="rawLink">raw</a>
                     
 
    RFC 821 [1] incorrectly listed the error where an SMTP server
@@ -3016,7 +2994,6 @@
    DATA without returning any previous negative response.
 
 </p><p class="rfcparagraph"><a name="section-4.5.3.2"><h4>4.5.3.2   Timeouts</h4></a>
-                        <a href="raw/text/rfc5321.txt" class="rawLink">raw</a>
                     
 
    An SMTP client MUST provide a timeout mechanism.  It MUST use per-
@@ -3031,7 +3008,6 @@
    per-command timeout values SHOULD be as follows:
 
 </p><p class="rfcparagraph"><a name="section-4.5.3.2"><h4>4.5.3.2 1.  Initial 220 Message: 5 Minutes</h4></a>
-                        <a href="raw/text/rfc5321.txt" class="rawLink">raw</a>
                     
 
    An SMTP client process needs to distinguish between a failed TCP
@@ -3041,30 +3017,25 @@
    processed.
 
 </p><p class="rfcparagraph"><a name="section-4.5.3.2"><h4>4.5.3.2 2.  MAIL Command: 5 Minutes</h4></a>
-                        <a href="raw/text/rfc5321.txt" class="rawLink">raw</a>
                     
 
 <a name="section-4.5.3.2"><h4>4.5.3.2 3.  RCPT Command: 5 Minutes</h4></a>
-                        <a href="raw/text/rfc5321.txt" class="rawLink">raw</a>
                     
 
    A longer timeout is required if processing of mailing lists and
    aliases is not deferred until after the message was accepted.
 <a name="section-4.5.3.2"><h4>4.5.3.2 4.  DATA Initiation: 2 Minutes</h4></a>
-                        <a href="raw/text/rfc5321.txt" class="rawLink">raw</a>
                     
 
    This is while awaiting the "354 Start Input" reply to a DATA command.
 
 </p><p class="rfcparagraph"><a name="section-4.5.3.2"><h4>4.5.3.2 5.  Data Block: 3 Minutes</h4></a>
-                        <a href="raw/text/rfc5321.txt" class="rawLink">raw</a>
                     
 
    This is while awaiting the completion of each TCP SEND call
    transmitting a chunk of data.
 
 </p><p class="rfcparagraph"><a name="section-4.5.3.2"><h4>4.5.3.2 6.  DATA Termination: 10 Minutes.</h4></a>
-                        <a href="raw/text/rfc5321.txt" class="rawLink">raw</a>
                     
 
    This is while awaiting the "250 OK" reply.  When the receiver gets
@@ -3076,7 +3047,6 @@
    delivery.  See Section 6.1 for additional discussion.
 
 </p><p class="rfcparagraph"><a name="section-4.5.3.2"><h4>4.5.3.2 7.  Server Timeout: 5 Minutes.</h4></a>
-                        <a href="raw/text/rfc5321.txt" class="rawLink">raw</a>
                     
 
    An SMTP server SHOULD have a timeout of at least 5 minutes while it
@@ -3097,7 +3067,6 @@
    in response to error messages under any circumstances.
 
 </p><p class="rfcparagraph"><a name="section-4.5.4.1"><h4>4.5.4.1   Sending Strategy</h4></a>
-                        <a href="raw/text/rfc5321.txt" class="rawLink">raw</a>
                     
 
    The general model for an SMTP client is one or more processes that
@@ -3171,7 +3140,6 @@
    resources to mail.
 
 </p><p class="rfcparagraph"><a name="section-4.5.4.2"><h4>4.5.4.2   Receiving Strategy</h4></a>
-                        <a href="raw/text/rfc5321.txt" class="rawLink">raw</a>
                     
 
    The SMTP server SHOULD attempt to keep a pending listen on the SMTP

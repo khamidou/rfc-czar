@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
@@ -976,20 +976,17 @@ ISSN: 2070-1721                                          PGP Corporation
    once and only once.
 
 </p><p class="rfcparagraph"><a name="section-5.3.2.1"><h4>5.3.2.1   Version</h4></a>
-                        <a href="raw/text/rfc5848.txt" class="rawLink">raw</a>
                     
 
    The Version field is 4 octets in length.  This field is identical in
    format and meaning to the Version field described in Section 4.2.1.
 
 </p><p class="rfcparagraph"><a name="section-5.3.2.2"><h4>5.3.2.2   Reboot Session ID</h4></a>
-                        <a href="raw/text/rfc5848.txt" class="rawLink">raw</a>
                     
 
    The Reboot Session ID is identical in format and meaning to the RSID
    field described in Section 4.2.2.
 <a name="section-5.3.2.3"><h4>5.3.2.3   Signature Group and Signature Priority</h4></a>
-                        <a href="raw/text/rfc5848.txt" class="rawLink">raw</a>
                     
 
    The SIG field is identical in format and meaning to the SIG field
@@ -1010,7 +1007,6 @@ ISSN: 2070-1721                                          PGP Corporation
    PROCID.
 
 </p><p class="rfcparagraph"><a name="section-5.3.2.4"><h4>5.3.2.4   Total Payload Block Length</h4></a>
-                        <a href="raw/text/rfc5848.txt" class="rawLink">raw</a>
                     
 
    The Total Payload Block Length is a value representing the total
@@ -1018,7 +1014,6 @@ ISSN: 2070-1721                                          PGP Corporation
    to 8 octets with leading zeroes omitted.
 
 </p><p class="rfcparagraph"><a name="section-5.3.2.5"><h4>5.3.2.5   Index into Payload Block</h4></a>
-                        <a href="raw/text/rfc5848.txt" class="rawLink">raw</a>
                     
 
    This is a decimal value between 1 and 8 octets, with leading zeroes
@@ -1027,7 +1022,6 @@ ISSN: 2070-1721                                          PGP Corporation
    numbered "1".  (Note, it is not numbered "0".)
 
 <a name="section-5.3.2.6"><h4>5.3.2.6   Fragment Length</h4></a>
-                        <a href="raw/text/rfc5848.txt" class="rawLink">raw</a>
                     
 
    The total length of this fragment expressed as a decimal integer with
@@ -1035,14 +1029,12 @@ ISSN: 2070-1721                                          PGP Corporation
    be at least 1.
 
 </p><p class="rfcparagraph"><a name="section-5.3.2.7"><h4>5.3.2.7   Payload Block Fragment</h4></a>
-                        <a href="raw/text/rfc5848.txt" class="rawLink">raw</a>
                     
 
    The Payload Block Fragment contains a fragment of the payload block.
    Its length must match the indicated fragment length.
 
 </p><p class="rfcparagraph"><a name="section-5.3.2.8"><h4>5.3.2.8   Signature</h4></a>
-                        <a href="raw/text/rfc5848.txt" class="rawLink">raw</a>
                     
 
    This is a digital signature, encoded in base64, as per [RFC4648].
@@ -1055,7 +1047,6 @@ ISSN: 2070-1721                                          PGP Corporation
    concatenated, and then encoded in base64 [RFC4648].
 
 </p><p class="rfcparagraph"><a name="section-5.3.2.9"><h4>5.3.2.9   Example</h4></a>
-                        <a href="raw/text/rfc5848.txt" class="rawLink">raw</a>
                     
 
    An example of a Certificate Block message is depicted below, broken

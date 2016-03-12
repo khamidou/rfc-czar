@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
@@ -572,7 +572,6 @@
    plan and/or use of inter-digit timer expiry.
 
 </p><p class="rfcparagraph"><a name="section-8.2.1.1"><h4>8.2.1.1   Receipt of QSIG SETUP Message</h4></a>
-                        <a href="raw/text/rfc4497.txt" class="rawLink">raw</a>
                     
 
    On receipt of a QSIG SETUP message containing a number that the
@@ -613,14 +612,12 @@
    clearing procedures in accordance with [2].
 
 </p><p class="rfcparagraph"><a name="section-8.2.1.2"><h4>8.2.1.2   Receipt of SIP 100 (Trying) Response to an INVITE Request</h4></a>
-                        <a href="raw/text/rfc4497.txt" class="rawLink">raw</a>
                     
 
    A SIP 100 response SHALL NOT trigger any QSIG messages.  It only
    serves the purpose of suppressing INVITE request retransmissions.
 
 </p><p class="rfcparagraph"><a name="section-8.2.1.3"><h4>8.2.1.3   Receipt of SIP 18x provisional response to an INVITE request</h4></a>
-                        <a href="raw/text/rfc4497.txt" class="rawLink">raw</a>
                     
 
    The gateway SHALL map a received SIP 18x response to an INVITE
@@ -652,7 +649,6 @@
    with [11].
 
 </p><p class="rfcparagraph"><a name="section-8.2.1.4"><h4>8.2.1.4   Receipt of SIP 2xx Response to an INVITE Request</h4></a>
-                        <a href="raw/text/rfc4497.txt" class="rawLink">raw</a>
                     
 
    If the gateway receives a SIP 2xx response as the first SIP 2xx
@@ -677,7 +673,6 @@
    on a different dialog as a result of a forking proxy.
 
 </p><p class="rfcparagraph"><a name="section-8.2.1.5"><h4>8.2.1.5   Receipt of SIP 3xx Response to an INVITE Request</h4></a>
-                        <a href="raw/text/rfc4497.txt" class="rawLink">raw</a>
                     
 
    On receipt of a SIP 3xx response to an INVITE request, the gateway
@@ -713,11 +708,9 @@
    defined in Section 8.2.2.2 SHALL apply.
 
 </p><p class="rfcparagraph"><a name="section-8.2.2.1"><h4>8.2.2.1   En Bloc Signalling in SIP Network</h4></a>
-                        <a href="raw/text/rfc4497.txt" class="rawLink">raw</a>
                     
 
 <a name="section-8.2.2.1"><h4>8.2.2.1 1.  Receipt of QSIG SETUP Message</h4></a>
-                        <a href="raw/text/rfc4497.txt" class="rawLink">raw</a>
                     
 
    On receipt of a QSIG SETUP message containing no Sending complete
@@ -727,7 +720,6 @@
    QSIG timer T302, and await further number digits.
 
 </p><p class="rfcparagraph"><a name="section-8.2.2.1"><h4>8.2.2.1 2.  Receipt of QSIG INFORMATION Message</h4></a>
-                        <a href="raw/text/rfc4497.txt" class="rawLink">raw</a>
                     
 
    On receipt of each QSIG INFORMATION message containing no Sending
@@ -742,14 +734,12 @@
    gateway SHALL also send a QSIG CALL PROCEEDING message.
 
 </p><p class="rfcparagraph"><a name="section-8.2.2.1"><h4>8.2.2.1 3.  Receipt of SIP Responses to INVITE Requests</h4></a>
-                        <a href="raw/text/rfc4497.txt" class="rawLink">raw</a>
                     
 
    SIP responses to INVITE requests SHALL be mapped as described in
    8.2.1.
 
 </p><p class="rfcparagraph"><a name="section-8.2.2.2"><h4>8.2.2.2   Overlap Signalling in SIP Network</h4></a>
-                        <a href="raw/text/rfc4497.txt" class="rawLink">raw</a>
                     
 
    The procedures below for using overlap signalling in the SIP network
@@ -763,7 +753,6 @@
    below should be used only where it is not feasible to use the
    procedures of Section 8.2.2.1.
 <a name="section-8.2.2.2"><h4>8.2.2.2 1.  Receipt of QSIG SETUP Message</h4></a>
-                        <a href="raw/text/rfc4497.txt" class="rawLink">raw</a>
                     
 
    On receipt of a QSIG SETUP message containing no Sending complete
@@ -777,7 +766,6 @@
    to arrive in QSIG INFORMATION messages.
 
 </p><p class="rfcparagraph"><a name="section-8.2.2.2"><h4>8.2.2.2 2.  Receipt of QSIG INFORMATION Message</h4></a>
-                        <a href="raw/text/rfc4497.txt" class="rawLink">raw</a>
                     
 
    On receipt of a QSIG INFORMATION message, the gateway SHALL handle
@@ -809,18 +797,15 @@
    than that in the previous INVITE request.
 
 </p><p class="rfcparagraph"><a name="section-8.2.2.2"><h4>8.2.2.2 3.  Receipt of SIP 100 (Trying) Response to an INVITE Request</h4></a>
-                        <a href="raw/text/rfc4497.txt" class="rawLink">raw</a>
                     
 
    The requirements of Section 8.2.1.2 SHALL apply.
 <a name="section-8.2.2.2"><h4>8.2.2.2 4.  Receipt of SIP 18x Provisional Response to an INVITE Request</h4></a>
-                        <a href="raw/text/rfc4497.txt" class="rawLink">raw</a>
                     
 
    The requirements of Section 8.2.1.3 SHALL apply.
 
 </p><p class="rfcparagraph"><a name="section-8.2.2.2"><h4>8.2.2.2 5.  Receipt of SIP 2xx Response to an INVITE Request</h4></a>
-                        <a href="raw/text/rfc4497.txt" class="rawLink">raw</a>
                     
 
    The requirements of Section 8.2.1.4 SHALL apply.  In addition, the
@@ -829,13 +814,11 @@
    response has been received.
 
 </p><p class="rfcparagraph"><a name="section-8.2.2.2"><h4>8.2.2.2 6.  Receipt of SIP 3xx Response to an INVITE Request</h4></a>
-                        <a href="raw/text/rfc4497.txt" class="rawLink">raw</a>
                     
 
    The requirements of Section 8.2.1.5 SHALL apply.
 
 </p><p class="rfcparagraph"><a name="section-8.2.2.2"><h4>8.2.2.2 7.  Receipt of a SIP 4xx, 5xx, or 6xx Final Response to an</h4></a>
-                        <a href="raw/text/rfc4497.txt" class="rawLink">raw</a>
                     
             INVITE Request
 
@@ -865,13 +848,11 @@
    Request-URI might produce a 2xx final response or a more meaningful
    4xx, 5xx, or 6xx final response.
 <a name="section-8.2.2.2"><h4>8.2.2.2 8.  Receipt of Multiple SIP Responses to an INVITE Request</h4></a>
-                        <a href="raw/text/rfc4497.txt" class="rawLink">raw</a>
                     
 
    Section 3.3 of [18] applies.
 
 </p><p class="rfcparagraph"><a name="section-8.2.2.2"><h4>8.2.2.2 9.  Cancelling Pending SIP INVITE Transactions</h4></a>
-                        <a href="raw/text/rfc4497.txt" class="rawLink">raw</a>
                     
 
    As stated in Section 3.4 of [18], when a gateway sends a new SIP
@@ -887,7 +868,6 @@
    in progress after a SIP 2xx response has been received.
 
 </p><p class="rfcparagraph"><a name="section-8.2.2.2"><h4>8.2.2.2 10.  QSIG Timer T302 Expiry</h4></a>
-                        <a href="raw/text/rfc4497.txt" class="rawLink">raw</a>
                     
 
    If QSIG timer T302 expires and the gateway has received 4xx, 5xx, or
@@ -1503,7 +1483,6 @@
    on whether a URI has been derived and the value of the presentation
    indication.
 <a name="section-9.1.2.1"><h4>9.1.2.1   No URI derived, and presentation indicator does not have value</h4></a>
-                        <a href="raw/text/rfc4497.txt" class="rawLink">raw</a>
                     
           "presentation restricted"
 
@@ -1514,7 +1493,6 @@
    generate a P-Asserted-Identity header.
 
 </p><p class="rfcparagraph"><a name="section-9.1.2.2"><h4>9.1.2.2   No URI derived, and presentation indicator has value</h4></a>
-                        <a href="raw/text/rfc4497.txt" class="rawLink">raw</a>
                     
           "presentation restricted"
 
@@ -1527,7 +1505,6 @@
    specification.
 
 </p><p class="rfcparagraph"><a name="section-9.1.2.3"><h4>9.1.2.3   URI derived, and presentation indicator has value</h4></a>
-                        <a href="raw/text/rfc4497.txt" class="rawLink">raw</a>
                     
           "presentation restricted"
 
@@ -1544,7 +1521,6 @@
    SHALL behave as in Section 9.1.2.2.
 
 </p><p class="rfcparagraph"><a name="section-9.1.2.4"><h4>9.1.2.4   URI derived, and presentation indicator does not have value</h4></a>
-                        <a href="raw/text/rfc4497.txt" class="rawLink">raw</a>
                     
           "presentation restricted"
 
@@ -1568,7 +1544,6 @@
    indication.
 
 </p><p class="rfcparagraph"><a name="section-9.1.3.1"><h4>9.1.3.1   No URI derived, and presentation indicator does not have value</h4></a>
-                        <a href="raw/text/rfc4497.txt" class="rawLink">raw</a>
                     
           "presentation restricted"
 
@@ -1577,7 +1552,6 @@
    P-Asserted-Identity header and SHALL NOT generate a Privacy header.
 
 </p><p class="rfcparagraph"><a name="section-9.1.3.2"><h4>9.1.3.2   No URI derived, and presentation indicator has value</h4></a>
-                        <a href="raw/text/rfc4497.txt" class="rawLink">raw</a>
                     
           "presentation restricted"
 
@@ -1589,7 +1563,6 @@
    specification.
 
 </p><p class="rfcparagraph"><a name="section-9.1.3.3"><h4>9.1.3.3   URI derived, and presentation indicator has value</h4></a>
-                        <a href="raw/text/rfc4497.txt" class="rawLink">raw</a>
                     
           "presentation restricted"
 
@@ -1604,7 +1577,6 @@
    does not trust the proxy to honour the Privacy header, the gateway
    SHALL behave as in Section 9.1.3.2.
 <a name="section-9.1.3.4"><h4>9.1.3.4   URI derived, and presentation indicator does not have value</h4></a>
-                        <a href="raw/text/rfc4497.txt" class="rawLink">raw</a>
                     
           "presentation restricted"
 

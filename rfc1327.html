@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
@@ -733,7 +733,6 @@ Chapter 1 -- Overview
    request will be ignored.
 
 </p><p class="rfcparagraph"><a name="section-2.3.1.1"><h4>2.3.1.1   Basic Interpersonal Messaging Service</h4></a>
-                        <a href="raw/text/rfc1327.txt" class="rawLink">raw</a>
                     
 
    These are the mandatory IPM services as listed in Section 19.8 of
@@ -786,7 +785,6 @@ Chapter 1 -- Overview
         N/A (local).
 
 </p><p class="rfcparagraph"><a name="section-2.3.1.2"><h4>2.3.1.2   IPM Service Optional User Facilities</h4></a>
-                        <a href="raw/text/rfc1327.txt" class="rawLink">raw</a>
                     
 
    This section describes support for the optional (user selectable) IPM
@@ -1075,7 +1073,6 @@ Undeliverable Mail with Return of Physical Message
 </p><p class="rfcparagraph">	<a name="section-2.3.2"><h4>2.3.2   Reception by X.400</h4></a>
 
 <a name="section-2.3.2.1"><h4>2.3.2.1   Standard Mandatory Services</h4></a>
-                        <a href="raw/text/rfc1327.txt" class="rawLink">raw</a>
                     
 
    The following standard IPM mandatory  user facilities are required
@@ -1098,7 +1095,6 @@ Undeliverable Mail with Return of Physical Message
    Typed Body
 
 <a name="section-2.3.2.2"><h4>2.3.2.2   Standard Optional Services</h4></a>
-                        <a href="raw/text/rfc1327.txt" class="rawLink">raw</a>
                     
 
    The following standard IPM optional user facilities are required for
@@ -1118,7 +1114,6 @@ Undeliverable Mail with Return of Physical Message
    Subject Indication
 
 <a name="section-2.3.2.3"><h4>2.3.2.3   New Services</h4></a>
-                        <a href="raw/text/rfc1327.txt" class="rawLink">raw</a>
                     
 
    A new service "RFC 822 Header Field" is defined using the extension
@@ -2119,7 +2114,6 @@ MTS.TerminalType                       T-TY           I     18.3.24   23
         message from RFC 822 to X.400.
 
 </p><p class="rfcparagraph"><a name="section-4.3.4.1"><h4>4.3.4.1   Heuristics for mapping RFC 822 to X.400</h4></a>
-                        <a href="raw/text/rfc1327.txt" class="rawLink">raw</a>
                     
 
    RFC 822 users will often use an LHS encoded address to identify an
@@ -2432,7 +2426,6 @@ MTS.TerminalType                       T-TY           I     18.3.24   23
    generated.
 
 </p><p class="rfcparagraph"><a name="section-4.6.2.1"><h4>4.6.2.1   822-MTS Mappings</h4></a>
-                        <a href="raw/text/rfc1327.txt" class="rawLink">raw</a>
                     
 
    Use the basic ORAddress mapping, to generate the 822-MTS originator
@@ -2453,7 +2446,6 @@ MTS.TerminalType                       T-TY           I     18.3.24   23
    responsibility bit is set, onto an 822-MTS recipient.
 
 </p><p class="rfcparagraph"><a name="section-4.6.2.2"><h4>4.6.2.2   Generation of RFC 822 Headers</h4></a>
-                        <a href="raw/text/rfc1327.txt" class="rawLink">raw</a>
                     
 
    Not all per-recipient information can be passed at the 822-MTS level.
@@ -2560,7 +2552,6 @@ MTS.TerminalType                       T-TY           I     18.3.24   23
         "(Proof of Delivery Requested)".
 
 </p><p class="rfcparagraph"><a name="section-4.6.2.3"><h4>4.6.2.3   Delivery Report Generation</h4></a>
-                        <a href="raw/text/rfc1327.txt" class="rawLink">raw</a>
                     
 
    If MTA.PerRecipientMessageTransferFields.per-recipient-indicators
@@ -2709,7 +2700,6 @@ MTS.TerminalType                       T-TY           I     18.3.24   23
    clashes is is low enough to be treated as impossible.
 
 </p><p class="rfcparagraph"><a name="section-4.7.3.1"><h4>4.7.3.1   822.msg-id represented in X.400</h4></a>
-                        <a href="raw/text/rfc1327.txt" class="rawLink">raw</a>
                     
 
    IPMS.IPMIdentifier.user is omitted.  The IPMS.IPMIdentifier.user-
@@ -2719,7 +2709,6 @@ MTS.TerminalType                       T-TY           I     18.3.24   23
    discussed in Section 5.1.3.
 
 </p><p class="rfcparagraph"><a name="section-4.7.3.2"><h4>4.7.3.2   IPMS.IPMIdentifier represented in RFC 822</h4></a>
-                        <a href="raw/text/rfc1327.txt" class="rawLink">raw</a>
                     
 
    The 822.domain of 822.msg-id is set to the value "MHS". The
@@ -2734,7 +2723,6 @@ MTS.TerminalType                       T-TY           I     18.3.24   23
 
 </p><p class="rfcparagraph">   <"147*/S=Dietrich/O=Siemens/ADMD=DBP/C=DE/"@MHS>
 <a name="section-4.7.3.3"><h4>4.7.3.3   822.msg-id -> IPMS.IPMIdentifier</h4></a>
-                        <a href="raw/text/rfc1327.txt" class="rawLink">raw</a>
                     
 
    If the 822.local-part can be parsed as:
@@ -2752,7 +2740,6 @@ MTS.TerminalType                       T-TY           I     18.3.24   23
    encoding of the 822.msg-id without the angle braces.
 
 </p><p class="rfcparagraph"><a name="section-4.7.3.4"><h4>4.7.3.4   IPMS.IPMIdentifier -> 822.msg-id</h4></a>
-                        <a href="raw/text/rfc1327.txt" class="rawLink">raw</a>
                     
 
    If IPMS.IPMIdentifier.user is absent, and IPMS.IPMIdentifier.user-
@@ -2770,7 +2757,6 @@ MTS.TerminalType                       T-TY           I     18.3.24   23
    generated with this 822.local-part, and "MHS" as the 822.domain.
 
 </p><p class="rfcparagraph"><a name="section-4.7.3.5"><h4>4.7.3.5   Phrase form</h4></a>
-                        <a href="raw/text/rfc1327.txt" class="rawLink">raw</a>
                     
 
    In "InReply-To:" and "References:", the encoding 822.phrase may be
@@ -2783,7 +2769,6 @@ MTS.TerminalType                       T-TY           I     18.3.24   23
    MHS.
 
 </p><p class="rfcparagraph"><a name="section-4.7.3.6"><h4>4.7.3.6   RFC 987 backwards compatibility</h4></a>
-                        <a href="raw/text/rfc1327.txt" class="rawLink">raw</a>
                     
 
    The mapping defined here is different to that used in RFC 987, as the
@@ -3256,7 +3241,6 @@ MTS.TerminalType                       T-TY           I     18.3.24   23
 </p><p class="rfcparagraph">	<a name="section-5.3.3"><h4>5.3.3   Basic Mappings</h4></a>
 
 <a name="section-5.3.3.1"><h4>5.3.3.1   Encoded Information Types</h4></a>
-                        <a href="raw/text/rfc1327.txt" class="rawLink">raw</a>
                     
 
    This mapping from MTS.EncodedInformationTypes is needed in several
@@ -3283,7 +3267,6 @@ MTS.TerminalType                       T-TY           I     18.3.24   23
    and RFC 987), and other types are mapped onto EBNF.object-identifier.
 
 </p><p class="rfcparagraph"><a name="section-5.3.3.2"><h4>5.3.3.2   Global Domain Identifier</h4></a>
-                        <a href="raw/text/rfc1327.txt" class="rawLink">raw</a>
                     
 
    The following simple EBNF is used to represent
@@ -3911,7 +3894,6 @@ Dear Mr Harrison......
    additional services are also taken from the MTA service.
 
 </p><p class="rfcparagraph"><a name="section-5.3.8.1"><h4>5.3.8.1   MTS Mappings</h4></a>
-                        <a href="raw/text/rfc1327.txt" class="rawLink">raw</a>
                     
 
    A Delivery Report service will be represented as
@@ -4151,7 +4133,6 @@ Dear Mr Harrison......
    ASN.1 may be included.  This is recommended, but not required.
 
 </p><p class="rfcparagraph"><a name="section-5.3.8.2"><h4>5.3.8.2   MTA Mappings</h4></a>
-                        <a href="raw/text/rfc1327.txt" class="rawLink">raw</a>
                     
 
    The single 822-MTS recipient is constructed from
@@ -4184,7 +4165,6 @@ Dear Mr Harrison......
         most recent trace element comes first.
 
 </p><p class="rfcparagraph"><a name="section-5.3.8.3"><h4>5.3.8.3   Example Delivery Reports</h4></a>
-                        <a href="raw/text/rfc1327.txt" class="rawLink">raw</a>
                     
 
    Example Delivery Report 1:

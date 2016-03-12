@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
@@ -444,7 +444,6 @@
    to-IPSP relationship.
 
 </p><p class="rfcparagraph"><a name="section-1.3.2.1"><h4>1.3.2.1   Support for the Transport of MTP3-User Messages</h4></a>
-                        <a href="raw/text/rfc4666.txt" class="rawLink">raw</a>
                     
 
    The M3UA layer provides the transport of MTP-TRANSFER primitives
@@ -471,7 +470,6 @@
    permit larger block sizes.
 
 </p><p class="rfcparagraph"><a name="section-1.3.2.2"><h4>1.3.2.2   Native Management Functions</h4></a>
-                        <a href="raw/text/rfc4666.txt" class="rawLink">raw</a>
                     
 
    The M3UA layer provides the capability to indicate errors associated
@@ -479,7 +477,6 @@
    management and/or the peer M3UA.
 
 </p><p class="rfcparagraph"><a name="section-1.3.2.3"><h4>1.3.2.3   Interworking with MTP3 Network Management Functions</h4></a>
-                        <a href="raw/text/rfc4666.txt" class="rawLink">raw</a>
                     
 
    At the SGP, the M3UA layer provides interworking with MTP3 management
@@ -510,7 +507,6 @@
    layer itself or the ASP or the ASP's Host is congested.
 
 </p><p class="rfcparagraph"><a name="section-1.3.2.4"><h4>1.3.2.4   Support for the Management of SCTP Associations between the</h4></a>
-                        <a href="raw/text/rfc4666.txt" class="rawLink">raw</a>
                     
           SGP and ASPs
 
@@ -542,7 +538,6 @@
    request or M-AS_STATUS request primitives.
 
 </p><p class="rfcparagraph"><a name="section-1.3.2.5"><h4>1.3.2.5   Support for the Management of Connections to Multiple SGPs</h4></a>
-                        <a href="raw/text/rfc4666.txt" class="rawLink">raw</a>
                     
 
    As shown in Figure 1, an ASP may be connected to multiple SGPs.  In
@@ -637,7 +632,6 @@
 	<a name="section-1.4.2"><h4>1.4.2   Routing Contexts and Routing Keys</h4></a>
 
 <a name="section-1.4.2.1"><h4>1.4.2.1   Overview</h4></a>
-                        <a href="raw/text/rfc4666.txt" class="rawLink">raw</a>
                     
 
    The distribution of SS7 messages between the SGP and the Application
@@ -665,7 +659,6 @@
    traffic associated with each Application Server that the ASP is
    configured to receive.
 <a name="section-1.4.2.2"><h4>1.4.2.2   Routing Key Limitations</h4></a>
-                        <a href="raw/text/rfc4666.txt" class="rawLink">raw</a>
                     
 
    Routing Keys SHOULD be unique in the sense that each received SS7
@@ -677,7 +670,6 @@
    contiguous.
 
 </p><p class="rfcparagraph"><a name="section-1.4.2.3"><h4>1.4.2.3   Managing Routing Contexts and Routing Keys</h4></a>
-                        <a href="raw/text/rfc4666.txt" class="rawLink">raw</a>
                     
 
    There are two ways to provision a Routing Key at an SGP.  A Routing
@@ -691,7 +683,6 @@
    dependent distribution algorithms may be used.
 
 </p><p class="rfcparagraph"><a name="section-1.4.2.4"><h4>1.4.2.4   Message Distribution at the SGP</h4></a>
-                        <a href="raw/text/rfc4666.txt" class="rawLink">raw</a>
                     
 
    To direct messages received from the SS7 MTP3 network to the
@@ -729,7 +720,6 @@
    treatment of unallocated traffic is implementation dependent.
 
 </p><p class="rfcparagraph"><a name="section-1.4.2.5"><h4>1.4.2.5   Message Distribution at the ASP</h4></a>
-                        <a href="raw/text/rfc4666.txt" class="rawLink">raw</a>
                     
 
    The ASP must choose an SGP to direct a message to the SS7 network.
@@ -759,7 +749,6 @@
    primitives.
 
 </p><p class="rfcparagraph"><a name="section-1.4.3.1"><h4>1.4.3.1   Signalling Gateway SS7 Layers</h4></a>
-                        <a href="raw/text/rfc4666.txt" class="rawLink">raw</a>
                     
 
    The SG is responsible for terminating MTP Level 3 of the SS7
@@ -785,7 +774,6 @@
    the SEP and the SG.
 
 </p><p class="rfcparagraph"><a name="section-1.4.3.2"><h4>1.4.3.2   SS7 and M3UA Interworking at the SG</h4></a>
-                        <a href="raw/text/rfc4666.txt" class="rawLink">raw</a>
                     
 
    The SGP provides a functional interworking of transport functions
@@ -809,7 +797,6 @@
    these messages and generate M3UA messages, as appropriate.
 
 </p><p class="rfcparagraph"><a name="section-1.4.3.3"><h4>1.4.3.3   Application Server</h4></a>
-                        <a href="raw/text/rfc4666.txt" class="rawLink">raw</a>
                     
 
    A cluster of application servers is responsible for providing the
@@ -826,7 +813,6 @@
    status of the routes to these SS7 destinations.
 
 </p><p class="rfcparagraph"><a name="section-1.4.3.4"><h4>1.4.3.4   IPSP Considerations</h4></a>
-                        <a href="raw/text/rfc4666.txt" class="rawLink">raw</a>
                     
 
    Since IPSPs use M3UA in a point-to-point fashion, there is no concept
@@ -836,7 +822,6 @@
 </p><p class="rfcparagraph">	<a name="section-1.4.4"><h4>1.4.4   Redundancy Models</h4></a>
 
 <a name="section-1.4.4.1"><h4>1.4.4.1  Application Server Redundancy</h4></a>
-                        <a href="raw/text/rfc4666.txt" class="rawLink">raw</a>
                     
 
    All MTP3-User messages (e.g., ISUP, SCCP) that match a provisioned
@@ -3550,7 +3535,6 @@
 </p><p class="rfcparagraph">	<a name="section-4.3.4"><h4>4.3.4   ASPM Procedures for Peer-to-Peer Messages</h4></a>
 
 <a name="section-4.3.4.1"><h4>4.3.4.1   ASP Up Procedures</h4></a>
-                        <a href="raw/text/rfc4666.txt" class="rawLink">raw</a>
                     
 
    After an ASP has successfully established an SCTP association to an
@@ -3614,7 +3598,6 @@
    procedures to return itself to its previous state.
 
 </p><p class="rfcparagraph"><a name="section-4.3.4.1"><h4>4.3.4.1 1.  M3UA Version Control and ASP Up</h4></a>
-                        <a href="raw/text/rfc4666.txt" class="rawLink">raw</a>
                     
 
    If an ASP Up message with an unsupported version is received, the
@@ -3623,7 +3606,6 @@
    Section 4.8 for more on this issue.
 
 </p><p class="rfcparagraph"><a name="section-4.3.4.1"><h4>4.3.4.1 2.  IPSP Considerations (ASP Up)</h4></a>
-                        <a href="raw/text/rfc4666.txt" class="rawLink">raw</a>
                     
 
    An IPSP may be considered in the ASP-INACTIVE state after an ASP Up
@@ -3644,7 +3626,6 @@
    state.
 
 </p><p class="rfcparagraph"><a name="section-4.3.4.2"><h4>4.3.4.2   ASP-Down Procedures</h4></a>
-                        <a href="raw/text/rfc4666.txt" class="rawLink">raw</a>
                     
 
    The ASP will send an ASP Down message to an SGP when the ASP wishes
@@ -3688,7 +3669,6 @@
    carrying a negative indication.
 
 </p><p class="rfcparagraph"><a name="section-4.3.4.3"><h4>4.3.4.3   ASP Active Procedures</h4></a>
-                        <a href="raw/text/rfc4666.txt" class="rawLink">raw</a>
                     
 
    Anytime after the ASP has received an ASP Up Ack message from the SGP
@@ -3870,7 +3850,6 @@
    the newly active ASP to synchronize its processing of traffic in each
    traffic flow with the other ASPs in the broadcast group.
 <a name="section-4.3.4.3"><h4>4.3.4.3 1.  IPSP Considerations (ASP Active)</h4></a>
-                        <a href="raw/text/rfc4666.txt" class="rawLink">raw</a>
                     
 
    Either of the IPSPs can initiate communication.  When an IPSP
@@ -3884,7 +3863,6 @@
    needed for completion.
 
 </p><p class="rfcparagraph"><a name="section-4.3.4.4"><h4>4.3.4.4   ASP Inactive Procedures</h4></a>
-                        <a href="raw/text/rfc4666.txt" class="rawLink">raw</a>
                     
 
    When an ASP wishes to withdraw from receiving traffic within an AS or
@@ -3993,7 +3971,6 @@
    moved to the AS-INACTIVE state.
 
 </p><p class="rfcparagraph"><a name="section-4.3.4.4"><h4>4.3.4.4 1.  IPSP Considerations (ASP Inactive)</h4></a>
-                        <a href="raw/text/rfc4666.txt" class="rawLink">raw</a>
                     
 
    An IPSP may be considered in the ASP-INACTIVE state by a remote IPSP
@@ -4005,7 +3982,6 @@
    needed for completion.
 
 </p><p class="rfcparagraph"><a name="section-4.3.4.5"><h4>4.3.4.5   Notify Procedures</h4></a>
-                        <a href="raw/text/rfc4666.txt" class="rawLink">raw</a>
                     
 
    A Notify message reflecting a change in the AS state MUST be sent to
@@ -4038,7 +4014,6 @@
    action in each AS.
 
 </p><p class="rfcparagraph"><a name="section-4.3.4.5"><h4>4.3.4.5 1.  IPSP Considerations (NTFY)</h4></a>
-                        <a href="raw/text/rfc4666.txt" class="rawLink">raw</a>
                     
 
    Notify works in the same manner as in the SG-AS case.  One of the
@@ -4046,7 +4021,6 @@
    ASP-DOWN state.
 
 </p><p class="rfcparagraph"><a name="section-4.3.4.6"><h4>4.3.4.6   Heartbeat Procedures</h4></a>
-                        <a href="raw/text/rfc4666.txt" class="rawLink">raw</a>
                     
 
    The optional Heartbeat procedures MAY be used when operating over
@@ -4265,7 +4239,6 @@
 </p><p class="rfcparagraph">	<a name="section-4.5.2"><h4>4.5.2   At an ASP</h4></a>
 
 <a name="section-4.5.2.1"><h4>4.5.2.1   Single SG Configurations</h4></a>
-                        <a href="raw/text/rfc4666.txt" class="rawLink">raw</a>
                     
 
    At an ASP, upon receiving an SS7 Signalling Network Management (SSNM)
@@ -4282,7 +4255,6 @@
    primitives to the M3UA User are appropriate.
 
 </p><p class="rfcparagraph"><a name="section-4.5.2.2"><h4>4.5.2.2   Multiple SG Configurations</h4></a>
-                        <a href="raw/text/rfc4666.txt" class="rawLink">raw</a>
                     
 
    At an ASP, upon receiving a Signalling Network Management message
@@ -4459,7 +4431,6 @@
    is configured within an AS (no backup).
 
 </p><p class="rfcparagraph"><a name="section-5.1.1.1"><h4>5.1.1.1   Single ASP in an Application Server ("1+0" Sparing),</h4></a>
-                        <a href="raw/text/rfc4666.txt" class="rawLink">raw</a>
                     
           No Registration
 
@@ -4481,7 +4452,6 @@
    value(s).  For an unknown RC value, the SGP responds with an Error
    message.
 <a name="section-5.1.1.2"><h4>5.1.1.2   Single ASP in Application Server ("1+0" Sparing),</h4></a>
-                        <a href="raw/text/rfc4666.txt" class="rawLink">raw</a>
                     
           Dynamic Registration
 
@@ -4513,7 +4483,6 @@
    unsuccessful indication, and the ASP will not subsequently send an
    ASP Active message.
 <a name="section-5.1.1.3"><h4>5.1.1.3   Single ASP in Multiple Application Servers (Each</h4></a>
-                        <a href="raw/text/rfc4666.txt" class="rawLink">raw</a>
                     
           with "1+0" Sparing), Dynamic Registration (Case 1 - Multiple
           Registration Requests)
@@ -4560,7 +4529,6 @@
    Request.  The ASP Active message can be sent at any time after the
    related successful registration.
 <a name="section-5.1.1.4"><h4>5.1.1.4   Single ASP in Multiple Application Servers (each</h4></a>
-                        <a href="raw/text/rfc4666.txt" class="rawLink">raw</a>
                     
           with "1+0" sparing), Dynamic Registration (Case 2 - Single
           Registration Request)
@@ -4842,11 +4810,9 @@
    and the M3UA layer at an ASP.
 
 </p><p class="rfcparagraph"><a name="section-5.5.1.1"><h4>5.5.1.1   Support for MTP-TRANSFER Primitives at the ASP</h4></a>
-                        <a href="raw/text/rfc4666.txt" class="rawLink">raw</a>
                     
 
 <a name="section-5.5.1.1"><h4>5.5.1.1 1.  Support for MTP-TRANSFER Request Primitive</h4></a>
-                        <a href="raw/text/rfc4666.txt" class="rawLink">raw</a>
                     
 
    When the MTP3-User on the ASP has data to send to a remote MTP3-User,
@@ -4876,7 +4842,6 @@
              |                         |
 
 <a name="section-5.5.1.1"><h4>5.5.1.1 2.  Support for the MTP-TRANSFER Indication Primitive</h4></a>
-                        <a href="raw/text/rfc4666.txt" class="rawLink">raw</a>
                     
 
    When the M3UA layer on the ASP receives a DATA message from the M3UA
@@ -4896,7 +4861,6 @@
              |                         |
 
 <a name="section-5.5.1.1"><h4>5.5.1.1 3.  Support for ASP Querying of SS7 Destination States</h4></a>
-                        <a href="raw/text/rfc4666.txt" class="rawLink">raw</a>
                     
 
    There are situations such as temporary loss of connectivity to the
@@ -4919,7 +4883,6 @@
    and the M3UA layer at an SGP.
 
 </p><p class="rfcparagraph"><a name="section-5.5.2.1"><h4>5.5.2.1   Support for MTP-TRANSFER Request Primitive at the SGP</h4></a>
-                        <a href="raw/text/rfc4666.txt" class="rawLink">raw</a>
                     
 
    When the M3UA layer at the SGP has received DATA messages from its
@@ -4939,7 +4902,6 @@
                                 |                          |
 
 <a name="section-5.5.2.2"><h4>5.5.2.2   Support for MTP-TRANSFER Indication Primitive at the SGP</h4></a>
-                        <a href="raw/text/rfc4666.txt" class="rawLink">raw</a>
                     
 
    When the MTP3 layer at the SGP has data to pass its user parts, it
@@ -4971,7 +4933,6 @@
                                |                          |
 
 <a name="section-5.5.2.3"><h4>5.5.2.3   Support for MTP-PAUSE, MTP-RESUME, MTP-STATUS Indication</h4></a>
-                        <a href="raw/text/rfc4666.txt" class="rawLink">raw</a>
                     
           Primitives
 
@@ -4981,7 +4942,6 @@
    ASP(s).
 
 </p><p class="rfcparagraph"><a name="section-5.5.2.3"><h4>5.5.2.3 1.  Destination Unavailable</h4></a>
-                        <a href="raw/text/rfc4666.txt" class="rawLink">raw</a>
                     
 
    The MTP3 layer at the SGP will generate an MTP-PAUSE indication
@@ -4996,7 +4956,6 @@
     --MTP-PAUSE ind.-->|---------DUNA----------->|--MTP-PAUSE ind.-->
                        |                         |
 <a name="section-5.5.2.3"><h4>5.5.2.3 2.  Destination Available</h4></a>
-                        <a href="raw/text/rfc4666.txt" class="rawLink">raw</a>
                     
 
    The MTP3 at the SGP will generate an MTP-RESUME indication primitive
@@ -5012,7 +4971,6 @@
                          |                         |
 
 <a name="section-5.5.2.3"><h4>5.5.2.3 3.  SS7 Network Congestion</h4></a>
-                        <a href="raw/text/rfc4666.txt" class="rawLink">raw</a>
                     
 
    The MTP3 layer at the SGP will generate an MTP-STATUS indication
@@ -5027,7 +4985,6 @@
                          |                         |
 
 <a name="section-5.5.2.3"><h4>5.5.2.3 4.  Destination User Part Unavailable</h4></a>
-                        <a href="raw/text/rfc4666.txt" class="rawLink">raw</a>
                     
 
    The MTP3 layer at the SGP will generate an MTP-STATUS indication

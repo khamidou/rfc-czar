@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
@@ -899,7 +899,6 @@
    may support both types of control as a configurable option.
 
 </p><p class="rfcparagraph"><a name="section-2.6.1.1"><h4>2.6.1.1   Independent Label Distribution Control</h4></a>
-                        <a href="raw/text/rfc5036.txt" class="rawLink">raw</a>
                     
 
    When using independent LSP control, each LSR may advertise label
@@ -914,7 +913,6 @@
    be advertised before a downstream label is received.
 
 </p><p class="rfcparagraph"><a name="section-2.6.1.2"><h4>2.6.1.2   Ordered Label Distribution Control</h4></a>
-                        <a href="raw/text/rfc5036.txt" class="rawLink">raw</a>
                     
 
    When using LSP Ordered Control, an LSR may initiate the transmission
@@ -950,7 +948,6 @@
    for the FEC.
 
 </p><p class="rfcparagraph"><a name="section-2.6.2.1"><h4>2.6.2.1   Conservative Label Retention Mode</h4></a>
-                        <a href="raw/text/rfc5036.txt" class="rawLink">raw</a>
                     
 
    In Downstream Unsolicited advertisement mode, label mapping
@@ -973,7 +970,6 @@
    the new next hop before labeled packets can be forwarded.
 
 </p><p class="rfcparagraph"><a name="section-2.6.2.2"><h4>2.6.2.2   Liberal Label Retention Mode</h4></a>
-                        <a href="raw/text/rfc5036.txt" class="rawLink">raw</a>
                     
 
    In Downstream Unsolicited advertisement mode, label mapping
@@ -1592,7 +1588,6 @@
             field, padded to a byte boundary.
 
 </p><p class="rfcparagraph"><a name="section-3.4.1.1"><h4>3.4.1.1   FEC Procedures</h4></a>
-                        <a href="raw/text/rfc5036.txt" class="rawLink">raw</a>
                     
 
    If in decoding a FEC TLV an LSR encounters a FEC Element with an
@@ -1614,7 +1609,6 @@
 </p><p class="rfcparagraph">   There are several different kinds of Label TLVs that can appear in
    situations that require a Label TLV.
 <a name="section-3.4.2.1"><h4>3.4.2.1   Generic Label TLV</h4></a>
-                        <a href="raw/text/rfc5036.txt" class="rawLink">raw</a>
                     
 
    An LSR uses Generic Label TLVs to encode labels for use on links for
@@ -1642,7 +1636,6 @@
       For further information, see [RFC3032].
 
 </p><p class="rfcparagraph"><a name="section-3.4.2.2"><h4>3.4.2.2   ATM Label TLV</h4></a>
-                        <a href="raw/text/rfc5036.txt" class="rawLink">raw</a>
                     
 
    An LSR uses ATM Label TLVs to encode labels for use on ATM links.
@@ -1676,7 +1669,6 @@
       0 by the sender.
 
 </p><p class="rfcparagraph"><a name="section-3.4.2.3"><h4>3.4.2.3   Frame Relay Label TLV</h4></a>
-                        <a href="raw/text/rfc5036.txt" class="rawLink">raw</a>
                     
 
    An LSR uses Frame Relay Label TLVs to encode labels for use on Frame
@@ -1785,7 +1777,6 @@
       1 octet unsigned integer hop count value.
 
 </p><p class="rfcparagraph"><a name="section-3.4.4.1"><h4>3.4.4.1   Hop Count Procedures</h4></a>
-                        <a href="raw/text/rfc5036.txt" class="rawLink">raw</a>
                     
 
    During setup of an LSP, an LSR R may receive a Label Mapping or Label
@@ -1875,14 +1866,12 @@
       unique within the LSR network.
 
 </p><p class="rfcparagraph"><a name="section-3.4.5.1"><h4>3.4.5.1   Path Vector Procedures</h4></a>
-                        <a href="raw/text/rfc5036.txt" class="rawLink">raw</a>
                     
 
    The Path Vector TLV is carried in Label Mapping and Label Request
    messages when Loop Detection is configured.
 
 </p><p class="rfcparagraph"><a name="section-3.4.5.1"><h4>3.4.5.1 1.  Label Request Path Vector</h4></a>
-                        <a href="raw/text/rfc5036.txt" class="rawLink">raw</a>
                     
 
    Section "Loop Detection" specifies situations when an LSR must
@@ -1910,7 +1899,6 @@
          reached.  This is treated as if a loop had been detected.
 
 </p><p class="rfcparagraph"><a name="section-3.4.5.1"><h4>3.4.5.1 2.  Label Mapping Path Vector</h4></a>
-                        <a href="raw/text/rfc5036.txt" class="rawLink">raw</a>
                     
 
    Section "Loop Detection" specifies the situations when an LSR must
@@ -2167,7 +2155,6 @@
       the Notification message.
 
 </p><p class="rfcparagraph"><a name="section-3.5.1.1"><h4>3.5.1.1   Notification Message Procedures</h4></a>
-                        <a href="raw/text/rfc5036.txt" class="rawLink">raw</a>
                     
 
    If an LSR encounters a condition requiring it to notify its peer with
@@ -2195,14 +2182,12 @@
    transmit a Shutdown message and then close the transport connection.
 
 </p><p class="rfcparagraph"><a name="section-3.5.1.2"><h4>3.5.1.2   Events Signaled by Notification Messages</h4></a>
-                        <a href="raw/text/rfc5036.txt" class="rawLink">raw</a>
                     
 
    It is useful for descriptive purpose to classify events signaled by
    Notification messages into the following categories.
 
 </p><p class="rfcparagraph"><a name="section-3.5.1.2"><h4>3.5.1.2 1.  Malformed PDU or Message</h4></a>
-                        <a href="raw/text/rfc5036.txt" class="rawLink">raw</a>
                     
 
    Malformed LDP PDUs or messages that are part of the LDP Discovery
@@ -2251,7 +2236,6 @@
          Status Code.
 
 </p><p class="rfcparagraph"><a name="section-3.5.1.2"><h4>3.5.1.2 2.  Unknown or Malformed TLV</h4></a>
-                        <a href="raw/text/rfc5036.txt" class="rawLink">raw</a>
                     
 
    Malformed TLVs contained in LDP messages that are part of the LDP
@@ -2279,14 +2263,12 @@
          TLV Value Status Code.
 
 </p><p class="rfcparagraph"><a name="section-3.5.1.2"><h4>3.5.1.2 3.  Session KeepAlive Timer Expiration</h4></a>
-                        <a href="raw/text/rfc5036.txt" class="rawLink">raw</a>
                     
 
    This is a fatal error signaled by the KeepAlive Timer Expired Status
    Code.
 
 </p><p class="rfcparagraph"><a name="section-3.5.1.2"><h4>3.5.1.2 4.  Unilateral Session Shutdown</h4></a>
-                        <a href="raw/text/rfc5036.txt" class="rawLink">raw</a>
                     
 
    This is a fatal event signaled by the Shutdown Status Code.  The
@@ -2295,7 +2277,6 @@
    session immediately after sending the Notification.
 
 </p><p class="rfcparagraph"><a name="section-3.5.1.2"><h4>3.5.1.2 5.  Initialization Message Events</h4></a>
-                        <a href="raw/text/rfc5036.txt" class="rawLink">raw</a>
                     
 
    The session initialization negotiation (see Section "Session
@@ -2305,7 +2286,6 @@
    and is defined in Sections "Initialization Message".
 
 </p><p class="rfcparagraph"><a name="section-3.5.1.2"><h4>3.5.1.2 6.  Events Resulting from Other Messages</h4></a>
-                        <a href="raw/text/rfc5036.txt" class="rawLink">raw</a>
                     
 
    Messages other than the Initialization message may result in events
@@ -2314,7 +2294,6 @@
    signal them are described in the sections that describe these
    messages.
 <a name="section-3.5.1.2"><h4>3.5.1.2 7.  Internal Errors</h4></a>
-                        <a href="raw/text/rfc5036.txt" class="rawLink">raw</a>
                     
 
    An LDP implementation may be capable of detecting problem conditions
@@ -2324,7 +2303,6 @@
    Error Status Code to signal the peer.  This is a fatal error.
 
 </p><p class="rfcparagraph"><a name="section-3.5.1.2"><h4>3.5.1.2 8.  Miscellaneous Events</h4></a>
-                        <a href="raw/text/rfc5036.txt" class="rawLink">raw</a>
                     
 
    These are events that fall into none of the categories above.  There
@@ -2428,7 +2406,6 @@
          carrying the Hello SHOULD be used.
 
 </p><p class="rfcparagraph"><a name="section-3.5.2.1"><h4>3.5.2.1   Hello Message Procedures</h4></a>
-                        <a href="raw/text/rfc5036.txt" class="rawLink">raw</a>
                     
 
    An LSR receiving Hellos from another LSR maintains a Hello adjacency
@@ -2861,7 +2838,6 @@
    that advertise Generic Labels.
 
 </p><p class="rfcparagraph"><a name="section-3.5.3.1"><h4>3.5.3.1   Initialization Message Procedures</h4></a>
-                        <a href="raw/text/rfc5036.txt" class="rawLink">raw</a>
                     
 
    See Section "LDP Session Establishment" and particularly Section
@@ -2892,7 +2868,6 @@
       No optional parameters are defined for the KeepAlive message.
 
 </p><p class="rfcparagraph"><a name="section-3.5.4.1"><h4>3.5.4.1   KeepAlive Message Procedures</h4></a>
-                        <a href="raw/text/rfc5036.txt" class="rawLink">raw</a>
                     
 
    The KeepAlive Timer mechanism described in Section "Maintaining LDP
@@ -2939,7 +2914,6 @@
       No optional parameters are defined for the Address message.
 
 </p><p class="rfcparagraph"><a name="section-3.5.5.1"><h4>3.5.5.1   Address Message Procedures</h4></a>
-                        <a href="raw/text/rfc5036.txt" class="rawLink">raw</a>
                     
 
    An LSR that receives an Address message uses the addresses it learns
@@ -3004,7 +2978,6 @@
       message.
 
 </p><p class="rfcparagraph"><a name="section-3.5.6.1"><h4>3.5.6.1   Address Withdraw Message Procedures</h4></a>
-                        <a href="raw/text/rfc5036.txt" class="rawLink">raw</a>
                     
 
    See Section "Address Message Procedures".
@@ -3071,7 +3044,6 @@
          handle this TLV.
 
 </p><p class="rfcparagraph"><a name="section-3.5.7.1"><h4>3.5.7.1   Label Mapping Message Procedures</h4></a>
-                        <a href="raw/text/rfc5036.txt" class="rawLink">raw</a>
                     
 
    The Mapping message is used by an LSR to distribute a label mapping
@@ -3091,7 +3063,6 @@
    details.
 
 </p><p class="rfcparagraph"><a name="section-3.5.7.1"><h4>3.5.7.1 1.  Independent Control Mapping</h4></a>
-                        <a href="raw/text/rfc5036.txt" class="rawLink">raw</a>
                     
 
    If an LSR is configured for independent control, a mapping message is
@@ -3115,7 +3086,6 @@
             c) the attributes of the mapping have changed.
 
 </p><p class="rfcparagraph"><a name="section-3.5.7.1"><h4>3.5.7.1 2.  Ordered Control Mapping</h4></a>
-                        <a href="raw/text/rfc5036.txt" class="rawLink">raw</a>
                     
 
    If an LSR is doing Ordered Control, a Mapping message is transmitted
@@ -3140,7 +3110,6 @@
             c) the attributes of the mapping have changed.
 
 </p><p class="rfcparagraph"><a name="section-3.5.7.1"><h4>3.5.7.1 3.  Downstream on Demand Label Advertisement</h4></a>
-                        <a href="raw/text/rfc5036.txt" class="rawLink">raw</a>
                     
 
    In general, the upstream LSR is responsible for requesting label
@@ -3164,7 +3133,6 @@
    upstream LSR is responsible for requesting label mappings as needed.
 
 </p><p class="rfcparagraph"><a name="section-3.5.7.1"><h4>3.5.7.1 4.  Downstream Unsolicited Label Advertisement</h4></a>
-                        <a href="raw/text/rfc5036.txt" class="rawLink">raw</a>
                     
 
    In general, the downstream LSR is responsible for advertising a label
@@ -3245,7 +3213,6 @@
       message.  Section "Path Vector Procedures" describes how to handle
       this TLV.
 <a name="section-3.5.8.1"><h4>3.5.8.1   Label Request Message Procedures</h4></a>
-                        <a href="raw/text/rfc5036.txt" class="rawLink">raw</a>
                     
 
    The Request message is used by an upstream LSR to explicitly request
@@ -3352,7 +3319,6 @@
       message.
 
 </p><p class="rfcparagraph"><a name="section-3.5.9.1"><h4>3.5.9.1   Label Abort Request Message Procedures</h4></a>
-                        <a href="raw/text/rfc5036.txt" class="rawLink">raw</a>
                     
 
    An LSR Ru may send a Label Abort Request message to abort an
@@ -3462,7 +3428,6 @@
          below).
 
 </p><p class="rfcparagraph"><a name="section-3.5.10.1"><h4>3.5.10.1   Label Withdraw Message Procedures</h4></a>
-                        <a href="raw/text/rfc5036.txt" class="rawLink">raw</a>
                     
 
    An LSR transmits a Label Withdraw message under the following
@@ -3535,7 +3500,6 @@
          If present, the label being released (see procedures below).
 
 </p><p class="rfcparagraph"><a name="section-3.5.11.1"><h4>3.5.11.1   Label Release Message Procedures</h4></a>
-                        <a href="raw/text/rfc5036.txt" class="rawLink">raw</a>
                     
 
    An LSR transmits a Label Release message to a peer when it no longer
@@ -3590,7 +3554,6 @@
    information between LSRs.
 
 </p><p class="rfcparagraph"><a name="section-3.6.1.1"><h4>3.6.1.1   LDP Vendor-Private TLVs</h4></a>
-                        <a href="raw/text/rfc5036.txt" class="rawLink">raw</a>
                     
 
    The Type range 0x3E00 through 0x3EFF is reserved for vendor-private
@@ -3652,7 +3615,6 @@
       The remaining octets after the Vendor ID in the Value field are
       optional vendor-dependent data.
 <a name="section-3.6.1.2"><h4>3.6.1.2   LDP Vendor-Private Messages</h4></a>
-                        <a href="raw/text/rfc5036.txt" class="rawLink">raw</a>
                     
 
    The Message Type range 0x3E00 through 0x3EFF is reserved for Vendor-

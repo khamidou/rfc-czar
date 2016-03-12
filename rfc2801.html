@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
@@ -2629,7 +2629,6 @@ IOTP MESSAGE                               IOTP MESSAGE *
    Error Component is generated for return.
 
 </p><p class="rfcparagraph"><a name="section-4.3.3.1"><h4>4.3.3.1  Block Level Attribute and Element Checks</h4></a>
-                        <a href="raw/text/rfc2801.txt" class="rawLink">raw</a>
                     
 
    Block Level Attribute and Element Checks occur only within the same
@@ -2650,7 +2649,6 @@ IOTP MESSAGE                               IOTP MESSAGE *
       block.
 
 </p><p class="rfcparagraph"><a name="section-4.3.3.2"><h4>4.3.3.2  Block and Component Consistency Checks</h4></a>
-                        <a href="raw/text/rfc2801.txt" class="rawLink">raw</a>
                     
 
    Block and Component Consistency Checks consist of:
@@ -2672,7 +2670,6 @@ IOTP MESSAGE                               IOTP MESSAGE *
    system such as a payment server.
 
 </p><p class="rfcparagraph"><a name="section-4.3.3.3"><h4>4.3.3.3  Transient Technical Errors</h4></a>
-                        <a href="raw/text/rfc2801.txt" class="rawLink">raw</a>
                     
 
    During the processing of the Block some temporary failure may occur
@@ -2689,7 +2686,6 @@ IOTP MESSAGE                               IOTP MESSAGE *
    Trading Roles involved in transaction.
 
 </p><p class="rfcparagraph"><a name="section-4.3.3.4"><h4>4.3.3.4  Block Level Business Errors</h4></a>
-                        <a href="raw/text/rfc2801.txt" class="rawLink">raw</a>
                     
 
    If a business error occurs in a process such as a Payment or a
@@ -2805,7 +2801,6 @@ IOTP MESSAGE                               IOTP MESSAGE *
    Each of these is discussed in more detail below.
 
 </p><p class="rfcparagraph"><a name="section-4.5.2.1"><h4>4.5.2.1  Checking Structure and Message Identity</h4></a>
-                        <a href="raw/text/rfc2801.txt" class="rawLink">raw</a>
                     
 
    It is critical to check that the message is "well formed" XML and
@@ -2829,7 +2824,6 @@ IOTP MESSAGE                               IOTP MESSAGE *
    sender of the original message.
 
 </p><p class="rfcparagraph"><a name="section-4.5.2.2"><h4>4.5.2.2  Checking/Handling Duplicate Messages</h4></a>
-                        <a href="raw/text/rfc2801.txt" class="rawLink">raw</a>
                     
 
    If the input message can be identified as potentially a valid input
@@ -2857,7 +2851,6 @@ IOTP MESSAGE                               IOTP MESSAGE *
 </p><p class="rfcparagraph">   If the message is not a duplicate then it should be processed.
 
 </p><p class="rfcparagraph"><a name="section-4.5.2.3"><h4>4.5.2.3  Processing Non-Duplicate Message</h4></a>
-                        <a href="raw/text/rfc2801.txt" class="rawLink">raw</a>
                     
 
    Once it's been established that the message is not a duplicate, then
@@ -2963,7 +2956,6 @@ IOTP MESSAGE                               IOTP MESSAGE *
    the data where appropriate.
 
 </p><p class="rfcparagraph"><a name="section-4.5.2.4"><h4>4.5.2.4  Check for Errors in Block Sequence</h4></a>
-                        <a href="raw/text/rfc2801.txt" class="rawLink">raw</a>
                     
 
    Note: For reasons of brevity, the following explanations of how to
@@ -3216,7 +3208,6 @@ IOTP MESSAGE                               IOTP MESSAGE *
    decision of the implementer of the consumer role IOTP solution.
 
 </p><p class="rfcparagraph"><a name="section-4.6.2.1"><h4>4.6.2.1  Check for Errors in Block Sequence</h4></a>
-                        <a href="raw/text/rfc2801.txt" class="rawLink">raw</a>
                     
 
    The handling of the following blocks is the same as for an IOTP
@@ -3809,7 +3800,6 @@ Brand Dependent Purchase).
    Delivery.
 
 </p><p class="rfcparagraph"><a name="section-6.3.1.1"><h4>6.3.1.1  Payment</h4></a>
-                        <a href="raw/text/rfc2801.txt" class="rawLink">raw</a>
                     
 
    In outline a Payment Handler checks if it can accept or make a
@@ -3938,7 +3928,6 @@ Brand Dependent Purchase).
          same as the Organisation that received the Payment Request
          Block, then there is an error.
 <a name="section-6.3.1.2"><h4>6.3.1.2  Delivery</h4></a>
-                        <a href="raw/text/rfc2801.txt" class="rawLink">raw</a>
                     
 
    The way data is accessed by a Delivery Handler in order to check that
@@ -4041,7 +4030,6 @@ Brand Dependent Purchase).
          (see section 6.3.3.1).
 
 </p><p class="rfcparagraph"><a name="section-6.3.3.1"><h4>6.3.3.1  Check the Signatures Digests are correct</h4></a>
-                        <a href="raw/text/rfc2801.txt" class="rawLink">raw</a>
                     
 
    All Signature Components contained within IOTP Messages must include
@@ -7019,7 +7007,6 @@ Brand Dependent Purchase).
    Warning.
 
 </p><p class="rfcparagraph"><a name="section-7.21.1.1"><h4>7.21.1.1  Severity - Warning</h4></a>
-                        <a href="raw/text/rfc2801.txt" class="rawLink">raw</a>
                     
 
    If an IOTP aware application is generating a message reporting the
@@ -7052,7 +7039,6 @@ Brand Dependent Purchase).
    Severity set to HardError.
 
 </p><p class="rfcparagraph"><a name="section-7.21.1.2"><h4>7.21.1.2  Severity - Transient Error</h4></a>
-                        <a href="raw/text/rfc2801.txt" class="rawLink">raw</a>
                     
 
    If an IOTP Aware Application is generating a message reporting the
@@ -7084,7 +7070,6 @@ Brand Dependent Purchase).
       HardError.
 
 </p><p class="rfcparagraph"><a name="section-7.21.1.3"><h4>7.21.1.3  Severity - Hard Error</h4></a>
-                        <a href="raw/text/rfc2801.txt" class="rawLink">raw</a>
                     
 
    If an IOTP Aware Application is generating a message reporting the
@@ -8493,7 +8478,6 @@ STEP |     |
                  Figure 18 Authentication Document Exchange
 
 <a name="section-9.1.1.1"><h4>9.1.1.1  Message Processing Guidelines</h4></a>
-                        <a href="raw/text/rfc2801.txt" class="rawLink">raw</a>
                     
 
    On receiving a TPO & Authentication Request IOTP Message (see below),
@@ -8545,7 +8529,6 @@ STEP |     |
    Protocol Options Block.
 
 </p><p class="rfcparagraph"><a name="section-9.1.1.2"><h4>9.1.1.2  TPO & Authentication Request IOTP Message</h4></a>
-                        <a href="raw/text/rfc2801.txt" class="rawLink">raw</a>
                     
 
    Apart from a Transaction Reference Block (see section 3.3), this
@@ -8604,7 +8587,6 @@ STEP |     |
       -  the Trading Role Information Request Component
 
 <a name="section-9.1.1.3"><h4>9.1.1.3  Authentication Response IOTP Message</h4></a>
-                        <a href="raw/text/rfc2801.txt" class="rawLink">raw</a>
                     
 
    Apart from a Transaction Reference Block (see section 3.3), this
@@ -8657,7 +8639,6 @@ STEP |     |
    support the signing of data.
 
 </p><p class="rfcparagraph"><a name="section-9.1.1.4"><h4>9.1.1.4  Authentication Status IOTP Message</h4></a>
-                        <a href="raw/text/rfc2801.txt" class="rawLink">raw</a>
                     
 
    Apart from a Transaction Reference Block (see section 3.3), this
@@ -8718,7 +8699,6 @@ STEP |     |
       an Authentication Document Exchange (see section 9.1.1).
 
 </p><p class="rfcparagraph"><a name="section-9.1.2.1"><h4>9.1.2.1  Brand Dependent Offer Document Exchange</h4></a>
-                        <a href="raw/text/rfc2801.txt" class="rawLink">raw</a>
                     
 
       In a Brand Dependent Offer Document Exchange the TPO Block and the
@@ -8831,7 +8811,6 @@ STEP |     |
    to the Consumer but no further action taken.
 
 </p><p class="rfcparagraph"><a name="section-9.1.2.2"><h4>9.1.2.2  Brand Independent Offer Document Exchange</h4></a>
-                        <a href="raw/text/rfc2801.txt" class="rawLink">raw</a>
                     
 
    In a Brand Independent Offer Document Exchange the TPO Block and the
@@ -8913,7 +8892,6 @@ STEP |     |
    Merchant.
 
 </p><p class="rfcparagraph"><a name="section-9.1.2.3"><h4>9.1.2.3  TPO IOTP Message</h4></a>
-                        <a href="raw/text/rfc2801.txt" class="rawLink">raw</a>
                     
 
    The TPO IOTP Message is only used with a Brand Dependent Offer
@@ -8966,7 +8944,6 @@ STEP |     |
    See section 9.1.1.4 Authentication Status IOTP Message for more
    details.
 <a name="section-9.1.2.4"><h4>9.1.2.4  TPO Selection IOTP Message</h4></a>
-                        <a href="raw/text/rfc2801.txt" class="rawLink">raw</a>
                     
 
    The TPO Selection IOTP Message is only used with a Brand Dependent
@@ -8984,7 +8961,6 @@ STEP |     |
       from the list provided in the Brand List Component.
 
 </p><p class="rfcparagraph"><a name="section-9.1.2.5"><h4>9.1.2.5  Offer Response IOTP Message</h4></a>
-                        <a href="raw/text/rfc2801.txt" class="rawLink">raw</a>
                     
 
    The Offer Response IOTP Message is only used with a Brand Dependent
@@ -9054,7 +9030,6 @@ STEP |     |
       -  any Trading Role Data Components present
 
 <a name="section-9.1.2.6"><h4>9.1.2.6  TPO and Offer Response IOTP Message</h4></a>
-                        <a href="raw/text/rfc2801.txt" class="rawLink">raw</a>
                     
 
    The TPO and Offer Response IOTP Message is only used with a Brand
@@ -9159,7 +9134,6 @@ STEP |     |
 
                      Figure 21 Payment Document Exchange
 <a name="section-9.1.3.1"><h4>9.1.3.1  Message Processing Guidelines</h4></a>
-                        <a href="raw/text/rfc2801.txt" class="rawLink">raw</a>
                     
 
    On receiving a Payment Request IOTP Message, the Payment Handler
@@ -9239,7 +9213,6 @@ STEP |     |
    from which any further action may take place.
 
 </p><p class="rfcparagraph"><a name="section-9.1.3.2"><h4>9.1.3.2  Payment Request IOTP Message</h4></a>
-                        <a href="raw/text/rfc2801.txt" class="rawLink">raw</a>
                     
 
    Apart from a Transaction Reference Block (see section 3.3), this
@@ -9319,7 +9292,6 @@ STEP |     |
    Message.
 
 </p><p class="rfcparagraph"><a name="section-9.1.3.3"><h4>9.1.3.3  Payment Exchange IOTP Message</h4></a>
-                        <a href="raw/text/rfc2801.txt" class="rawLink">raw</a>
                     
 
    Apart from a Transaction Reference Block (see section 3.3), this
@@ -9335,7 +9307,6 @@ STEP |     |
       contain.
 
 </p><p class="rfcparagraph"><a name="section-9.1.3.4"><h4>9.1.3.4  Payment Response IOTP Message</h4></a>
-                        <a href="raw/text/rfc2801.txt" class="rawLink">raw</a>
                     
 
    Apart from a Transaction Reference Block (see section 3.3), this
@@ -9433,7 +9404,6 @@ STEP |     |
                     Figure 22 Delivery Document Exchange
 
 <a name="section-9.1.4.1"><h4>9.1.4.1  Message Processing Guidelines</h4></a>
-                        <a href="raw/text/rfc2801.txt" class="rawLink">raw</a>
                     
 
    On receiving a Delivery Request IOTP Message, the Delivery Handler
@@ -9456,7 +9426,6 @@ STEP |     |
    to the Consumer but no further action taken.
 
 </p><p class="rfcparagraph"><a name="section-9.1.4.2"><h4>9.1.4.2  Delivery Request IOTP Message</h4></a>
-                        <a href="raw/text/rfc2801.txt" class="rawLink">raw</a>
                     
 
    The Delivery Request IOTP Message consists of:
@@ -9494,7 +9463,6 @@ STEP |     |
    Block.
 
 </p><p class="rfcparagraph"><a name="section-9.1.4.3"><h4>9.1.4.3  Delivery Response IOTP Message</h4></a>
-                        <a href="raw/text/rfc2801.txt" class="rawLink">raw</a>
                     
 
    The Delivery Response IOTP Message contains a Delivery Response Block
@@ -9609,7 +9577,6 @@ STEP |     |
    in separate IOTP Messages.
 
 </p><p class="rfcparagraph"><a name="section-9.1.5.1"><h4>9.1.5.1  Message Processing Guidelines</h4></a>
-                        <a href="raw/text/rfc2801.txt" class="rawLink">raw</a>
                     
 
    On receiving a Payment Request IOTP Message or a Payment Exchange
@@ -9641,20 +9608,17 @@ STEP |     |
    from which any further action may take place.
 
 </p><p class="rfcparagraph"><a name="section-9.1.5.2"><h4>9.1.5.2  Payment Request IOTP Message</h4></a>
-                        <a href="raw/text/rfc2801.txt" class="rawLink">raw</a>
                     
 
    The content of this message is the same as for a Payment Request IOTP
    Message in a Payment Document Exchange (see section 9.1.3.2).
 <a name="section-9.1.5.3"><h4>9.1.5.3  Payment Exchange IOTP Message</h4></a>
-                        <a href="raw/text/rfc2801.txt" class="rawLink">raw</a>
                     
 
    The content of this message is the same as for a Payment Exchange
    IOTP Message in a Payment Document Exchange (see section 9.1.3.3).
 
 </p><p class="rfcparagraph"><a name="section-9.1.5.4"><h4>9.1.5.4  Payment Response and Delivery Response IOTP Message</h4></a>
-                        <a href="raw/text/rfc2801.txt" class="rawLink">raw</a>
                     
 
    The content of this message consists of:
@@ -11109,7 +11073,6 @@ STEP |     |
    used.
 
 </p><p class="rfcparagraph"><a name="section-11.1.5.1"><h4>11.1.5.1  Merchant/Payment Handler Identification of Promotional Brands</h4></a>
-                        <a href="raw/text/rfc2801.txt" class="rawLink">raw</a>
                     
 
    Correct identification that the Consumer is paying using a
@@ -11150,7 +11113,6 @@ STEP |     |
    is most likely if the Payment Handler is also the Card Issuer.
 
 </p><p class="rfcparagraph"><a name="section-11.1.5.2"><h4>11.1.5.2  Consumer Selection of Promotional Brands</h4></a>
-                        <a href="raw/text/rfc2801.txt" class="rawLink">raw</a>
                     
 
    Two ways by which a Consumer can correctly select a Promotional Brand
@@ -11192,7 +11154,6 @@ STEP |     |
       the code for the Promotional Brand for use in future purchases.
 
 </p><p class="rfcparagraph"><a name="section-11.1.5.3"><h4>11.1.5.3  Consumer Software Brand Id recommendation</h4></a>
-                        <a href="raw/text/rfc2801.txt" class="rawLink">raw</a>
                     
 
    New Brand Ids are allocated under IANA procedures (see section 12

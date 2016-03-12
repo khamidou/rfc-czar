@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
@@ -1412,7 +1412,6 @@ ISSN: 2070-1721
 
 </p><p class="rfcparagraph">   The use of User Data is detailed in Section 3.6.2.
 <a name="section-2.3.11.1"><h4>2.3.11.1   Options for User Data</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
    This section lists options that may appear in User Data option lists.
@@ -1430,7 +1429,6 @@ ISSN: 2070-1721
    0x0a:  Return Flow Association (Section 2.3.11.1.2)
 
 <a name="section-2.3.11.1"><h4>2.3.11.1 1.  User's Per-Flow Metadata</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
    This option conveys the user's per-flow metadata for the flow to
@@ -1460,7 +1458,6 @@ ISSN: 2070-1721
 </p><p class="rfcparagraph">   The userMetadata SHOULD NOT exceed 512 bytes.  The userMetadata MAY
    be 0 bytes in length.
 <a name="section-2.3.11.1"><h4>2.3.11.1 2.  Return Flow Association</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
    A new flow can be considered to be in return (or response) to a flow
@@ -2164,7 +2161,6 @@ ISSN: 2070-1721
 	<a name="section-3.5.1"><h4>3.5.1   Startup</h4></a>
 
 <a name="section-3.5.1.1"><h4>3.5.1.1   Normal Handshake</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
    RTMFP sessions are established with a 4-way handshake in two round
@@ -2211,7 +2207,6 @@ ISSN: 2070-1721
    In the following sections, the handshake is detailed from the
    perspectives of the initiator and responder.
 <a name="section-3.5.1.1"><h4>3.5.1.1 1.  Initiator</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
    The initiator determines that a session is needed for an Endpoint
@@ -2287,7 +2282,6 @@ ISSN: 2070-1721
    layer cryptographic challenges.
 
 </p><p class="rfcparagraph"><a name="section-3.5.1.1"><h4>3.5.1.1 2.  Responder</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
    On receipt of an IHello chunk (Section 2.3.2) with an Endpoint
@@ -2374,7 +2368,6 @@ ISSN: 2070-1721
        available for application-layer cryptographic challenges.
 
 </p><p class="rfcparagraph"><a name="section-3.5.1.2"><h4>3.5.1.2   Cookie Change</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
    In some circumstances, the responder may generate an RHello cookie
@@ -2452,7 +2445,6 @@ ISSN: 2070-1721
    cookie for a session more than once.
 
 </p><p class="rfcparagraph"><a name="section-3.5.1.3"><h4>3.5.1.3   Glare</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
    Glare occurs when two endpoints attempt to initiate sessions to each
@@ -2480,7 +2472,6 @@ ISSN: 2070-1721
    2.  Continue with normal Responder IIKeying processing
        (Section 3.5.1.1.2).
 <a name="section-3.5.1.4"><h4>3.5.1.4   Redirector</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
         +-----------+           +------------+          +-----------+
@@ -2531,7 +2522,6 @@ ISSN: 2070-1721
    other endpoint.
 
 </p><p class="rfcparagraph"><a name="section-3.5.1.5"><h4>3.5.1.5   Forwarder</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
          +-----------+     +-----------+     +---+     +-----------+
@@ -2615,7 +2605,6 @@ ISSN: 2070-1721
                              Implied Redirect
 
 <a name="section-3.5.1.6"><h4>3.5.1.6   Redirector and Forwarder with NAT</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
              +---+       +---+       +---+      +---+      +---+
@@ -2714,7 +2703,6 @@ ISSN: 2070-1721
    initiator and responder from each other and from the introduction
    service.
 <a name="section-3.5.1.7"><h4>3.5.1.7   Load Distribution and Fault Tolerance</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
              +---+    IHello/RHello    +-------------+
@@ -2815,7 +2803,6 @@ ISSN: 2070-1721
    to the time critical data (Section 3.5.2.1).
 
 </p><p class="rfcparagraph"><a name="section-3.5.2.1"><h4>3.5.2.1   Time Critical Reverse Notification</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
    A sender can increase its transmission budget at a rate compatible
@@ -2838,7 +2825,6 @@ ISSN: 2070-1721
    critical data to the far end.
 
 </p><p class="rfcparagraph"><a name="section-3.5.2.2"><h4>3.5.2.2   Retransmission Timeout</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
    RTMFP uses the ERTO to detect when a user data fragment has been lost
@@ -2949,7 +2935,6 @@ ISSN: 2070-1721
 
 </p><p class="rfcparagraph">   3.  Set ERTO to ERTO_CAPPED or MRTO, whichever is greater.
 <a name="section-3.5.2.3"><h4>3.5.2.3   Burst Avoidance</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
    An application's sending patterns may cause the transmission budget
@@ -3017,7 +3002,6 @@ ISSN: 2070-1721
    Ping Reply.
 
 </p><p class="rfcparagraph"><a name="section-3.5.4.1"><h4>3.5.4.1   Keepalive</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
    An endpoint can use a Ping to test for live bidirectional
@@ -3040,7 +3024,6 @@ ISSN: 2070-1721
    the Ping, ERTO SHOULD be increased according to Section 3.5.2
    ("Congestion Control").
 <a name="section-3.5.4.2"><h4>3.5.4.2   Address Mobility</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
    This section describes an OPTIONAL but suggested method for
@@ -3091,7 +3074,6 @@ ISSN: 2070-1721
        Ping Reply.
 
 </p><p class="rfcparagraph"><a name="section-3.5.4.3"><h4>3.5.4.3   Path MTU Discovery</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
    "Packetization Layer Path MTU Discovery" [RFC4821] describes a method
@@ -3155,7 +3137,6 @@ ISSN: 2070-1721
 </p><p class="rfcparagraph">	<a name="section-3.6.1"><h4>3.6.1   Overview</h4></a>
 
 <a name="section-3.6.1.1"><h4>3.6.1.1   Identity</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
    Flows are multiplexed in a session by a flow identifier.  Each end of
@@ -3183,7 +3164,6 @@ ISSN: 2070-1721
    metadata is fixed for the lifetime of the flow.
 
 </p><p class="rfcparagraph"><a name="section-3.6.1.2"><h4>3.6.1.2   Messages and Sequencing</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
    Flows provide message-oriented framing.  Large messages are
@@ -3231,7 +3211,6 @@ ISSN: 2070-1721
    to the receiving user.
 
 </p><p class="rfcparagraph"><a name="section-3.6.1.3"><h4>3.6.1.3   Lifetime</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
    A sender begins a flow by sending user message fragments to the other
@@ -3361,7 +3340,6 @@ ISSN: 2070-1721
 
                    Figure 19: Sending Flow State Diagram
 <a name="section-3.6.2.1"><h4>3.6.2.1   Startup</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
    The application opens a new sending flow to the other end in an
@@ -3385,7 +3363,6 @@ ISSN: 2070-1721
    abandoned.
 
 </p><p class="rfcparagraph"><a name="section-3.6.2.2"><h4>3.6.2.2   Queuing Data</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
    The application queues messages in an F_OPEN sending flow for
@@ -3412,7 +3389,6 @@ ISSN: 2070-1721
 
 </p><p class="rfcparagraph">   Append fragmentEntry to flow.SEND_QUEUE.
 <a name="section-3.6.2.3"><h4>3.6.2.3   Sending Data</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
    A sending flow is ready to transmit if the SEND_QUEUE contains at
@@ -3510,7 +3486,6 @@ ISSN: 2070-1721
    packet to the far end.
 
 </p><p class="rfcparagraph"><a name="section-3.6.2.3"><h4>3.6.2.3 1.  Startup Options</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
    If STARTUP_OPTIONS is not empty, then when assembling the FIRST User
@@ -3518,7 +3493,6 @@ ISSN: 2070-1721
    STARTUP_OPTIONS to that chunk's option list.
 
 </p><p class="rfcparagraph"><a name="section-3.6.2.3"><h4>3.6.2.3 2.  Send Next Data</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
    The Next User Data chunk (Section 2.3.12) is a compact encoding for a
@@ -3538,7 +3512,6 @@ ISSN: 2070-1721
    as a User Data chunk.
 
 </p><p class="rfcparagraph"><a name="section-3.6.2.4"><h4>3.6.2.4   Processing Acknowledgements</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
    A Data Acknowledgement Bitmap chunk (Section 2.3.13) or a Data
@@ -3564,7 +3537,6 @@ ISSN: 2070-1721
        (Section 3.6.2.5) affect "TCP friendly" congestion control.
 
 </p><p class="rfcparagraph"><a name="section-3.6.2.5"><h4>3.6.2.5   Negative Acknowledgement and Loss</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
    A negative acknowledgement is inferred for an outstanding fragment if
@@ -3614,7 +3586,6 @@ ISSN: 2070-1721
    the congestion control and avoidance algorithms of the loss.
 
 </p><p class="rfcparagraph"><a name="section-3.6.2.6"><h4>3.6.2.6   Timeout</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
    A fragment is considered lost and no longer in flight in the network
@@ -3652,7 +3623,6 @@ ISSN: 2070-1721
    4.  Notify the congestion control and avoidance algorithms of the
        timeout and, if WAS_LOSS is true, that there was loss.
 <a name="section-3.6.2.7"><h4>3.6.2.7   Abandoning Data</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
    The application can abandon queued messages at any time and for any
@@ -3670,7 +3640,6 @@ ISSN: 2070-1721
 </p><p class="rfcparagraph">   An abandoned fragment MUST NOT be un-abandoned.
 
 </p><p class="rfcparagraph"><a name="section-3.6.2.7"><h4>3.6.2.7 1.  Forward Sequence Number Update</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
    Abandoned data may leave gaps in the sequence number space of a flow.
@@ -3694,7 +3663,6 @@ ISSN: 2070-1721
 </p><p class="rfcparagraph">   The method described in Section 3.6.2.3 ("Sending Data") generates
    FSN Updates when appropriate.
 <a name="section-3.6.2.8"><h4>3.6.2.8   Examples</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
     Sender
@@ -3751,7 +3719,6 @@ ISSN: 2070-1721
 
 </p><p class="rfcparagraph">                         Figure 21: Flow with Loss
 <a name="section-3.6.2.9"><h4>3.6.2.9   Flow Control</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
    The flow receiver advertises the amount of new data it's willing to
@@ -3764,7 +3731,6 @@ ISSN: 2070-1721
    (Section 3.6.2.3).
 
 </p><p class="rfcparagraph"><a name="section-3.6.2.9"><h4>3.6.2.9 1.  Buffer Probe</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
    The flow sender is suspended if the most recently received buffer
@@ -3788,7 +3754,6 @@ ISSN: 2070-1721
    suspended.
 
 </p><p class="rfcparagraph"><a name="section-3.6.2.10"><h4>3.6.2.10   Exception</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
    The flow receiver can reject the flow at any time and for any reason.
@@ -3805,7 +3770,6 @@ ISSN: 2070-1721
 
    3.  For each entry in SEND_QUEUE, set entry.ABANDONED = true.
 <a name="section-3.6.2.11"><h4>3.6.2.11   Close</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
    A sending flow is closed by the user or as a result of an exception.
@@ -3921,7 +3885,6 @@ ISSN: 2070-1721
 
                   Figure 22: Receiving Flow State Diagram
 <a name="section-3.6.3.1"><h4>3.6.3.1   Startup</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
    A new receiving flow starts on receipt of a User Data chunk
@@ -3972,7 +3935,6 @@ ISSN: 2070-1721
    11.  Set this session's ACK_NOW to true.
 
 </p><p class="rfcparagraph"><a name="section-3.6.3.2"><h4>3.6.3.2   Receiving Data</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
    A User Data chunk (Section 2.3.11) or a Next User Data chunk
@@ -4053,7 +4015,6 @@ ISSN: 2070-1721
    flag is set (Section 3.6.3.4.5).
 
 </p><p class="rfcparagraph"><a name="section-3.6.3.3"><h4>3.6.3.3   Buffering and Delivering Data</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
    A receiving flow's information context contains a RECV_BUFFER for
@@ -4145,7 +4106,6 @@ ISSN: 2070-1721
    the user, so notify the user that the flow is complete.
 
 </p><p class="rfcparagraph"><a name="section-3.6.3.4"><h4>3.6.3.4   Acknowledging Data</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
    A flow receiver SHOULD acknowledge all user data fragment sequence
@@ -4155,7 +4115,6 @@ ISSN: 2070-1721
    into the network; therefore, the acknowledgements must be accurate
    and timely.
 <a name="section-3.6.3.4"><h4>3.6.3.4 1.  Timing</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
    For reasons similar to those discussed in Section 4.2.3.2 of RFC 1122
@@ -4217,7 +4176,6 @@ ISSN: 2070-1721
       for the flow.
 
 </p><p class="rfcparagraph"><a name="section-3.6.3.4"><h4>3.6.3.4 2.  Size and Truncation</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
    Including an encoded acknowledgement in a packet might cause the
@@ -4233,7 +4191,6 @@ ISSN: 2070-1721
       this acknowledgement in the packet, and send it later.
 
 </p><p class="rfcparagraph"><a name="section-3.6.3.4"><h4>3.6.3.4 3.  Constructing</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
    The Data Acknowledgement Bitmap chunk (Section 2.3.13) and Data
@@ -4254,7 +4211,6 @@ ISSN: 2070-1721
        determine the value for the acknowledgement chunk's
        bufferBlocksAvailable field.
 <a name="section-3.6.3.4"><h4>3.6.3.4 4.  Delayed Acknowledgement</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
    As discussed in Section 3.6.3.4.1 ("Timing"), a flow receiver can
@@ -4265,7 +4221,6 @@ ISSN: 2070-1721
 </p><p class="rfcparagraph">   When DELACK_ALARM fires, set ACK_NOW to true.
 
 </p><p class="rfcparagraph"><a name="section-3.6.3.4"><h4>3.6.3.4 5.  Obligatory Acknowledgement</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
    One or more acknowledgements should be sent as soon as is practical
@@ -4296,7 +4251,6 @@ ISSN: 2070-1721
    8.  Send the packet.
 
 </p><p class="rfcparagraph"><a name="section-3.6.3.4"><h4>3.6.3.4 6.  Opportunistic Acknowledgement</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
    When sending a packet with user data or an acknowledgement, any other
@@ -4325,7 +4279,6 @@ ISSN: 2070-1721
        session.DELACK_ALARM.
 
 </p><p class="rfcparagraph"><a name="section-3.6.3.4"><h4>3.6.3.4 7.  Example</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
    Figure 23 shows an example flow with sequence numbers 31 and 33 lost
@@ -4353,7 +4306,6 @@ ISSN: 2070-1721
 
 </p><p class="rfcparagraph">                     Figure 23: Flow Example with Loss
 <a name="section-3.6.3.5"><h4>3.6.3.5   Flow Control</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
    The flow receiver maintains a buffer for reassembling and reordering
@@ -4408,7 +4360,6 @@ ISSN: 2070-1721
        ADVERTISE_BLOCKS.
 
 </p><p class="rfcparagraph"><a name="section-3.6.3.6"><h4>3.6.3.6   Receiving a Buffer Probe</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
    A Buffer Probe chunk (Section 2.3.15) is sent by the flow sender
@@ -4430,7 +4381,6 @@ ISSN: 2070-1721
    4.  Set session.ACK_NOW to true.
 
 </p><p class="rfcparagraph"><a name="section-3.6.3.7"><h4>3.6.3.7   Rejecting a Flow</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
    A receiver can reject an RF_OPEN flow at any time and for any reason.
@@ -4454,7 +4404,6 @@ ISSN: 2070-1721
    (Section 3.6.3.4.3) for a flow in the RF_REJECTED state.
 
 </p><p class="rfcparagraph"><a name="section-3.6.3.8"><h4>3.6.3.8   Close</h4></a>
-                        <a href="raw/text/rfc7016.txt" class="rawLink">raw</a>
                     
 
    A receiving flow is complete when every sequence number from 0

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
@@ -694,7 +694,6 @@ Printer Operations
    already taken place at a lower layer.
 
 </p><p class="rfcparagraph"><a name="section-3.1.2.1"><h4>3.1.2.1   Suggested Operation Processing Steps for all Operations</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
 
    This section is intended to apply to all operations.  The next
@@ -744,7 +743,6 @@ Printer Operations
                                        values-not-supported
 
 <a name="section-3.1.2.1"><h4>3.1.2.1 1   Validate version number</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
 
    Every request and every response contains the "version-number"
@@ -793,7 +791,6 @@ Printer Operations
    allow interoperability with new and legacy Printers.
 
 </p><p class="rfcparagraph"><a name="section-3.1.2.1"><h4>3.1.2.1 2   Validate operation identifier</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
 
    The Printer object checks to see if the "operation-id" attribute
@@ -803,7 +800,6 @@ Printer Operations
    supported' status code in the response.
 
 </p><p class="rfcparagraph"><a name="section-3.1.2.1"><h4>3.1.2.1 3   Validate the request identifier</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
 
    The Printer object SHOULD NOT check to see if the "request-id"
@@ -817,14 +813,12 @@ Printer Operations
    proceeding with the rest of the validation.
 
 </p><p class="rfcparagraph"><a name="section-3.1.2.1"><h4>3.1.2.1 4   Validate attribute group and attribute presence and order</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
 
    The order of the following validation steps depends on
    implementation.
 
 </p><p class="rfcparagraph"><a name="section-3.1.2.1"><h4>3.1.2.1 4.1   Validate the presence and order of attribute groups</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
 
    Client requests and IPP object responses contain attribute groups
@@ -850,7 +844,6 @@ Printer Operations
    errors before returning this error.
 
 </p><p class="rfcparagraph"><a name="section-3.1.2.1"><h4>3.1.2.1 4.2   Ignore unknown attribute groups in the expected position</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
 
    Future attribute groups may be added to the specification at the end
@@ -874,7 +867,6 @@ Printer Operations
    from multiple vendors with IPP objects from other vendors.
 
 </p><p class="rfcparagraph"><a name="section-3.1.2.1"><h4>3.1.2.1 4.3   Validate the presence of a single occurrence of required</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
               Operation attributes
 
@@ -1222,7 +1214,6 @@ Printer Operations
    for each job object in the response.
 
 </p><p class="rfcparagraph"><a name="section-3.1.2.1"><h4>3.1.2.1 5   Validate the values of the REQUIRED Operation attributes</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
 
    An IPP object validates the values supplied by the client of the
@@ -1438,7 +1429,6 @@ Printer Operations
 </p><p class="rfcparagraph">   -----------------------------------------------
 
 <a name="section-3.1.2.1"><h4>3.1.2.1 6   Validate the values of the OPTIONAL Operation attributes</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
 
    OPTIONAL Operation attributes are those that an IPP object MAY
@@ -1565,7 +1555,6 @@ Printer Operations
    value to the "out-of-band" 'unsupported' value, but otherwise ignores
    the attribute.
 <a name="section-3.1.2.2"><h4>3.1.2.2  Suggested Additional Processing Steps for Operations that</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
         Create/Validate Jobs and Add Documents
 
@@ -1607,7 +1596,6 @@ Printer Operations
                            v
 
 <a name="section-3.1.2.2"><h4>3.1.2.2 1   Default "ipp-attribute-fidelity" if not supplied</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
 
    The Printer object checks to see if the client supplied an "ipp-
@@ -1615,7 +1603,6 @@ Printer Operations
    supplied by the client, the IPP object assumes that the value is
    'false'.
 <a name="section-3.1.2.2"><h4>3.1.2.2 2   Check that the Printer object is accepting jobs</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
 
    If the value of the Printer objects "printer-is-accepting-jobs" is
@@ -1623,7 +1610,6 @@ Printer Operations
    'server-error-not-accepting-jobs' status code.
 
 </p><p class="rfcparagraph"><a name="section-3.1.2.2"><h4>3.1.2.2 3   Validate the values of the Job Template attributes</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
 
    An IPP object validates the values of all Job Template attribute
@@ -1670,7 +1656,6 @@ Printer Operations
    Attributes group in the request.
 
 </p><p class="rfcparagraph"><a name="section-3.1.2.3"><h4>3.1.2.3   Algorithm for job validation</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
 
    The process of validating a Job-Template attribute "xxx" against a
@@ -1957,7 +1942,6 @@ Printer Operations
    No special handling is required for
 
 <a name="section-3.1.2.3"><h4>3.1.2.3 1   Check for conflicting Job Template attributes values</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
 
    Once all the Operation and Job Template attributes have been checked
@@ -1984,7 +1968,6 @@ Printer Operations
    choice) is implementation dependent.
 
 </p><p class="rfcparagraph"><a name="section-3.1.2.3"><h4>3.1.2.3 2   Decide whether to REJECT the request</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
 
    If there were any unsupported Job Template attributes or
@@ -2070,7 +2053,6 @@ Printer Operations
    client may be better off  deferring compression to the transfer
    protocol layer, e.g.; by using the HTTP Content-Encoding header.
 <a name="section-3.1.2.3"><h4>3.1.2.3 3   For the Validate-Job operation, RETURN one of the success</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
             status codes
 
@@ -2092,7 +2074,6 @@ Printer Operations
    errors.
 
 </p><p class="rfcparagraph"><a name="section-3.1.2.3"><h4>3.1.2.3 4   Create the Job object with attributes to support</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
 
    If "ipp-attribute-fidelity" is set to 'false' (or it was not supplied
@@ -2168,7 +2149,6 @@ Printer Operations
    IPP is concerned, the result of processing that Job (with respect to
    the missing attribute) is undefined.
 <a name="section-3.1.2.3"><h4>3.1.2.3 5   Return one of the success status codes</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
 
    Once the Job object has been created, the Printer object accepts the
@@ -2195,14 +2175,12 @@ Printer Operations
    3.2.1.2.
 
 </p><p class="rfcparagraph"><a name="section-3.1.2.3"><h4>3.1.2.3 6   Accept appended Document Content</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
 
    The Printer object accepts the appended Document Content data and
    either starts it printing, or spools it for later processing.
 
 </p><p class="rfcparagraph"><a name="section-3.1.2.3"><h4>3.1.2.3 7   Scheduling and Starting to Process the Job</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
 
    The Printer object uses its own configuration and implementation
@@ -2215,7 +2193,6 @@ Printer Operations
    data.
 
 </p><p class="rfcparagraph"><a name="section-3.1.2.3"><h4>3.1.2.3 8   Completing the Job</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
 
    The Printer object continues to process the Job until it can move the
@@ -2227,7 +2204,6 @@ Printer Operations
    moves the Job into the 'aborted' state.
 
 </p><p class="rfcparagraph"><a name="section-3.1.2.3"><h4>3.1.2.3 9   Destroying the Job after completion</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
 
    Once the Job moves to the 'completed', 'aborted', or 'canceled'
@@ -2243,7 +2219,6 @@ Printer Operations
    wrong (newer) job.
 
 </p><p class="rfcparagraph"><a name="section-3.1.2.3"><h4>3.1.2.3 10  Interaction with "ipp-attribute-fidelity"</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
 
    Some Printer object implementations may support "ipp-attribute-
@@ -2266,7 +2241,6 @@ Printer Operations
    support and internationalization.
 
 </p><p class="rfcparagraph"><a name="section-3.1.2.3"><h4>3.1.2.3 11  Character set code conversion support</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
 
    IPP clients and IPP objects are REQUIRED to support UTF-8.  They MAY
@@ -2320,7 +2294,6 @@ Printer Operations
    rather than depending on the code conversion of the IPP object.
 
 </p><p class="rfcparagraph"><a name="section-3.1.2.3"><h4>3.1.2.3 12  What charset to return when an unsupported charset is</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
             requested (Issue 1.19)?
 
@@ -2354,7 +2327,6 @@ Printer Operations
    (see Section 3.1.4.1).
 
 </p><p class="rfcparagraph"><a name="section-3.1.2.3"><h4>3.1.2.3 13  Natural Language Override (NLO)</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
 
    The 'text' and 'name' attributes each have two forms.  One has an
@@ -2436,11 +2408,9 @@ Printer Operations
    operations under each operation.
 
 </p><p class="rfcparagraph"><a name="section-3.1.3.1"><h4>3.1.3.1   Printer Operations</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
 
 <a name="section-3.1.3.1"><h4>3.1.3.1 1   Print-Job</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
 
    The Printer object MUST return one of the following "status-code"
@@ -2583,7 +2553,6 @@ Printer Operations
          document data.
 
 </p><p class="rfcparagraph"><a name="section-3.1.3.1"><h4>3.1.3.1 2   Print-URI</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
 
    All of the Print-Job status codes described in Section 3.1.3.1.1
@@ -2599,7 +2568,6 @@ Printer Operations
          is not supported.
 
 </p><p class="rfcparagraph"><a name="section-3.1.3.1"><h4>3.1.3.1 3   Validate-Job</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
 
    All of the Print-Job status codes described in Section 3.1.3.1.1
@@ -2607,7 +2575,6 @@ Printer Operations
    [RFC2911] for a more complete description of each status code.
 
 </p><p class="rfcparagraph"><a name="section-3.1.3.1"><h4>3.1.3.1 4   Create-Job</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
 
    All of the Print-Job status codes described in Section 3.1.3.1.1
@@ -2623,7 +2590,6 @@ Printer Operations
          data.
 
 </p><p class="rfcparagraph"><a name="section-3.1.3.1"><h4>3.1.3.1 5   Get-Printer-Attributes</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
 
          All of the Print-Job status codes described in Section
@@ -2678,7 +2644,6 @@ Printer Operations
 </p><p class="rfcparagraph">         server-error-job-canceled:  not applicable.
 
 </p><p class="rfcparagraph"><a name="section-3.1.3.1"><h4>3.1.3.1 6   Get-Jobs</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
 
    All of the Print-Job status codes described in Section 3.1.3.1.1
@@ -2733,7 +2698,6 @@ Printer Operations
 </p><p class="rfcparagraph">         server-error-job-canceled:  not applicable.
 
 </p><p class="rfcparagraph"><a name="section-3.1.3.1"><h4>3.1.3.1 7   Pause-Printer</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
 
    All of the Print-Job status codes described in Section 3.1.3.1.1
@@ -2784,7 +2748,6 @@ Printer Operations
 </p><p class="rfcparagraph">         server-error-job-canceled:  not applicable.
 
 </p><p class="rfcparagraph"><a name="section-3.1.3.1"><h4>3.1.3.1 8   Resume-Printer</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
 
    All of the Print-Job status code descriptions in Section 3.1.3.1.1
@@ -2809,7 +2772,6 @@ Printer Operations
 </p><p class="rfcparagraph">         server-error-operation-not-supported: the Resume-Printer
          operation is not supported.
 <a name="section-3.1.3.1"><h4>3.1.3.1 8.1   What about Printers unable to change state due to an error</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
               condition?
 
@@ -2824,7 +2786,6 @@ Printer Operations
    'successful-ok' status code.
 
 </p><p class="rfcparagraph"><a name="section-3.1.3.1"><h4>3.1.3.1 8.2   How is "printer-state" handled on Resume-Printer?</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
 
    If the Resume-Printer operation succeeds, what should be the value of
@@ -2849,7 +2810,6 @@ Printer Operations
    permit. (i.e. no more error conditions)
 
 <a name="section-3.1.3.1"><h4>3.1.3.1 9   Purge-Printer</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
 
    All of the Print-Job status code descriptions in Section 3.1.3.1.1
@@ -2874,11 +2834,9 @@ Printer Operations
          operation is not supported.
 
 </p><p class="rfcparagraph"><a name="section-3.1.3.2"><h4>3.1.3.2   Job Operations</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
 
 <a name="section-3.1.3.2"><h4>3.1.3.2 1   Send-Document</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
 
    All of the Print-Job status codes described in Section 3.1.3.1.1
@@ -2934,7 +2892,6 @@ Printer Operations
          data.
 
 </p><p class="rfcparagraph"><a name="section-3.1.3.2"><h4>3.1.3.2 2   Send-URI</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
 
    All of the Print-Job status code descriptions in Section 3.1.3.1.1
@@ -2951,7 +2908,6 @@ Printer Operations
          not supported.
 
 </p><p class="rfcparagraph"><a name="section-3.1.3.2"><h4>3.1.3.2 3   Cancel-Job</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
 
    All of the Print-Job status codes described in Section 3.1.3.1.1
@@ -3008,7 +2964,6 @@ Printer Operations
 
 </p><p class="rfcparagraph">         server-error-job-canceled:  not applicable.
 <a name="section-3.1.3.2"><h4>3.1.3.2 4   Get-Job-Attributes</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
 
    All of the Print-Job status codes described in Section 3.1.3.1.1
@@ -3061,7 +3016,6 @@ Printer Operations
 </p><p class="rfcparagraph">         server-error-job-canceled:  not applicable.
 
 </p><p class="rfcparagraph"><a name="section-3.1.3.2"><h4>3.1.3.2 5   Hold-Job</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
 
    All of the Print-Job status codes described in Section 3.1.3.1.1
@@ -3114,7 +3068,6 @@ Printer Operations
 </p><p class="rfcparagraph">         server-error-job-canceled:  not applicable.
 
 </p><p class="rfcparagraph"><a name="section-3.1.3.2"><h4>3.1.3.2 6   Release-Job</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
 
    All of the Print-Job status code descriptions in Section 3.1.3.1.1
@@ -3126,7 +3079,6 @@ Printer Operations
          is not supported.
 
 </p><p class="rfcparagraph"><a name="section-3.1.3.2"><h4>3.1.3.2 7   Restart-Job</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
 
    All of the Print-Job status code descriptions in Section 3.1.3.1.1
@@ -3138,7 +3090,6 @@ Printer Operations
          is not supported.
 
 </p><p class="rfcparagraph"><a name="section-3.1.3.2"><h4>3.1.3.2 7.1   Can documents be added to a restarted job?</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
 
    Assume I give a Create-Job request along with a set of 5 documents.
@@ -3202,7 +3153,6 @@ Printer Operations
 	<a name="section-3.2.1"><h4>3.2.1   Print-Job operation</h4></a>
 
 <a name="section-3.2.1.1"><h4>3.2.1.1   Flow controlling the data portion of a Print-Job request (Issue</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
          1.22)
 
@@ -3223,7 +3173,6 @@ Printer Operations
    implementations.
 
 </p><p class="rfcparagraph"><a name="section-3.2.1.2"><h4>3.2.1.2   Returning job-state in Print-Job response (Issue 1.30)</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
 
    An IPP client submits a small job via Print-Job.  By the time the IPP
@@ -3281,7 +3230,6 @@ Printer Operations
 </p><p class="rfcparagraph">	<a name="section-3.2.3"><h4>3.2.3   Get-Jobs operation</h4></a>
 
 <a name="section-3.2.3.1"><h4>3.2.3.1   Get-Jobs, my-jobs='true', and 'requesting-user-name' (Issue</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
          1.39)?
 
@@ -3296,7 +3244,6 @@ Printer Operations
    assume that the client is supplying some anonymous name, such as
    "anonymous".
 <a name="section-3.2.3.2"><h4>3.2.3.2   Why is there a "limit" attribute in the Get-Jobs operation?</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
 
    When using the Get-Jobs operation a client implementer might choose
@@ -3461,7 +3408,6 @@ Printer Operations
 	<a name="section-4.2.1"><h4>4.2.1   multiple-document-handling(type2 keyword)</h4></a>
 
 <a name="section-4.2.1.1"><h4>4.2.1.1   Support of multiple document jobs</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
 
    IPP/1.0 is silent on which of the four effects an implementation
@@ -3510,7 +3456,6 @@ Printer Operations
 	<a name="section-4.4.1"><h4>4.4.1   queued-job-count (integer(0:MAX))</h4></a>
 
 <a name="section-4.4.1.1"><h4>4.4.1.1   Why is "queued-job-count" RECOMMENDED (Issue 1.14)?</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
 
    The reason that "queued-job-count" is RECOMMENDED, is that some
@@ -3525,7 +3470,6 @@ Printer Operations
    raised, so making it a SHOULD was a compromise.
 
 </p><p class="rfcparagraph"><a name="section-4.4.1.2"><h4>4.4.1.2   Is "queued-job-count" a good measure of how busy a printer is</h4></a>
-                        <a href="raw/text/rfc3196.txt" class="rawLink">raw</a>
                     
          (Issue 1.15)?
 

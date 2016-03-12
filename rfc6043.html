@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
@@ -604,7 +604,6 @@ ISSN: 2070-1721                                                      ZTE
    information needed to resolve the ticket later, see Section 6.10.
 
 </p><p class="rfcparagraph"><a name="section-4.2.1.1"><h4>4.2.1.1   Common Components of the REQUEST_INIT Messages</h4></a>
-                        <a href="raw/text/rfc6043.txt" class="rawLink">raw</a>
                     
 
    The REQUEST_INIT message MUST always include the Header (HDR),
@@ -629,7 +628,6 @@ ISSN: 2070-1721                                                      ZTE
    Section 6.10).
 
 </p><p class="rfcparagraph"><a name="section-4.2.1.2"><h4>4.2.1.2   Components of the REQUEST_INIT_PSK Message</h4></a>
-                        <a href="raw/text/rfc6043.txt" class="rawLink">raw</a>
                     
 
    The IDRi payload SHOULD be included but MAY be left out when it can
@@ -646,7 +644,6 @@ ISSN: 2070-1721                                                      ZTE
    parties (see Section 5.5 for the exact definition).
 
 </p><p class="rfcparagraph"><a name="section-4.2.1.3"><h4>4.2.1.3   Components of the REQUEST_INIT_PK Message</h4></a>
-                        <a href="raw/text/rfc6043.txt" class="rawLink">raw</a>
                     
 
    The identity IDRi and certificate CERTi SHOULD be included, but they
@@ -667,7 +664,6 @@ ISSN: 2070-1721                                                      ZTE
    definition).
 
 </p><p class="rfcparagraph"><a name="section-4.2.1.4"><h4>4.2.1.4   Processing the REQUEST_INIT Message</h4></a>
-                        <a href="raw/text/rfc6043.txt" class="rawLink">raw</a>
                     
 
    If the KMS can verify the integrity of the received message and the
@@ -679,7 +675,6 @@ ISSN: 2070-1721                                                      ZTE
    described in Section 5.4.
 
 </p><p class="rfcparagraph"><a name="section-4.2.1.5"><h4>4.2.1.5   Components of the REQUEST_RESP Message</h4></a>
-                        <a href="raw/text/rfc6043.txt" class="rawLink">raw</a>
                     
 
    The version, PRF func and CSB ID, #CS, and CS ID map type fields in
@@ -724,7 +719,6 @@ ISSN: 2070-1721                                                      ZTE
    message (see Section 5.5 for the exact definition).
 
 </p><p class="rfcparagraph"><a name="section-4.2.1.6"><h4>4.2.1.6   Processing the REQUEST_RESP Message</h4></a>
-                        <a href="raw/text/rfc6043.txt" class="rawLink">raw</a>
                     
 
    If the Initiator can verify the integrity of the received message and
@@ -764,7 +758,6 @@ ISSN: 2070-1721                                                      ZTE
                                               {SP}, [KEMAC], V
 
 <a name="section-4.2.2.1"><h4>4.2.2.1   Components of the TRANSFER_INIT Message</h4></a>
-                        <a href="raw/text/rfc6043.txt" class="rawLink">raw</a>
                     
 
    The TRANSFER_INIT message MUST always include the Header (HDR),
@@ -808,7 +801,6 @@ ISSN: 2070-1721                                                      ZTE
    involved parties (see Section 5.5 for the exact definition).
 
 </p><p class="rfcparagraph"><a name="section-4.2.2.2"><h4>4.2.2.2   Processing the TRANSFER_INIT Message</h4></a>
-                        <a href="raw/text/rfc6043.txt" class="rawLink">raw</a>
                     
 
    As the Initiator and Responder do not have any pre-shared keys, the
@@ -825,7 +817,6 @@ ISSN: 2070-1721                                                      ZTE
    set, the Responder MUST send a TRANSFER_RESP message.
 
 </p><p class="rfcparagraph"><a name="section-4.2.2.3"><h4>4.2.2.3   Components of the TRANSFER_RESP Message</h4></a>
-                        <a href="raw/text/rfc6043.txt" class="rawLink">raw</a>
                     
 
    The version, PRF func and CSB ID fields in the HDR payload SHALL be
@@ -877,7 +868,6 @@ ISSN: 2070-1721                                                      ZTE
    (see Section 5.5 for the exact definition).
 
 </p><p class="rfcparagraph"><a name="section-4.2.2.4"><h4>4.2.2.4   Processing the TRANSFER_RESP Message</h4></a>
-                        <a href="raw/text/rfc6043.txt" class="rawLink">raw</a>
                     
 
    If the Initiator can verify the integrity of the received message and
@@ -938,7 +928,6 @@ ISSN: 2070-1721                                                      ZTE
    session information received from the KMS.
 
 </p><p class="rfcparagraph"><a name="section-4.2.3.1"><h4>4.2.3.1   Common Components of the RESOLVE_INIT Messages</h4></a>
-                        <a href="raw/text/rfc6043.txt" class="rawLink">raw</a>
                     
 
    The RESOLVE_INIT message MUST always include the Header (HDR),
@@ -956,7 +945,6 @@ ISSN: 2070-1721                                                      ZTE
    the Responder wants to have resolved.
 
 </p><p class="rfcparagraph"><a name="section-4.2.3.2"><h4>4.2.3.2   Components of the RESOLVE_INIT_PSK Message</h4></a>
-                        <a href="raw/text/rfc6043.txt" class="rawLink">raw</a>
                     
 
    IDRr contains the identity of the Responder.  IDRr SHOULD be
@@ -973,7 +961,6 @@ ISSN: 2070-1721                                                      ZTE
    parties (see Section 5.5 for the exact definition).
 
 </p><p class="rfcparagraph"><a name="section-4.2.3.3"><h4>4.2.3.3   Components of the RESOLVE_INIT_PK Message</h4></a>
-                        <a href="raw/text/rfc6043.txt" class="rawLink">raw</a>
                     
 
    The identity IDRr and certificate CERTr SHOULD be included, but they
@@ -993,7 +980,6 @@ ISSN: 2070-1721                                                      ZTE
    definition).
 
 </p><p class="rfcparagraph"><a name="section-4.2.3.4"><h4>4.2.3.4   Processing the RESOLVE_INIT Message</h4></a>
-                        <a href="raw/text/rfc6043.txt" class="rawLink">raw</a>
                     
 
    If the KMS can verify the integrity of the received message, the
@@ -1004,7 +990,6 @@ ISSN: 2070-1721                                                      ZTE
    in the RESOLVE_INIT message SHOULD be ignored.  Errors are handled as
    described in Section 5.4.
 <a name="section-4.2.3.5"><h4>4.2.3.5   Components of the RESOLVE_RESP Message</h4></a>
-                        <a href="raw/text/rfc6043.txt" class="rawLink">raw</a>
                     
 
    The version, PRF func and CSB ID, #CS, and CS ID map type fields in
@@ -1047,7 +1032,6 @@ ISSN: 2070-1721                                                      ZTE
    message (see Section 5.5 for the exact definition).
 
 </p><p class="rfcparagraph"><a name="section-4.2.3.6"><h4>4.2.3.6   Processing the RESOLVE_RESP Message</h4></a>
-                        <a href="raw/text/rfc6043.txt" class="rawLink">raw</a>
                     
 
    If the Responder can verify the integrity of the received message and

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
@@ -566,7 +566,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
 </p><p class="rfcparagraph">	<a name="section-1.7.2"><h4>1.7.2   Protocol Structure</h4></a>
 
 <a name="section-1.7.2.1"><h4>1.7.2.1   Core Protocol</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Unlike NFSv3, which used a series of ancillary protocols (e.g., NLM,
@@ -576,7 +575,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    integrated within a single unified protocol.
 
 </p><p class="rfcparagraph"><a name="section-1.7.2.2"><h4>1.7.2.2   Parallel Access</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Minor version 1 supports high-performance data access to a clustered
@@ -612,7 +610,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    arise due to unexported gaps between exported file systems.
 
 </p><p class="rfcparagraph"><a name="section-1.7.3.1"><h4>1.7.3.1   Filehandles</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    As in previous versions of the NFS protocol, opaque filehandles are
@@ -627,7 +624,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    filehandles.
 
 </p><p class="rfcparagraph"><a name="section-1.7.3.2"><h4>1.7.3.2   File Attributes</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The NFSv4.1 protocol has a rich and extensible file object attribute
@@ -662,7 +658,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    Section 5.3.
 
 </p><p class="rfcparagraph"><a name="section-1.7.3.3"><h4>1.7.3.3   Multi-Server Namespace</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    NFSv4.1 contains a number of features to allow implementation of
@@ -810,7 +805,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    security services that are used by NFSv4.1.
 
 </p><p class="rfcparagraph"><a name="section-2.2.1.1"><h4>2.2.1.1   RPC Security Flavors</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    As described in Section 7.2 ("Authentication") of [3], RPC security
@@ -825,7 +819,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    flavors, such as AUTH_NONE and AUTH_SYS, MAY be implemented as well.
 
 </p><p class="rfcparagraph"><a name="section-2.2.1.1"><h4>2.2.1.1 1.  RPCSEC_GSS and Security Services</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    RPCSEC_GSS [4] uses the functionality of GSS-API [7].  This allows
@@ -834,7 +827,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    flavors.
 
 </p><p class="rfcparagraph"><a name="section-2.2.1.1"><h4>2.2.1.1 1.1.  Identification, Authentication, Integrity, Privacy</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Via the GSS-API, RPCSEC_GSS can be used to identify and authenticate
@@ -863,7 +855,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    service.
 
 </p><p class="rfcparagraph"><a name="section-2.2.1.1"><h4>2.2.1.1 1.2.  Security Mechanisms for NFSv4.1</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    RPCSEC_GSS, via GSS-API, normalizes access to mechanisms that provide
@@ -882,7 +873,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    mechanism.
 
 </p><p class="rfcparagraph"><a name="section-2.2.1.1"><h4>2.2.1.1 1.2.1.  Kerberos V5</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The Kerberos V5 GSS-API mechanism as described in [5] MUST be
@@ -920,7 +910,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    standard if and when stronger algorithms are specified.
 
 </p><p class="rfcparagraph"><a name="section-2.2.1.1"><h4>2.2.1.1 1.2.1.1.  Security Considerations for Cryptographic Algorithms</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
                   in Kerberos V5
 
@@ -931,7 +920,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    NFSv4.1 to ensure that security is acceptable where needed.
 
 </p><p class="rfcparagraph"><a name="section-2.2.1.1"><h4>2.2.1.1 1.3.  GSS Server Principal</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Regardless of what security mechanism under RPCSEC_GSS is being used,
@@ -1343,13 +1331,11 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    that is appropriate for the client.
 
 </p><p class="rfcparagraph"><a name="section-2.6.3.1"><h4>2.6.3.1   Using NFS4ERR_WRONGSEC, SECINFO, and SECINFO_NO_NAME</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    This section explains the mechanics of NFSv4.1 security negotiation.
 
 </p><p class="rfcparagraph"><a name="section-2.6.3.1"><h4>2.6.3.1 1.  Put Filehandle Operations</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The term "put filehandle operation" refers to PUTROOTFH, PUTPUBFH,
@@ -1358,7 +1344,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    filehandle operation.
 
 </p><p class="rfcparagraph"><a name="section-2.6.3.1"><h4>2.6.3.1 1.1.  Put Filehandle Operation + SAVEFH</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The client is saving a filehandle for a future RESTOREFH, LINK, or
@@ -1368,7 +1353,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    operations and examines which of the situations described in the
    other subsections of Section 2.6.3.1.1 apply.
 <a name="section-2.6.3.1"><h4>2.6.3.1 1.2.  Two or More Put Filehandle Operations</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    For a series of N put filehandle operations, the server MUST NOT
@@ -1381,7 +1365,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    according to Section 2.6.3.1.1.3.
 
 </p><p class="rfcparagraph"><a name="section-2.6.3.1"><h4>2.6.3.1 1.3.  Put Filehandle Operation + LOOKUP (or OPEN of an Existing</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
               Name)
 
@@ -1434,7 +1417,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    immediately followed by a LOOKUP or an OPEN by component name.
 
 </p><p class="rfcparagraph"><a name="section-2.6.3.1"><h4>2.6.3.1 1.4.  Put Filehandle Operation + LOOKUPP</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Since SECINFO only works its way down, there is no way LOOKUPP can
@@ -1452,7 +1434,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    operation if the operation is immediately followed by a LOOKUPP.
 
 </p><p class="rfcparagraph"><a name="section-2.6.3.1"><h4>2.6.3.1 1.5.  Put Filehandle Operation + SECINFO/SECINFO_NO_NAME</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    A security-sensitive client is allowed to choose a strong security
@@ -1477,13 +1458,11 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    from SECINFO or SECINFO_NO_NAME.
 
 </p><p class="rfcparagraph"><a name="section-2.6.3.1"><h4>2.6.3.1 1.6.  Put Filehandle Operation + Nothing</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The NFSv4.1 server MUST NOT return NFS4ERR_WRONGSEC.
 
 </p><p class="rfcparagraph"><a name="section-2.6.3.1"><h4>2.6.3.1 1.7.  Put Filehandle Operation + Anything Else</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    "Anything Else" includes OPEN by filehandle.
@@ -1503,7 +1482,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    component name).
 
 </p><p class="rfcparagraph"><a name="section-2.6.3.1"><h4>2.6.3.1 1.8.  Operations after SECINFO and SECINFO_NO_NAME</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Suppose a client sends a COMPOUND procedure containing the series
@@ -1517,7 +1495,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    for READ to use, and READ returns NFS4ERR_NOFILEHANDLE.
 
 </p><p class="rfcparagraph"><a name="section-2.6.3.1"><h4>2.6.3.1 2.  LINK and RENAME</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The LINK and RENAME operations use both the current and saved
@@ -1905,7 +1882,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    DESTROY_SESSION (Section 18.37).
 
 </p><p class="rfcparagraph"><a name="section-2.10.2.1"><h4>2.10.2.1   SEQUENCE and CB_SEQUENCE</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    In NFSv4.1, when the SEQUENCE operation is present, it MUST be the
@@ -1939,7 +1915,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    (Section 2.10.6.3).
 
 </p><p class="rfcparagraph"><a name="section-2.10.2.2"><h4>2.10.2.2   Client ID and Session Association</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Each client ID (Section 2.4) can have zero or more active sessions.
@@ -1986,7 +1961,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    retries) because some callback operations are nonidempotent.
 
 </p><p class="rfcparagraph"><a name="section-2.10.3.1"><h4>2.10.3.1   Association of Connections, Channels, and Sessions</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Each channel is associated with zero or more transport connections
@@ -2227,7 +2201,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    as it relates to such reconfiguration events, see Section 8.4.2.1.
 
 </p><p class="rfcparagraph"><a name="section-2.10.5.1"><h4>2.10.5.1   Verifying Claims of Matching Server Identity</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    When two servers over two connections claim matching or partially
@@ -2365,7 +2338,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    how NFSv4.1 sessions improve upon the XID.
 
 </p><p class="rfcparagraph"><a name="section-2.10.6.1"><h4>2.10.6.1   Slot Identifiers and Reply Cache</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The RPC layer provides a transaction ID (XID), which, while required
@@ -2583,7 +2555,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
       the next higher sequence ID.
 
 </p><p class="rfcparagraph"><a name="section-2.10.6.1"><h4>2.10.6.1 1.  Caching of SEQUENCE and CB_SEQUENCE Replies</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    When a SEQUENCE or CB_SEQUENCE operation is successfully executed,
@@ -2612,7 +2583,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    by subsequent requests, in preference to acting immediately on data
    that might be out of date.
 <a name="section-2.10.6.1"><h4>2.10.6.1 2.  Errors from SEQUENCE and CB_SEQUENCE</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Any time SEQUENCE or CB_SEQUENCE returns an error, the sequence ID of
@@ -2621,7 +2591,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    or CB_SEQUENCE.
 
 </p><p class="rfcparagraph"><a name="section-2.10.6.1"><h4>2.10.6.1 3.  Optional Reply Caching</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    On a per-request basis, the requester can choose to direct the
@@ -2705,7 +2674,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
       other error as described above.
 
 </p><p class="rfcparagraph"><a name="section-2.10.6.1"><h4>2.10.6.1 3.1.  False Retry</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    If a requester sent a Sequence operation with a slot ID and sequence
@@ -2740,7 +2708,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    that MUST NOT be supported in the current minor version of NFSv4.
 
 </p><p class="rfcparagraph"><a name="section-2.10.6.2"><h4>2.10.6.2   Retry and Replay of Reply</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    A requester MUST NOT retry a request, unless the connection it used
@@ -2795,7 +2762,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    requester specified the reply to be cached).
 
 </p><p class="rfcparagraph"><a name="section-2.10.6.3"><h4>2.10.6.3   Resolving Server Callback Races</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    It is possible for server callbacks to arrive at the client before
@@ -2853,7 +2819,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    them are pNFS layout recalls as described in Section 12.5.5.2.
 
 </p><p class="rfcparagraph"><a name="section-2.10.6.4"><h4>2.10.6.4   COMPOUND and CB_COMPOUND Construction Issues</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Very large requests and replies may pose both buffer management
@@ -2941,7 +2906,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
       ca_maxresponsesize_cached or ca_maxresponsesize.
 
 </p><p class="rfcparagraph"><a name="section-2.10.6.5"><h4>2.10.6.5   Persistence</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Since the reply cache is bounded, it is practical for the reply cache
@@ -3025,7 +2989,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    only the upper-layer issues relevant to making best use of RPC/RDMA.
 
 </p><p class="rfcparagraph"><a name="section-2.10.7.1"><h4>2.10.7.1   RDMA Connection Resources</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    RDMA requires its consumers to register memory and post buffers of a
@@ -3055,7 +3018,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    in the session is Y, then the maximum number of outstanding requests
    is the lesser of X and Y.
 <a name="section-2.10.7.2"><h4>2.10.7.2   Flow Control</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Previous versions of NFS do not provide flow control; instead, they
@@ -3082,7 +3044,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    have outstanding to the server.
 
 </p><p class="rfcparagraph"><a name="section-2.10.7.3"><h4>2.10.7.3   Padding</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Header padding is requested by each peer at session initiation (see
@@ -3137,7 +3098,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    perform similar optimizations, if desired.
 
 </p><p class="rfcparagraph"><a name="section-2.10.7.4"><h4>2.10.7.4   Dual RDMA and Non-RDMA Transports</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Some RDMA transports (e.g., RFC 5040 [10]) permit a "streaming" (non-
@@ -3151,7 +3111,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
 	<a name="section-2.10.8"><h4>2.10.8   Session Security</h4></a>
 
 <a name="section-2.10.8.1"><h4>2.10.8.1   Session Callback Security</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Via session/connection association, NFSv4.1 improves security over
@@ -3164,7 +3123,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    Section 2.10.8.2).
 
 </p><p class="rfcparagraph"><a name="section-2.10.8.2"><h4>2.10.8.2   Backchannel RPC Security</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    When the NFSv4.1 client establishes the backchannel, it informs the
@@ -3186,7 +3144,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    RPCSEC_GSS contexts (Section 2.10.9).
 
 </p><p class="rfcparagraph"><a name="section-2.10.8.3"><h4>2.10.8.3   Protection from Unauthorized State Changes</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    As described to this point in the specification, the state model of
@@ -3661,7 +3618,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
 </p><p class="rfcparagraph">	<a name="section-2.10.11"><h4>2.10.11   Session Mechanics - Steady State</h4></a>
 
 <a name="section-2.10.11.1"><h4>2.10.11.1   Obligations of the Server</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The server has the primary obligation to monitor the state of
@@ -3670,7 +3626,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    resources vanish, the server takes action as specified in
    Section 2.10.13.2.
 <a name="section-2.10.11.2"><h4>2.10.11.2   Obligations of the Client</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The client SHOULD honor the following obligations in order to utilize
@@ -3708,7 +3663,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
       backchannel has disconnected.
 
 </p><p class="rfcparagraph"><a name="section-2.10.11.3"><h4>2.10.11.3   Steps the Client Takes to Establish a Session</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    If the client does not have a client ID, the client sends EXCHANGE_ID
@@ -3767,13 +3721,11 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
 	<a name="section-2.10.13"><h4>2.10.13   Session Mechanics - Recovery</h4></a>
 
 <a name="section-2.10.13.1"><h4>2.10.13.1   Events Requiring Client Action</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The following events require client action to recover.
 
 </p><p class="rfcparagraph"><a name="section-2.10.13.1"><h4>2.10.13.1 1.  RPCSEC_GSS Context Loss by Callback Path</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    If all RPCSEC_GSS handles granted by the client to the server for
@@ -3783,7 +3735,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    (see Section 18.46.3).
 
 </p><p class="rfcparagraph"><a name="section-2.10.13.1"><h4>2.10.13.1 2.  Connection Loss</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    If the client loses the last connection of the session and wants to
@@ -3811,7 +3762,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    result from SEQUENCE.
 
 </p><p class="rfcparagraph"><a name="section-2.10.13.1"><h4>2.10.13.1 3.  Backchannel GSS Context Loss</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Via the sr_status_flags result of the SEQUENCE operation or other
@@ -3821,7 +3771,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    state subject to revocation, the client needs to use BACKCHANNEL_CTL
    to assign new contexts.
 <a name="section-2.10.13.1"><h4>2.10.13.1 4.  Loss of Session</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The replier might lose a record of the session.  Causes include:
@@ -3954,20 +3903,17 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    EXCHANGE_ID, followed by CREATE_SESSION.
 
 </p><p class="rfcparagraph"><a name="section-2.10.13.2"><h4>2.10.13.2   Events Requiring Server Action</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The following events require server action to recover.
 
 </p><p class="rfcparagraph"><a name="section-2.10.13.2"><h4>2.10.13.2 1.  Client Crash and Restart</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    As described in Section 18.35, a restarted client sends EXCHANGE_ID
    in such a way that it causes the server to delete any sessions it
    had.
 <a name="section-2.10.13.2"><h4>2.10.13.2 2.  Client Crash with No Restart</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    If a client crashes and never comes back, it will never send
@@ -3977,7 +3923,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    old session as well as locking state.
 
 </p><p class="rfcparagraph"><a name="section-2.10.13.2"><h4>2.10.13.2 3.  Extended Network Partition</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    To the server, the extended network partition may be no different
@@ -3987,7 +3932,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    permanently.
 
 </p><p class="rfcparagraph"><a name="section-2.10.13.2"><h4>2.10.13.2 4.  Backchannel Connection Loss</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    If there were callback requests outstanding at the time of a
@@ -4010,7 +3954,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    sr_status_flags.
 
 </p><p class="rfcparagraph"><a name="section-2.10.13.2"><h4>2.10.13.2 5.  GSS Context Loss</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The server SHOULD monitor when the number of RPCSEC_GSS handles
@@ -4298,13 +4241,11 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
 </p><p class="rfcparagraph">   The state_owner4 data type is the base type for the open_owner4
    (Section 3.3.10.1) and lock_owner4 (Section 3.3.10.2).
 <a name="section-3.3.10.1"><h4>3.3.10.1   open_owner4</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    This data type is used to identify the owner of OPEN state.
 
 </p><p class="rfcparagraph"><a name="section-3.3.10.2"><h4>3.3.10.2   lock_owner4</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    This structure is used to identify the owner of byte-range locking
@@ -5140,7 +5081,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
 	<a name="section-5.8.1"><h4>5.8.1   Definitions of REQUIRED Attributes</h4></a>
 
 <a name="section-5.8.1.1"><h4>5.8.1.1   Attribute 0: supported_attrs</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The bit vector that would retrieve all REQUIRED and RECOMMENDED
@@ -5148,7 +5088,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    attribute applies to all objects with a matching fsid.
 
 </p><p class="rfcparagraph"><a name="section-5.8.1.2"><h4>5.8.1.2   Attribute 1: type</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Designates the type of an object in terms of one of a number of
@@ -5184,14 +5123,12 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
       that the object's type attribute is NF4REG or NF4NAMEDATTR.
 
 </p><p class="rfcparagraph"><a name="section-5.8.1.3"><h4>5.8.1.3   Attribute 2: fh_expire_type</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Server uses this to specify filehandle expiration behavior to the
    client.  See Section 4 for additional description.
 
 </p><p class="rfcparagraph"><a name="section-5.8.1.4"><h4>5.8.1.4   Attribute 3: change</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    A value created by the server that the client can use to determine if
@@ -5201,31 +5138,26 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    be updated more frequently than the resolution of time_metadata.
 
 </p><p class="rfcparagraph"><a name="section-5.8.1.5"><h4>5.8.1.5   Attribute 4: size</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The size of the object in bytes.
 
 </p><p class="rfcparagraph"><a name="section-5.8.1.6"><h4>5.8.1.6   Attribute 5: link_support</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    TRUE, if the object's file system supports hard links.
 
 </p><p class="rfcparagraph"><a name="section-5.8.1.7"><h4>5.8.1.7   Attribute 6: symlink_support</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    TRUE, if the object's file system supports symbolic links.
 <a name="section-5.8.1.8"><h4>5.8.1.8   Attribute 7: named_attr</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    TRUE, if this object has named attributes.  In other words, object
    has a non-empty named attribute directory.
 
 </p><p class="rfcparagraph"><a name="section-5.8.1.9"><h4>5.8.1.9   Attribute 8: fsid</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Unique file system identifier for the file system holding this
@@ -5233,33 +5165,28 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    which are of data type uint64_t.
 
 </p><p class="rfcparagraph"><a name="section-5.8.1.10"><h4>5.8.1.10   Attribute 9: unique_handles</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    TRUE, if two distinct filehandles are guaranteed to refer to two
    different file system objects.
 
 </p><p class="rfcparagraph"><a name="section-5.8.1.11"><h4>5.8.1.11   Attribute 10: lease_time</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Duration of the lease at server in seconds.
 
 </p><p class="rfcparagraph"><a name="section-5.8.1.12"><h4>5.8.1.12   Attribute 11: rdattr_error</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Error returned from an attempt to retrieve attributes during a
    READDIR operation.
 
 </p><p class="rfcparagraph"><a name="section-5.8.1.13"><h4>5.8.1.13   Attribute 19: filehandle</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The filehandle of this object (primarily for READDIR requests).
 
 </p><p class="rfcparagraph"><a name="section-5.8.1.14"><h4>5.8.1.14   Attribute 75: suppattr_exclcreat</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The bit vector that would set all REQUIRED and RECOMMENDED attributes
@@ -5274,33 +5201,28 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    sections.
 
 </p><p class="rfcparagraph"><a name="section-5.8.2.1"><h4>5.8.2.1   Attribute 14: archive</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    TRUE, if this file has been archived since the time of last
    modification (deprecated in favor of time_backup).
 <a name="section-5.8.2.2"><h4>5.8.2.2   Attribute 15: cansettime</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    TRUE, if the server is able to change the times for a file system
    object as specified in a SETATTR operation.
 
 </p><p class="rfcparagraph"><a name="section-5.8.2.3"><h4>5.8.2.3   Attribute 16: case_insensitive</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    TRUE, if file name comparisons on this file system are case
    insensitive.
 
 </p><p class="rfcparagraph"><a name="section-5.8.2.4"><h4>5.8.2.4   Attribute 17: case_preserving</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    TRUE, if file name case on this file system is preserved.
 
 </p><p class="rfcparagraph"><a name="section-5.8.2.5"><h4>5.8.2.5   Attribute 60: change_policy</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    A value created by the server that the client can use to determine if
@@ -5320,7 +5242,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    thereof is changed.
 
 </p><p class="rfcparagraph"><a name="section-5.8.2.6"><h4>5.8.2.6   Attribute 18: chown_restricted</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    If TRUE, the server will reject any request to change either the
@@ -5329,38 +5250,32 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    or, in Windows 2000, the "Take Ownership" privilege).
 
 </p><p class="rfcparagraph"><a name="section-5.8.2.7"><h4>5.8.2.7   Attribute 20: fileid</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    A number uniquely identifying the file within the file system.
 
 </p><p class="rfcparagraph"><a name="section-5.8.2.8"><h4>5.8.2.8   Attribute 21: files_avail</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    File slots available to this user on the file system containing this
    object -- this should be the smallest relevant limit.
 <a name="section-5.8.2.9"><h4>5.8.2.9   Attribute 22: files_free</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Free file slots on the file system containing this object -- this
    should be the smallest relevant limit.
 
 </p><p class="rfcparagraph"><a name="section-5.8.2.10"><h4>5.8.2.10   Attribute 23: files_total</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Total file slots on the file system containing this object.
 
 </p><p class="rfcparagraph"><a name="section-5.8.2.11"><h4>5.8.2.11   Attribute 76: fs_charset_cap</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Character set capabilities for this file system.  See Section 14.4.
 
 </p><p class="rfcparagraph"><a name="section-5.8.2.12"><h4>5.8.2.12   Attribute 24: fs_locations</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Locations where this file system may be found.  If the server returns
@@ -5368,28 +5283,24 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    Section 11.9 for more details.
 
 </p><p class="rfcparagraph"><a name="section-5.8.2.13"><h4>5.8.2.13   Attribute 67: fs_locations_info</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Full function file system location.  See Section 11.10 for more
    details.
 
 </p><p class="rfcparagraph"><a name="section-5.8.2.14"><h4>5.8.2.14   Attribute 61: fs_status</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Generic file system type information.  See Section 11.11 for more
    details.
 
 </p><p class="rfcparagraph"><a name="section-5.8.2.15"><h4>5.8.2.15   Attribute 25: hidden</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    TRUE, if the file is considered hidden with respect to the Windows
    API.
 
 </p><p class="rfcparagraph"><a name="section-5.8.2.16"><h4>5.8.2.16   Attribute 26: homogeneous</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    TRUE, if this object's file system is homogeneous; i.e., all objects
@@ -5397,31 +5308,26 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    have common values for all per-file-system attributes.
 
 </p><p class="rfcparagraph"><a name="section-5.8.2.17"><h4>5.8.2.17   Attribute 27: maxfilesize</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Maximum supported file size for the file system of this object.
 
 </p><p class="rfcparagraph"><a name="section-5.8.2.18"><h4>5.8.2.18   Attribute 28: maxlink</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Maximum number of links for this object.
 <a name="section-5.8.2.19"><h4>5.8.2.19   Attribute 29: maxname</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Maximum file name size supported for this object.
 
 </p><p class="rfcparagraph"><a name="section-5.8.2.20"><h4>5.8.2.20   Attribute 30: maxread</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Maximum amount of data the READ operation will return for this
    object.
 
 </p><p class="rfcparagraph"><a name="section-5.8.2.21"><h4>5.8.2.21   Attribute 31: maxwrite</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Maximum amount of data the WRITE operation will accept for this
@@ -5430,13 +5336,11 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    bandwidth or not receiving the best performance.
 
 </p><p class="rfcparagraph"><a name="section-5.8.2.22"><h4>5.8.2.22   Attribute 32: mimetype</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    MIME body type/subtype of this object.
 
 </p><p class="rfcparagraph"><a name="section-5.8.2.23"><h4>5.8.2.23   Attribute 55: mounted_on_fileid</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Like fileid, but if the target filehandle is the root of a file
@@ -5493,7 +5397,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    and not the intermediate mount points.
 
 </p><p class="rfcparagraph"><a name="section-5.8.2.24"><h4>5.8.2.24   Attribute 34: no_trunc</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    If this attribute is TRUE, then if the client uses a file name longer
@@ -5501,24 +5404,20 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    truncated.
 
 </p><p class="rfcparagraph"><a name="section-5.8.2.25"><h4>5.8.2.25   Attribute 35: numlinks</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Number of hard links to this object.
 
 </p><p class="rfcparagraph"><a name="section-5.8.2.26"><h4>5.8.2.26   Attribute 36: owner</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The string name of the owner of this object.
 
 </p><p class="rfcparagraph"><a name="section-5.8.2.27"><h4>5.8.2.27   Attribute 37: owner_group</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The string name of the group ownership of this object.
 <a name="section-5.8.2.28"><h4>5.8.2.28   Attribute 38: quota_avail_hard</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The value in bytes that represents the amount of additional disk
@@ -5528,7 +5427,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    files or directories.
 
 </p><p class="rfcparagraph"><a name="section-5.8.2.29"><h4>5.8.2.29   Attribute 39: quota_avail_soft</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The value in bytes that represents the amount of additional disk
@@ -5538,7 +5436,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    a rule as to which other files or directories.
 
 </p><p class="rfcparagraph"><a name="section-5.8.2.30"><h4>5.8.2.30   Attribute 40: quota_used</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The value in bytes that represents the amount of disk space used by
@@ -5557,7 +5454,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    or may be "choose the set with the smallest quota".
 
 </p><p class="rfcparagraph"><a name="section-5.8.2.31"><h4>5.8.2.31   Attribute 41: rawdev</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Raw device number of file of type NF4BLK or NF4CHR.  The device
@@ -5566,39 +5462,33 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    considered useful.
 
 </p><p class="rfcparagraph"><a name="section-5.8.2.32"><h4>5.8.2.32   Attribute 42: space_avail</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Disk space in bytes available to this user on the file system
    containing this object -- this should be the smallest relevant limit.
 <a name="section-5.8.2.33"><h4>5.8.2.33   Attribute 43: space_free</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Free disk space in bytes on the file system containing this object --
    this should be the smallest relevant limit.
 
 </p><p class="rfcparagraph"><a name="section-5.8.2.34"><h4>5.8.2.34   Attribute 44: space_total</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Total disk space in bytes on the file system containing this object.
 
 </p><p class="rfcparagraph"><a name="section-5.8.2.35"><h4>5.8.2.35   Attribute 45: space_used</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Number of file system bytes allocated to this object.
 
 </p><p class="rfcparagraph"><a name="section-5.8.2.36"><h4>5.8.2.36   Attribute 46: system</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    This attribute is TRUE if this file is a "system" file with respect
    to the Windows operating environment.
 
 </p><p class="rfcparagraph"><a name="section-5.8.2.37"><h4>5.8.2.37   Attribute 47: time_access</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The time_access attribute represents the time of last access to the
@@ -5621,18 +5511,15 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    time_access updates.
 
 </p><p class="rfcparagraph"><a name="section-5.8.2.38"><h4>5.8.2.38   Attribute 48: time_access_set</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Sets the time of last access to the object.  SETATTR use only.
 
 </p><p class="rfcparagraph"><a name="section-5.8.2.39"><h4>5.8.2.39   Attribute 49: time_backup</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The time of last backup of the object.
 <a name="section-5.8.2.40"><h4>5.8.2.40   Attribute 50: time_create</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The time of creation of the object.  This attribute does not have any
@@ -5640,25 +5527,21 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    time".
 
 </p><p class="rfcparagraph"><a name="section-5.8.2.41"><h4>5.8.2.41   Attribute 51: time_delta</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Smallest useful server time granularity.
 
 </p><p class="rfcparagraph"><a name="section-5.8.2.42"><h4>5.8.2.42   Attribute 52: time_metadata</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The time of last metadata modification of the object.
 
 </p><p class="rfcparagraph"><a name="section-5.8.2.43"><h4>5.8.2.43   Attribute 53: time_modify</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The time of last modification to the object.
 
 </p><p class="rfcparagraph"><a name="section-5.8.2.44"><h4>5.8.2.44   Attribute 54: time_modify_set</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Sets the time of last modification to the object.  SETATTR use only.
@@ -6139,7 +6022,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    restrictive than it really is.
 
 </p><p class="rfcparagraph"><a name="section-6.2.1.1"><h4>6.2.1.1   ACE Type</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The constants used for the type field (acetype4) are as follows:
@@ -6188,7 +6070,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    throughout the rest of this section.
 
 </p><p class="rfcparagraph"><a name="section-6.2.1.2"><h4>6.2.1.2   Attribute 13: aclsupport</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    A server need not support all of the above ACE types.  This attribute
@@ -6219,7 +6100,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    support the sacl attribute.
 
 </p><p class="rfcparagraph"><a name="section-6.2.1.3"><h4>6.2.1.3   ACE Access Mask</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The bitmask constants used for the access mask field are as follows:
@@ -6253,7 +6133,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    non-directory objects.
 
 </p><p class="rfcparagraph"><a name="section-6.2.1.3"><h4>6.2.1.3 1.  Discussion of Mask Attributes</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    ACE4_READ_DATA
@@ -6602,7 +6481,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    off ACE4_APPEND_DATA or reject the request with NFS4ERR_ATTRNOTSUPP.
 
 </p><p class="rfcparagraph"><a name="section-6.2.1.3"><h4>6.2.1.3 2.  ACE4_DELETE vs. ACE4_DELETE_CHILD</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Two access mask bits govern the ability to delete a directory entry:
@@ -6629,7 +6507,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    like semantics, with ACE4_ADD_FILE taking the place of the write bit.
 
 </p><p class="rfcparagraph"><a name="section-6.2.1.4"><h4>6.2.1.4   ACE flag</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The bitmask constants used for the flag field are as follows:
@@ -6659,7 +6536,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    ACE4_DIRECTORY_INHERIT_ACE flag.
 
 </p><p class="rfcparagraph"><a name="section-6.2.1.4"><h4>6.2.1.4 1.  Discussion of Flag Bits</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    ACE4_FILE_INHERIT_ACE
@@ -6731,7 +6607,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
       attribute; it may only be used in the dacl and sacl attributes.
 
 </p><p class="rfcparagraph"><a name="section-6.2.1.5"><h4>6.2.1.5   ACE Who</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The "who" field of an ACE is an identifier that specifies the
@@ -6772,7 +6647,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    special identifiers.  When encoding entries with these special
    identifiers, the ACE4_IDENTIFIER_GROUP flag SHOULD be set to zero.
 <a name="section-6.2.1.5"><h4>6.2.1.5 1.  Discussion of EVERYONE@</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    It is important to note that "EVERYONE@" is not equivalent to the
@@ -6861,7 +6735,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
 	<a name="section-6.3.1"><h4>6.3.1   Interpreting an ACL</h4></a>
 
 <a name="section-6.3.1.1"><h4>6.3.1.1   Server Considerations</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The server uses the algorithm described in Section 6.2.1 to determine
@@ -6896,7 +6769,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
       ACLs (see Section 5.13).
 
 </p><p class="rfcparagraph"><a name="section-6.3.1.2"><h4>6.3.1.2   Client Considerations</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Clients SHOULD NOT do their own access checks based on their
@@ -6941,7 +6813,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
        and only if ACE4_EXECUTE is set in the corresponding mask.
 
 </p><p class="rfcparagraph"><a name="section-6.3.2.1"><h4>6.3.2.1   Discussion</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Some server implementations also add bits permitted to named users
@@ -6982,7 +6853,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    error to be given is NFS4ERR_ATTRNOTSUPP.
 
 </p><p class="rfcparagraph"><a name="section-6.4.1.1"><h4>6.4.1.1   Setting Mode and not ACL</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    When any of the nine low-order mode bits are subject to change,
@@ -7031,7 +6901,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    with a mode attribute to inherit an ACL (see Section 6.4.3).
 
 </p><p class="rfcparagraph"><a name="section-6.4.1.2"><h4>6.4.1.2   Setting ACL and Not Mode</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    When setting the acl or dacl and not setting the mode or
@@ -7043,7 +6912,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    mode (MODE4_SUID, MODE4_SGID, MODE4_SVTX) SHOULD remain unchanged.
 
 </p><p class="rfcparagraph"><a name="section-6.4.1.3"><h4>6.4.1.3   Setting Both ACL and Mode</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    When setting both the mode (includes use of either the mode attribute
@@ -7132,7 +7000,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
 
 </p><p class="rfcparagraph">
 <a name="section-6.4.3.1"><h4>6.4.3.1   The Inherited ACL</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    If the object being created is not a directory, the inherited ACL
@@ -7159,7 +7026,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    new directory's children.
 
 </p><p class="rfcparagraph"><a name="section-6.4.3.2"><h4>6.4.3.2   Automatic Inheritance</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The acl attribute consists only of an array of ACEs, but the sacl
@@ -8134,7 +8000,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
        (Section 8.1) and re-establish its lock state (Section 8.4.2.1).
 
 </p><p class="rfcparagraph"><a name="section-8.4.2.1"><h4>8.4.2.1   State Reclaim</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    When state information and the associated locks are lost as a result
@@ -8295,7 +8160,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    Section 2.10.5) and not to control lock reclaim.
 
 </p><p class="rfcparagraph"><a name="section-8.4.2.1"><h4>8.4.2.1 1.  Security Considerations for State Reclaim</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    During the grace period, a client can reclaim state that it believes
@@ -11336,7 +11200,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    as reported by EXCHANGE_ID.
 
 </p><p class="rfcparagraph"><a name="section-11.7.2.1"><h4>11.7.2.1   Simultaneous Use of File System Instances</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    When the conditions in Section 11.7.2 hold, in either of the
@@ -11369,7 +11232,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    sessions or a single session in common.
 
 </p><p class="rfcparagraph"><a name="section-11.7.2.2"><h4>11.7.2.2   Transparent File System Transitions</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    When the conditions in Section 11.7.2.1 hold and the
@@ -11521,7 +11383,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    specifying the FSLI4F_MULTI_FS flag.
 
 </p><p class="rfcparagraph"><a name="section-11.7.5.1"><h4>11.7.5.1   File System Splitting</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    When a file system transition is made and the fs_locations_info
@@ -11681,7 +11542,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    is not read-only, a client may reasonably treat all pending locks as
    having been revoked.
 <a name="section-11.7.7.1"><h4>11.7.7.1   Leases and File System Transitions</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    In the case of lease renewal, the client may not be submitting
@@ -11731,7 +11591,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    above, and the client can then reclaim locks as is done in the event
    of server failure.
 <a name="section-11.7.7.2"><h4>11.7.7.2   Transitions and the Lease_time Attribute</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    In order that the client may appropriately manage its lease in the
@@ -13612,7 +13471,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    operation.
 
 </p><p class="rfcparagraph"><a name="section-12.5.4.1"><h4>12.5.4.1   LAYOUTCOMMIT and change/time_modify</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The change and time_modify attributes may be updated by the server
@@ -13646,7 +13504,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    LAYOUTCOMMIT or LAYOUTGET.
 
 </p><p class="rfcparagraph"><a name="section-12.5.4.2"><h4>12.5.4.2   LAYOUTCOMMIT and size</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The size of a file may be updated when the LAYOUTCOMMIT operation is
@@ -13704,7 +13561,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    past EOF via WRITE, the SETATTR operation does not need to be used.
 
 </p><p class="rfcparagraph"><a name="section-12.5.4.3"><h4>12.5.4.3   LAYOUTCOMMIT and layoutupdate</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The LAYOUTCOMMIT argument contains a loca_layoutupdate field
@@ -13783,7 +13639,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    the amount of outstanding modified data.
 
 </p><p class="rfcparagraph"><a name="section-12.5.5.1"><h4>12.5.5.1   Layout Recall Callback Robustness</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    It has been assumed thus far that pNFS client state (layout ranges
@@ -13869,7 +13724,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    client's layout state.
 
 </p><p class="rfcparagraph"><a name="section-12.5.5.2"><h4>12.5.5.2   Sequencing of Layout Operations</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    As with other stateful operations, pNFS requires the correct
@@ -13881,7 +13735,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    returns.
 
 </p><p class="rfcparagraph"><a name="section-12.5.5.2"><h4>12.5.5.2 1.  Layout Recall and Return Sequencing</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    One critical issue with regard to layout operations sequencing
@@ -13912,7 +13765,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    before processing the CB_LAYOUTRECALL.
 
 </p><p class="rfcparagraph"><a name="section-12.5.5.2"><h4>12.5.5.2 1.1.  Get/Return Sequencing</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The protocol allows the client to send concurrent LAYOUTGET and
@@ -13947,7 +13799,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    outstanding at the same time for that same file.
 
 </p><p class="rfcparagraph"><a name="section-12.5.5.2"><h4>12.5.5.2 1.2.  Client Considerations</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Consider a pNFS client that has sent a LAYOUTGET, and before it
@@ -13994,7 +13845,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    will use the highest seqid as is the usual case.
 
 </p><p class="rfcparagraph"><a name="section-12.5.5.2"><h4>12.5.5.2 1.3.  Server Considerations</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Consider a race from the metadata server's point of view.  The
@@ -14027,7 +13877,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
        returns NFS4ERR_RETURNCONFLICT.
 
 </p><p class="rfcparagraph"><a name="section-12.5.5.2"><h4>12.5.5.2 1.4.  Wraparound and Validation of Seqid</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The rules for layout stateid processing differ from other stateids in
@@ -14082,7 +13931,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    sends the operation to the server.
 
 </p><p class="rfcparagraph"><a name="section-12.5.5.2"><h4>12.5.5.2 1.5.  Bulk Recall and Return</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    pNFS supports recalling and returning all layouts that are for files
@@ -15535,7 +15383,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    the propagation must be complete before returning to the client.
 
 </p><p class="rfcparagraph"><a name="section-13.9.2.1"><h4>13.9.2.1   Lock State Propagation</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    If the pNFS server supports mandatory byte-range locking, any
@@ -15566,7 +15413,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    the byte-range lock.
 
 </p><p class="rfcparagraph"><a name="section-13.9.2.2"><h4>13.9.2.2   Open and Deny Mode Validation</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Open and deny mode validation MUST be performed against the open and
@@ -15579,7 +15425,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    previous relaxation.
 
 </p><p class="rfcparagraph"><a name="section-13.9.2.3"><h4>13.9.2.3   File Attributes</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Since the SETATTR operation has the ability to modify state that is
@@ -16151,7 +15996,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    This section deals with errors that are applicable to a broad set of
    different purposes.
 <a name="section-15.1.1.1"><h4>15.1.1.1   NFS4ERR_BADXDR (Error Code 10036)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The arguments for this operation do not match those specified in the
@@ -16163,7 +16007,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    any operation execution and return RPC-level XDR errors in that case.
 
 </p><p class="rfcparagraph"><a name="section-15.1.1.2"><h4>15.1.1.2   NFS4ERR_BAD_COOKIE (Error Code 10003)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Used for operations that provide a set of information indexed by some
@@ -16172,7 +16015,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    purpose, this error results.
 
 </p><p class="rfcparagraph"><a name="section-15.1.1.3"><h4>15.1.1.3   NFS4ERR_DELAY (Error Code 10008)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    For any of a number of reasons, the replier could not process this
@@ -16201,7 +16043,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    other operations that need the delegation to be returned, session
    slots might not be available.  The result could be deadlock.
 <a name="section-15.1.1.4"><h4>15.1.1.4   NFS4ERR_INVAL (Error Code 22)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The arguments for this operation are not valid for some reason, even
@@ -16209,7 +16050,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    request.
 
 </p><p class="rfcparagraph"><a name="section-15.1.1.5"><h4>15.1.1.5   NFS4ERR_NOTSUPP (Error Code 10004)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Operation not supported, either because the operation is an OPTIONAL
@@ -16217,7 +16057,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    NOT be implemented in the current minor version.
 
 </p><p class="rfcparagraph"><a name="section-15.1.1.6"><h4>15.1.1.6   NFS4ERR_SERVERFAULT (Error Code 10006)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    An error occurred on the server that does not map to any of the
@@ -16226,7 +16065,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    translate this to EIO.
 
 </p><p class="rfcparagraph"><a name="section-15.1.1.7"><h4>15.1.1.7   NFS4ERR_TOOSMALL (Error Code 10005)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Used where an operation returns a variable amount of data, with a
@@ -16247,7 +16085,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    operation in question.
 
 </p><p class="rfcparagraph"><a name="section-15.1.2.1"><h4>15.1.2.1   NFS4ERR_BADHANDLE (Error Code 10001)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Illegal NFS filehandle for the current server.  The current file
@@ -16255,14 +16092,12 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    (by PUTFH), no subsequent status change can cause the filehandle to
    generate this error.
 <a name="section-15.1.2.2"><h4>15.1.2.2   NFS4ERR_FHEXPIRED (Error Code 10014)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    A current or saved filehandle that is an argument to the current
    operation is volatile and has expired at the server.
 
 </p><p class="rfcparagraph"><a name="section-15.1.2.3"><h4>15.1.2.3   NFS4ERR_ISDIR (Error Code 21)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The current or saved filehandle designates a directory when the
@@ -16270,7 +16105,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    target of this operation.
 
 </p><p class="rfcparagraph"><a name="section-15.1.2.4"><h4>15.1.2.4   NFS4ERR_MOVED (Error Code 10019)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The file system that contains the current filehandle object is not
@@ -16281,7 +16115,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    further discussion, refer to Section 11.2.
 
 </p><p class="rfcparagraph"><a name="section-15.1.2.5"><h4>15.1.2.5   NFS4ERR_NOFILEHANDLE (Error Code 10020)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The logical current or saved filehandle value is required by the
@@ -16290,14 +16123,12 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    operation that requires the current filehandle be set).
 
 </p><p class="rfcparagraph"><a name="section-15.1.2.6"><h4>15.1.2.6   NFS4ERR_NOTDIR (Error Code 20)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The current (or saved) filehandle designates an object that is not a
    directory for an operation in which a directory is required.
 
 </p><p class="rfcparagraph"><a name="section-15.1.2.7"><h4>15.1.2.7   NFS4ERR_STALE (Error Code 70)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The current or saved filehandle value designating an argument to the
@@ -16305,13 +16136,11 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    filehandle no longer exists or access to it has been revoked.
 
 </p><p class="rfcparagraph"><a name="section-15.1.2.8"><h4>15.1.2.8   NFS4ERR_SYMLINK (Error Code 10029)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The current filehandle designates a symbolic link when the current
    operation does not allow a symbolic link as the target.
 <a name="section-15.1.2.9"><h4>15.1.2.9   NFS4ERR_WRONG_TYPE (Error Code 10083)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The current (or saved) filehandle designates an object that is of an
@@ -16332,14 +16161,12 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    CB_SEQUENCE) at the start of the Compound.
 
 </p><p class="rfcparagraph"><a name="section-15.1.3.1"><h4>15.1.3.1   NFS_OK (Error code 0)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Indicates the operation completed successfully, in that all of the
    constituent operations completed without error.
 
 </p><p class="rfcparagraph"><a name="section-15.1.3.2"><h4>15.1.3.2   NFS4ERR_MINOR_VERS_MISMATCH (Error code 10021)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The minor version specified is not one that the current listener
@@ -16348,7 +16175,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    results will specify a result count of zero.
 
 </p><p class="rfcparagraph"><a name="section-15.1.3.3"><h4>15.1.3.3   NFS4ERR_NOT_ONLY_OP (Error Code 10081)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Certain operations, which are allowed to be executed outside of a
@@ -16357,7 +16183,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    results when that constraint is not met.
 
 </p><p class="rfcparagraph"><a name="section-15.1.3.4"><h4>15.1.3.4   NFS4ERR_OP_ILLEGAL (Error Code 10044)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The operation code is not a valid one for the current Compound
@@ -16368,7 +16193,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    doing any operation execution, an RPC-level XDR error may be
    returned.
 <a name="section-15.1.3.5"><h4>15.1.3.5   NFS4ERR_OP_NOT_IN_SESSION (Error Code 10071)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Most forward operations and all callback operations are only valid
@@ -16378,14 +16202,12 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    error results.
 
 </p><p class="rfcparagraph"><a name="section-15.1.3.6"><h4>15.1.3.6   NFS4ERR_REP_TOO_BIG (Error Code 10066)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The reply to a Compound would exceed the channel's negotiated maximum
    response size.
 
 </p><p class="rfcparagraph"><a name="section-15.1.3.7"><h4>15.1.3.7   NFS4ERR_REP_TOO_BIG_TO_CACHE (Error Code 10067)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The reply to a Compound would exceed the channel's negotiated maximum
@@ -16393,35 +16215,30 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    current request specifies that this request is to be cached.
 
 </p><p class="rfcparagraph"><a name="section-15.1.3.8"><h4>15.1.3.8   NFS4ERR_REQ_TOO_BIG (Error Code 10065)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The Compound request exceeds the channel's negotiated maximum size
    for requests.
 
 </p><p class="rfcparagraph"><a name="section-15.1.3.9"><h4>15.1.3.9   NFS4ERR_RETRY_UNCACHED_REP (Error Code 10068)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The requester has attempted a retry of a Compound that it previously
    requested not be placed in the reply cache.
 
 </p><p class="rfcparagraph"><a name="section-15.1.3.10"><h4>15.1.3.10   NFS4ERR_SEQUENCE_POS (Error Code 10064)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    A Sequence operation appeared in a position other than the first
    operation of a Compound request.
 
 </p><p class="rfcparagraph"><a name="section-15.1.3.11"><h4>15.1.3.11   NFS4ERR_TOO_MANY_OPS (Error Code 10070)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The Compound request has too many operations, exceeding the count
    negotiated when the session was created.
 
 </p><p class="rfcparagraph"><a name="section-15.1.3.12"><h4>15.1.3.12   NFS4ERR_UNSAFE_COMPOUND (Error Code 10068)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The client has sent a COMPOUND request with an unsafe mix of
@@ -16434,7 +16251,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    feature.
 
 </p><p class="rfcparagraph"><a name="section-15.1.4.1"><h4>15.1.4.1   NFS4ERR_BADTYPE (Error Code 10007)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    An attempt was made to create an object with an inappropriate type
@@ -16444,28 +16260,24 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    named attribute, for which OPEN is used to do the file creation).
 
 </p><p class="rfcparagraph"><a name="section-15.1.4.2"><h4>15.1.4.2   NFS4ERR_DQUOT (Error Code 19)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Resource (quota) hard limit exceeded.  The user's resource limit on
    the server has been exceeded.
 
 </p><p class="rfcparagraph"><a name="section-15.1.4.3"><h4>15.1.4.3   NFS4ERR_EXIST (Error Code 17)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    A file of the specified target name (when creating, renaming, or
    linking) already exists.
 
 </p><p class="rfcparagraph"><a name="section-15.1.4.4"><h4>15.1.4.4   NFS4ERR_FBIG (Error Code 27)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The file is too large.  The operation would have caused the file to
    grow beyond the server's limit.
 
 </p><p class="rfcparagraph"><a name="section-15.1.4.5"><h4>15.1.4.5   NFS4ERR_FILE_OPEN (Error Code 10046)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The operation is not allowed because a file involved in the operation
@@ -16473,47 +16285,40 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    linking-to, removing, or renaming open files.
 
 </p><p class="rfcparagraph"><a name="section-15.1.4.6"><h4>15.1.4.6   NFS4ERR_IO (Error Code 5)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Indicates that an I/O error occurred for which the file system was
    unable to provide recovery.
 
 </p><p class="rfcparagraph"><a name="section-15.1.4.7"><h4>15.1.4.7   NFS4ERR_MLINK (Error Code 31)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The request would have caused the server's limit for the number of
    hard links a file may have to be exceeded.
 <a name="section-15.1.4.8"><h4>15.1.4.8   NFS4ERR_NOENT (Error Code 2)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Indicates no such file or directory.  The file or directory name
    specified does not exist.
 
 </p><p class="rfcparagraph"><a name="section-15.1.4.9"><h4>15.1.4.9   NFS4ERR_NOSPC (Error Code 28)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Indicates there is no space left on the device.  The operation would
    have caused the server's file system to exceed its limit.
 
 </p><p class="rfcparagraph"><a name="section-15.1.4.10"><h4>15.1.4.10   NFS4ERR_NOTEMPTY (Error Code 66)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    An attempt was made to remove a directory that was not empty.
 
 </p><p class="rfcparagraph"><a name="section-15.1.4.11"><h4>15.1.4.11   NFS4ERR_ROFS (Error Code 30)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Indicates a read-only file system.  A modifying operation was
    attempted on a read-only file system.
 
 </p><p class="rfcparagraph"><a name="section-15.1.4.12"><h4>15.1.4.12   NFS4ERR_XDEV (Error Code 18)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Indicates an attempt to do an operation, such as linking, that
@@ -16540,21 +16345,18 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    opens, byte-range locks, file or directory delegations, layouts, or
    device maps.
 <a name="section-15.1.5.1"><h4>15.1.5.1   NFS4ERR_ADMIN_REVOKED (Error Code 10047)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    A stateid designates locking state of any type that has been revoked
    due to administrative interaction, possibly while the lease is valid.
 
 </p><p class="rfcparagraph"><a name="section-15.1.5.2"><h4>15.1.5.2   NFS4ERR_BAD_STATEID (Error Code 10026)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    A stateid does not properly designate any valid state.  See Sections
    8.2.4 and 8.2.3 for a discussion of how stateids are validated.
 
 </p><p class="rfcparagraph"><a name="section-15.1.5.3"><h4>15.1.5.3   NFS4ERR_DELEG_REVOKED (Error Code 10087)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    A stateid designates recallable locking state of any type (delegation
@@ -16562,7 +16364,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    return the lock when it was recalled.
 
 </p><p class="rfcparagraph"><a name="section-15.1.5.4"><h4>15.1.5.4   NFS4ERR_EXPIRED (Error Code 10011)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    A stateid designates locking state of any type that has been revoked
@@ -16571,7 +16372,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    lock.
 
 </p><p class="rfcparagraph"><a name="section-15.1.5.5"><h4>15.1.5.5   NFS4ERR_OLD_STATEID (Error Code 10024)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    A stateid with a non-zero seqid value does match the current seqid
@@ -16582,7 +16382,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    These are the various permission-related errors in NFSv4.1.
 
 </p><p class="rfcparagraph"><a name="section-15.1.6.1"><h4>15.1.6.1   NFS4ERR_ACCESS (Error Code 13)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Indicates permission denied.  The caller does not have the correct
@@ -16594,14 +16393,12 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    created them.
 
 </p><p class="rfcparagraph"><a name="section-15.1.6.2"><h4>15.1.6.2   NFS4ERR_PERM (Error Code 1)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Indicates requester is not the owner.  The operation was not allowed
    because the caller is neither a privileged user (root) nor the owner
    of the target of the operation.
 <a name="section-15.1.6.3"><h4>15.1.6.3   NFS4ERR_WRONGSEC (Error Code 10016)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Indicates that the security mechanism being used by the client for
@@ -16612,7 +16409,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    can be used to determine the appropriate mechanism.
 
 </p><p class="rfcparagraph"><a name="section-15.1.6.4"><h4>15.1.6.4   NFS4ERR_WRONG_CRED (Error Code 10082)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    An operation that manipulates state was attempted by a principal that
@@ -16626,14 +16422,12 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    problems with names.
 
 </p><p class="rfcparagraph"><a name="section-15.1.7.1"><h4>15.1.7.1   NFS4ERR_BADCHAR (Error Code 10040)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    A UTF-8 string contains a character that is not supported by the
    server in the context in which it being used.
 
 </p><p class="rfcparagraph"><a name="section-15.1.7.2"><h4>15.1.7.2   NFS4ERR_BADNAME (Error Code 10041)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    A name string in a request consisted of valid UTF-8 characters
@@ -16643,7 +16437,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    uses that name for links to parent directories.
 
 </p><p class="rfcparagraph"><a name="section-15.1.7.3"><h4>15.1.7.3   NFS4ERR_NAMETOOLONG (Error Code 63)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Returned when the filename in an operation exceeds the server's
@@ -16656,7 +16449,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    specific to the process of reclaiming locks.  Those are dealt with in
    Section 15.1.9.
 <a name="section-15.1.8.1"><h4>15.1.8.1   NFS4ERR_BAD_RANGE (Error Code 10042)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The byte-range of a LOCK, LOCKT, or LOCKU operation is not allowed by
@@ -16665,14 +16457,12 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    that server.  (See Section 18.10.3.)
 
 <a name="section-15.1.8.2"><h4>15.1.8.2   NFS4ERR_DEADLOCK (Error Code 10045)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The server has been able to determine a byte-range locking deadlock
    condition for a READW_LT or WRITEW_LT LOCK operation.
 
 </p><p class="rfcparagraph"><a name="section-15.1.8.3"><h4>15.1.8.3   NFS4ERR_DENIED (Error Code 10010)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    An attempt to lock a file is denied.  Since this may be a temporary
@@ -16682,7 +16472,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    Section 9.6 for a discussion of the re-send.
 
 </p><p class="rfcparagraph"><a name="section-15.1.8.4"><h4>15.1.8.4   NFS4ERR_LOCKED (Error Code 10012)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    A READ or WRITE operation was attempted on a file where there was a
@@ -16694,13 +16483,11 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
       byte-range lock.
 
 </p><p class="rfcparagraph"><a name="section-15.1.8.5"><h4>15.1.8.5   NFS4ERR_LOCKS_HELD (Error Code 10037)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    An operation was prevented by the unexpected presence of locks.
 
 </p><p class="rfcparagraph"><a name="section-15.1.8.6"><h4>15.1.8.6   NFS4ERR_LOCK_NOTSUPP (Error Code 10043)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    A LOCK operation was attempted that would require the upgrade or
@@ -16708,7 +16495,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    the server does not support atomic upgrade or downgrade of locks.
 
 </p><p class="rfcparagraph"><a name="section-15.1.8.7"><h4>15.1.8.7   NFS4ERR_LOCK_RANGE (Error Code 10028)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    A LOCK operation is operating on a range that overlaps in part a
@@ -16720,7 +16506,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    LOCKU respectively.
 
 </p><p class="rfcparagraph"><a name="section-15.1.8.8"><h4>15.1.8.8   NFS4ERR_OPENMODE (Error Code 10038)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The client attempted a READ, WRITE, LOCK, or other operation not
@@ -16728,7 +16513,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    read-only access).
 
 </p><p class="rfcparagraph"><a name="section-15.1.8.9"><h4>15.1.8.9   NFS4ERR_SHARE_DENIED (Error Code 10015)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    An attempt to OPEN a file with a share reservation has failed because
@@ -16740,7 +16524,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    restart.
 
 </p><p class="rfcparagraph"><a name="section-15.1.9.1"><h4>15.1.9.1   NFS4ERR_COMPLETE_ALREADY (Error Code 10054)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The client previously sent a successful RECLAIM_COMPLETE operation.
@@ -16748,7 +16531,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    in this error.
 
 </p><p class="rfcparagraph"><a name="section-15.1.9.2"><h4>15.1.9.2   NFS4ERR_GRACE (Error Code 10013)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The server was in its recovery or grace period.  The locking request
@@ -16756,7 +16538,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    period.
 
 </p><p class="rfcparagraph"><a name="section-15.1.9.3"><h4>15.1.9.3   NFS4ERR_NO_GRACE (Error Code 10033)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    A reclaim of client state was attempted in circumstances in which the
@@ -16768,7 +16549,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    a reclaim-interfering edge condition does not exist.
 
 </p><p class="rfcparagraph"><a name="section-15.1.9.4"><h4>15.1.9.4   NFS4ERR_RECLAIM_BAD (Error Code 10034)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The server has determined that a reclaim attempted by the client is
@@ -16784,7 +16564,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    cannot determine which request is invalid.
 
 </p><p class="rfcparagraph"><a name="section-15.1.9.5"><h4>15.1.9.5   NFS4ERR_RECLAIM_CONFLICT (Error Code 10035)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The reclaim attempted by the client has encountered a conflict and
@@ -16800,7 +16579,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    associated with using NFSv4.1 to communicate with a data server.
 
 </p><p class="rfcparagraph"><a name="section-15.1.10.1"><h4>15.1.10.1   NFS4ERR_BADIOMODE (Error Code 10049)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    An invalid or inappropriate layout iomode was specified.  For example
@@ -16812,7 +16590,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    LAYOUTIOMODE4_READ.
 
 </p><p class="rfcparagraph"><a name="section-15.1.10.2"><h4>15.1.10.2   NFS4ERR_BADLAYOUT (Error Code 10050)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The layout specified is invalid in some way.  For LAYOUTCOMMIT, this
@@ -16822,28 +16599,24 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    cannot be granted.
 
 </p><p class="rfcparagraph"><a name="section-15.1.10.3"><h4>15.1.10.3   NFS4ERR_LAYOUTTRYLATER (Error Code 10058)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Layouts are temporarily unavailable for the file.  The client should
    re-send later (but not with the same slot ID and sequence ID; one or
    both MUST be different on the re-send).
 <a name="section-15.1.10.4"><h4>15.1.10.4   NFS4ERR_LAYOUTUNAVAILABLE (Error Code 10059)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Returned when layouts are not available for the current file system
    or the particular specified file.
 
 </p><p class="rfcparagraph"><a name="section-15.1.10.5"><h4>15.1.10.5   NFS4ERR_NOMATCHING_LAYOUT (Error Code 10060)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Returned when layouts are recalled and the client has no layouts
    matching the specification of the layouts being recalled.
 
 </p><p class="rfcparagraph"><a name="section-15.1.10.6"><h4>15.1.10.6   NFS4ERR_PNFS_IO_HOLE (Error Code 10075)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The pNFS client has attempted to read from or write to an illegal
@@ -16851,7 +16624,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    Section 13.4.4.
 
 </p><p class="rfcparagraph"><a name="section-15.1.10.7"><h4>15.1.10.7   NFS4ERR_PNFS_NO_LAYOUT (Error Code 10080)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The pNFS client has attempted to read from or write to a file (using
@@ -16860,7 +16632,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    not allow a WRITE.
 
 </p><p class="rfcparagraph"><a name="section-15.1.10.8"><h4>15.1.10.8   NFS4ERR_RETURNCONFLICT (Error Code 10086)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    A layout is unavailable due to an attempt to perform the LAYOUTGET
@@ -16868,7 +16639,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    Section 12.5.5.2.1.3.
 
 </p><p class="rfcparagraph"><a name="section-15.1.10.9"><h4>15.1.10.9   NFS4ERR_UNKNOWN_LAYOUTTYPE (Error Code 10062)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The client has specified a layout type that is not supported by the
@@ -16881,13 +16651,11 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    SEQUENCE or CB_SEQUENCE) operation.
 
 </p><p class="rfcparagraph"><a name="section-15.1.11.1"><h4>15.1.11.1   NFS4ERR_BADSESSION (Error Code 10052)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The specified session ID is unknown to the server to which the
    operation is addressed.
 <a name="section-15.1.11.2"><h4>15.1.11.2   NFS4ERR_BADSLOT (Error Code 10053)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The requester sent a Sequence operation that attempted to use a slot
@@ -16895,14 +16663,12 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    may have been retired.
 
 </p><p class="rfcparagraph"><a name="section-15.1.11.3"><h4>15.1.11.3   NFS4ERR_BAD_HIGH_SLOT (Error Code 10077)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The highest_slot argument in a Sequence operation exceeds the
    replier's enforced highest_slotid.
 
 </p><p class="rfcparagraph"><a name="section-15.1.11.4"><h4>15.1.11.4   NFS4ERR_CB_PATH_DOWN (Error Code 10048)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    There is a problem contacting the client via the callback path.  The
@@ -16911,7 +16677,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    Section 18.46).
 
 </p><p class="rfcparagraph"><a name="section-15.1.11.5"><h4>15.1.11.5   NFS4ERR_DEADSESSION (Error Code 10078)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The specified session is a persistent session that is dead and does
@@ -16920,7 +16685,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    before server restart).
 
 </p><p class="rfcparagraph"><a name="section-15.1.11.6"><h4>15.1.11.6   NFS4ERR_CONN_NOT_BOUND_TO_SESSION (Error Code 10055)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    A Sequence operation was sent on a connection that has not been
@@ -16929,7 +16693,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    SP4_SSV state protection.
 
 </p><p class="rfcparagraph"><a name="section-15.1.11.7"><h4>15.1.11.7   NFS4ERR_SEQ_FALSE_RETRY (Error Code 10076)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The requester sent a Sequence operation with a slot ID and sequence
@@ -16938,7 +16701,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    Section 2.10.6.1.3.1.
 
 </p><p class="rfcparagraph"><a name="section-15.1.11.8"><h4>15.1.11.8   NFS4ERR_SEQ_MISORDERED (Error Code 10063)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The requester sent a Sequence operation with an invalid sequence ID.
@@ -16948,14 +16710,12 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    This section deals with errors associated with requests used in
    session management.
 <a name="section-15.1.12.1"><h4>15.1.12.1   NFS4ERR_BACK_CHAN_BUSY (Error Code 10057)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    An attempt was made to destroy a session when the session cannot be
    destroyed because the server has callback requests outstanding.
 
 </p><p class="rfcparagraph"><a name="section-15.1.12.2"><h4>15.1.12.2   NFS4ERR_BAD_SESSION_DIGEST (Error Code 10051)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The digest used in a SET_SSV request is not valid.
@@ -16966,14 +16726,12 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    create and manage client IDs.
 
 </p><p class="rfcparagraph"><a name="section-15.1.13.1"><h4>15.1.13.1   NFS4ERR_CLIENTID_BUSY (Error Code 10074)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The DESTROY_CLIENTID operation has found there are sessions and/or
    unexpired state associated with the client ID to be destroyed.
 
 </p><p class="rfcparagraph"><a name="section-15.1.13.2"><h4>15.1.13.2   NFS4ERR_CLID_INUSE (Error Code 10017)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    While processing an EXCHANGE_ID operation, the server was presented
@@ -16986,7 +16744,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    ID; one or both MUST be different on the re-send).
 
 </p><p class="rfcparagraph"><a name="section-15.1.13.3"><h4>15.1.13.3   NFS4ERR_ENCR_ALG_UNSUPP (Error Code 10079)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    An EXCHANGE_ID was sent that specified state protection via SSV, and
@@ -16994,7 +16751,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    not include any supported by the server.
 
 </p><p class="rfcparagraph"><a name="section-15.1.13.4"><h4>15.1.13.4   NFS4ERR_HASH_ALG_UNSUPP (Error Code 10072)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    An EXCHANGE_ID was sent that specified state protection via SSV, and
@@ -17002,7 +16758,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    include any supported by the server.
 
 </p><p class="rfcparagraph"><a name="section-15.1.13.5"><h4>15.1.13.5   NFS4ERR_STALE_CLIENTID (Error Code 10022)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    A client ID not recognized by the server was passed to an operation.
@@ -17019,21 +16774,18 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    returning delegations.
 
 </p><p class="rfcparagraph"><a name="section-15.1.14.1"><h4>15.1.14.1   NFS4ERR_DELEG_ALREADY_WANTED (Error Code 10056)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The client has requested a delegation when it had already registered
    that it wants that same delegation.
 
 </p><p class="rfcparagraph"><a name="section-15.1.14.2"><h4>15.1.14.2   NFS4ERR_DIRDELEG_UNAVAIL (Error Code 10084)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    This error is returned when the server is unable or unwilling to
    provide a requested directory delegation.
 
 </p><p class="rfcparagraph"><a name="section-15.1.14.3"><h4>15.1.14.3   NFS4ERR_RECALLCONFLICT (Error Code 10061)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    A recallable object (i.e., a layout or delegation) is unavailable due
@@ -17041,7 +16793,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    that object.
 
 </p><p class="rfcparagraph"><a name="section-15.1.14.4"><h4>15.1.14.4   NFS4ERR_REJECT_DELEG (Error Code 10085)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The callback operation invoked to deal with a new delegation has
@@ -17053,21 +16804,18 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    NFSv4.
 
 </p><p class="rfcparagraph"><a name="section-15.1.15.1"><h4>15.1.15.1   NFS4ERR_ATTRNOTSUPP (Error Code 10032)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    An attribute specified is not supported by the server.  This error
    MUST NOT be returned by the GETATTR operation.
 
 </p><p class="rfcparagraph"><a name="section-15.1.15.2"><h4>15.1.15.2   NFS4ERR_BADOWNER (Error Code 10039)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    This error is returned when an owner or owner_group attribute value
    or the who field of an ACE within an ACL attribute value cannot be
    translated to a local representation.
 <a name="section-15.1.15.3"><h4>15.1.15.3   NFS4ERR_NOT_SAME (Error Code 10027)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    This error is returned by the VERIFY operation to signify that the
@@ -17075,7 +16823,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    client's request.
 
 </p><p class="rfcparagraph"><a name="section-15.1.15.4"><h4>15.1.15.4   NFS4ERR_SAME (Error Code 10009)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    This error is returned by the NVERIFY operation to signify that the
@@ -17097,7 +16844,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
       resulted in the elimination of certain errors.
 
 </p><p class="rfcparagraph"><a name="section-15.1.16.1"><h4>15.1.16.1   NFS4ERR_BAD_SEQID (Error Code 10026)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The sequence number (seqid) in a locking request is neither the next
@@ -17105,7 +16851,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    ignored in NFSv4.1.
 
 </p><p class="rfcparagraph"><a name="section-15.1.16.2"><h4>15.1.16.2   NFS4ERR_LEASE_MOVED (Error Code 10031)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    A lease being renewed is associated with a file system that has been
@@ -17113,14 +16858,12 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    SEQ4_STATUS_LEASE_MOVED status bit (see Section 18.46).
 
 </p><p class="rfcparagraph"><a name="section-15.1.16.3"><h4>15.1.16.3   NFS4ERR_NXIO (Error Code 5)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    I/O error.  No such device or address.  This error is for errors
    involving block and character device access, but because NFSv4.1 is
    not a device-access protocol, this error is not applicable.
 <a name="section-15.1.16.4"><h4>15.1.16.4   NFS4ERR_RESTOREFH (Error Code 10030)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The RESTOREFH operation does not have a saved filehandle (identified
@@ -17128,7 +16871,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    superseded by NFS4ERR_NOFILEHANDLE.
 
 </p><p class="rfcparagraph"><a name="section-15.1.16.5"><h4>15.1.16.5   NFS4ERR_STALE_STATEID (Error Code 10023)</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    A stateid generated by an earlier server instance was used.  This
@@ -18974,7 +18716,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    tag field of the CB_COMPOUND procedure as well.
 
 </p><p class="rfcparagraph"><a name="section-16.2.3.1"><h4>16.2.3.1   Current Filehandle and Stateid</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The COMPOUND procedure offers a simple environment for the execution
@@ -18982,7 +18723,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    the filehandle while the second two relate to the current stateid.
 
 </p><p class="rfcparagraph"><a name="section-16.2.3.1"><h4>16.2.3.1 1.  Current Filehandle</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The current and saved filehandles are used throughout the protocol.
@@ -19028,7 +18768,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    client's series of operations.
 
 </p><p class="rfcparagraph"><a name="section-16.2.3.1"><h4>16.2.3.1 2.  Current Stateid</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    With NFSv4.1, additions of a current stateid and a saved stateid have
@@ -21579,7 +21318,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    of this operation.
 
 </p><p class="rfcparagraph"><a name="section-18.16.4.1"><h4>18.16.4.1   Warning to Client Implementors</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    OPEN resembles LOOKUP in that it generates a filehandle for the
@@ -28390,7 +28128,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    IANA created a registry called the "NFSv4 Path Variables Registry".
 
 </p><p class="rfcparagraph"><a name="section-22.5.1.1"><h4>22.5.1.1   Path Variable Values</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    Variable names are of the form "${", followed by a domain name,
@@ -28432,7 +28169,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
        contact is always IESG.
 
 </p><p class="rfcparagraph"><a name="section-22.5.1.1"><h4>22.5.1.1 1.  Initial Registry</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The initial registry is in Table 19.
@@ -28459,7 +28195,6 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
    concern to IANA.
 
 </p><p class="rfcparagraph"><a name="section-22.5.1.1"><h4>22.5.1.1 2.  Updating Registrations</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The update of an assignment made on a Standards Action basis will
@@ -28491,13 +28226,11 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
        contact can consume up to 256 bytes (or more if IANA permits).
 
 </p><p class="rfcparagraph"><a name="section-22.5.2.1"><h4>22.5.2.1   Initial Registry</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    There is no initial registry.
 
 </p><p class="rfcparagraph"><a name="section-22.5.2.2"><h4>22.5.2.2   Updating Registrations</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The registrant is free to update the assignment, i.e., change the
@@ -28524,13 +28257,11 @@ ISSN: 2070-1721                                           D. Noveck, Ed.
        contact can consume up to 256 bytes (or more if IANA permits).
 
 </p><p class="rfcparagraph"><a name="section-22.5.3.1"><h4>22.5.3.1   Initial Registry</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    There is no initial registry.
 
 </p><p class="rfcparagraph"><a name="section-22.5.3.2"><h4>22.5.3.2   Updating Registrations</h4></a>
-                        <a href="raw/text/rfc5661.txt" class="rawLink">raw</a>
                     
 
    The registrant is free to update the assignment, i.e., change the

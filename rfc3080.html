@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
@@ -257,7 +257,6 @@
 
    mapping    = ;; each transport mapping may define additional frames
 <a name="section-2.2.1.1"><h4>2.2.1.1  Frame Header</h4></a>
-                        <a href="raw/text/rfc3080.txt" class="rawLink">raw</a>
                     
 
    The frame header consists of a three-character keyword (one of:
@@ -381,7 +380,6 @@
    generating a response, and it is recommended that a diagnostic entry
    be logged.
 <a name="section-2.2.1.2"><h4>2.2.1.2  Frame Payload</h4></a>
-                        <a href="raw/text/rfc3080.txt" class="rawLink">raw</a>
                     
 
    The frame payload consists of zero or more octets.
@@ -409,7 +407,6 @@
    synchronization, then the session is terminated without generating a
    response, and it is recommended that a diagnostic entry be logged.
 <a name="section-2.2.1.3"><h4>2.2.1.3  Frame Trailer</h4></a>
-                        <a href="raw/text/rfc3080.txt" class="rawLink">raw</a>
                     
 
    The frame trailer consists of "END" followed by a CRLF pair.
@@ -435,7 +432,6 @@
    information.
 
 </p><p class="rfcparagraph"><a name="section-2.2.2.1"><h4>2.2.2.1  Poorly-formed Messages</h4></a>
-                        <a href="raw/text/rfc3080.txt" class="rawLink">raw</a>
                     
 
    When defining the behavior of the profile, the template must specify
@@ -465,7 +461,6 @@
 	<a name="section-2.3.1"><h4>2.3.1  Message Semantics</h4></a>
 
 <a name="section-2.3.1.1"><h4>2.3.1.1  The Greeting Message</h4></a>
-                        <a href="raw/text/rfc3080.txt" class="rawLink">raw</a>
                     
 
    When a BEEP session is established, each BEEP peer signifies its
@@ -513,7 +508,6 @@
 
 </p><p class="rfcparagraph">   Section 5.2 defines a registration template for optional features.
 <a name="section-2.3.1.2"><h4>2.3.1.2  The Start Message</h4></a>
-                        <a href="raw/text/rfc3080.txt" class="rawLink">raw</a>
                     
 
    When a BEEP peer wants to create a channel, it sends a "start"
@@ -623,7 +617,6 @@
        S: </profile>
        S: END
 <a name="section-2.3.1.3"><h4>2.3.1.3  The Close Message</h4></a>
-                        <a href="raw/text/rfc3080.txt" class="rawLink">raw</a>
                     
 
    When a BEEP peer wants to close a channel, it sends a "close" element
@@ -726,7 +719,6 @@
        S: <error code='550'>still working</error>
        S: END
 <a name="section-2.3.1.4"><h4>2.3.1.4  The OK Message</h4></a>
-                        <a href="raw/text/rfc3080.txt" class="rawLink">raw</a>
                     
 
    When a BEEP peer agrees to close a channel (or release the BEEP
@@ -735,7 +727,6 @@
 </p><p class="rfcparagraph">   The "ok" element has no attributes and no content.
 
 </p><p class="rfcparagraph"><a name="section-2.3.1.5"><h4>2.3.1.5  The Error Message</h4></a>
-                        <a href="raw/text/rfc3080.txt" class="rawLink">raw</a>
                     
 
    When a BEEP peer declines the creation of a channel, it sends an
@@ -1190,7 +1181,6 @@
 	<a name="section-3.1.3"><h4>3.1.3  Message Semantics</h4></a>
 
 <a name="section-3.1.3.1"><h4>3.1.3.1  The Ready Message</h4></a>
-                        <a href="raw/text/rfc3080.txt" class="rawLink">raw</a>
                     
 
    The "ready" element has an optional "version" attribute and no
@@ -1206,7 +1196,6 @@
    generated and sent before it processes a "ready" element.
 
 </p><p class="rfcparagraph"><a name="section-3.1.3.2"><h4>3.1.3.2  The Proceed Message</h4></a>
-                        <a href="raw/text/rfc3080.txt" class="rawLink">raw</a>
                     
 
    The "proceed" element has no attributes and no content.  It is sent

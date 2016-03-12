@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
@@ -630,7 +630,6 @@ ISSN: 2070-1721
 	<a name="section-7.1.1"><h4>7.1.1   Context Takeover Control</h4></a>
 
 <a name="section-7.1.1.1"><h4>7.1.1.1   The "server_no_context_takeover" Extension Parameter</h4></a>
-                        <a href="raw/text/rfc7692.txt" class="rawLink">raw</a>
                     
 
    A client MAY include the "server_no_context_takeover" extension
@@ -662,7 +661,6 @@ ISSN: 2070-1721
    parameter.
 
 </p><p class="rfcparagraph"><a name="section-7.1.1.2"><h4>7.1.1.2   The "client_no_context_takeover" Extension Parameter</h4></a>
-                        <a href="raw/text/rfc7692.txt" class="rawLink">raw</a>
                     
 
    A client MAY include the "client_no_context_takeover" extension
@@ -697,7 +695,6 @@ ISSN: 2070-1721
 	<a name="section-7.1.2"><h4>7.1.2   Limiting the LZ77 Sliding Window Size</h4></a>
 
 <a name="section-7.1.2.1"><h4>7.1.2.1   The "server_max_window_bits" Extension Parameter</h4></a>
-                        <a href="raw/text/rfc7692.txt" class="rawLink">raw</a>
                     
 
    A client MAY include the "server_max_window_bits" extension parameter
@@ -738,7 +735,6 @@ ISSN: 2070-1721
    "server_max_window_bits" extension parameter.
 
 </p><p class="rfcparagraph"><a name="section-7.1.2.2"><h4>7.1.2.2   The "client_max_window_bits" Extension Parameter</h4></a>
-                        <a href="raw/text/rfc7692.txt" class="rawLink">raw</a>
                     
 
    A client MAY include the "client_max_window_bits" extension parameter
@@ -977,7 +973,6 @@ ISSN: 2070-1721
    extension transforms messages.
 
 </p><p class="rfcparagraph"><a name="section-7.2.3.1"><h4>7.2.3.1   A Message Compressed Using One Compressed DEFLATE Block</h4></a>
-                        <a href="raw/text/rfc7692.txt" class="rawLink">raw</a>
                     
 
    Suppose that an endpoint sends a text message "Hello".  If the
@@ -1034,7 +1029,6 @@ ISSN: 2070-1721
    Note that the RSV1 bit is set only on the first frame.
 
 </p><p class="rfcparagraph"><a name="section-7.2.3.2"><h4>7.2.3.2   Sharing LZ77 Sliding Window</h4></a>
-                        <a href="raw/text/rfc7692.txt" class="rawLink">raw</a>
                     
 
    Suppose that a client has sent a message "Hello" as a compressed
@@ -1066,7 +1060,6 @@ ISSN: 2070-1721
    unset) are inserted between the two "Hello" messages, they don't
    affect the LZ77 sliding window.
 <a name="section-7.2.3.3"><h4>7.2.3.3   Using a DEFLATE Block with No Compression</h4></a>
-                        <a href="raw/text/rfc7692.txt" class="rawLink">raw</a>
                     
 
    A DEFLATE block with no compression may be used.
@@ -1085,7 +1078,6 @@ ISSN: 2070-1721
    compression.
 
 </p><p class="rfcparagraph"><a name="section-7.2.3.4"><h4>7.2.3.4   Using a DEFLATE Block with "BFINAL" Set to 1</h4></a>
-                        <a href="raw/text/rfc7692.txt" class="rawLink">raw</a>
                     
 
    On platforms on which the flush method using an empty DEFLATE block
@@ -1104,7 +1096,6 @@ ISSN: 2070-1721
    blocks with "BFINAL" unset.
 
 </p><p class="rfcparagraph"><a name="section-7.2.3.5"><h4>7.2.3.5   Two DEFLATE Blocks in One Message</h4></a>
-                        <a href="raw/text/rfc7692.txt" class="rawLink">raw</a>
                     
 
    Two or more DEFLATE blocks may be used in one message.
@@ -1120,7 +1111,6 @@ ISSN: 2070-1721
    an empty DEFLATE block with no compression.  A DEFLATE block
    containing "llo" follows the empty DEFLATE block.
 <a name="section-7.2.3.6"><h4>7.2.3.6   Generating an Empty Fragment</h4></a>
-                        <a href="raw/text/rfc7692.txt" class="rawLink">raw</a>
                     
 
    Suppose that an endpoint is sending data of unknown size.  The

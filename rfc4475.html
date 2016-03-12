@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
@@ -228,7 +228,6 @@
 	<a name="section-3.1.1"><h4>3.1.1   Valid Messages</h4></a>
 
 <a name="section-3.1.1.1"><h4>3.1.1.1   A Short Tortuous INVITE</h4></a>
-                        <a href="raw/text/rfc4475.txt" class="rawLink">raw</a>
                     
 
    This short, relatively human-readable message contains:
@@ -314,7 +313,6 @@
       m=video 3227 RTP/AVP 31
       a=rtpmap:31 LPC
 <a name="section-3.1.1.2"><h4>3.1.1.2   Wide Range of Valid Characters</h4></a>
-                        <a href="raw/text/rfc4475.txt" class="rawLink">raw</a>
                     
 
    This message exercises a wider range of characters in several key
@@ -391,7 +389,6 @@
       Content-Length: 0
 
 <a name="section-3.1.1.3"><h4>3.1.1.3   Valid Use of the % Escaping Mechanism</h4></a>
-                        <a href="raw/text/rfc4475.txt" class="rawLink">raw</a>
                     
 
    This INVITE exercises the % HEX HEX escaping mechanism in several
@@ -439,7 +436,6 @@
       m=video 3227 RTP/AVP 31
       a=rtpmap:31 LPC
 <a name="section-3.1.1.4"><h4>3.1.1.4   Escaped Nulls in URIs</h4></a>
-                        <a href="raw/text/rfc4475.txt" class="rawLink">raw</a>
                     
 
    This register request contains several URIs with nulls in the
@@ -463,7 +459,6 @@
       L:0
 
 <a name="section-3.1.1.5"><h4>3.1.1.5   Use of % When It Is Not an Escape</h4></a>
-                        <a href="raw/text/rfc4475.txt" class="rawLink">raw</a>
                     
 
    In most of the places % can appear in a SIP message, it is not an
@@ -496,7 +491,6 @@
       l: 0
 
 <a name="section-3.1.1.6"><h4>3.1.1.6   Message with No LWS between Display Name and <</h4></a>
-                        <a href="raw/text/rfc4475.txt" class="rawLink">raw</a>
                     
 
    This OPTIONS request is not valid per the grammar in RFC 3261 since
@@ -517,7 +511,6 @@
       l: 0
 
 <a name="section-3.1.1.7"><h4>3.1.1.7   Long Values in Header Fields</h4></a>
-                        <a href="raw/text/rfc4475.txt" class="rawLink">raw</a>
                     
 
    This well-formed request contains header fields with many values and
@@ -614,7 +607,6 @@
       a=rtpmap:31 LPC
 
 <a name="section-3.1.1.8"><h4>3.1.1.8   Extra Trailing Octets in a UDP Datagram</h4></a>
-                        <a href="raw/text/rfc4475.txt" class="rawLink">raw</a>
                     
 
    This message contains a single SIP REGISTER request, which ostensibly
@@ -659,7 +651,6 @@
       m =video 3227 RTP/AVP 31
       a=rtpmap:31 LPC
 <a name="section-3.1.1.9"><h4>3.1.1.9   Semicolon-Separated Parameters in URI User Part</h4></a>
-                        <a href="raw/text/rfc4475.txt" class="rawLink">raw</a>
                     
 
    This request has a semicolon-separated parameter contained in the
@@ -683,7 +674,6 @@
       l: 0
 
 <a name="section-3.1.1.10"><h4>3.1.1.10   Varied and Unknown Transport Types</h4></a>
-                        <a href="raw/text/rfc4475.txt" class="rawLink">raw</a>
                     
 
    This request contains Via header field values with all known
@@ -708,7 +698,6 @@
       Via: SIP/2.0/TCP t5.example.com;branch=z9hG4bK0a9idfnee
       l: 0
 <a name="section-3.1.1.11"><h4>3.1.1.11   Multipart MIME Message</h4></a>
-                        <a href="raw/text/rfc4475.txt" class="rawLink">raw</a>
                     
 
    This MESSAGE request contains two body parts.  The second part is
@@ -783,7 +772,6 @@
       --7a9cbec02ceef655--
 
 <a name="section-3.1.1.12"><h4>3.1.1.12   Unusual Reason Phrase</h4></a>
-                        <a href="raw/text/rfc4475.txt" class="rawLink">raw</a>
                     
 
    This 200 response contains a reason phrase other than "OK".  The
@@ -823,7 +811,6 @@
       a=rtpmap:31 LPC
 
 <a name="section-3.1.1.13"><h4>3.1.1.13   Empty Reason Phrase</h4></a>
-                        <a href="raw/text/rfc4475.txt" class="rawLink">raw</a>
                     
 
    This well-formed response contains no reason phrase.  A parser must
@@ -850,7 +837,6 @@
    messages.
 
 </p><p class="rfcparagraph"><a name="section-3.1.2.1"><h4>3.1.2.1   Extraneous Header Field Separators</h4></a>
-                        <a href="raw/text/rfc4475.txt" class="rawLink">raw</a>
                     
 
    The Via header field of this request contains additional semicolons
@@ -884,7 +870,6 @@
       a=rtpmap:31 LPC
 
 <a name="section-3.1.2.2"><h4>3.1.2.2   Content Length Larger Than Message</h4></a>
-                        <a href="raw/text/rfc4475.txt" class="rawLink">raw</a>
                     
 
    This is a request message with a Content Length that is larger than
@@ -920,7 +905,6 @@
       a=rtpmap:31 LPC
 
 <a name="section-3.1.2.3"><h4>3.1.2.3   Negative Content-Length</h4></a>
-                        <a href="raw/text/rfc4475.txt" class="rawLink">raw</a>
                     
 
    This request has a negative value for Content-Length.
@@ -962,7 +946,6 @@
       a=rtpmap:31 LPC
 
 <a name="section-3.1.2.4"><h4>3.1.2.4   Request Scalar Fields with Overlarge Values</h4></a>
-                        <a href="raw/text/rfc4475.txt" class="rawLink">raw</a>
                     
 
    This request contains several scalar header field values outside
@@ -1001,7 +984,6 @@
       Content-Length: 0
 
 <a name="section-3.1.2.5"><h4>3.1.2.5   Response Scalar Fields with Overlarge Values</h4></a>
-                        <a href="raw/text/rfc4475.txt" class="rawLink">raw</a>
                     
 
    This response contains several scalar header field values outside
@@ -1032,7 +1014,6 @@
       Warning: 1812 overture "In Progress"
       Content-Length: 0
 <a name="section-3.1.2.6"><h4>3.1.2.6   Unterminated Quoted String in Display Name</h4></a>
-                        <a href="raw/text/rfc4475.txt" class="rawLink">raw</a>
                     
 
    This is a request with an unterminated quote in the display name of
@@ -1067,7 +1048,6 @@
       m=video 3227 RTP/AVP 31
       a=rtpmap:31 LPC
 <a name="section-3.1.2.7"><h4>3.1.2.7   <> Enclosing Request-URI</h4></a>
-                        <a href="raw/text/rfc4475.txt" class="rawLink">raw</a>
                     
 
    This INVITE request is invalid because the Request-URI has been
@@ -1101,7 +1081,6 @@
       m=video 3227 RTP/AVP 31
       a=rtpmap:31 LPC
 <a name="section-3.1.2.8"><h4>3.1.2.8   Malformed SIP Request-URI (embedded LWS)</h4></a>
-                        <a href="raw/text/rfc4475.txt" class="rawLink">raw</a>
                     
 
    This INVITE has illegal LWS within the Request-URI.
@@ -1134,7 +1113,6 @@
       m=video 3227 RTP/AVP 31
       a=rtpmap:31 LPC
 <a name="section-3.1.2.9"><h4>3.1.2.9   Multiple SP Separating Request-Line Elements</h4></a>
-                        <a href="raw/text/rfc4475.txt" class="rawLink">raw</a>
                     
 
    This INVITE has illegal multiple SP characters between elements of
@@ -1168,7 +1146,6 @@
       m=video 3227 RTP/AVP 31
       a=rtpmap:31 LPC
 <a name="section-3.1.2.10"><h4>3.1.2.10   SP Characters at End of Request-Line</h4></a>
-                        <a href="raw/text/rfc4475.txt" class="rawLink">raw</a>
                     
 
    This OPTIONS request contains SP characters between the SIP-Version
@@ -1192,7 +1169,6 @@
       Max-Forwards: 70
       Content-Length: 0
 <a name="section-3.1.2.11"><h4>3.1.2.11   Escaped Headers in SIP Request-URI</h4></a>
-                        <a href="raw/text/rfc4475.txt" class="rawLink">raw</a>
                     
 
    This INVITE is malformed, as the SIP Request-URI contains escaped
@@ -1227,7 +1203,6 @@
       m=video 3227 RTP/AVP 31
       a=rtpmap:31 LPC
 <a name="section-3.1.2.12"><h4>3.1.2.12   Invalid Time Zone in Date Header Field</h4></a>
-                        <a href="raw/text/rfc4475.txt" class="rawLink">raw</a>
                     
 
    This INVITE is invalid, as it contains a non-GMT time zone in the SIP
@@ -1267,7 +1242,6 @@
       m=video 3227 RTP/AVP 31
       a=rtpmap:31 LPC
 <a name="section-3.1.2.13"><h4>3.1.2.13   Failure to Enclose name-addr URI in <></h4></a>
-                        <a href="raw/text/rfc4475.txt" class="rawLink">raw</a>
                     
 
    This REGISTER request is malformed.  The SIP URI contained in the
@@ -1292,7 +1266,6 @@
       l: 0
 
 <a name="section-3.1.2.14"><h4>3.1.2.14   Spaces within addr-spec</h4></a>
-                        <a href="raw/text/rfc4475.txt" class="rawLink">raw</a>
                     
 
    This request is malformed, since the addr-spec in the To header field
@@ -1312,7 +1285,6 @@
       CSeq: 3923239 OPTIONS
       l: 0
 <a name="section-3.1.2.15"><h4>3.1.2.15   Non-token Characters in Display Name</h4></a>
-                        <a href="raw/text/rfc4475.txt" class="rawLink">raw</a>
                     
 
    This OPTIONS request is malformed, since the display names in the To
@@ -1340,7 +1312,6 @@
       l: 0
 
 <a name="section-3.1.2.16"><h4>3.1.2.16   Unknown Protocol Version</h4></a>
-                        <a href="raw/text/rfc4475.txt" class="rawLink">raw</a>
                     
 
    To an element implementing [RFC3261], this request is malformed due
@@ -1360,7 +1331,6 @@
       CSeq:    1 OPTIONS
       l: 0
 <a name="section-3.1.2.17"><h4>3.1.2.17   Start Line and CSeq Method Mismatch</h4></a>
-                        <a href="raw/text/rfc4475.txt" class="rawLink">raw</a>
                     
 
    This request has mismatching values for the method in the start line
@@ -1379,7 +1349,6 @@
       l: 0
 
 <a name="section-3.1.2.18"><h4>3.1.2.18   Unknown Method with CSeq Method Mismatch</h4></a>
-                        <a href="raw/text/rfc4475.txt" class="rawLink">raw</a>
                     
 
    This message has an unknown method in the start line, and a CSeq
@@ -1410,7 +1379,6 @@
       m=video 3227 RTP/AVP 31
       a=rtpmap:31 LPC
 <a name="section-3.1.2.19"><h4>3.1.2.19   Overlarge Response Code</h4></a>
-                        <a href="raw/text/rfc4475.txt" class="rawLink">raw</a>
                     
 
    This response has a response code larger than 699.  An element

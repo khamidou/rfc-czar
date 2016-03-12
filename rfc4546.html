@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
@@ -383,7 +383,6 @@
    these areas.
 
 </p><p class="rfcparagraph"><a name="section-3.2.4.1"><h4>3.2.4.1   Layering Model</h4></a>
-                        <a href="raw/text/rfc4546.txt" class="rawLink">raw</a>
                     
 
    An instance of ifEntry exists for each RF downstream interface, for
@@ -462,27 +461,23 @@
    this document.
 
 </p><p class="rfcparagraph"><a name="section-3.2.4.2"><h4>3.2.4.2   Virtual Circuits</h4></a>
-                        <a href="raw/text/rfc4546.txt" class="rawLink">raw</a>
                     
 
    This medium does not support virtual circuits, and this area is not
    applicable to this MIB module.
 
 </p><p class="rfcparagraph"><a name="section-3.2.4.3"><h4>3.2.4.3   ifTestTable</h4></a>
-                        <a href="raw/text/rfc4546.txt" class="rawLink">raw</a>
                     
 
    The ifTestTable is optional for DOCSIS CM/CMTS implementations, but
    is not specifically influenced by the RF MIB.
 
 </p><p class="rfcparagraph"><a name="section-3.2.4.4"><h4>3.2.4.4   ifRcvAddressTable</h4></a>
-                        <a href="raw/text/rfc4546.txt" class="rawLink">raw</a>
                     
 
    The ifRcvAddressTable is optional for DOCSIS CM/CMTS implementations,
    but is not specifically influenced by the RF MIB.
 <a name="section-3.2.4.5"><h4>3.2.4.5   ifEntry</h4></a>
-                        <a href="raw/text/rfc4546.txt" class="rawLink">raw</a>
                     
 
    This section documents only the differences from the requirements
@@ -490,7 +485,6 @@
    columns omitted from the descriptions below.
 
 </p><p class="rfcparagraph"><a name="section-3.2.4.5"><h4>3.2.4.5 1.  ifEntry for Downstream Interfaces</h4></a>
-                        <a href="raw/text/rfc4546.txt" class="rawLink">raw</a>
                     
 
    The ifEntry for downstream interfaces supports the
@@ -501,7 +495,6 @@
    return zero.
 
 </p><p class="rfcparagraph"><a name="section-3.2.4.5"><h4>3.2.4.5 1.1.  ifEntry for Downstream Interfaces in Cable Modem</h4></a>
-                        <a href="raw/text/rfc4546.txt" class="rawLink">raw</a>
                     
               Termination System
 
@@ -584,7 +577,6 @@
 
 </p><p class="rfcparagraph">   ifPromiscuousMode Return false.
 <a name="section-3.2.4.5"><h4>3.2.4.5 1.2.  ifEntry for Downstream Interfaces in Cable Modem</h4></a>
-                        <a href="raw/text/rfc4546.txt" class="rawLink">raw</a>
                     
 
    ifTable           Comments
@@ -670,7 +662,6 @@
 </p><p class="rfcparagraph">   ifPromiscuousMode Refer to the Interfaces MIB.
 
 </p><p class="rfcparagraph"><a name="section-3.2.4.5"><h4>3.2.4.5 2.  ifEntry for Upstream Interfaces</h4></a>
-                        <a href="raw/text/rfc4546.txt" class="rawLink">raw</a>
                     
 
    Each supported interface of the type docsCableUpstream(129) must have<br>
@@ -681,7 +672,6 @@
    output only interface at the CM, and all input status counters --
    ifIn* -- will return zero.
 <a name="section-3.2.4.5"><h4>3.2.4.5 2.1.  ifEntry for Upstream Interfaces in Cable Modem Termination</h4></a>
-                        <a href="raw/text/rfc4546.txt" class="rawLink">raw</a>
                     
               System
 
@@ -779,7 +769,6 @@
 </p><p class="rfcparagraph">   ifOutErrors       Return zero.
 
 </p><p class="rfcparagraph"><a name="section-3.2.4.5"><h4>3.2.4.5 2.2.  ifEntry for Upstream Interfaces in Cable Modem</h4></a>
-                        <a href="raw/text/rfc4546.txt" class="rawLink">raw</a>
                     
 
    ifTable           Comments
@@ -860,7 +849,6 @@
 </p><p class="rfcparagraph">   ifPromiscuousMode Return false.
 
 </p><p class="rfcparagraph"><a name="section-3.2.4.5"><h4>3.2.4.5 3.  ifEntry for Upstream Channels</h4></a>
-                        <a href="raw/text/rfc4546.txt" class="rawLink">raw</a>
                     
 
    Each supported channel of the type docsCableUpstreamChannel(205) must<br>
@@ -872,7 +860,6 @@
    status counters -- ifOut* -- will return zero.  DOCSIS CMs are not
    required to support logical upstream channels.
 <a name="section-3.2.4.5"><h4>3.2.4.5 3.1.  ifEntry for Upstream Channels in Cable Modem Termination</h4></a>
-                        <a href="raw/text/rfc4546.txt" class="rawLink">raw</a>
                     
               System
 
@@ -954,7 +941,6 @@
 </p><p class="rfcparagraph">   ifOutErrors       Return zero.
 
 </p><p class="rfcparagraph"><a name="section-3.2.4.5"><h4>3.2.4.5 4.  ifEntry for the MAC Layer</h4></a>
-                        <a href="raw/text/rfc4546.txt" class="rawLink">raw</a>
                     
 
    The ifEntry for the MAC Layer supports the ifGeneralInformationGroup
@@ -1045,7 +1031,6 @@
 </p><p class="rfcparagraph">	<a name="section-3.2.5"><h4>3.2.5   Offline Upstream Parameters Handling</h4></a>
 
 <a name="section-3.2.5.1"><h4>3.2.5.1   Overview</h4></a>
-                        <a href="raw/text/rfc4546.txt" class="rawLink">raw</a>
                     
 
    This section describes the offline configuration of the DOCSIS 2.0
@@ -1059,7 +1044,6 @@
    CMTSs and is not applicable to CMs.
 
 </p><p class="rfcparagraph"><a name="section-3.2.5.2"><h4>3.2.5.2   Operation</h4></a>
-                        <a href="raw/text/rfc4546.txt" class="rawLink">raw</a>
                     
 
    This mechanism uses three upstream channel MIB objects defined for
@@ -1110,7 +1094,6 @@
 </p><p class="rfcparagraph">   o  After completion of the update operations, the temporary interface
       is destroyed, setting the docsIfUpChannelStatus to 'destroy'.
 <a name="section-3.2.5.3"><h4>3.2.5.3   Relation of docsIfUpChannelStatus and ifMib</h4></a>
-                        <a href="raw/text/rfc4546.txt" class="rawLink">raw</a>
                     
 
    The main purpose of docsIfUpChannelStatus is the creation of

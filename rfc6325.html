@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
@@ -1538,7 +1538,6 @@ Table of Figures
    Section 4.2.4.3) for VLANs on the link.
 
 </p><p class="rfcparagraph"><a name="section-4.2.4.1"><h4>4.2.4.1   P2P Hello Links</h4></a>
-                        <a href="raw/text/rfc6325.txt" class="rawLink">raw</a>
                     
 
    RBridge ports can be configured to use IS-IS P2P Hellos.  This
@@ -1566,7 +1565,6 @@ Table of Figures
    result in lack of connectivity.
 
 </p><p class="rfcparagraph"><a name="section-4.2.4.2"><h4>4.2.4.2   Designated RBridge</h4></a>
-                        <a href="raw/text/rfc6325.txt" class="rawLink">raw</a>
                     
 
    TRILL IS-IS elects one RBridge for each LAN link to be the Designated
@@ -1597,7 +1595,6 @@ Table of Figures
       VLANs.
 
 </p><p class="rfcparagraph"><a name="section-4.2.4.3"><h4>4.2.4.3   Appointed VLAN-x Forwarder</h4></a>
-                        <a href="raw/text/rfc6325.txt" class="rawLink">raw</a>
                     
 
    The appointed VLAN-x forwarder for a link is responsible for the
@@ -1667,7 +1664,6 @@ Table of Figures
    appointed by the new DRB.
 
 </p><p class="rfcparagraph"><a name="section-4.2.4.4"><h4>4.2.4.4   TRILL LSP Information</h4></a>
-                        <a href="raw/text/rfc6325.txt" class="rawLink">raw</a>
                     
 
    The information items in the TRILL IS-IS LSP that are mentioned
@@ -1863,7 +1859,6 @@ Table of Figures
    the ESADI frames that RBridge originates.
 
 </p><p class="rfcparagraph"><a name="section-4.2.5.1"><h4>4.2.5.1   TRILL ESADI Participation</h4></a>
-                        <a href="raw/text/rfc6325.txt" class="rawLink">raw</a>
                     
 
    An RBridge does not send any Hellos because of participation in the
@@ -1894,7 +1889,6 @@ Table of Figures
    that VLAN.
 
 </p><p class="rfcparagraph"><a name="section-4.2.5.2"><h4>4.2.5.2   TRILL ESADI Information</h4></a>
-                        <a href="raw/text/rfc6325.txt" class="rawLink">raw</a>
                     
 
    The information distributed with the ESADI protocol is the list of
@@ -2147,7 +2141,6 @@ Table of Figures
    on the link at some point since it last rebooted.
 
 </p><p class="rfcparagraph"><a name="section-4.4.2.1"><h4>4.4.2.1   TRILL Neighbor List</h4></a>
-                        <a href="raw/text/rfc6325.txt" class="rawLink">raw</a>
                     
 
    The new TRILL Neighbor TLV includes the following information for
@@ -2749,7 +2742,6 @@ Table of Figures
    multicast or broadcast.
 
 </p><p class="rfcparagraph"><a name="section-4.6.1.1"><h4>4.6.1.1   Native Unicast Case</h4></a>
-                        <a href="raw/text/rfc6325.txt" class="rawLink">raw</a>
                     
 
    If the destination MAC address of the native frame is a unicast
@@ -2788,7 +2780,6 @@ Table of Figures
       unicast destination address.
 
 </p><p class="rfcparagraph"><a name="section-4.6.1.2"><h4>4.6.1.2   Native Multicast and Broadcast Frames</h4></a>
-                        <a href="raw/text/rfc6325.txt" class="rawLink">raw</a>
                     
 
    If the RBridge has multiple ports attached to the same link, all but
@@ -2866,14 +2857,12 @@ Table of Figures
       as in Section 4.6.2.3.
 
 </p><p class="rfcparagraph"><a name="section-4.6.2.1"><h4>4.6.2.1   TRILL Control Frames</h4></a>
-                        <a href="raw/text/rfc6325.txt" class="rawLink">raw</a>
                     
 
    The frame is processed by the TRILL IS-IS instance on RBn and is not
    forwarded.
 
 </p><p class="rfcparagraph"><a name="section-4.6.2.2"><h4>4.6.2.2   TRILL ESADI Frames</h4></a>
-                        <a href="raw/text/rfc6325.txt" class="rawLink">raw</a>
                     
 
    If M == 0, the frame is silently discarded.
@@ -2886,7 +2875,6 @@ Table of Figures
    decapsulated and provided to that local ESADI protocol.
 
 </p><p class="rfcparagraph"><a name="section-4.6.2.3"><h4>4.6.2.3   TRILL Data Frames</h4></a>
-                        <a href="raw/text/rfc6325.txt" class="rawLink">raw</a>
                     
 
    The M flag is then checked.  If it is zero, processing continues as
@@ -2894,7 +2882,6 @@ Table of Figures
    described in Section 4.6.2.5.
 
 </p><p class="rfcparagraph"><a name="section-4.6.2.4"><h4>4.6.2.4   Known Unicast TRILL Data Frames</h4></a>
-                        <a href="raw/text/rfc6325.txt" class="rawLink">raw</a>
                     
 
    The egress nickname in the TRILL header is examined, and if it is
@@ -2953,7 +2940,6 @@ Table of Figures
    on all such links.
 
 </p><p class="rfcparagraph"><a name="section-4.6.2.5"><h4>4.6.2.5   Multi-Destination TRILL Data Frames</h4></a>
-                        <a href="raw/text/rfc6325.txt" class="rawLink">raw</a>
                     
 
    The egress and ingress nicknames in the TRILL header are examined
@@ -3445,7 +3431,6 @@ Table of Figures
    interact so as to make the RBridge as a whole a spanning tree node.
 
 </p><p class="rfcparagraph"><a name="section-4.9.3.1"><h4>4.9.3.1   Receipt of BPDUs</h4></a>
-                        <a href="raw/text/rfc6325.txt" class="rawLink">raw</a>
                     
 
    Rbridges MUST listen to spanning tree configuration BPDUs received on
@@ -3463,7 +3448,6 @@ Table of Figures
    Section 4.9.3.3.
 
 </p><p class="rfcparagraph"><a name="section-4.9.3.2"><h4>4.9.3.2   Root Bridge Changes</h4></a>
-                        <a href="raw/text/rfc6325.txt" class="rawLink">raw</a>
                     
 
    A change in the root bridge seen in the spanning tree BPDUs received
@@ -3490,7 +3474,6 @@ Table of Figures
    frames between the RBridges involved.
 
 </p><p class="rfcparagraph"><a name="section-4.9.3.3"><h4>4.9.3.3   Transmission of BPDUs</h4></a>
-                        <a href="raw/text/rfc6325.txt" class="rawLink">raw</a>
                     
 
    When an RBridge ceases to be appointed forwarder for one or more

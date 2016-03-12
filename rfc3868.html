@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
@@ -295,7 +295,6 @@
    See Appendix A.3.1 for operation recommendations.
 
 </p><p class="rfcparagraph"><a name="section-1.3.1.1"><h4>1.3.1.1   SG as endpoint</h4></a>
-                        <a href="raw/text/rfc3868.txt" class="rawLink">raw</a>
                     
 
    In this case, the connectionless SCCP messages are routed on point
@@ -304,7 +303,6 @@
    from SS7 point of view, the SCCP-user is located at the SG.
 
 </p><p class="rfcparagraph"><a name="section-1.3.1.2"><h4>1.3.1.2   Signalling Gateway as relay-point</h4></a>
-                        <a href="raw/text/rfc3868.txt" class="rawLink">raw</a>
                     
 
    A Global Title translation is executed at the signalling gateway,
@@ -3170,7 +3168,6 @@
    -  SSN (non-zero) and optional IP address (IPv4 or IPv6) when routing
       is done on IP address + SSN
 <a name="section-3.10.2.1"><h4>3.10.2.1   Routing Indicator</h4></a>
-                        <a href="raw/text/rfc3868.txt" class="rawLink">raw</a>
                     
 
    The following values are valid for the routing indicator:
@@ -3185,7 +3182,6 @@
    present in the address parameters field.
 
 </p><p class="rfcparagraph"><a name="section-3.10.2.2"><h4>3.10.2.2   Address Indicator</h4></a>
-                        <a href="raw/text/rfc3868.txt" class="rawLink">raw</a>
                     
 
    This parameter is needed for interworking with SS7 networks.  The
@@ -3230,7 +3226,6 @@
    ignored by the receiver.
 
 </p><p class="rfcparagraph"><a name="section-3.10.2.3"><h4>3.10.2.3   Global Title</h4></a>
-                        <a href="raw/text/rfc3868.txt" class="rawLink">raw</a>
                     
 
    0                 1                   2                   3
@@ -3321,7 +3316,6 @@
    3.4.2.3.1.
 
 </p><p class="rfcparagraph"><a name="section-3.10.2.4"><h4>3.10.2.4   Point Code</h4></a>
-                        <a href="raw/text/rfc3868.txt" class="rawLink">raw</a>
                     
 
    0                   1                   2                   3
@@ -3336,7 +3330,6 @@
    Code field.
 
 </p><p class="rfcparagraph"><a name="section-3.10.2.5"><h4>3.10.2.5   Subsystem Number</h4></a>
-                        <a href="raw/text/rfc3868.txt" class="rawLink">raw</a>
                     
 
    0                   1                   2                   3
@@ -3350,7 +3343,6 @@
    The internationally standardized SSN values are described in chapter
    3.4.2.2 of Q.713.
 <a name="section-3.10.2.6"><h4>3.10.2.6   IP Addresses</h4></a>
-                        <a href="raw/text/rfc3868.txt" class="rawLink">raw</a>
                     
 
    The IP address formats can use different tags.  It should be noted
@@ -3370,7 +3362,6 @@
             for IPv6.
 
 </p><p class="rfcparagraph"><a name="section-3.10.2.7"><h4>3.10.2.7   Hostname</h4></a>
-                        <a href="raw/text/rfc3868.txt" class="rawLink">raw</a>
                     
 
    0                   1                   2                   3
@@ -4213,7 +4204,6 @@
        Tr = Recovery Timer
 
 <a name="section-4.3.2.1"><h4>4.3.2.1   IPSP Considerations</h4></a>
-                        <a href="raw/text/rfc3868.txt" class="rawLink">raw</a>
                     
 
    The AS state diagram for the AS-SG case is applicable for IPSP
@@ -4247,7 +4237,6 @@
 </p><p class="rfcparagraph">	<a name="section-4.3.4"><h4>4.3.4   ASPM Procedures for Peer-to-Peer Messages</h4></a>
 
 <a name="section-4.3.4.1"><h4>4.3.4.1   ASP Up Procedures</h4></a>
-                        <a href="raw/text/rfc3868.txt" class="rawLink">raw</a>
                     
 
    After an ASP has successfully established an SCTP association to an
@@ -4305,7 +4294,6 @@
    and no further action is taken.
 
 </p><p class="rfcparagraph"><a name="section-4.3.4.1"><h4>4.3.4.1 1.  SUA Version Control</h4></a>
-                        <a href="raw/text/rfc3868.txt" class="rawLink">raw</a>
                     
 
    If an ASP Up message with an unsupported version is received, the
@@ -4319,7 +4307,6 @@
    message would normally come from the SGP.
 
 </p><p class="rfcparagraph"><a name="section-4.3.4.1"><h4>4.3.4.1 2.  IPSP Considerations</h4></a>
-                        <a href="raw/text/rfc3868.txt" class="rawLink">raw</a>
                     
 
    An IPSP may be considered in the ASP-INACTIVE state after and ASPUP
@@ -4339,7 +4326,6 @@
    state.
 
 </p><p class="rfcparagraph"><a name="section-4.3.4.2"><h4>4.3.4.2   ASP Down Procedures</h4></a>
-                        <a href="raw/text/rfc3868.txt" class="rawLink">raw</a>
                     
 
    The ASP will send an ASP Down message to an SGP when the ASP wishes
@@ -4382,7 +4368,6 @@
    carrying a negative indication.
 
 </p><p class="rfcparagraph"><a name="section-4.3.4.3"><h4>4.3.4.3   ASP Active Procedures</h4></a>
-                        <a href="raw/text/rfc3868.txt" class="rawLink">raw</a>
                     
 
    Anytime after the ASP has received an ASP Up Ack message from the SGP
@@ -4515,7 +4500,6 @@
    traffic in each traffic flow with the other ASPs in the broadcast
    group.
 <a name="section-4.3.4.3"><h4>4.3.4.3 1.  IPSP Considerations</h4></a>
-                        <a href="raw/text/rfc3868.txt" class="rawLink">raw</a>
                     
 
    Either of the IPSPs can initiate communication.  When an IPSP
@@ -4529,7 +4513,6 @@
    for completion.
 
 </p><p class="rfcparagraph"><a name="section-4.3.4.4"><h4>4.3.4.4   ASP Inactive Procedures</h4></a>
-                        <a href="raw/text/rfc3868.txt" class="rawLink">raw</a>
                     
 
    When an ASP wishes to withdraw from receiving traffic within an AS,
@@ -4624,7 +4607,6 @@
    moved to the AS-INACTIVE state.
 
 </p><p class="rfcparagraph"><a name="section-4.3.4.4"><h4>4.3.4.4 1.  IPSP Considerations</h4></a>
-                        <a href="raw/text/rfc3868.txt" class="rawLink">raw</a>
                     
 
    An IPSP may be considered in the ASP-INACTIVE state by a remote IPSP
@@ -4636,7 +4618,6 @@
    needed for completion.
 
 </p><p class="rfcparagraph"><a name="section-4.3.4.5"><h4>4.3.4.5   Notify Procedures</h4></a>
-                        <a href="raw/text/rfc3868.txt" class="rawLink">raw</a>
                     
 
    A Notify message reflecting a change in the AS state MUST be sent to
@@ -4663,7 +4644,6 @@
    Application Servers the ASP is a member and take the appropriate
    action in each AS.
 <a name="section-4.3.4.5"><h4>4.3.4.5 1.  IPSP Considerations (NTFY)</h4></a>
-                        <a href="raw/text/rfc3868.txt" class="rawLink">raw</a>
                     
 
    Notify works in the same manner as in the SG-AS case.  One of the
@@ -4671,7 +4651,6 @@
    ASP-DOWN state.
 
 </p><p class="rfcparagraph"><a name="section-4.3.4.6"><h4>4.3.4.6   Heartbeat Procedures</h4></a>
-                        <a href="raw/text/rfc3868.txt" class="rawLink">raw</a>
                     
 
    The optional Heartbeat procedures MAY be used when operating over
@@ -4861,7 +4840,6 @@
 </p><p class="rfcparagraph">	<a name="section-4.5.2"><h4>4.5.2   At an ASP</h4></a>
 
 <a name="section-4.5.2.1"><h4>4.5.2.1   Single SG Configurations</h4></a>
-                        <a href="raw/text/rfc3868.txt" class="rawLink">raw</a>
                     
 
    At an ASP, upon receiving an SS7 Signalling Network Management (SSNM)
@@ -4881,7 +4859,6 @@
    maintains the status of routes via the SG.
 
 </p><p class="rfcparagraph"><a name="section-4.5.2.2"><h4>4.5.2.2   Multiple SG Configurations</h4></a>
-                        <a href="raw/text/rfc3868.txt" class="rawLink">raw</a>
                     
 
    At an ASP, upon receiving a Signalling Network Management message
@@ -5011,7 +4988,6 @@
    the following general procedure in a loadsharing environment.
 
 </p><p class="rfcparagraph"><a name="section-4.7.2.1"><h4>4.7.2.1   Association Setup, ASP going active</h4></a>
-                        <a href="raw/text/rfc3868.txt" class="rawLink">raw</a>
                     
 
    After association setup and registration, an ASP normally goes active
@@ -5040,7 +5016,6 @@
 	<a name="section-4.7.3"><h4>4.7.3   Routing and message distribution at the SG</h4></a>
 
 <a name="section-4.7.3.1"><h4>4.7.3.1   TCAP traffic</h4></a>
-                        <a href="raw/text/rfc3868.txt" class="rawLink">raw</a>
                     
 
    Messages not containing a destination (or "responding") TID, i.e.,
@@ -5055,7 +5030,6 @@
    failure", if the return option is used.
 
 </p><p class="rfcparagraph"><a name="section-4.7.3.2"><h4>4.7.3.2   SCCP Connection Oriented traffic</h4></a>
-                        <a href="raw/text/rfc3868.txt" class="rawLink">raw</a>
                     
 
    Messages not containing a destination reference number (DRN), i.e., a
@@ -5118,7 +5092,6 @@
    The following sequences address fail-over of SEP and ASP.
 
 </p><p class="rfcparagraph"><a name="section-5.1.2.1"><h4>5.1.2.1   SEP Fail-over</h4></a>
-                        <a href="raw/text/rfc3868.txt" class="rawLink">raw</a>
                     
 
    The SEP knows that the SGP is 'concerned' about its availability.
@@ -5132,7 +5105,6 @@
        +-----------------DAUD----------------->
                                               +--------SST-------->
 <a name="section-5.1.2.2"><h4>5.1.2.2   Successful ASP Fail-over scenario</h4></a>
-                        <a href="raw/text/rfc3868.txt" class="rawLink">raw</a>
                     
 
    The following is an example of a successful fail-over scenario, where
@@ -5152,7 +5124,6 @@
        <----------NTFY (AS Active)------------+
 
 <a name="section-5.1.2.3"><h4>5.1.2.3   Unsuccessful ASP Fail-over scenario</h4></a>
-                        <a href="raw/text/rfc3868.txt" class="rawLink">raw</a>
                     
 
      ASP-a1            ASP-a2                SG                  SEP
@@ -5211,7 +5182,6 @@
    The following sequences address fail-over of ASP.
 
 </p><p class="rfcparagraph"><a name="section-5.2.2.1"><h4>5.2.2.1   Successful ASP Fail-over scenario</h4></a>
-                        <a href="raw/text/rfc3868.txt" class="rawLink">raw</a>
                     
 
    The following is an example of a successful fail-over scenario, where
@@ -5229,7 +5199,6 @@
               +---------------------ASP Act----------------------->
               <-------------------ASP Act Ack---------------------+
 <a name="section-5.2.2.2"><h4>5.2.2.2   Unsuccessful ASP Fail-over scenario</h4></a>
-                        <a href="raw/text/rfc3868.txt" class="rawLink">raw</a>
                     
 
    The sequence is the same as 5.2.2.1 except that, since the backup

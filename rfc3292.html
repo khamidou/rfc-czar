@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
@@ -491,7 +491,6 @@ Specification of Requirements
          Configuration or an All Ports Configuration message.
 
 </p><p class="rfcparagraph"><a name="section-3.1.2.1"><h4>3.1.2.1   Additional General Message Information</h4></a>
-                        <a href="raw/text/rfc3292.txt" class="rawLink">raw</a>
                     
 
    1. Any field in a GSMP message that is unused or defined as
@@ -563,7 +562,6 @@ Specification of Requirements
          the Label Type as described in the following sections.
 
 </p><p class="rfcparagraph"><a name="section-3.1.3.1"><h4>3.1.3.1   ATM Labels</h4></a>
-                        <a href="raw/text/rfc3292.txt" class="rawLink">raw</a>
                     
 
    If the Label Type = ATM Label, the labels MUST be interpreted as an
@@ -602,7 +600,6 @@ Specification of Requirements
    accepting connection management messages requesting virtual path
    connections).
 <a name="section-3.1.3.2"><h4>3.1.3.2   Frame Relay Labels</h4></a>
-                        <a href="raw/text/rfc3292.txt" class="rawLink">raw</a>
                     
 
    If the TLV Type = FR Label, the labels MUST be interpreted as a Frame
@@ -635,7 +632,6 @@ Specification of Requirements
          field when part of the Frame Relay data link header [13].
 
 </p><p class="rfcparagraph"><a name="section-3.1.3.3"><h4>3.1.3.3   MPLS Generic Labels</h4></a>
-                        <a href="raw/text/rfc3292.txt" class="rawLink">raw</a>
                     
 
    If a port's attribute PortType=MPLS, then that port's labels are for
@@ -657,7 +653,6 @@ Specification of Requirements
          as a 20-bit number in a 4-byte field.
 
 </p><p class="rfcparagraph"><a name="section-3.1.3.4"><h4>3.1.3.4   FEC Labels</h4></a>
-                        <a href="raw/text/rfc3292.txt" class="rawLink">raw</a>
                     
 
    Labels may be bound to Forwarding Equivalence Classes (FECs) as
@@ -709,7 +704,6 @@ Specification of Requirements
          Length field.
 
 </p><p class="rfcparagraph"><a name="section-3.1.3.5"><h4>3.1.3.5   Label Stacking</h4></a>
-                        <a href="raw/text/rfc3292.txt" class="rawLink">raw</a>
                     
 
    Label stacking is a technique used in MPLS [14] that allows
@@ -2376,7 +2370,6 @@ Specification of Requirements
 	<a name="section-6.2.1"><h4>6.2.1   Labels</h4></a>
 
 <a name="section-6.2.1.1"><h4>6.2.1.1   ATM Labels</h4></a>
-                        <a href="raw/text/rfc3292.txt" class="rawLink">raw</a>
                     
 
    If the Label Type = ATM Label, the labels range message MUST be
@@ -2493,7 +2486,6 @@ Specification of Requirements
    allocated a range of VCI's.
 
 </p><p class="rfcparagraph"><a name="section-6.2.1.2"><h4>6.2.1.2   Frame Relay Labels</h4></a>
-                        <a href="raw/text/rfc3292.txt" class="rawLink">raw</a>
                     
 
    If the Label Type = FR Label, the labels range message MUST be
@@ -2550,7 +2542,6 @@ Specification of Requirements
          to every switch port.
 
 </p><p class="rfcparagraph"><a name="section-6.2.1.3"><h4>6.2.1.3   MPLS Generic Labels</h4></a>
-                        <a href="raw/text/rfc3292.txt" class="rawLink">raw</a>
                     
 
    The Label Range Block for PortTypes using MPLS labels.  These types
@@ -2594,7 +2585,6 @@ Specification of Requirements
          to every switch port.
 
 </p><p class="rfcparagraph"><a name="section-6.2.1.4"><h4>6.2.1.4   FEC Labels</h4></a>
-                        <a href="raw/text/rfc3292.txt" class="rawLink">raw</a>
                     
 
    The Label Range message is not used for FEC Labels and is for further
@@ -3659,7 +3649,6 @@ Specification of Requirements
          reveal the physical interpretation of the 32-bit Port Number.
 
 </p><p class="rfcparagraph"><a name="section-8.2.1.1"><h4>8.2.1.1   PortType Specific data for PortType=ATM</h4></a>
-                        <a href="raw/text/rfc3292.txt" class="rawLink">raw</a>
                     
 
    If PortType=ATM, the Default Label Range Block has the following
@@ -3740,7 +3729,6 @@ Specification of Requirements
    channel even if it lies outside the range Min VCI to Max VCI
 
 <a name="section-8.2.1.2"><h4>8.2.1.2   PortType Specific data for PortType=FR</h4></a>
-                        <a href="raw/text/rfc3292.txt" class="rawLink">raw</a>
                     
 
    If PortType=FR, the Default Label Range Block has the following
@@ -3776,7 +3764,6 @@ Specification of Requirements
          requested range is a single DLCI with a value equal to the Min
          DLCI field.  Zero is a valid value.
 <a name="section-8.2.1.3"><h4>8.2.1.3   PortType Specific data for PortType=MPLS</h4></a>
-                        <a href="raw/text/rfc3292.txt" class="rawLink">raw</a>
                     
 
    The Default Label Range Block for PortTypes using MPLS labels.  These
@@ -3800,7 +3787,6 @@ Specification of Requirements
          bits each.
 
 </p><p class="rfcparagraph"><a name="section-8.2.1.4"><h4>8.2.1.4   PortType Specific data for PortType=FEC</h4></a>
-                        <a href="raw/text/rfc3292.txt" class="rawLink">raw</a>
                     
 
    The Default Label Range Block for PortTypes using FEC labels is not
@@ -4440,7 +4426,6 @@ Specification of Requirements
 </p><p class="rfcparagraph">	<a name="section-10.4.1"><h4>10.4.1   ATM Forum Service Categories</h4></a>
 
 <a name="section-10.4.1.1"><h4>10.4.1.1   CBR</h4></a>
-                        <a href="raw/text/rfc3292.txt" class="rawLink">raw</a>
                     
 
    Service Identifier:
@@ -4465,7 +4450,6 @@ Specification of Requirements
       -  (D) Packet Discard
 
 <a name="section-10.4.1.2"><h4>10.4.1.2   rt-VBR</h4></a>
-                        <a href="raw/text/rfc3292.txt" class="rawLink">raw</a>
                     
 
    Service Identifier:
@@ -4497,7 +4481,6 @@ Specification of Requirements
       -  (P) Packet Discard
       -  (V) VC Merge
 <a name="section-10.4.1.3"><h4>10.4.1.3   nrt-VBR</h4></a>
-                        <a href="raw/text/rfc3292.txt" class="rawLink">raw</a>
                     
 
    Service Identifier:
@@ -4528,7 +4511,6 @@ Specification of Requirements
       -  (V) VC Merge
 
 <a name="section-10.4.1.4"><h4>10.4.1.4   UBR</h4></a>
-                        <a href="raw/text/rfc3292.txt" class="rawLink">raw</a>
                     
 
    Service Identifier:
@@ -4554,13 +4536,11 @@ Specification of Requirements
       -  (V) VC Merge
 
 <a name="section-10.4.1.5"><h4>10.4.1.5   ABR</h4></a>
-                        <a href="raw/text/rfc3292.txt" class="rawLink">raw</a>
                     
 
    ABR is not supported in this version of GSMP.
 
 </p><p class="rfcparagraph"><a name="section-10.4.1.6"><h4>10.4.1.6   GFR</h4></a>
-                        <a href="raw/text/rfc3292.txt" class="rawLink">raw</a>
                     
 
    Service Identifier:
@@ -4590,7 +4570,6 @@ Specification of Requirements
 	<a name="section-10.4.2"><h4>10.4.2   Integrated Services</h4></a>
 
 <a name="section-10.4.2.1"><h4>10.4.2.1   Controlled Load</h4></a>
-                        <a href="raw/text/rfc3292.txt" class="rawLink">raw</a>
                     
 
    Service Identifier:

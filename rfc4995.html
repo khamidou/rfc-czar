@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
@@ -785,7 +785,6 @@
 </p><p class="rfcparagraph">   At least one of Feedback or Header MUST be present.
 
 </p><p class="rfcparagraph"><a name="section-5.2.1.1"><h4>5.2.1.1   Format of the Padding Octet</h4></a>
-                        <a href="raw/text/rfc4995.txt" class="rawLink">raw</a>
                     
 
    Padding octet:
@@ -798,7 +797,6 @@
    Note: The Padding octet MUST NOT be interpreted as an Add-CID octet
    for CID 0.
 <a name="section-5.2.1.2"><h4>5.2.1.2   Format of the Add-CID Octet</h4></a>
-                        <a href="raw/text/rfc4995.txt" class="rawLink">raw</a>
                     
 
    Add-CID octet:
@@ -813,7 +811,6 @@
 </p><p class="rfcparagraph">   Note: The Padding octet looks like an Add-CID octet for CID 0.
 
 </p><p class="rfcparagraph"><a name="section-5.2.1.3"><h4>5.2.1.3   General Format of Header</h4></a>
-                        <a href="raw/text/rfc4995.txt" class="rawLink">raw</a>
                     
 
    All ROHC packet types have the following general Header format:
@@ -873,7 +870,6 @@
    except when initializing a new context (see Section 5.1.1), or unless
    the profile indicated in the Profile field specifies otherwise.
 <a name="section-5.2.2.1"><h4>5.2.2.1   ROHC IR Packet Type</h4></a>
-                        <a href="raw/text/rfc4995.txt" class="rawLink">raw</a>
                     
 
    The IR header associates a CID with a profile, and typically also
@@ -913,7 +909,6 @@
       according to the profile indicated in the Profile field.
 
 </p><p class="rfcparagraph"><a name="section-5.2.2.2"><h4>5.2.2.2   ROHC IR-DYN Packet Type</h4></a>
-                        <a href="raw/text/rfc4995.txt" class="rawLink">raw</a>
                     
 
    In contrast to the IR header, the IR-DYN header can never initialize
@@ -1052,7 +1047,6 @@
    previously associated with the profile used to compress the flow.
 
 </p><p class="rfcparagraph"><a name="section-5.2.4.1"><h4>5.2.4.1   ROHC Feedback Format</h4></a>
-                        <a href="raw/text/rfc4995.txt" class="rawLink">raw</a>
                     
 
    ROHC defines three different categories of feedback messages:
@@ -1134,7 +1128,6 @@
    than a specific size configured for the channel.
 
 </p><p class="rfcparagraph"><a name="section-5.2.5.1"><h4>5.2.5.1   Segmentation Usage Considerations</h4></a>
-                        <a href="raw/text/rfc4995.txt" class="rawLink">raw</a>
                     
 
    The ROHC segmentation protocol is not particularly efficient.  It is
@@ -1155,7 +1148,6 @@
    associated with a specific context until all segments have been
    received and the whole unit has been reconstructed.
 <a name="section-5.2.5.2"><h4>5.2.5.2   Segmentation Protocol</h4></a>
-                        <a href="raw/text/rfc4995.txt" class="rawLink">raw</a>
                     
 
    ROHC segmentation is applied to the combination of the Header and the
@@ -1216,7 +1208,6 @@
    polynomials specified in subsequent sections.
 
 </p><p class="rfcparagraph"><a name="section-5.3.1.1"><h4>5.3.1.1   8-bit CRCs in IR and IR-DYN Headers</h4></a>
-                        <a href="raw/text/rfc4995.txt" class="rawLink">raw</a>
                     
 
    The coverage for the 8-bit CRC in the IR and IR-DYN headers is
@@ -1243,7 +1234,6 @@
    and the initial content of the CRC register is set to all 1's.
 
 </p><p class="rfcparagraph"><a name="section-5.3.1.2"><h4>5.3.1.2   3-bit CRC in Compressed Headers</h4></a>
-                        <a href="raw/text/rfc4995.txt" class="rawLink">raw</a>
                     
 
    The 3-bit CRC in compressed headers is calculated over all octets of
@@ -1267,7 +1257,6 @@
    decompressor context is assumed invalid.
 
 </p><p class="rfcparagraph"><a name="section-5.3.1.3"><h4>5.3.1.3   7-bit CRC in Compressed Headers</h4></a>
-                        <a href="raw/text/rfc4995.txt" class="rawLink">raw</a>
                     
 
    The 7-bit CRC in compressed headers is calculated over all octets of
@@ -1290,7 +1279,6 @@
    decompressor context is assumed invalid.
 
 </p><p class="rfcparagraph"><a name="section-5.3.1.4"><h4>5.3.1.4   32-bit Segmentation CRC</h4></a>
-                        <a href="raw/text/rfc4995.txt" class="rawLink">raw</a>
                     
 
    The 32-bit CRC is used by the segmentation scheme to verify the

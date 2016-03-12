@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
@@ -2008,7 +2008,6 @@ ISSN: 2070-1721                                                    Skype
 </p><p class="rfcparagraph">                     Name names<0..2^32-1>;
 
 </p><p class="rfcparagraph"><a name="section-6.3.1.1"><h4>6.3.1.1   Common Definitions</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    This section provides an introduction to the presentation language
@@ -2227,7 +2226,6 @@ ISSN: 2070-1721                                                    Skype
 </p><p class="rfcparagraph">   options:  Contains a series of ForwardingOption entries.  See
       Section 6.3.2.3.
 <a name="section-6.3.2.1"><h4>6.3.2.1   Processing Configuration Sequence Numbers</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    In order to be part of the overlay, a node MUST have a copy of the
@@ -2252,7 +2250,6 @@ ISSN: 2070-1721                                                    Skype
    configuration sequence is currently 65534 MUST set the configuration
    sequence number to 0 when they send a new configuration.
 <a name="section-6.3.2.2"><h4>6.3.2.2   Destination and Via Lists</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    The Destination List and Via List are sequences of Destination
@@ -2346,7 +2343,6 @@ ISSN: 2070-1721                                                    Skype
    forwarding the message.  If it does not match, the message MUST be
    silently dropped.
 <a name="section-6.3.2.3"><h4>6.3.2.3   Forwarding Option</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    The Forwarding header can be extended with forwarding header options,
@@ -2476,7 +2472,6 @@ ISSN: 2070-1721                                                    Skype
    transaction composed of an AttachReq and an AttachAns.
 
 </p><p class="rfcparagraph"><a name="section-6.3.3.1"><h4>6.3.3.1   Response Codes and Response Errors</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    A node processing a request MUST return its status in the
@@ -2789,7 +2784,6 @@ ISSN: 2070-1721                                                    Skype
    join, leave, and maintain the overlay.
 
 </p><p class="rfcparagraph"><a name="section-6.4.2.1"><h4>6.4.2.1   Join</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    A new peer (which already has credentials) uses the JoinReq message
@@ -2843,7 +2837,6 @@ ISSN: 2070-1721                                                    Skype
    seems appropriate.
 
 </p><p class="rfcparagraph"><a name="section-6.4.2.2"><h4>6.4.2.2   Leave</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    The LeaveReq message is used to indicate that a node is exiting the
@@ -2873,7 +2866,6 @@ ISSN: 2070-1721                                                    Skype
 </p><p class="rfcparagraph">   LeaveAns is an empty message.
 
 </p><p class="rfcparagraph"><a name="section-6.4.2.3"><h4>6.4.2.3   Update</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    Update is the primary overlay-specific maintenance message.  It is
@@ -2901,7 +2893,6 @@ ISSN: 2070-1721                                                    Skype
    an error.
 
 </p><p class="rfcparagraph"><a name="section-6.4.2.4"><h4>6.4.2.4   RouteQuery</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    The RouteQuery request allows the sender to ask a peer where they
@@ -2923,7 +2914,6 @@ ISSN: 2070-1721                                                    Skype
    that peer.
 
 </p><p class="rfcparagraph"><a name="section-6.4.2.4"><h4>6.4.2.4 1.  Request Definition</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    A RouteQueryReq message indicates the peer or resource that the
@@ -2957,14 +2947,12 @@ ISSN: 2070-1721                                                    Skype
 </p><p class="rfcparagraph">   overlay_specific_data
       Other data as appropriate for the overlay.
 <a name="section-6.4.2.4"><h4>6.4.2.4 2.  Response Definition</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    A response to a successful RouteQueryReq request is a RouteQueryAns
    message.  This message is completely overlay specific.
 
 </p><p class="rfcparagraph"><a name="section-6.4.2.5"><h4>6.4.2.5   Probe</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    Probe provides primitive "exploration" services: it allows a node to
@@ -2975,7 +2963,6 @@ ISSN: 2070-1721                                                    Skype
    information.
 
 </p><p class="rfcparagraph"><a name="section-6.4.2.5"><h4>6.4.2.5 1.  Request Definition</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    The ProbeReq message contains a list (potentially empty) of the
@@ -3005,7 +2992,6 @@ ISSN: 2070-1721                                                    Skype
       Indicates that the peer should Respond with how long the peer has
       been up, in seconds.
 <a name="section-6.4.2.5"><h4>6.4.2.5 2.  Response Definition</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    A successful ProbeAns response contains the information elements
@@ -3100,7 +3086,6 @@ ISSN: 2070-1721                                                    Skype
    really ready to act as a peer.  Thus, clients (unlike peers) can
    simply Attach without sending Join or Update.
 <a name="section-6.5.1.1"><h4>6.5.1.1   Request Definition</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    An Attach request message contains the requesting node ICE connection
@@ -3206,7 +3191,6 @@ ISSN: 2070-1721                                                    Skype
    Section 6.5.1.3.
 
 </p><p class="rfcparagraph"><a name="section-6.5.1.2"><h4>6.5.1.2   Response Definition</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    If a peer receives an Attach request, it MUST determine how to
@@ -3247,7 +3231,6 @@ ISSN: 2070-1721                                                    Skype
    and begin its own ICE checks.
 
 </p><p class="rfcparagraph"><a name="section-6.5.1.3"><h4>6.5.1.3   Using ICE with RELOAD</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    This section describes the profile of ICE that is used with RELOAD.
@@ -3275,7 +3258,6 @@ ISSN: 2070-1721                                                    Skype
    below.
 
 </p><p class="rfcparagraph"><a name="section-6.5.1.4"><h4>6.5.1.4   Collecting STUN Servers</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    ICE relies on the node having one or more Session Traversal Utilities
@@ -3309,7 +3291,6 @@ ISSN: 2070-1721                                                    Skype
    case some other peer MAY be used.
 
 </p><p class="rfcparagraph"><a name="section-6.5.1.5"><h4>6.5.1.5   Gathering Candidates</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    When a node wishes to establish a connection for the purposes of
@@ -3339,7 +3320,6 @@ ISSN: 2070-1721                                                    Skype
    work.
 
 </p><p class="rfcparagraph"><a name="section-6.5.1.6"><h4>6.5.1.6   Prioritizing Candidates</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    Standardization of additional protocols for use with ICE is expected,
@@ -3379,7 +3359,6 @@ ISSN: 2070-1721                                                    Skype
    defined in the future will fill this gap.
 
 </p><p class="rfcparagraph"><a name="section-6.5.1.7"><h4>6.5.1.7   Encoding the Attach Message</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    Section 4.3 of ICE describes procedures for encoding the SDP for
@@ -3401,7 +3380,6 @@ ISSN: 2070-1721                                                    Skype
    a valid answer for the purposes of following the ICE specification.
 
 </p><p class="rfcparagraph"><a name="section-6.5.1.8"><h4>6.5.1.8   Verifying ICE Support</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    An agent MUST skip the verification procedures in Sections 5.1 and
@@ -3409,7 +3387,6 @@ ISSN: 2070-1721                                                    Skype
    check is not required.
 
 </p><p class="rfcparagraph"><a name="section-6.5.1.9"><h4>6.5.1.9   Role Determination</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    The roles of controlling and controlled, as described in Section 5.2
@@ -3423,14 +3400,12 @@ ISSN: 2070-1721                                                    Skype
    ICE for RELOAD and ICE for SDP.
 
 </p><p class="rfcparagraph"><a name="section-6.5.1.10"><h4>6.5.1.10   Full ICE</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    When the overlay uses ICE, connectivity checks and nominations are
    used as in regular ICE.
 
 </p><p class="rfcparagraph"><a name="section-6.5.1.10"><h4>6.5.1.10 1.  Connectivity Checks</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    The processes of forming check lists in Section 5.7 of ICE,
@@ -3438,7 +3413,6 @@ ISSN: 2070-1721                                                    Skype
    Section 7 are used with RELOAD without change.
 
 </p><p class="rfcparagraph"><a name="section-6.5.1.10"><h4>6.5.1.10 2.  Concluding ICE</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    The procedures in Section 8 of ICE are followed to conclude ICE, with
@@ -3452,14 +3426,12 @@ ISSN: 2070-1721                                                    Skype
       the concept of forking, and thus the three-second delay in
       Section 8.3 of ICE does not apply.
 <a name="section-6.5.1.10"><h4>6.5.1.10 3.  Media Keepalives</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    STUN MUST be utilized for the keepalives described in Section 10 of
    ICE.
 
 </p><p class="rfcparagraph"><a name="section-6.5.1.11"><h4>6.5.1.11   No-ICE</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    No-ICE is selected when either side has provided "no ICE" Overlay
@@ -3471,14 +3443,12 @@ ISSN: 2070-1721                                                    Skype
    MUST be closed.
 
 </p><p class="rfcparagraph"><a name="section-6.5.1.12"><h4>6.5.1.12   Subsequent Offers and Answers</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    An agent MUST NOT send a subsequent offer or answer.  Thus, the
    procedures in Section 9 of ICE MUST be ignored.
 
 </p><p class="rfcparagraph"><a name="section-6.5.1.13"><h4>6.5.1.13   Sending Media</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    The procedures of Section 11 of ICE apply to RELOAD as well.
@@ -3497,7 +3467,6 @@ ISSN: 2070-1721                                                    Skype
    apply to RELOAD, since ICE restarts are not possible with RELOAD.
 
 </p><p class="rfcparagraph"><a name="section-6.5.1.14"><h4>6.5.1.14   Receiving Media</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    An agent MUST be prepared to receive packets for the application
@@ -3517,7 +3486,6 @@ ISSN: 2070-1721                                                    Skype
    protocol is to be run over the connection.
 
 </p><p class="rfcparagraph"><a name="section-6.5.2.1"><h4>6.5.2.1   Request Definition</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    An AppAttachReq message contains the requesting node's ICE connection
@@ -3556,7 +3524,6 @@ ISSN: 2070-1721                                                    Skype
    the NAT and Firewall binding alive.  Applications will often send
    traffic every 25 seconds to ensure this.
 <a name="section-6.5.2.2"><h4>6.5.2.2   Response Definition</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    If a peer receives an AppAttach request, it SHOULD process the
@@ -3584,7 +3551,6 @@ ISSN: 2070-1721                                                    Skype
    location (by using a Resource-ID), or to the wildcard Node-ID.
 
 </p><p class="rfcparagraph"><a name="section-6.5.3.1"><h4>6.5.3.1   Request Definition</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    The PingReq structure is used to make a Ping request.
@@ -3599,7 +3565,6 @@ ISSN: 2070-1721                                                    Skype
    overlay maximum packet sizes.
 
 </p><p class="rfcparagraph"><a name="section-6.5.3.2"><h4>6.5.3.2   Response Definition</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    A successful PingAns response contains the information elements
@@ -3629,7 +3594,6 @@ ISSN: 2070-1721                                                    Skype
    (Section 7.4.1.1).
 
 </p><p class="rfcparagraph"><a name="section-6.5.4.1"><h4>6.5.4.1   Request Definition</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    The ConfigUpdateReq structure is used to provide updated
@@ -3675,7 +3639,6 @@ ISSN: 2070-1721                                                    Skype
       "urn:ietf:params:xml:ns:p2p:config-base".
 
 </p><p class="rfcparagraph"><a name="section-6.5.4.2"><h4>6.5.4.2   Response Definition</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    The ConfigUpdateAns structure is used to respond to a ConfigUpdateReq
@@ -3802,7 +3765,6 @@ ISSN: 2070-1721                                                    Skype
    [RFC5226].  See Section 14.11.
 
 </p><p class="rfcparagraph"><a name="section-6.6.1.1"><h4>6.6.1.1   HIP</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    In a Host Identity Protocol Based Overlay Networking Environment (HIP
@@ -3825,14 +3787,12 @@ ISSN: 2070-1721                                                    Skype
    BONE.
 
 </p><p class="rfcparagraph"><a name="section-6.6.1.2"><h4>6.6.1.2   ICE-TCP</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    The ICE-TCP RFC [RFC6544] allows TCP to be supported as an Overlay
    Link protocol that can be added using ICE.
 
 </p><p class="rfcparagraph"><a name="section-6.6.1.3"><h4>6.6.1.3   Message-Oriented Transports</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    Modern message-oriented transports offer high performance and good
@@ -3844,7 +3804,6 @@ ISSN: 2070-1721                                                    Skype
    for ICE session establishment are not available.
 
 </p><p class="rfcparagraph"><a name="section-6.6.1.4"><h4>6.6.1.4   Tunneled Transports</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    As of the time of this writing, there is significant interest in the
@@ -3956,7 +3915,6 @@ ISSN: 2070-1721                                                    Skype
    [RFC5405].
 
 </p><p class="rfcparagraph"><a name="section-6.6.3.1"><h4>6.6.3.1   Stop and Wait Sender Algorithm</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    This section describes one possible implementation of a sender
@@ -4400,7 +4358,6 @@ ISSN: 2070-1721                                                    Skype
    the Kind.
 
 </p><p class="rfcparagraph"><a name="section-7.4.1.1"><h4>7.4.1.1   Request Definition</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    A StoreReq message is a sequence of StoreKindData values, each of
@@ -4610,7 +4567,6 @@ ISSN: 2070-1721                                                    Skype
                                         index=0      index=1
                                      value="foo"    value="bar"
 <a name="section-7.4.1.2"><h4>7.4.1.2   Response Definition</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    In response to a successful Store request, the peer MUST return a
@@ -4675,7 +4631,6 @@ ISSN: 2070-1721                                                    Skype
    Kind which was defined in the configuration document was used).
 
 </p><p class="rfcparagraph"><a name="section-7.4.1.3"><h4>7.4.1.3   Removing Values</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    RELOAD does not have an explicit Remove operation.  Rather, values
@@ -4718,7 +4673,6 @@ ISSN: 2070-1721                                                    Skype
    different Kinds.
 
 </p><p class="rfcparagraph"><a name="section-7.4.2.1"><h4>7.4.2.1   Request Definition</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    Fetch requests are defined by the FetchReq structure:
@@ -4809,7 +4763,6 @@ ISSN: 2070-1721                                                    Skype
    with no StoredData values.
 
 </p><p class="rfcparagraph"><a name="section-7.4.2.2"><h4>7.4.2.2   Response Definition</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    The response to a successful Fetch request is a FetchAns message
@@ -4882,7 +4835,6 @@ ISSN: 2070-1721                                                    Skype
    requesting the entire element.
 
 </p><p class="rfcparagraph"><a name="section-7.4.3.1"><h4>7.4.3.1   Request Definition</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    The Stat request is identical to the Fetch request.  It simply
@@ -4893,7 +4845,6 @@ ISSN: 2070-1721                                                    Skype
           StoredDataSpecifier     specifiers<0..2^16-1>;
         } StatReq;
 <a name="section-7.4.3.2"><h4>7.4.3.2   Response Definition</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    The Stat response contains the same sort of entries that a Fetch
@@ -4986,7 +4937,6 @@ ISSN: 2070-1721                                                    Skype
    peer which is closest to R.  This method can be used to walk the
    Overlay Instance by iteratively fetching R_n+1=nearest(1 + R_n).
 <a name="section-7.4.4.1"><h4>7.4.4.1   Request Definition</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    The FindReq message contains a Resource-ID and a series of Kind-IDs
@@ -5008,7 +4958,6 @@ ISSN: 2070-1721                                                    Skype
       Otherwise, the request MUST be rejected with an error.
 
 </p><p class="rfcparagraph"><a name="section-7.4.4.2"><h4>7.4.4.2   Response Definition</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    A response to a successful Find request is a FindAns message
@@ -5569,7 +5518,6 @@ ISSN: 2070-1721                                                    Skype
        recover.
 
 </p><p class="rfcparagraph"><a name="section-10.7.4.1"><h4>10.7.4.1   Updating the Neighbor Table</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    A peer MUST periodically send an Update request to every peer in its
@@ -5580,7 +5528,6 @@ ISSN: 2070-1721                                                    Skype
    interval" element (denominated in seconds).  A peer SHOULD randomly
    offset these Update requests so they do not occur all at once.
 <a name="section-10.7.4.2"><h4>10.7.4.2   Refreshing the Finger Table</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    A peer MUST periodically search for new peers to replace invalid
@@ -5626,7 +5573,6 @@ ISSN: 2070-1721                                                    Skype
 </p><p class="rfcparagraph">   A peer MAY choose to keep connections to multiple peers that can act
    for a given Finger Table entry.
 <a name="section-10.7.4.3"><h4>10.7.4.3   Adjusting Finger Table Size</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    If the Finger Table has fewer than 16 entries, the node SHOULD
@@ -5653,7 +5599,6 @@ ISSN: 2070-1721                                                    Skype
    in the peer's Neighbor Table.
 
 </p><p class="rfcparagraph"><a name="section-10.7.4.4"><h4>10.7.4.4   Detecting Partitioning</h4></a>
-                        <a href="raw/text/rfc6940.txt" class="rawLink">raw</a>
                     
 
    To detect that a partitioning has occurred and to heal the overlay, a
