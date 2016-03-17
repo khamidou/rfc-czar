@@ -1,10 +1,10 @@
 import os
 from flask import Flask, render_template, request, redirect, url_for
-from src.render_rfc import render_rfc
+from src.render_rfc import render_html_rfc
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'should be set')
 
 ###
 # Routing for your application.
@@ -21,10 +21,10 @@ def home():
 ###
 
 @app.route('/rfc<int:rfc_number>.html')
-def render_rfc(rfc_number):
-    filename = 'text/rfc{}.html'.format(rfc_number)
-    rendered = render_rfc(filename)
-    return render_template('rfc.html', rendered)
+def render_text_rfc(rfc_number):
+    filename = 'text/rfc{}.txt'.format(rfc_number)
+    rendered = render_html_rfc(filename)
+    return render_template('rfc.html', **rendered)
 
 @app.route('/<file_name>.txt')
 def send_text_file(file_name):

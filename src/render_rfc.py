@@ -148,7 +148,7 @@ def anchor_titles(data, **kwargs):
     return data
 
 
-def render_rfc(filename):
+def render_html_rfc(filename):
     with open(filename) as fd:
         data = fd.read()
 
@@ -169,7 +169,7 @@ def main():
     outfile = sys.argv[2]
 
     with codecs.open(outfile, 'w+', 'utf-8-sig') as fd:
-        fd.write(render_rfc(infile))
+        fd.write(render_html_rfc(infile))
 
     json_filename = outfile.split('.')[0] + '.json'
     with open(json_filename, 'w+') as fd:
