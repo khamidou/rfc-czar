@@ -160,14 +160,8 @@ def render_rfc(filename):
                add_line_breaks_legends, cleanup_toc, create_diagram_blocks]:
         out = fn(out, **opts)
 
-    env = Environment(loader=FileSystemLoader('templates'))
-    template = env.get_template('rfc.html')
-
     dct = dict(rfc=out)
-    rendered = template.render(**dct)
-
-    return rendered
-    # return out
+    return dct
 
 
 def main():

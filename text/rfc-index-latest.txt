@@ -1,0 +1,90 @@
+
+===========================================================================
+  This is a list of the latest RFCs only.
+  To get the full list of RFCs, please look up rfc-index.txt
+===========================================================================
+
+7749 The "xml2rfc" Version 2 Vocabulary. J. Reschke. February 2016.
+     (Format: TXT=109478 bytes) (Obsoletes RFC2629) (Status:
+     INFORMATIONAL) (DOI: 10.17487/RFC7749) 
+
+7750 Differentiated Service Code Point and Explicit Congestion
+     Notification Monitoring in the Two-Way Active Measurement Protocol
+     (TWAMP). J. Hedin, G. Mirsky, S. Baillargeon. February 2016.
+     (Format: TXT=24296 bytes) (Updates RFC5357) (Status: PROPOSED
+     STANDARD) (DOI: 10.17487/RFC7750) 
+
+7753 Port Control Protocol (PCP) Extension for Port-Set Allocation. Q.
+     Sun, M. Boucadair, S. Sivakumar, C. Zhou, T. Tsou, S. Perreault.
+     February 2016. (Format: TXT=34550 bytes) (Status: PROPOSED STANDARD)
+     (DOI: 10.17487/RFC7753) 
+
+7755 SIIT-DC: Stateless IP/ICMP Translation for IPv6 Data Center
+     Environments. T. Anderson. February 2016. (Format: TXT=54648 bytes)
+     (Status: INFORMATIONAL) (DOI: 10.17487/RFC7755) 
+
+7756 Stateless IP/ICMP Translation for IPv6 Internet Data Center
+     Environments (SIIT-DC): Dual Translation Mode. T. Anderson, S.
+     Steffann. February 2016. (Format: TXT=39291 bytes) (Status:
+     INFORMATIONAL) (DOI: 10.17487/RFC7756) 
+
+7757 Explicit Address Mappings for Stateless IP/ICMP Translation. T.
+     Anderson, A. Leiva Popper. February 2016. (Format: TXT=40938 bytes)
+     (Updates RFC6145) (Status: PROPOSED STANDARD) (DOI:
+     10.17487/RFC7757) 
+
+7758 Time Capability in NETCONF. T. Mizrahi, Y. Moses. February 2016.
+     (Format: TXT=56330 bytes) (Status: EXPERIMENTAL) (DOI:
+     10.17487/RFC7758) 
+
+7759 Configuration of Proactive Operations, Administration, and
+     Maintenance (OAM) Functions for MPLS-Based Transport Networks Using
+     Label Switched Path (LSP) Ping. E. Bellagamba, G. Mirsky, L.
+     Andersson, P. Skoldstrom, D. Ward, J. Drake. February 2016. (Format:
+     TXT=66411 bytes) (Status: PROPOSED STANDARD) (DOI: 10.17487/RFC7759) 
+
+7760 Statement of Work for Extensions to the IETF Datatracker for Author
+     Statistics. R. Housley. January 2016. (Format: TXT=16816 bytes)
+     (Status: INFORMATIONAL) (DOI: 10.17487/RFC7760) 
+
+7762 Initial Assignment for the Content Security Policy Directives
+     Registry. M. West. January 2016. (Format: TXT=10241 bytes) (Status:
+     INFORMATIONAL) (DOI: 10.17487/RFC7762) 
+
+7765 TCP and Stream Control Transmission Protocol (SCTP) RTO Restart. P.
+     Hurtig, A. Brunstrom, A. Petlund, M. Welzl. February 2016. (Format:
+     TXT=35361 bytes) (Status: EXPERIMENTAL) (DOI: 10.17487/RFC7765) 
+
+7767 Application-Initiated Check-Pointing via the Port Control Protocol
+     (PCP). S. Vinapamula, S. Sivakumar, M. Boucadair, T. Reddy. February
+     2016. (Format: TXT=24178 bytes) (Status: INFORMATIONAL) (DOI:
+     10.17487/RFC7767) 
+
+7768 Port Management to Reduce Logging in Large-Scale NATs. T. Tsou, W.
+     Li, T. Taylor, J. Huang. January 2016. (Format: TXT=23442 bytes)
+     (Status: INFORMATIONAL) (DOI: 10.17487/RFC7768) 
+
+7770 Extensions to OSPF for Advertising Optional Router Capabilities. A.
+     Lindem, Ed., N. Shen, JP. Vasseur, R. Aggarwal, S. Shaffer. February
+     2016. (Format: TXT=32855 bytes) (Obsoletes RFC4970) (Status:
+     PROPOSED STANDARD) (DOI: 10.17487/RFC7770) 
+
+7771 Switching Provider Edge (S-PE) Protection for MPLS and MPLS
+     Transport Profile (MPLS-TP) Static Multi-Segment Pseudowires. A.
+     Malis, Ed., L. Andersson, H. van Helvoort, J. Shin, L. Wang, A.
+     D'Alessandro. January 2016. (Format: TXT=19235 bytes) (Updates
+     RFC6870) (Status: PROPOSED STANDARD) (DOI: 10.17487/RFC7771) 
+
+7772 Reducing Energy Consumption of Router Advertisements. A.
+     Yourtchenko, L. Colitti. February 2016. (Format: TXT=12555 bytes)
+     (Also BCP0202) (Status: BEST CURRENT PRACTICE) (DOI:
+     10.17487/RFC7772) 
+
+7785 Recommendations for Prefix Binding in the Context of Softwire
+     Dual-Stack Lite. S. Vinapamula, M. Boucadair. February 2016.
+     (Format: TXT=20529 bytes) (Status: INFORMATIONAL) (DOI:
+     10.17487/RFC7785) 
+
+===========================================================================
+ - This file last updated Fri Feb 19 02:30:02 PST 2016
+
