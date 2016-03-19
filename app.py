@@ -1,11 +1,16 @@
 import os
-import glob
+import json
 from flask import Flask, render_template, request, redirect, url_for
 from src.render_rfc import render_html_rfc
 
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'should be set')
+
+# Load RFC metadata file.
+metadata = dict()
+with open('metadata.json') as fd:
+    metadata = json.load(fd)
 
 ###
 # Routing for your application.
@@ -29,8 +34,20 @@ def render_text_rfc(rfc_number):
 
 @app.route('/list')
 def list_rfc():
-    rfcs = [rfc[5:].split('.txt')[0] + '.html' for rfc in glob.glob('text/rfc*.txt')]
-    return render_template('list.html', rfcs=rfcs)
+    titled_rfcs = []
+    untitled_rfcs = []
+
+    for rfc in metadata.values():
+        if rfc.get('subject') is None:
+            untitled_rfcs.append(rfc)
+        else:
+            titled_rfcs.append(rfc)
+
+    sorted_titled_list = sorted(titled_rfcs, key=lambda x: x['rfc'], reverse=True)
+    sorted_untitled_list = sorted(untitled_rfcs, key=lambda x: x['rfc'], reverse=True)
+    return render_template('list.html',
+                           titled_rfcs=sorted_titled_list,
+                           untitled_rfc=sorted_untitled_list)
 
 
 @app.after_request

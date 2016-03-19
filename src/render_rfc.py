@@ -8,17 +8,9 @@ import json
 import codecs
 from jinja2 import Environment, FileSystemLoader
 
-# A dictionary containing metadata about the RFC. We
-# fill it out as we go through the file.
-metadata = dict()
-
-
 def cleanup_author_header(data, **kwargs):
     rfc_number_regexp = re.compile(r'Request for Comments:\s+(\d+)', re.MULTILINE | re.IGNORECASE)
     rfc_number = rfc_number_regexp.search(data)
-
-    if rfc_number is not None:
-        metadata['rfc'] = int(rfc_number.group(1))
 
     header_regexp = re.compile('(^Network Working Group.+?\n\n)(.+)\n\n(Status of this Memo)', re.MULTILINE | re.DOTALL | re.IGNORECASE)
 
@@ -26,8 +18,6 @@ def cleanup_author_header(data, **kwargs):
         header = match.group(1).replace('\n', '<br>')
         title = match.group(2)
         status = match.group(3)
-
-        metadata['title'] = title.strip().replace('\n', '')
 
         return """<p>{}</p>
                   <h1>{}</h1>
@@ -162,18 +152,3 @@ def render_html_rfc(filename):
 
     dct = dict(rfc=out)
     return dct
-
-
-def main():
-    infile = sys.argv[1]
-    outfile = sys.argv[2]
-
-    with codecs.open(outfile, 'w+', 'utf-8-sig') as fd:
-        fd.write(render_html_rfc(infile))
-
-    json_filename = outfile.split('.')[0] + '.json'
-    with open(json_filename, 'w+') as fd:
-        json.dump(metadata, fd)
-
-if __name__ == '__main__':
-    main()

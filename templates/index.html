@@ -30,43 +30,17 @@
       <div class="eight columns" style="margin-top: 20%">
         <h4>RFCSpot</h4>
         <p>
-            RFCSpot hosts thousands of RFCs in a simple, easy-to-read format.<br>
+            RFCs for the rest of us.<br>
             <a href="rfc3501.html">Read an example RFC.</a>
         </p>
 
         <form id='searchForm'>
-            <input list="rfcs" class="searchBar"/>
-            <datalist id="rfcs">
-            {% for rfc in rfcs %}
-            <option value="RFC{{ rfc['rfc'] }} {{ rfc['title'] }}" data-rfc='{{ rfc['rfc'] }}'></option>
-            {% endfor %}
-            </datalist>
-            <input type="submit" class="btn-primary"/>
         </form>
 
       </div>
     </div>
   </div>
   <script type='text/javascript' src='static/js/jquery-1.12.1.min.js'></script>
-  <script type='text/javascript'>
-      $(document).ready(function() {
-          var handleSearches = function() {
-            /* terrible hacks galore */
-            var re = /RFC(\d+)/;
-            var str = $('.searchBar').val()
-            var m;
-
-            if ((m = re.exec(str)) !== null) {
-                if (m.index === re.lastIndex) {
-                        re.lastIndex++;
-                }
-            }
-
-            window.location.href = 'http://rfcspot.com/rfc' + m[1] + '.html';
-          }
-          $('#searchForm').submit(handleSearches);
-      });
-  </script>
 <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 </body>
