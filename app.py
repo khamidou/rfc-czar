@@ -1,5 +1,6 @@
 import os
 import json
+import datetime
 from flask import Flask, render_template, request, redirect, url_for
 from src.render_rfc import render_html_rfc
 
@@ -19,7 +20,8 @@ with open('metadata.json') as fd:
 @app.route('/')
 def home():
     """Render website's home page."""
-    return render_template('index.html')
+    date = datetime.datetime.utcnow()
+    return render_template('index.html', date=date)
 
 
 ###
@@ -32,7 +34,7 @@ def render_text_rfc(rfc_number):
     rendered = render_html_rfc(filename)
     return render_template('rfc.html', **rendered)
 
-@app.route('/list')
+@app.route('/browse')
 def list_rfc():
     titled_rfcs = []
     untitled_rfcs = []
