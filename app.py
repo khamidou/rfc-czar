@@ -1,4 +1,5 @@
 import os
+import glob
 from flask import Flask, render_template, request, redirect, url_for
 from src.render_rfc import render_html_rfc
 
@@ -26,11 +27,10 @@ def render_text_rfc(rfc_number):
     rendered = render_html_rfc(filename)
     return render_template('rfc.html', **rendered)
 
-@app.route('/<file_name>.txt')
-def send_text_file(file_name):
-    """Send your static text file."""
-    file_dot_text = file_name + '.txt'
-    return app.send_static_file(file_dot_text)
+@app.route('/list')
+def list_rfc():
+    rfcs = [rfc[5:].split('.txt')[0] + '.html' for rfc in glob.glob('text/rfc*.txt')]
+    return render_template('list.html', rfcs=rfcs)
 
 
 @app.after_request

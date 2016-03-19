@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  <title>RFCSpot: RFCs for the rest of us.</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href="static/css/normalize.css">
+  <link rel="stylesheet" href="static/css/skeleton.css">
+  <link rel="stylesheet" href="static/css/home.css">
+
+</head>
+<body>
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div class="container">
+    <div class="row">
+      <div class="three columns" style="margin-top: 20%"></div>
+      <div class="eight columns" style="margin-top: 20%">
+        <h4>List of available RFCs:</h4>
+        {% for column in rfcs | sort | slice(4) -%}
+        <div class="four columns">
+            {%- for rfc in column -%}
+            <h5><a href="/{{ rfc }}">RFC {{ rfc }}</a></h5>
+            {%- endfor -%}
+        </div>
+        {%- endfor %}
+
+        <form id='searchForm'>
+            <input list="rfcs" class="searchBar"/>
+            <datalist id="rfcs">
+            {% for rfc in rfcs %}
+            <option value="RFC{{ rfc['rfc'] }} {{ rfc['title'] }}" data-rfc='{{ rfc['rfc'] }}'></option>
+            {% endfor %}
+            </datalist>
+            <input type="submit" class="btn-primary"/>
+        </form>
+
+      </div>
+    </div>
+  </div>
+  <script type='text/javascript' src='static/js/jquery-1.12.1.min.js'></script>
+  <script type='text/javascript'>
+      $(document).ready(function() {
+          var handleSearches = function() {
+            /* terrible hacks galore */
+            var re = /RFC(\d+)/;
+            var str = $('.searchBar').val()
+            var m;
+
+            if ((m = re.exec(str)) !== null) {
+                if (m.index === re.lastIndex) {
+                        re.lastIndex++;
+                }
+            }
+
+            window.location.href = 'http://rfcspot.com/rfc' + m[1] + '.html';
+          }
+          $('#searchForm').submit(handleSearches);
+      });
+  </script>
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>
