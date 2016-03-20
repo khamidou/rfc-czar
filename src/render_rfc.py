@@ -120,17 +120,17 @@ def anchor_titles(data, **kwargs):
 
     # Reverse section order because lvl1_title_rx matches the beginning of lvl2_title_rx
     # and lvl3_title_rx.
-    lvl4_title_rx = re.compile(r"^\s*(\d+)\.(\d+)\.(\d+)\.(\d+)\.*(.*)$", re.MULTILINE)
+    lvl4_title_rx = re.compile(r"^(\d+)\.(\d+)\.(\d+)\.(\d+)\.*(.*)$", re.MULTILINE)
     lvl4_template = r"""<a name="section-\1.\2.\3.\4"><h4>\1.\2.\3.\4 \5</h4></a>
                     """.format(filename)
 
     data = lvl4_title_rx.sub(lvl4_template, data)
 
-    lvl3_title_rx = re.compile(r"^\s*(\d+)\.(\d+)\.(\d+)\.*(.*)$", re.MULTILINE)
+    lvl3_title_rx = re.compile(r"^(\d+)\.(\d+)\.(\d+)\.*(.*)$", re.MULTILINE)
     lvl3_template = r"""\t<a name="section-\1.\2.\3"><h4>\1.\2.\3 \4</h4></a>"""
     data = lvl3_title_rx.sub(lvl3_template, data)
 
-    lvl2_title_rx = re.compile(r"^\s*(\d+)\.(\d+)\.*(.*)$", re.MULTILINE)
+    lvl2_title_rx = re.compile(r"^(\d+)\.(\d+)\.*(.*)$", re.MULTILINE)
     data = lvl2_title_rx.sub(r'\t<a name="section-\1.\2"><h3>\1.\2 \3</h3></a>', data)
 
     lvl1_title_rx = re.compile(r"^(\d+)\.*(.*)$", re.MULTILINE)
