@@ -134,7 +134,7 @@ def anchor_titles(data, **kwargs):
     data = lvl2_title_rx.sub(r'\t<a name="section-\1.\2"><h3>\1.\2 \3</h3></a>', data)
 
     lvl1_title_rx = re.compile(r"^(\d+)\.*(.*)$", re.MULTILINE)
-    data = lvl1_title_rx.sub(r"""\t<a name="section-\1"><h2>\1. \2 <a href="https://tools.ietf.org/html/{}#section-\1">(raw)</a></h2></a>
+    data = lvl1_title_rx.sub(r"""\t<a name="section-\1"><h2>\1. \2</h2></a>
                                    """.format(html_name), data)
 
     return data

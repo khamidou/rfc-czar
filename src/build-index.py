@@ -26,7 +26,7 @@ def build_post_index(tree):
     for post in tree.findall('//row[@PostTypeId="1"]'):
         title = post.get('Title')
         post_id = int(post.get('Id'))
-        url = "https://security.stackexchange.com/questions/{}/".format(post_id)
+        url = "https://stackoverflow.com/questions/{}/".format(post_id)
 
         questions_table[post_id] = dict(title=title, post_id=post_id, url=url)
 
@@ -51,19 +51,44 @@ def build_rfc_index(tree, post_index):
             if parent_post in post_index:
                 rfcs_table[rfc_id].append(parent_post)
 
+    # Dedupe.
+    for rfc in rfcs_table:
+        rfcs_table[rfc] = list(set(rfcs_table[rfc]))
+
     return rfcs_table
+
+
+# The post index is big. Only keep posts which are related to an RFC.
+def optimize_post_index(rfc_index, post_index):
+    posts = [item for sublist in rfc_index.values() for item in sublist]
+    optimized_index = dict()
+
+    for post in posts:
+        if post in post_index:
+            optimized_index[post] = post_index[post]
+
+    return optimized_index
 
 
 def main():
     if len(sys.argv) != 2:
         print "usage: build-index Posts.xml"
 
+    print "Building tree"
     tree = load_posts_file(sys.argv[1])
+
+    print "Building post index"
     post_index = build_post_index(tree)
+
+    print "Building RFC index"
     rfc_index = build_rfc_index(tree, post_index)
 
+    print "Building optimized index"
+    optimized_index = optimize_post_index(rfc_index, post_index)
+
+
     with open('post_index.json', 'w+') as fd:
-        json.dump(post_index, fd, indent=4)
+        json.dump(optimized_index, fd, indent=4)
 
     with open('rfc_index.json', 'w+') as fd:
         json.dump(rfc_index, fd, indent=4)
