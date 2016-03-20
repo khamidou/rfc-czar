@@ -31,7 +31,7 @@ def home():
 @app.route('/rfc<int:rfc_number>.html')
 def render_text_rfc(rfc_number):
     filename = 'text/rfc{}.txt'.format(rfc_number)
-    rendered = render_html_rfc(filename)
+    rendered = render_html_rfc(filename, metadata)
     return render_template('rfc.html', **rendered)
 
 @app.route('/browse')

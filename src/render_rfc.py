@@ -86,7 +86,6 @@ def create_paragraphs(data, **kwargs):
 
         return """<p class="rfcparagraph">{}</p>""".format(paragraph)
 
-
     data = paragraph_regexp.sub(format_match, data)
 
     return data
@@ -138,16 +137,34 @@ def anchor_titles(data, **kwargs):
     return data
 
 
-def render_html_rfc(filename):
+def replace_rfc_by_link(data, **kwargs):
+    rfc_metadata = kwargs['rfcs']
+
+    def format_match(match):
+        rfc_num = match.group(1)
+        title = ""
+        if rfc_num in rfc_metadata:
+            title = rfc_metadata[rfc_num].get('subject', '')
+
+        return """<a href="/rfc{num}.html" title="{subject}">RFC {num}</a>""".format(num=rfc_num,
+                                                                                     subject=title)
+
+    rfc_regexp = re.compile(r'RFC\s*(\d+)', re.MULTILINE | re.IGNORECASE)
+    data = rfc_regexp.sub(format_match, data)
+    return data
+
+
+def render_html_rfc(filename, rfc_metadata):
     with open(filename) as fd:
         data = fd.read()
 
     out = data
-    opts = dict(filename=filename)
+    opts = dict(filename=filename, rfcs=rfc_metadata)
 
     for fn in [remove_top_space, cleanup_author_header, remove_page_breaks,
                anchor_titles, create_paragraphs,
-               add_line_breaks_legends, cleanup_toc, create_diagram_blocks]:
+               add_line_breaks_legends, cleanup_toc, create_diagram_blocks,
+               replace_rfc_by_link]:
         out = fn(out, **opts)
 
     dct = dict(rfc=out)
