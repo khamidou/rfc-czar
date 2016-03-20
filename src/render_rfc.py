@@ -2,6 +2,7 @@
 # Does the following things:
 # 1. remove page breaks and signatures
 # 2. add links to the table of contents
+import os
 import re
 import sys
 import json
@@ -82,7 +83,7 @@ def create_paragraphs(data, **kwargs):
 
     def format_match(match):
         paragraph = match.group(0)
-        escaped_raw = paragraph.replace('"', '\"')
+        escaped_raw = paragraph.replace('"', '\"').replace('\n', '<br>')
 
         return """<p class="rfcparagraph">{}</p>""".format(paragraph)
 
@@ -115,24 +116,26 @@ def line_breaks_indented_blocks(data, **kwargs):
 
 def anchor_titles(data, **kwargs):
     filename = kwargs['filename']
+    html_name = kwargs['html_name']
 
     # Reverse section order because lvl1_title_rx matches the beginning of lvl2_title_rx
     # and lvl3_title_rx.
-    lvl4_title_rx = re.compile(r"^(\d+)\.(\d+)\.(\d+)\.(\d+)\.*(.*)$", re.MULTILINE)
+    lvl4_title_rx = re.compile(r"^\s*(\d+)\.(\d+)\.(\d+)\.(\d+)\.*(.*)$", re.MULTILINE)
     lvl4_template = r"""<a name="section-\1.\2.\3.\4"><h4>\1.\2.\3.\4 \5</h4></a>
                     """.format(filename)
 
     data = lvl4_title_rx.sub(lvl4_template, data)
 
-    lvl3_title_rx = re.compile(r"^(\d+)\.(\d+)\.(\d+)\.*(.*)$", re.MULTILINE)
+    lvl3_title_rx = re.compile(r"^\s*(\d+)\.(\d+)\.(\d+)\.*(.*)$", re.MULTILINE)
     lvl3_template = r"""\t<a name="section-\1.\2.\3"><h4>\1.\2.\3 \4</h4></a>"""
     data = lvl3_title_rx.sub(lvl3_template, data)
 
-    lvl2_title_rx = re.compile(r"^(\d+)\.(\d+)\.*(.*)$", re.MULTILINE)
+    lvl2_title_rx = re.compile(r"^\s*(\d+)\.(\d+)\.*(.*)$", re.MULTILINE)
     data = lvl2_title_rx.sub(r'\t<a name="section-\1.\2"><h3>\1.\2 \3</h3></a>', data)
 
     lvl1_title_rx = re.compile(r"^(\d+)\.*(.*)$", re.MULTILINE)
-    data = lvl1_title_rx.sub(r'\t<a name="section-\1"><h2>\1. \2</h2></a>', data)
+    data = lvl1_title_rx.sub(r"""\t<a name="section-\1"><h2>\1. \2 <a href="https://tools.ietf.org/html/{}#section-\1">(raw)</a></h2></a>
+                                   """.format(html_name), data)
 
     return data
 
@@ -159,12 +162,12 @@ def render_html_rfc(filename, rfc_metadata):
         data = fd.read()
 
     out = data
-    opts = dict(filename=filename, rfcs=rfc_metadata)
+    html_name = os.path.basename(filename).split('.')[0] + '.html'
+    opts = dict(filename=filename, html_name=html_name, rfcs=rfc_metadata)
 
-    for fn in [remove_top_space, cleanup_author_header, remove_page_breaks,
-               anchor_titles, create_paragraphs,
-               add_line_breaks_legends, cleanup_toc, create_diagram_blocks,
-               replace_rfc_by_link]:
+    for fn in [replace_rfc_by_link, remove_top_space, cleanup_author_header, remove_page_breaks,
+               anchor_titles, create_paragraphs, add_line_breaks_legends,
+               cleanup_toc, create_diagram_blocks]:
         out = fn(out, **opts)
 
     dct = dict(rfc=out)
