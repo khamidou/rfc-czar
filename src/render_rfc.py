@@ -39,16 +39,22 @@ def cleanup_author_header(data, **kwargs):
 
 def cleanup_toc(data, **kwargs):
     # Clean up the table of contents
-    # toc_regexp = re.compile(r'^\s+(.+?)\s*(.+?)(\.+)\s+\d+$', re.MULTILINE)
-    toc_regexp = re.compile(r'^\s+([\d\.]+)\s+(.+)(\.+)\s*(\d+)$', re.MULTILINE)
+    #toc_regexp = re.compile(r'^\s+([\d\.]+)\s+(.+)(\.+)\s*(\d+)$', re.MULTILINE)
+    toc_regexp = re.compile(r"^\s+(.+)\s+\.+\s+(\d+)", re.MULTILINE)
+    submatch_rx = re.compile(r"([\w\d\.]+)\s{2,}(.+)")
 
     def format_match(match):
-        section_name = match.group(1)
-        title = match.group(2)
+        submatch = submatch_rx.match(match.group(1))
+        if submatch:
+            section_name = submatch.group(1)
+            title = submatch.group(2)
+        else:
+            section_name = ''
+            title = match.group(1)
 
         anchor = section_name
-        if anchor[-1] == '.':
-            anchor = anchor[:-1]
+        if anchor and anchor[-1] == '.':
+            anchor = "#section-" + anchor[:-1]
 
         indent = ''
         # Indent parts depending on their section number.
@@ -57,9 +63,12 @@ def cleanup_toc(data, **kwargs):
         elif anchor.count('.') == 2:
             indent = 'indent-2'
 
-        return """<a href="#section-{}" class="{}">{} {}</a><br>""".format(anchor, indent, section_name, title)
+        return """<a href="{}" class="{}">{} {}</a><br>""".format(anchor, indent, section_name, title)
 
     data = toc_regexp.sub(format_match, data)
+
+    #special_part_rx = re.compile(r"^Table of Contents\n*\s*(\w.*)\s+\.+\s*(\d+)", re.MULTILINE | re.DOTALL)
+    #data = special_part_rx.sub(r"""<a href="section-\1">\1. \2</a><H1>LOL</H1>""", data)
 
     hl_toc_regexp = re.compile(r'^(Table of Contents)', re.IGNORECASE | re.MULTILINE)
     data = hl_toc_regexp.sub(r'<h2>\1</h2>', data)
