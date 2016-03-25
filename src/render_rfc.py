@@ -40,9 +40,10 @@ def cleanup_author_header(data, **kwargs):
 def cleanup_toc(data, **kwargs):
     # Clean up the table of contents
     #toc_regexp = re.compile(r'^\s+([\d\.]+)\s+(.+)(\.+)\s*(\d+)$', re.MULTILINE)
-    toc_regexp = re.compile(r"^\s+(.+)\s+\.+\s+(\d+)", re.MULTILINE)
-    submatch_rx = re.compile(r"([\w\d\.]+)\s{2,}(.+)")
+    toc_regexp = re.compile(r"^\s+(.+)\s+\.+\s+(\d+)$", re.MULTILINE)
+    submatch_rx = re.compile(r"([\w\d\.]+)\s(.+)")
 
+    raise
     def format_match(match):
         submatch = submatch_rx.match(match.group(1))
         if submatch:
@@ -143,9 +144,26 @@ def anchor_titles(data, **kwargs):
     data = lvl2_title_rx.sub(r'\t<a name="section-\1.\2"><h3>\1.\2 \3</h3></a>', data)
 
     lvl1_title_rx = re.compile(r"^(\d+)\.*(.*)$", re.MULTILINE)
-    data = lvl1_title_rx.sub(r"""\t<a name="section-\1"><h2>\1. \2</h2></a>
-                                   """.format(html_name), data)
+    data = lvl1_title_rx.sub(r"""\t<a name="section-\1"><h2>\1. \2</h2></a>""", data)
 
+    annex_title_rx = re.compile(r"^(\w+)\.*(.*)$", re.MULTILINE)
+    data = annex_title_rx.sub(r"""\t<a name="section-\1"><h2>\1. \2</h2></a>""", data)
+
+    return data
+
+
+def render_communication_lines_correctly(data, **kwargs):
+    # Lots of RFCs have lines of the form:
+    # Example:   C: a001 CAPABILITY
+    #            S: * CAPABILITY IMAP4rev1 STARTTLS LOGINDISABLED
+    #            S: a001 OK CAPABILITY completed
+    #            C: a002 STARTTLS
+    # so we need to insert line breaks between those.
+    client_rx = re.compile(r"^(.+)\s+([CS]\:)(.+)$", re.MULTILINE)
+    data = client_rx.sub(r"\1 \2 \3<br>", data)
+
+    args_rx = re.compile(r"^   ((Arguments|Responses|Result):)(.+?\n\s*\n)", re.MULTILINE | re.DOTALL)
+    data = args_rx.sub(r"<b>\1</b> <div style='white-space: pre'>\3</div>", data)
     return data
 
 
@@ -176,7 +194,7 @@ def render_html_rfc(filename, rfc_metadata):
 
     for fn in [replace_rfc_by_link, remove_top_space, cleanup_author_header, remove_page_breaks,
                anchor_titles, create_paragraphs, add_line_breaks_legends,
-               cleanup_toc, create_diagram_blocks]:
+               cleanup_toc, create_diagram_blocks, render_communication_lines_correctly]:
         out = fn(out, **opts)
 
     dct = dict(rfc=out)
