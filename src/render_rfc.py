@@ -106,7 +106,7 @@ def create_paragraphs(data, **kwargs):
 
 def create_diagram_blocks(data, **kwargs):
     # A boxed diagram usually starts by +-- and ends by ---+.
-    diagram_regexp = re.compile(r"(\s*\+(-){2,}.+(-){2,}\+)", re.MULTILINE | re.DOTALL)
+    diagram_regexp = re.compile(r"(\s*\+(-){2,}.+?(-){2,}\+)\n\n", re.MULTILINE | re.DOTALL)
     data = diagram_regexp.sub(r'<pre>\1\n</pre>\n', data)
 
     # Some diagrams aren't boxed but contain a lot of ----
