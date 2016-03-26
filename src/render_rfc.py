@@ -40,10 +40,9 @@ def cleanup_author_header(data, **kwargs):
 def cleanup_toc(data, **kwargs):
     # Clean up the table of contents
     #toc_regexp = re.compile(r'^\s+([\d\.]+)\s+(.+)(\.+)\s*(\d+)$', re.MULTILINE)
-    toc_regexp = re.compile(r"^\s+(.+)\s+\.+\s+(\d+)$", re.MULTILINE)
-    submatch_rx = re.compile(r"([\w\d\.]+)\s(.+)")
+    toc_regexp = re.compile(r"^\s+(.+?)\s*\.+\s*(\d+)$", re.MULTILINE)
+    submatch_rx = re.compile(r"([\w\d\.]+)\s+(.+)")
 
-    raise
     def format_match(match):
         submatch = submatch_rx.match(match.group(1))
         if submatch:
@@ -54,8 +53,11 @@ def cleanup_toc(data, **kwargs):
             title = match.group(1)
 
         anchor = section_name
-        if anchor and anchor[-1] == '.':
-            anchor = "#section-" + anchor[:-1]
+        if anchor:
+            if anchor[-1] == '.':
+                anchor = "#section-" + anchor[:-1]
+            else:
+                anchor = "#section-" + anchor
 
         indent = ''
         # Indent parts depending on their section number.
