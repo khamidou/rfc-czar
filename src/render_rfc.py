@@ -161,8 +161,8 @@ def render_communication_lines_correctly(data, **kwargs):
     #            S: a001 OK CAPABILITY completed
     #            C: a002 STARTTLS
     # so we need to insert line breaks between those.
-    client_rx = re.compile(r"^(.+)\s+([CS]\:)(.+)$", re.MULTILINE)
-    data = client_rx.sub(r"\1 \2 \3<br>", data)
+    client_rx = re.compile(r"""([^"']([CS]\:)[^"'](.+))""", re.MULTILINE)
+    data = client_rx.sub(r"<pre>\1</pre>", data)
 
     args_rx = re.compile(r"^   ((Arguments|Responses|Result):)(.+?\n\s*\n)", re.MULTILINE | re.DOTALL)
     data = args_rx.sub(r"<b>\1</b> <div style='white-space: pre'>\3</div>", data)
