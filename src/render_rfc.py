@@ -115,6 +115,12 @@ def create_diagram_blocks(data, **kwargs):
     return data
 
 
+def handle_ebnf_rule(data, **kwargs):
+    ebnf_regexp = re.compile(r"^\s+([\w\-_\+]+)\s{3,}=(.+)$")
+    data = ebnf_regexp.sub(r'<b>\1:</b>&nbsp;\2', data)
+    return data
+
+
 def add_line_breaks_legends(data, **kwargs):
     # RFC diagrams also have legends, of the form:
     # (1) ...comment...\n
@@ -195,7 +201,7 @@ def render_html_rfc(filename, rfc_metadata):
     opts = dict(filename=filename, html_name=html_name, rfcs=rfc_metadata)
 
     for fn in [replace_rfc_by_link, remove_top_space, cleanup_author_header, remove_page_breaks,
-               anchor_titles, create_paragraphs, add_line_breaks_legends,
+               anchor_titles, handle_ebnf_rule, create_paragraphs, add_line_breaks_legends,
                cleanup_toc, create_diagram_blocks, render_communication_lines_correctly]:
         out = fn(out, **opts)
 
