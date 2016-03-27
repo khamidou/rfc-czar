@@ -31,9 +31,15 @@ def home():
 
 @app.route('/rfc<int:rfc_number>.html')
 def render_text_rfc(rfc_number):
+    title = 'RFC {}'.format(rfc_number)
+    if rfc_number in metadata and metadata[rfc_number]['subject']:
+        title = 'RFC {} - {}'.format(rfc_number, metadata[rfc_number]['subject'])
+
     filename = 'text/rfc{}.txt'.format(rfc_number)
     rendered = render_html_rfc(filename, metadata)
+    rendered['title'] = title
     return render_template('rfc.html', **rendered)
+
 
 @app.route('/browse')
 def list_rfc():
