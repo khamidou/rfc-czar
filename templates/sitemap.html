@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+        <url>
+            <loc>http://www.rfcspot.com/</loc>
+            <changefreq>weekly</changefreq>
+            <priority>0.8</priority>
+        </url>
+        {% for rfc in rfcs %}
+            {% if 'rfc' in rfc %}
+                <url>
+                    <loc>http://www.rfcspot.com/{{ rfc['rfc'] }}</loc>
+                    <changefreq>weekly</changefreq>
+                    <priority>0.8</priority>
+                </url>
+            {% endif %}
+        {% endfor %}
+    </urlset>
+</xml>

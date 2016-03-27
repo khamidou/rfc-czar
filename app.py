@@ -1,7 +1,8 @@
 import os
 import json
 import datetime
-from flask import Flask, render_template, request, redirect, url_for
+from flask import (Flask, render_template, request, redirect,
+                   url_for, make_response)
 from src.render_rfc import render_html_rfc
 
 
@@ -50,6 +51,17 @@ def list_rfc():
     return render_template('list.html',
                            titled_rfcs=sorted_titled_list,
                            untitled_rfc=sorted_untitled_list)
+
+
+@app.route('/sitemap.xml')
+def sitemap_view():
+    """Render website's sitemap."""
+    sitemap = render_template('sitemap.html', rfcs=metadata.values())
+
+    # We need to set the content-type header correctly.
+    response = make_response(sitemap)
+    response.headers['Content-Type'] = 'application/xml'
+    return response
 
 
 @app.after_request
