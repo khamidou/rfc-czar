@@ -17,13 +17,15 @@
 <body>
   <div class="container">
     <div class="row">
-      <div class="twelve columns" style="margin-top: 5%">
+      <div class="twelve columns" id="rfcList" style="margin-top: 5%">
         <h4>List of RFCs</h4>
+        <input class="search" placeholder="Search for an RFC" />
         <table>
+            <tbody class="list">
             {% for column in titled_rfcs | batch(2) %}
             <tr>
                 {% for rfc in column %}
-                    <td><a href="/rfc{{ rfc['rfc'] }}.html">RFC{{ rfc['rfc'] }}</a></td>
+                    <td><a href="/rfc{{ rfc['rfc'] }}.html" class="name">RFC{{ rfc['rfc'] }}</a></td>
                     <td>
                         {% if rfc['subject'] is not none and rfc['subject'] != '' %}
                             {{ rfc['subject'] }}
@@ -38,7 +40,7 @@
             {% for column in untitled_rfcs | batch(2) %}
             <tr>
                 {% for rfc in column %}
-                    <td><a href="/rfc{{ rfc['rfc'] }}.html">RFC{{ rfc['rfc'] }}</a></td>
+                    <td><a href="/rfc{{ rfc['rfc'] }}.html" class="name">RFC{{ rfc['rfc'] }}</a></td>
                     <td>
                         {% if rfc['subject'] is not none and rfc['subject'] != '' %}
                             {{ rfc['subject'] }}
@@ -49,10 +51,30 @@
                 {% endfor %}
             </tr>
             {% endfor %}
-
+            </tbody>
         </table>
       </div>
     </div>
   </div>
+  <script type="text/javascript" src="/static/js/jquery.min.js"></script>
+  <script type="text/javascript">
+    /*  Snippet adapted from http://jsfiddle.net/dfsq/7BUmG/1133/
+        FIXME: this is really janky when you're searching through 5000 elements.
+     */
+    $(document).ready(function() {
+        var $rows = $('.list tr');
+
+        $('.search').keyup(function() {
+            var firstWord = $.trim($(this).val()).split(/\s+/)[0]
+            var reg = RegExp(firstWord, 'i'),
+                text;
+
+            $rows.show().filter(function() {
+                text = $(this).text();
+                return !reg.test(text);
+            }).hide();
+        });
+    });
+  </script>
 </body>
 </html>
