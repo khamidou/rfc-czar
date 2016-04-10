@@ -129,8 +129,12 @@ def add_line_breaks_legends(data, **kwargs):
     data = legends_linebreak.sub(r'\1<br>\n', data)
     return data
 
+
 def line_breaks_indented_blocks(data, **kwargs):
-    pass
+    indented_linebreak = re.compile(r'\s{3,}(.+)\n', re.MULTILINE)
+    data = indented_linebreak.sub(r'\1<br>', data)
+    return data
+
 
 def anchor_titles(data, **kwargs):
     filename = kwargs['filename']
@@ -139,23 +143,23 @@ def anchor_titles(data, **kwargs):
     # Reverse section order because lvl1_title_rx matches the beginning of lvl2_title_rx
     # and lvl3_title_rx.
     lvl4_title_rx = re.compile(r"^(\d+)\.(\d+)\.(\d+)\.(\d+)\.*(.*)$", re.MULTILINE)
-    lvl4_template = r"""<a name="section-\1.\2.\3.\4"><h4>\1.\2.\3.\4 \5</h4></a>
+    lvl4_template = r"""<a name="section-\1.\2.\3.\4"><h4>\1.\2.\3.\4 &nbsp;\5</h4></a>
                     """.format(filename)
 
     data = lvl4_title_rx.sub(lvl4_template, data)
 
     lvl3_title_rx = re.compile(r"^(\d+)\.(\d+)\.(\d+)\.*(.*)$", re.MULTILINE)
-    lvl3_template = r"""\t<a name="section-\1.\2.\3"><h4>\1.\2.\3 \4</h4></a>"""
+    lvl3_template = r"""\t<a name="section-\1.\2.\3"><h4>\1.\2.\3 &nbsp;\4</h4></a>"""
     data = lvl3_title_rx.sub(lvl3_template, data)
 
     lvl2_title_rx = re.compile(r"^(\d+)\.(\d+)\.*(.*)$", re.MULTILINE)
-    data = lvl2_title_rx.sub(r'\t<a name="section-\1.\2"><h3>\1.\2 \3</h3></a>', data)
+    data = lvl2_title_rx.sub(r'\t<a name="section-\1.\2"><h3>\1.\2 &nbsp;\3</h3></a>', data)
 
     lvl1_title_rx = re.compile(r"^(\d+)\.*(.*)$", re.MULTILINE)
-    data = lvl1_title_rx.sub(r"""\t<a name="section-\1"><h2>\1. \2</h2></a>""", data)
+    data = lvl1_title_rx.sub(r"""\t<a name="section-\1"><h2>\1. &nbsp;\2</h2></a>""", data)
 
     annex_title_rx = re.compile(r"^(\w+)\.*(.*)$", re.MULTILINE)
-    data = annex_title_rx.sub(r"""\t<a name="section-\1"><h2>\1. \2</h2></a>""", data)
+    data = annex_title_rx.sub(r"""\t<a name="section-\1"><h2>\1. &nbsp;\2</h2></a>""", data)
 
     return data
 
@@ -202,7 +206,7 @@ def render_html_rfc(filename, rfc_metadata):
 
     for fn in [replace_rfc_by_link, remove_top_space, cleanup_author_header, remove_page_breaks,
                anchor_titles, handle_ebnf_rule, create_paragraphs, add_line_breaks_legends,
-               cleanup_toc, create_diagram_blocks, render_communication_lines_correctly]:
+               cleanup_toc, create_diagram_blocks, render_communication_lines_correctly, line_breaks_indented_blocks]:
         out = fn(out, **opts)
 
     dct = dict(rfc=out)

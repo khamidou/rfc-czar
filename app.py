@@ -1,4 +1,5 @@
 import os
+import time
 import json
 import datetime
 from flask import (Flask, render_template, request, redirect,
@@ -31,6 +32,8 @@ def home():
 
 @app.route('/rfc<int:rfc_number>.html')
 def render_text_rfc(rfc_number):
+    start = time.time()
+
     title = 'RFC {}'.format(rfc_number)
     if rfc_number in metadata and metadata[rfc_number]['subject']:
         title = 'RFC {} - {}'.format(rfc_number, metadata[rfc_number]['subject'])
@@ -38,6 +41,8 @@ def render_text_rfc(rfc_number):
     filename = 'text/rfc{}.txt'.format(rfc_number)
     rendered = render_html_rfc(filename, metadata)
     rendered['title'] = title
+    rendered['total_processing_time'] = start - time.time()
+
     return render_template('rfc.html', **rendered)
 
 
