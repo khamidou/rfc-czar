@@ -42,6 +42,7 @@ def render_text_rfc(rfc_number):
     rendered = render_html_rfc(filename, metadata)
     rendered['title'] = title
     rendered['total_processing_time'] = start - time.time()
+    rendered['date'] = datetime.datetime.utcnow()
 
     return render_template('rfc.html', **rendered)
 
